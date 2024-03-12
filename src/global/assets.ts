@@ -17,28 +17,28 @@ import ico_7 from '../assets/ico/7.png';
 import ico_8 from '../assets/ico/8.png';
 import ico_9 from '../assets/ico/9.png';
 import ico_voice from '../assets/ico/voice.png';
-import img_1 from '../assets/img/1.png';
-import img_2 from '../assets/img/2.png';
-import img_banner from '../assets/img/banner.png';
-import img_banner2 from '../assets/img/banner2.png';
-import img_bg_1 from '../assets/img/bg_1.png';
-import img_hongbao1 from '../assets/img/hongbao1.png';
+// import img_1 from '../assets/img/1.png';
+// import img_2 from '../assets/img/2.png';
+// import img_banner from '../assets/img/banner.png';
+// import img_banner2 from '../assets/img/banner2.png';
+// import img_bg_1 from '../assets/img/bg_1.png';
+// import img_hongbao1 from '../assets/img/hongbao1.png';
 import yebimg1 from '../assets/img/yebimg1.png';
-import img_hongbao2 from '../assets/img/hongbao2.png';
-import img_i1 from '../assets/img/i1.png';
-import img_i2 from '../assets/img/i2.png';
-import img_i3 from '../assets/img/i3.png';
-import img_i4 from '../assets/img/i4.png';
-import img_i5 from '../assets/img/i5.png';
-import img_i6 from '../assets/img/i6.png';
-import img_index_bg from '../assets/img/index_bg.png';
-import img_line from '../assets/img/line.png';
-import img_task from '../assets/img/task.png';
+// import img_hongbao2 from '../assets/img/hongbao2.png';
+// import img_i1 from '../assets/img/i1.png';
+// import img_i2 from '../assets/img/i2.png';
+// import img_i3 from '../assets/img/i3.png';
+// import img_i4 from '../assets/img/i4.png';
+// import img_i5 from '../assets/img/i5.png';
+// import img_i6 from '../assets/img/i6.png';
+// import img_index_bg from '../assets/img/index_bg.png';
+// import img_line from '../assets/img/line.png';
+// import img_task from '../assets/img/task.png';
 import img_telegram from '../assets/img/telegram.png';
 import img_video from '../assets/img/video.png';
 import img_voice from '../assets/img/voice.png';
 import img_whatsapp from '../assets/img/whatsapp.png';
-import img_yzm from '../assets/img/yzm.png';
+// import img_yzm from '../assets/img/yzm.png';
 import logo from '../assets/logo.png';
 
 
@@ -62,7 +62,7 @@ export {
 	ico_9,
 	yebimg1,	
 	ico_voice,
-	img_1,
+	// img_1,
 	img_2,
 	img_banner,
 	img_banner2,
