@@ -1,0 +1,17 @@
+{
+    "require": {
+        "topthink/think-orm": "^2.0",
+        "smarty/smarty": "3.1.32",
+        "topthink/think-template": "^2.0",
+        "khanamiryan/qrcode-detector-decoder": "^1.0",
+        "phpmailer/phpmailer": "^6.4",
+        "firebase/php-jwt": "^5.2",
+        "php-curl-class/php-curl-class": "^9.5"
+    },
+    "require-dev": {
+        "php-rdkafka/php-rdkafka-stub": "^1.0"
+    },
+    "suggest": {
+        "ext-rdkafka": "Requires the rdkafka PECL package, which provides the PHP bindings for librdkafka."
+    }
+}
