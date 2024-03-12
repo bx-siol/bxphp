@@ -13,7 +13,7 @@ class NicepayController extends BaseController
 
     public function _index()
     {
-        echo 'Nicepay';
+        echo 'Nicepay1';
     }
     public function _pay()
     {
