@@ -73,8 +73,8 @@ export default defineComponent({
 
 import { useRoute, useRouter } from "vue-router"
 import MyTab from "../../components/Tab.vue";
-import AboutUsLogo from '../../assets/img/about/aboutus_logo.png'
-import FAQImg from '../../assets/img/about/faq.png'
+// import AboutUsLogo from '../../assets/img/about/aboutus_logo.png'
+// import FAQImg from '../../assets/img/about/faq.png'
 import { getSrcUrl, goRoute } from "../../global/common";
 
 const onLink = (to: any) => {
