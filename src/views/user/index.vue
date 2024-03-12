@@ -70,7 +70,7 @@
                     <van-cell class="financial_records" :title="t('财务记录')" :icon="financialrecords"
                         :to="{ name: 'Finance_balancelog' }"></van-cell>
                     <van-cell :title="t('任务中心')" :icon="missioncenter" :to="{ name: 'task' }" v-if="false"></van-cell>
-                    <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'User_team' }"></van-cell>
+                    <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
                     <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
                     <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
                     <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }"></van-cell>
