@@ -177,8 +177,8 @@ import horn2 from '../../assets/img/signin/horn2.png'
 import bulletin from "../../assets/img/home/bulletin.png";
 import nestie from '../../assets/img/home/nestie.jpg'
 import illustration from '../../assets/img/login/illustration.png';
-import DialogBg1 from '../../assets/img/120lq.jpg';
-import DialogBg120 from '../../assets/img/120.png';
+// import DialogBg1 from '../../assets/img/120lq.jpg';
+// import DialogBg120 from '../../assets/img/120.png';
 import i76 from '../../assets/img/76.png';
 import m1 from '../../assets/img/home/home-icon-1-1.png'
 import m2 from '../../assets/img/home/home-icon-1-2.png'

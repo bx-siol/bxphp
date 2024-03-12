@@ -342,7 +342,7 @@ const getProjectDetail = () => {
   // 模拟数据返回
   detailData.value = {
     id: 1,
-    img: Product,
+    img: '',
     name: 'CS3Y-MB-AG',
     tags: ['45 Days', 'Daily interest rate 4.5%', 'Return rate 200%'],
     remainingCycle: '19 Day',
