@@ -1,0 +1,661 @@
+<template>
+  <div class="project_detail">
+    <Nav leftText=''></Nav>
+    <div class="project_img">
+      <!--<img :src="describe" class="describe">-->
+      <van-swipe indicator-color="white">
+        <van-swipe-item v-if="info.covers == []">
+          <img :src="imgFlag(info.icon)" style="width: 100%; max-height: 200px" />
+        </van-swipe-item>
+        <van-swipe-item v-for="item in info.covers">
+          <img :src="imgFlag(item)" style="width: 100%; max-height: 200px" />
+        </van-swipe-item>
+      </van-swipe>
+    </div>
+
+    <div style="padding: 1rem;">
+      <div class="title">
+        <div>{{ info.name }}</div>
+      </div>
+      <div class="detail">
+        <div class="dailyincome" v-if="false">
+          <span class="bold" v-if="info.cid == 1019">{{ cutOutNum(detailData?.dailyIncome / 24, 2) }} </span>
+          <span class="bold" v-else>₹{{ cutOutNum(detailData?.dailyIncome / 24, 2) }}</span>
+          <span v-if="info.cid == 1019"> Points</span>
+          <span style="white-space: nowrap;" v-else>{{ t('小时收益') }}</span>
+        </div>
+        <div class="index_cer_title n_p_name">
+          <span class="bold" v-if="info.cid == 1019">{{ cutOutNum(detailData?.price, 2) }} </span>
+          <span class="bold" v-else>₹ {{ cutOutNum(detailData?.price, 2) }}</span>
+          <span v-if="info.cid == 1019"> Points</span>
+          <span v-else> {{ t('价格') }}</span>
+        </div>
+        <div class="dailyincome">
+          <span class="bold">{{ info.days }} Day</span>
+          <span>{{ t('投资周期') }} </span>
+        </div>
+        <div class="dailyincome">
+          <span class="bold">₹{{ cutOutNum(detailData?.dailyIncome, 2) }}</span>
+          <span>{{ t('日收益') }} </span>
+        </div>
+        <div class="dailyincome">
+          <span class="bold">₹{{ cutOutNum(detailData?.totalRevenue, 2) }}</span>
+          <span style="white-space: nowrap;">{{ t('总收益') }} </span>
+        </div>
+        <div class="totalrevenue">
+          <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
+            100, 1) }}%</span>
+          <span>{{ t('利润回报') }} </span>
+        </div>
+        <div class="totalrevenue">
+          <span v-if="info.invest_limit > 0" class="bold">{{ info.invest_limit }}</span>
+          <span v-else class="bold">{{ t('无限制') }}</span>
+          <span>{{ t('数量限制') }}</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="desc">
+      <div class="desc_title">
+        <img :src="bird">
+        <span>Project description</span>
+        <img :src="bird">
+      </div>
+      <div class="desc_notice">
+        <div class="noticeList">
+          <div class="tablecon" v-html="info.content" style="padding-bottom: 4rem"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="productDet_bot">
+      <van-button v-if="info.status == 2" class="touziBtn" @click="onPresale">{{ t('预售') }}</van-button>
+
+      <van-button v-else-if="info.status == 10" class="touziBtn" @click="onPresale1">Not for sale</van-button>
+
+      <van-button v-else class="touziBtn" @click="onInvest">{{ t('立即购买') }}</van-button>
+    </div>
+
+    <van-popup v-model:show="investShow" close-icon="close" position="bottom" closeable round class="goodsBuyPop"
+      :style="{ height: 'auto', background: '#ffffff' }">
+      <div class="invest" style="background: #f4f7ff">
+        <div class="invest_wrap">
+          <div class="title2">Order Confirmation</div>
+          <div class="cont">
+            <div class="flex">
+              <div class="imgbox">
+                <img :src="imgFlag(info.icon)" />
+              </div>
+              <van-cell-group>
+                <div style="color: #64523e;font-weight: bold;padding:0.4rem 0;">
+                  <p>{{ info.name }}</p>
+                </div>
+                <van-cell v-if="info.cid != 1019" :title="t('价格')"
+                  style="padding-bottom: 0;margin: 0;background: transparent;">
+                  <template #value v-if="couponId === -1">
+                    <span style="color: #f00;font-weight: bold;">₹{{ info.price }}</span>
+                  </template>
+                  <template #value v-else>
+                    <span style="color: #f00;font-weight: bold;">₹{{ info.prices }}</span>
+                  </template>
+                </van-cell>
+                <van-cell v-if="info.cid == 1019" title="Points" style="margin: 0;background: transparent;">
+                  <template #value>
+                    <span style="color: #f00;font-weight: bold;">{{ info.price }} P</span>
+                  </template>
+                </van-cell>
+
+                <van-cell :title="t('数量限制')">
+                  <template #value>
+                    <span v-if="info.invest_limit > 0" class="gold">{{ info.invest_limit }}</span>
+                    <span v-else class="gold">{{ t('无限制') }}</span>
+                  </template>
+                </van-cell>
+                <van-coupon-cell :title="t('折扣券')" currency="%" :coupons="coupons" :chosen-coupon="chosenCoupon"
+                  @click="showList = true" v-if="false" />
+                <van-popup v-if="info.cid != 1019" v-model:show="showList" round position="bottom"
+                  style="height: 90%; padding-top: 4px">
+                  <van-coupon-list :empty-image="' '" :show-close-button="false" enabled-title="Available"
+                    :show-exchange-bar="false" disabled-title="Not Available" :coupons="coupons"
+                    :chosen-coupon="chosenCoupon" :disabled-coupons="disabledCoupons" @change="onChange"
+                    @exchange="onExchange" />
+                </van-popup>
+                <van-cell title="" v-if="false">
+                  <template #value>
+                    Minimum start-up ${{ info.invest_min }} , step ${{ info.invest_min }}
+                  </template>
+                </van-cell>
+                <van-field v-show="false" label-width="4rem" input-align="right" label="Password"
+                  v-model="dataForm.password2" type="password" placeholder="Enter payment password " />
+              </van-cell-group>
+            </div>
+            <!-- 新版优惠卷 -->
+            <van-collapse v-if="coupons != null && info.cid != 2" v-model="activeNames" class="collapse">
+              <van-collapse-item :title="t('折扣券')" name="1">
+                <div class="Discount">
+                  <div v-for="(item, index) in coupons" :key="index" :style="styles[index]">
+                    <label :for="forid(item.id)" style="display: flex;align-items: center;justify-content: flex-start;">
+                      <input type="radio" :value="item.id" v-model="couponId" :id="forid(item.id)" name="isOpen"
+                        @click="changeColor(item, index, info)">
+                      <span>Discount Coupon</span>
+                      <span style="color: #f00;font-weight:bold;width: 50%;text-align: right;">{{
+                        item.valueDesc }}{{ item.unitDesc }} </span>
+                    </label>
+                  </div>
+                </div>
+              </van-collapse-item>
+            </van-collapse>
+
+            <van-cell class="purchase_quantity" :title="t('采购数量')">
+              <template #value>
+                <van-stepper v-model="quantity" :step="1" :min="1" :max="info.invest_limit" button-size="20px"
+                  input-width="40px" />
+              </template>
+            </van-cell>
+
+            <van-cell :title="t('利息时间')" value="Settlement at 24:00 every day" v-if="false"></van-cell>
+            <div class="amount">
+              <van-grid v-if="info.cid != 1019" :border="false" :column-num="2">
+                <van-grid-item>
+                  <span>₹{{ wallet2.balance }}</span>
+                  <p>{{ t('充值钱包') }}</p>
+                </van-grid-item>
+                <van-grid-item>
+                  <span>₹{{ wallet1.balance }}</span>
+                  <p>{{ t('余额钱包') }}</p>
+                </van-grid-item>
+              </van-grid>
+              <van-grid v-if="info.cid == 1019" :border="false" :column-num="1">
+                <van-grid-item>
+                  <span>{{ wallet3.balance }} </span>
+                  <p>You Points</p>
+                </van-grid-item>
+              </van-grid>
+            </div>
+          </div>
+          <div class="touziBtns">
+            <div v-if="info.cid != 1019">
+              <div v-if="couponId === -1" class="Actual">Actual amount <span style="color: #f00;">₹{{
+                info.price }}</span></div>
+              <div v-else class="Actual">Discount amount<span style="color: #f00; margin-left: 0.4rem;">₹{{
+                info.prices }}</span></div>
+            </div>
+            <div v-if="info.cid == 1019">
+              <div class="Actual" style="margin-top: 0.4rem;">
+                Wealth Value<span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
+              </div>
+            </div>
+            <van-button class="touziBtn" @click="onSubmit">Confirm buy</van-button>
+          </div>
+        </div>
+      </div>
+    </van-popup>
+
+  </div>
+  <!-- <MyTab></MyTab> -->
+  <MyLoading :show="loadingShow" title="Submit"></MyLoading>
+
+</template>
+<script lang="ts">
+import { defineComponent } from "vue";
+import {
+  Swipe, SwipeItem, Button, Grid, GridItem, Image, Tab, Tabs, Cell,
+  CellGroup, Stepper, Icon, Field, Popup, CouponCell, CouponList, Collapse, CollapseItem
+} from "vant";
+import { getSrcUrl, goRoute } from "../../global/common";
+import Nav from '../../components/Nav.vue';
+import MyLoading from "../../components/Loading.vue";
+
+import MySwiper from '../../components/Swiper.vue'
+const imgFlag = (src: string) => {
+  return getSrcUrl(src, 1);
+}
+export default defineComponent({
+  name: "productDet",
+  components: {
+    MySwiper, Nav,MyLoading,
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem,
+    [Image.name]: Image,
+    [Button.name]: Button,
+    [Grid.name]: Grid,
+    [GridItem.name]: GridItem,
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Cell.name]: Cell,
+    [Field.name]: Field,
+    [Stepper.name]: Stepper,
+    [CellGroup.name]: CellGroup,
+    [Icon.name]: Icon,
+    [Popup.name]: Popup,
+    [CouponCell.name]: CouponCell,
+    [CouponList.name]: CouponList,
+    [Collapse.name]: Collapse,
+    [CollapseItem.name]: CollapseItem,
+  }
+})
+</script>
+<script lang="ts" setup>
+import { ref, onMounted, reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import md5 from "md5";
+import { _alert, lang, cutOutNum } from "../../global/common";
+import http from "../../global/network/http";
+import Product from '../../assets/img/project/product.png';
+import bird from '../../assets/ico/bird.png'
+
+import MyTab from "../../components/Tab.vue";
+import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+
+const route = useRoute()
+const router = useRouter()
+const pid = ref(route.params.pid)
+const detailData = ref<any>({})
+const dataForm = reactive({
+  password2: ''
+})
+const info = ref({
+  invest_min: 0,
+  covers: []
+})
+
+
+const styles = reactive<any>({});
+
+const changeColor = (item: any, index: number, info: any) => {
+  for (let key in styles) {
+    styles[key] = {};
+  }
+  styles[index] = {
+    border: 'none',
+    color: '#000',
+  };
+  if (couponId.value == item.id) {
+    // 取消选择
+    styles[index] = {};
+
+    couponId.value = -1
+    info.prices = info.price;
+
+  } else
+    couponId.value = item.id
+  info.prices = info.price - (info.price * (item.valueDesc / 100))
+};
+const activeNames = ref(['0'])
+const wallet1 = ref({})
+const wallet2 = ref({})
+const wallet3 = ref({})
+const investShow = ref(false)
+const quantity = ref(1)
+const step = ref(1)
+let isRequest = false
+const money = ref(info.value.invest_min)
+const loadingShow = ref(false);
+
+const disabledCouponsc = {
+  id: -2,
+  available: 11,
+  condition: t('折扣券'),
+  reason: '',
+  value: 0,
+  name: t('折扣券'),
+  startAt: 1489104000,
+  endAt: 1514592000,
+  valueDesc: '0',
+  unitDesc: '%',
+};
+const coupon = {
+  id: -1,
+  available: 1,
+  condition: t('折扣券'),
+  reason: '',
+  value: 0,
+  name: t('折扣券'),
+  startAt: 1489104000,
+  endAt: 1514592000,
+  valueDesc: '0',
+  unitDesc: '%',
+};
+const disabledCoupons = ref([disabledCouponsc]);
+const coupons = ref([coupon]);
+const showList = ref(false);
+const chosenCoupon = ref(0);
+const couponId = ref(-1);
+const onChange = (index) => {
+  showList.value = false;
+  chosenCoupon.value = index;
+  couponId.value = coupons.value[chosenCoupon.value].id;
+
+
+};
+const onExchange = (code) => {
+  coupons.value.push(coupon);
+};
+
+
+
+const getProjectDetail = () => {
+  // 根据id查询详细信息
+  // doSearch(pid.value)
+  // 查询结赋值
+  // detailData.value = res
+  // 模拟数据返回
+  detailData.value = {
+    id: 1,
+    img: Product,
+    name: 'CS3Y-MB-AG',
+    tags: ['45 Days', 'Daily interest rate 4.5%', 'Return rate 200%'],
+    remainingCycle: '19 Day',
+    price: '450',
+    totalRevenue: '1,000',
+    dailyIncome: '15',
+    cumulativeIncome: '150',
+    content: ''
+  }
+}
+
+const onPresale = () => {
+  _alert('Unable to activate during pre-sale')
+}
+const onPresale1 = () => {
+  _alert('This product is not for sale')
+}
+
+// Not for sale
+const onInvest = () => {
+  // step.value=2
+  investShow.value = true
+}
+
+const onSubmit = () => {
+  if (isRequest) {
+    return
+  } else {
+    isRequest = true
+  }
+  loadingShow.value = true;
+  const delayTime = Math.floor(Math.random() * 1000);
+  setTimeout(() => {
+    http({
+      url: 'c=Product&a=invest',
+      data: {
+        gsn: info.value.gsn,
+        money: money.value,
+        coupon: couponId.value,
+        quantity: quantity.value,
+        password2: md5(dataForm.password2)
+      }
+    }).then((res: any) => {
+      loadingShow.value = false;
+      if (res.code != 1) {
+        isRequest = false
+        _alert(res.msg)
+        return
+      }
+      dataForm.password2 = ''
+      _alert({
+        type: 'success',
+        message: res.msg,
+        onClose: () => {
+          init()
+          isRequest = false
+          step.value = 1
+          investShow.value = false
+        }
+      })
+    })
+  }, delayTime)
+}
+
+const init = () => {
+  const delayTime = Math.floor(Math.random() * 1000);
+  setTimeout(() => {
+    http({
+      url: 'c=Product&a=goods',
+      data: { gsn: route.params.pid }
+    }).then((res: any) => {
+      if (res.code != 1) {
+        _alert({
+          type: 'error',
+          message: res.msg,
+        })
+        return
+      }
+
+
+      info.value = res.data.info
+      console.log(info.value.djs);
+      console.log(info.value.djss);
+
+      if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
+        info.value.status = 10;
+      }
+      console.log(info.value.djs <= info.value.djss);
+      // console.log(info.value.djss);
+      detailData.value.name = res.data.info.name
+      detailData.value.price = res.data.info.price
+      detailData.value.dailyIncome = res.data.info.price * (res.data.info.rate / 100)
+      detailData.value.totalRevenue = res.data.info.price * (res.data.info.rate / 100) * res.data.info.days
+      detailData.value.content = res.data.info.content
+      detailData.value.tags = [
+        res.data.info.days + ' Days',
+        'Daily interest rate ' + res.data.info.rate + '%',
+        'Return rate ' + cutOutNum(((res.data.info.price * (res.data.info.rate / 100) * res.data.info.days) / res.data.info.price) * 100, 1) + '%',
+        //'Limit ' + res.data.info.invest_limit + ' copy'
+      ]
+      wallet1.value = res.data.wallet1
+      wallet2.value = res.data.wallet2
+      wallet3.value = res.data.wallet3
+
+      coupons.value = [];
+
+      coupons.value.push({
+        id: -1,
+        available: 1,
+        condition: t('折扣券'),
+        reason: '',
+        value: 0,
+        name: t('折扣券'),
+        startAt: 1489104000,
+        endAt: 1514592000,
+        valueDesc: '0',
+        unitDesc: '%',
+      });
+
+      for (let index = 0; index < res.data.coupon_arr.length; index++) {
+        const element = res.data.coupon_arr[index];
+        coupons.value.push({
+          available: 1,
+          condition: t('折扣券'),
+          reason: '',
+          value: (100 - element.discount) * 100,
+          name: element.coupon_name,
+          startAt: element.create_time,
+          endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
+          valueDesc: (100 - element.discount).toString(),
+          unitDesc: '%',
+          id: element.id
+        });
+      }
+
+    })
+  }, delayTime)
+
+}
+const forid = (id: number) => {
+  return "forid_" + id;
+}
+
+onMounted(() => {
+  init()
+  getProjectDetail()
+})
+</script>
+<style lang="scss" scoped>
+.project_detail {
+  position: relative;
+  background: #fff;
+
+  .productDet_bot {
+    position: fixed;
+
+  }
+
+  :deep .van-collapse-item__content {
+    padding: 0 0 0.8rem 0;
+    background: #f4f7ff;
+  }
+
+  .Discount {
+    display: flex;
+    flex-direction: column;
+    height: 6rem;
+    overflow-y: auto;
+
+    div:first-child {
+      border-radius: 6px 6px 0 0;
+
+    }
+
+    div:last-child {
+      border-radius: 0 0 6px 6px;
+
+    }
+
+    div {
+      flex-direction: column;
+      text-align: center;
+      padding: 0.8rem;
+      color: #000;
+      background: #f4f7ff;
+    }
+
+    input {
+      accent-color: #ff3737;
+      margin-right: 0.6rem;
+      zoom: 1.2;
+    }
+  }
+
+  .project_img {
+    // width: 12.75rem;
+    height: 12.75rem;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #eee;
+    padding: 0.2rem 5rem;
+
+    .describe {
+      width: 3rem;
+      height: 3rem;
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: 1;
+    }
+
+    img {
+      width: 12.75rem;
+      height: 12.75rem;
+    }
+  }
+
+  .title {
+    margin-top: 0.375rem;
+    display: flex;
+    justify-content: space-between;
+    color: #64523e;
+    font-weight: bold;
+  }
+
+  .title2 {
+    margin-top: 0.375rem;
+    display: flex;
+    justify-content: center;
+    color: #64523e;
+    font-weight: bold;
+  }
+
+  .n_p_name {
+    text-align: left;
+    color: #64523e;
+  }
+
+  .detail {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    flex-direction: column;
+    font-size: 0.8rem;
+    position: relative;
+    padding: 0.5rem 0;
+    color: #64523e;
+
+    .bold {
+      margin-bottom: .2rem;
+      color: #64523e;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    &>div {
+      display: flex;
+      flex-direction: row-reverse;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.1rem;
+      width: 100%;
+
+      & span:nth-child(1) {
+        // display: inline-block;
+        // transform: scale(0.9);
+        color: #64523e;
+      }
+    }
+
+    .bord {
+      border: 1px solid #64523e;
+      height: 2rem;
+    }
+  }
+
+  .desc {
+    margin: 1.25rem 0;
+    padding: 0 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+
+    // padding-bottom: 3.75rem;
+    .desc_title {
+      text-align: center;
+      font-weight: bold;
+      color: #64523e;
+      font-size: 1rem;
+      margin: 0 auto;
+      width: 72%;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+
+      img {
+        width: 2rem;
+      }
+    }
+
+
+    .desc_notice {
+      margin-top: 1.25rem;
+
+      .noticeList {
+        .tablecon {
+          font-size: 14px;
+          color: #666;
+        }
+      }
+    }
+  }
+}
+</style>

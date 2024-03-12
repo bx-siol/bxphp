@@ -1,60 +1,66 @@
 <template>
     <div class="myUploadBox">
-        <div class="upload-item" v-for="(item,idx) in fileList" :style="{width:width,height:height,overflow:needText?'visible':'hidden'}">
-            <el-image
-                    style="width: 100%;height: 100%;"
-                    hide-on-click-modal
-                    :preview-src-list="fileListPreviewCpu"
-                    :src="imgFlag(item.src)"
-                    fit="cover">
+        <div class="myUploadItem" v-for="(item,idx) in fileList" :style="{width:width,height:height,marginRight:spaceRight}">
+            <van-image :src="imgFlag(item.src)" @click="onPreview(idx)" fit="cover" width="100%" height="100%">
                 <template #error>
-                    <div style="display: table;width: 100%;" :style="{height:height}">
-                        <div style="word-break: break-all;display: table-cell;vertical-align: middle;text-align: center;width: 100%;">
-                            <template v-if="item.oriName">{{item.oriName}}</template>
-                            <template v-else-if="item.name">{{item.name}}</template>
-                            <template v-else>{{item.src}}</template>
+                    <template v-if="item.oriName">{{item.oriName}}</template>
+                    <template v-else-if="item.name">{{item.name}}</template>
+                    <template v-else>{{item.src}}</template>
+                </template>
+            </van-image>
+            <slot name="delete">
+                <div class="myUploadItemClose" @click="onDel(idx)">
+                    <van-icon name="delete-o" size="16"></van-icon>
+                </div>
+            </slot>
+        </div>
+
+        <slot name="add">
+            <div class="myUploadItem" :style="{width:width,height:height}" v-if="fileNum<limit">
+                <div style="position: absolute;left: 0;top:0;width: 100%;height: 100%;display: table;">
+                    <div style="display: table-cell;vertical-align: middle;text-align: center;">
+                        <div>
+                            <slot name="icon"><van-icon name="photograph" size="24px" color="#dcdee0"/></slot>
+                        </div>
+                        <div style="font-size: 0.8rem;">
+                            <slot name="notice"></slot>
                         </div>
                     </div>
-                </template>
-            </el-image>
-            <div class="upload-item-tool">
-                <el-icon :size="20" title="删除" style="background: rgba(0,0,0,0.5);color: #ffffff;" @click.stop="onDel(idx)">
-                    <Delete></Delete>
-                </el-icon>
+                </div>
+                <input type="file" :accept="accept" mutiple="mutiple" @change="onChange" style="width: 100%;height: 100%;opacity: 0;position: absolute;left: 0;top:0;z-index: 2;"/>
+                <div v-show="loadingShow" style="width: 100%;height: 100%;position: absolute;left: 0;top:0;z-index: 3;background: rgba(0,0,0,0.5);text-align: center;display: table;">
+                    <div style="display: table-cell;vertical-align: middle;">
+                        <van-loading size="20px" color="#ffffff" text-color="#ffffff" :vertical="true" style="">Uploading</van-loading>
+                    </div>
+                </div>
             </div>
-            <div style="position: absolute;left: 0;bottom: 0;width: 100%;" v-if="needText">
-                <el-input v-model="item.text" autocomplete="off" :placeholder="textPlaceholder" :input-style="{borderRadius:0}" clearable></el-input>
-            </div>
-        </div>
-        <el-upload
-                v-show="fileNum<limit"
-                class="upload-item"
-                :style="{width:width,height:height,marginRight:0}"
-                :accept="accept"
-                :show-file-list="false"
-                list-type="picture"
-                :http-request="onHttpRequest"
-                :on-progress="onProgress"
-                :on-success="onSuccess"
-                :on-remove="onRemove"
-                :on-preview="onPreview"
-                :on-exceed="onExceed"
-                action="/api/?a=upload">
-            <div class="my-upload-trigger">
-                <el-progress v-show="progressShow" type="circle" :percentage="progressPercent" :width="parseInt(height)"/>
-                <div style="line-height: 100%;font-size: 30px;font-weight: bold;"><i class="el-icon-plus" :style="{lineHeight:height}"></i></div>
-            </div>
-        </el-upload>
+        </slot>
 
     </div>
 </template>
 
+<script lang="ts">
+    import {defineComponent} from 'vue';
+    import {Uploader,Icon,Image,Loading} from 'vant';
+
+    export default defineComponent({
+        components:{
+            [Uploader.name]:Uploader,
+            [Image.name]:Image,
+            [Icon.name]:Icon,
+            [Loading.name]:Loading,
+        }
+    })
+</script>
+
 <script lang="ts" setup>
     import {ref,computed,onMounted} from 'vue'
     import {useStore} from "vuex";
+    import {ImagePreview} from 'vant';
     import {_alert, getSrcUrl} from "../global/common";
     import axios, { AxiosRequestConfig } from "axios";
-    import {Delete} from '@element-plus/icons'
+    import Compressor from "compressorjs";
+    import http from "../global/network/http";
 
     interface UpFile{
         name:string,
@@ -63,11 +69,11 @@
     }
 
     const store=useStore()
-    const emit=defineEmits(['update:fileList'])
+    const emit=defineEmits(['update:fileList','success'])
     const props=defineProps({
         accept:{
             type:String,
-            default:'.jpg,.jpeg,.png,.bmp'
+            default:'image/*'
         },
         limit:{
             type:Number,
@@ -79,39 +85,45 @@
         },
         width:{
             type:String,
-            default:'120px'
+            default:'80px'
         },
         height:{
             type:String,
-            default:'120px'
+            default:'80px'
         },
-        needText:{type:Boolean,default:false},
-        textPlaceholder:String
+        spaceRight:{type:String,default:'0.3rem'}
     })
 
-    //相册计算属性
-    const fileListPreviewCpu=computed(():string[]=>{
-        let urls:string[]=[];
-        for(let i=0;i<props.fileList.length;i++){
-            let it=props.fileList[i] as any
-            urls.push(imgFlag(it.src))
-        }
-        return urls
-    })
+    const loadingShow=ref(false)
 
     const fileNum=computed(()=>{
         return props.fileList.length
     })
 
-    const progressShow=ref(false)
-    const progressPercent=ref(0)
+    const onChange=(ev:Event)=>{
+        let files=ev.target.files as File[]
+        if(files.length<1){
+            return
+        }
+        loadingShow.value=true
+        new Compressor(files[0], {
+            quality:0.6,
+            success:(result)=>{
+                let el=ev.target as HTMLInputElement
+                el.value=''
+                let file = new window.File([result], result.name, {type: result.type})
+                onHttpRequest(file)
+            },
+            error(err:any) {
+                console.log(err.message);
+            }
+        })
+    }
 
     //上传文件
-    const onHttpRequest=(file:any)=>{
-        progressShow.value=true
-        progressPercent.value=0
+    const onHttpRequest=(file:File)=>{
         let FormDatas = new FormData();
-        FormDatas.append('file',file.file);
+        FormDatas.append('file',file,file.name);
         let config: AxiosRequestConfig={
             timeout: 10000,
             method:'POST',
@@ -122,40 +134,24 @@
             },
             onUploadProgress: (progressEvent) => {//上传进度
                 let num = progressEvent.loaded / progressEvent.total * 100 | 0;  //百分比
-                file.onProgress({percent: num})     //进度条
             }
         }
-        axios.post('/api/?a=upload',FormDatas,config).then(res => {
-            file.onSuccess(res.data,file)    //上传成功(打钩的小图标)
+        axios.post('/api/?a=upload',FormDatas,config).then(result => {
+            loadingShow.value=false
+            let res=result.data
+            if(res.code!=1){
+                _alert(res.msg)
+                return
+            }
+            let flist=props.fileList
+            flist.push({
+                oriName:file.name,
+                name:res.data.name,
+                src:res.data.src
+            })
+            emit('update:fileList',flist)
+            emit('success',file,res)
         })
-    }
-
-    const onProgress=(event:any, file:any, flist:any)=>{
-        progressPercent.value=event.percent
-        if(event.percent>=100){
-            progressShow.value=false
-        }
-    }
-
-    const onSuccess=(res:any,file:any)=>{
-        if(res.code!=1){
-            _alert(res.msg)
-            return
-        }
-        let flist=props.fileList
-        flist.push({
-            oriName:file.name,
-            name:res.data.name,
-            src:res.data.src
-        })
-        emit('update:fileList',flist)
-    }
-
-    const onRemove=()=>{}
-    const onPreview=()=>{}
-    //图片上传超出个数
-    const onExceed=(files:any,flist:any)=>{
-        _alert('图片个数超出限制')
     }
 
     //删除项
@@ -166,7 +162,19 @@
     }
 
     const imgFlag=(src:string)=>{
-        return getSrcUrl(src)
+        return getSrcUrl(src, 1)
+    }
+
+    const onPreview=(idx:number)=>{
+        let urls=[]
+        for(let i in props.fileList){
+            urls.push(getSrcUrl(props.fileList[i].src))
+        }
+        ImagePreview({
+            images:urls,
+            startPosition:idx,
+            closeable: true
+        })
     }
 
     onMounted(()=>{
@@ -176,19 +184,15 @@
 </script>
 
 <style scoped>
-    .upload-item{
-        position: relative;
-        display: inline-block;margin-right: 10px;
-        border: 1px dashed #c0ccda;background-color: #fbfdff;
-        overflow:hidden;
-        font-weight: bold;text-align: center;
+    .myUploadBox{height: auto;overflow: hidden;}
+    .myUploadBox .myUploadAdd{}
+    .myUploadBox .myUploadItem{
+        position: relative;background-color: #f7f8fa;border: 0px dotted #f7f8fa;
+        display: inline-block;box-sizing: border-box;overflow: hidden;;
+        margin-bottom: 0.25rem;
+        word-break: break-all;
+        cursor: pointer;
     }
-    .upload-item-tool {
-        height: 20px;
-        position: absolute;z-index: 2;
-        top: -5px;right: 0;
-    }
-
-    .my-upload-trigger{position: absolute;left: 0;top:0;width: 100%;height: 100%;background: transparent;}
+    .myUploadItemClose{position: absolute;right: 0;top: 0;background: rgba(0,0,0,0.5);color: white;width: 20px;height: 20px;line-height: 23px;text-align: center;}
 
 </style>
