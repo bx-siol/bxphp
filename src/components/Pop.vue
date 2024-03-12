@@ -1,73 +1,112 @@
 <template>
-    <div class="popBox" v-show="props.visible">
-        <div class="el-dialog popWrap animate__animated animate__fadeInDown animate__faster" :style="{width:props.width,marginTop:props.top}">
-            <div class="el-dialog__header">
-                <span class="el-dialog__title" v-html="props.title"></span>
-                <button aria-label="close" class="el-dialog__headerbtn" type="button" @click="onCancel">
-                    <i class="el-dialog__close el-icon el-icon-close"></i>
-                </button>
+    <van-overlay :show="show" style="z-index: 1999;background-color:rgba(53, 51, 51, 0.7);">
+        <div class="wrapper animate__animated animate__slideInDown animate__faster" :style="wrapperStyle" @click.stop>
+            <div v-if="title.length>0" :style="scopeTitleStyle">
+                <span>{{title}}</span>
+                <van-icon name="close" class="close1" size="28" v-if="closeType==1" @click="onClose"/>
             </div>
-            <div class="el-dialog__body">
-                <slot>内容区域</slot>
+            <div class="content">
+                <div class="contentInner" :style="contentStyle">
+                    <slot></slot>
+                </div>
             </div>
-            <div class="el-dialog__footer">
-                <span class="dialog-footer">
-                    <slot name="footer">
-                        <button class="el-button el-button--default" type="button" @click="onCancel"><span>取消</span></button>
-                        <button class="el-button el-button--primary" type="button" @click="onSave"><span>保存</span></button>
-                    </slot>
-                </span>
-            </div>
+            <van-icon name="close" class="close2" size="40" v-if="closeType==2" @click="onClose"/>
         </div>
-    </div>
+    </van-overlay>
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue'
+    import {defineComponent} from 'vue';
+    import {Overlay,Icon} from 'vant';
 
-export default defineComponent({
-    emits:['cancel','save'],
-    props:{
-        title:{
-            type:String,
-            default:'标题'
-        },
-        visible:{
+    export default defineComponent({
+        components:{
+            [Overlay.name]:Overlay,
+            [Icon.name]:Icon
+        }
+    })
+</script>
+
+<script lang="ts" setup>
+    import {ref} from 'vue';
+    const emit=defineEmits(['update:show'])
+    const props=defineProps({
+        show:{
             type:Boolean,
             default:false
         },
-        width:{
-            type:String,
-            default:'600px'
+        wrapperStyle:{
+            type:Object,
+            default:{
+                width:'80%',
+                height:'70%',
+                marginTop:'10%'
+            }
         },
-        top:{
+        titleStyle:{
+            type:Object,
+            default:null
+        },
+        contentStyle:{
+            type:Object,
+            default:{
+                padding:'5%'
+            }
+        },
+        title:{
             type:String,
-            default:'8%'
+            default:''
+        },
+        closeType:{
+            type:Number,
+            default:2
         }
-    },
-    setup(props,{emit}){
+    })
 
-        const onSave=()=>{
-            emit('save')
-        }
-
-        const onCancel=()=>{
-            emit('cancel')
-        }
-
-        onMounted(()=>{
-
-        })
-
-        return {
-            props,
-            onCancel,
-            onSave,
-        }
+    const scopeTitleStyle=ref({
+        position:'relative',
+        lineHeight:'3rem',
+        textAlign:'center',
+        borderBottom:'1px solid #383a3a'
+    })
+    if(props.titleStyle){
+        Object.assign(scopeTitleStyle.value,props.titleStyle)
     }
-})
+
+    const onClose=()=>{
+        emit('update:show',false)
+    }
 </script>
 
 <style scoped>
-    .popBox{width: 100%;height: 100%;position: fixed;left: 0;top: 0;background-color: rgba(0,0,0,0.5);z-index: 9999;overflow: auto;}
+    .wrapper {
+        background-color: #404040;
+        color: #ffffff;
+        margin: 0 auto;
+        border-radius: 2.5%;
+        overflow: visible;
+        position: relative;
+        max-width: 540px;
+    }
+
+    .wrapper .content{
+        overflow-x: hidden;
+        overflow-y: auto;
+        height: 92%;
+    }
+
+    .wrapper .close1{
+        position: absolute;
+        right: 0.5rem;
+        top:50%;
+        margin-top:-14px;
+    }
+
+    .wrapper .close2{
+        position: absolute;
+        bottom: -3.2rem;
+        left: 50%;
+        margin-left: -20px;
+        color: white;
+    }
 </style>

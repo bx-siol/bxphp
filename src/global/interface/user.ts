@@ -9,8 +9,5 @@ export interface userInfoInterface {
     fz_balance?:number,
     headimgurl?:string,
     login_time?:string,
-    login_ip?:string,
-    menus?:any[],
-    open_menus?:string[],
-    nkeys?:string[]
+    login_ip?:string
 }

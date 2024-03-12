@@ -1,275 +1,409 @@
-import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw, createWebHashHistory } from 'vue-router'
+import { lang } from "../global/common";
 
 const routes: Array<RouteRecordRaw> = [
     {
         path: '/login',
         name: 'Login',
         meta: {
-            title: '登录'
+            title: 'Login',
+            needLogin: false
         },
-        component: () => import('../views/login/login.vue')
+        component: () => import('../views/login/index.vue')
     },
     {
-        path: '/tlog',
-        name: 'Login_tlog',
+        path: '/forget',
+        name: 'Forget',
         meta: {
-            title: 'TT'
+            title: 'Forget Password',
+            needLogin: false
         },
-        component: () => import('../views/login/tlog.vue')
+        component: () => import('../views/login/forget.vue')
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        meta: {
+            title: 'Register',
+            needLogin: false
+        },
+        component: () => import('../views/login/register.vue')
     },
     {
         path: '/',
-        name: 'Admin',
+        name: 'Default',
         meta: {
-            title: '管理后台'
+            title: 'Home',
+            needLogin: false
         },
-        component: () => import('../views/admin.vue'),
-        children: [
-            {
-                path: '',
-                name: 'Default_index',
-                component: () => import('../views/default/index2.vue')
-            },
-            {
-                path: 'test',
-                name: 'Default_test',
-                component: () => import('../views/default/test.vue')
-            },
-            {
-                path: 'sys/bset',
-                name: 'Sys_bset',
-                component: () => import('../views/sys/bset.vue')
-            },
-            {
-                path: 'sys/node',
-                name: 'Sys_node',
-                component: () => import('../views/sys/node.vue')
-            },
-            {
-                path: 'sys/log',
-                name: 'Sys_log',
-                component: () => import('../views/sys/log.vue')
-            },
-            {
-                path: 'sys/pset',
-                name: 'Sys_pset',
-                component: () => import('../views/sys/pset.vue')
-            },
-            {
-                path: 'news/community',
-                name: 'new_community',
-                component: () => import('../views/news/community.vue')
-            },
-            {
-                path: 'sys/trans',
-                name: 'Sys_trans',
-                component: () => import('../views/sys/trans.vue')
+        component: () => import('../views/default/index.vue')
+    },
+    {
+        path: '/invite',
+        name: 'Invite',
+        meta: {
+            title: 'Invite',
+            needLogin: false
+        },
+        component: () => import('../views/invite/index.vue')
+    },
+    {
+        path: '/about',
+        name: 'About',
+        meta: {
+            title: 'News',
+            needLogin: false
+        },
+        component: () => import('../views/about/index.vue')
+    },
+    {
+        path: '/about/FAQ',
+        name: 'About_faq',
+        meta: {
+            title: 'FAQ',
+            needLogin: false
+        },
+        component: () => import('../views/about/faq.vue')
+    },
+    {
+        path: '/about/company/:id',
+        name: 'About_company',
+        meta: {
+            title: '',
+            needLogin: false
+        },
+        component: () => import('../views/about/company.vue')
+    },
+    {
+        path: '/coupon/:type',
+        name: 'coupon',
+        meta: {
+            title: 'Coupon',
+            needLogin: false
+        },
+        component: () => import('../views/coupon/index.vue')
+    },
 
-            },
-            {
-                path: 'sys/oauth',
-                name: 'Sys_oauth',
-                component: () => import('../views/sys/oauth.vue')
-            },
-            {
-                path: 'sys/profile',
-                name: 'Sys_profile',
-                component: () => import('../views/sys/profile.vue')
-            },
-            {
-                path: 'sys/safety',
-                name: 'Sys_safety',
-                component: () => import('../views/sys/safety.vue')
-            },
-            {
-                path: 'news/category',
-                name: 'News_category',
-                component: () => import('../views/news/category.vue')
-            },
-            {
-                path: 'news/community',
-                name: 'News_community',
-                component: () => import('../views/news/community.vue')
-            },
-            {
-                path: 'news/article',
-                name: 'News_article',
-                component: () => import('../views/news/article.vue')
-            },
-            {
-                path: 'news/notice',
-                name: 'News_notice',
-                component: () => import('../views/news/notice.vue')
-            },
-            {
-                path: 'user/group',
-                name: 'User_group',
-                component: () => import('../views/user/group.vue')
-            },
-            {
-                path: 'user/user',
-                name: 'User_user',
-                component: () => import('../views/user/user.vue')
-            },
-            {
-                path: 'user/rauth',
-                name: 'User_rauth',
-                component: () => import('../views/user/rauth.vue')
-            },
-            {
-                path: 'user/ulink',
-                name: 'User_ulink',
-                component: () => import('../views/user/ulink.vue')
-            },
-            {
-                path: 'user/statistics',
-                name: 'User_statistics',
-                component: () => import('../views/user/statistics.vue')
-            },
-            {
-                path: 'user/agent',
-                name: 'User_agent',
-                component: () => import('../views/user/agent.vue')
-            },
-            {
-                path: 'user/message',
-                name: 'User_message',
-                component: () => import('../views/user/message.vue')
-            },
-            {
-                path: 'finance/wallet',
-                name: 'Finance_wallet',
-                component: () => import('../views/finance/wallet.vue')
-            },
-            {
-                path: 'finance/walletLog',
-                name: 'Finance_walletLog',
-                component: () => import('../views/finance/walletLog.vue')
-            },
-            {
-                path: 'finance/banklog',
-                name: 'Finance_banklog',
-                component: () => import('../views/finance/banklog.vue')
-            },
-            {
-                path: 'finance/paylog',
-                name: 'Finance_paylog',
-                component: () => import('../views/finance/paylog.vue')
-            },
-            {
-                path: 'finance/cashlog',
-                name: 'Finance_cashlog',
-                component: () => import('../views/finance/cashlog.vue')
-            },
-            {
-                path: 'finance/ptype',
-                name: 'Finance_ptype',
-                component: () => import('../views/finance/ptype.vue')
-            },
-            {
-                path: 'finance/dtype',
-                name: 'Finance_dtype',
-                component: () => import('../views/finance/dtype.vue')
-            },
+    {
+        path: '/project',
+        name: 'Project',
+        meta: {
+            title: 'Project',
+            needLogin: false
+        },
+        component: () => import('../views/project/index.vue')
+    },
+    {
+        path: '/purchase',
+        name: 'Purchase',
+        meta: {
+            title: 'Prizes',
+            needLogin: true
+        },
+        component: () => import('../views/purchase/index.vue')
+    },
+    {
+        path: '/project/:pid',
+        name: 'Project_detail',
+        meta: {
+            title: 'Product',
+            needLogin: false
+        },
+        component: () => import('../views/project/detail.vue')
+    },
+    {
+        path: '/product/:cid?',
+        name: 'Product',
+        meta: {
+            title: 'Product',
+            needLogin: false
+        },
+        component: () => import('../views/product/index.vue')
+    },
+    {
+        path: '/product/goods/:gsn',
+        name: 'Product_goods',
+        meta: {
+            title: 'Project',
+            needLogin: false
+        },
+        component: () => import('../views/product/goods.vue')
+    },
+    {
+        path: '/product/order',
+        name: 'Product_order',
+        meta: {
+            title: 'My product',
+            needLogin: false
+        },
+        component: () => import('../views/product/order.vue')
+    },
+    {
+        path: '/news',
+        name: 'News',
+        meta: {
+            title: 'Company',
+            needLogin: false
+        },
+        component: () => import('../views/news/list.vue')
+    },
+    {
+        path: '/community',
+        name: 'community',
+        meta: {
+            title: 'community',
+            needLogin: false
+        },
+        component: () => import('../views/news/community.vue')
+    },
+    {
+        path: '/news/info/:id',
+        name: 'News_info',
+        meta: {
+            title: 'Detail',
+            needLogin: false
+        },
+        component: () => import('../views/news/info.vue')
+    },
+    {
+        path: '/yeb',
+        name: 'yeb',
+        meta: {
+            title: 'Fortune Treasure',
+            needLogin: false
+        },
+        component: () => import('../views/finance/yeb.vue')
+    },
+    {
+        path: '/revenuerecord',
+        name: 'yeblog',
+        meta: {
+            title: 'RS Revenue record',
+            needLogin: false
+        },
+        component: () => import('../views/finance/rewardyeb.vue')
+    },
+    {
+        path: '/user',
+        name: 'User',
+        meta: {
+            title: 'Me',
+            needLogin: false
+        },
+        component: () => import('../views/user/index.vue')
+    },
 
-
-            {
-                path: 'gift/prize',
-                name: 'Gift_prize',
-                component: () => import('../views/gift/prize.vue')
-            },
-
-            {
-                path: 'gift/prizeLog',
-                name: 'Gift_prizeLog',
-                component: () => import('../views/gift/prizeLog.vue')
-            },
-            {
-                path: 'gift/coupon',
-                name: 'Gift_coupon',
-                component: () => import('../views/gift/coupon.vue')
-            },
-            {
-                path: 'gift/couponLog',
-                name: 'Gift_couponLog',
-                component: () => import('../views/gift/couponLog.vue')
-            },
-            {
-                path: 'gift/lottery',
-                name: 'Gift_lottery',
-                component: () => import('../views/gift/lottery.vue')
-            },
-            {
-                path: 'gift/lotteryLog',
-                name: 'Gift_lotteryLog',
-                component: () => import('../views/gift/lotteryLog.vue')
-            },
-            {
-                path: 'gift/redpack',
-                name: 'Gift_redpack',
-                component: () => import('../views/gift/redpack.vue')
-            },
-            {
-                path: 'gift/redpackLog',
-                name: 'Gift_redpackLog',
-                component: () => import('../views/gift/redpackLog.vue')
-            },
-            {
-                path: 'product/category',
-                name: 'Product_category',
-                component: () => import('../views/product/category.vue')
-            },
-            {
-                path: 'product/goods',
-                name: 'Product_goods',
-                component: () => import('../views/product/goods.vue')
-            },
-            {
-                path: 'product/order',
-                name: 'Product_order',
-                component: () => import('../views/product/order.vue')
-            },
-            {
-                path: 'product/order1',
-                name: 'Product_order1',
-                component: () => import('../views/product/order1.vue')
-            },
-            {
-                path: 'product/reward',
-                name: 'Product_reward',
-                component: () => import('../views/product/reward.vue')
-            },
-            {
-                path: 'product/rebate',
-                name: 'Product_rebate',
-                component: () => import('../views/product/rebate.vue')
-            },
-            {
-                path: 'product/guser',
-                name: 'Product_guser',
-                component: () => import('../views/product/guser.vue')
-            },
-            {
-                path: 'ext/service',
-                name: 'Ext_service',
-                component: () => import('../views/ext/service.vue')
-            },
-            {
-                path: 'ext/task',
-                name: 'Ext_task',
-                component: () => import('../views/ext/task.vue')
-            },
-            {
-                path: 'ext/tasklog',
-                name: 'Ext_tasklog',
-                component: () => import('../views/ext/tasklog.vue')
-            },
-        ]
-    }
+    {
+        path: '/points',
+        name: 'Points',
+        meta: {
+            title: 'Points Mall',
+            needLogin: false
+        },
+        component: () => import('../views/user/points.vue')
+    },
+    {
+        path: '/task',
+        name: 'task',
+        meta: {
+            title: 'Task',
+            needLogin: true
+        },
+        component: () => import('../views/signin/task.vue')
+    },
+    {
+        path: '/user/team',
+        name: 'User_team',
+        meta: {
+            title: 'My team',
+            needLogin: false
+        },
+        component: () => import('../views/user/team.vue')
+    },
+    {
+        path: '/setting',
+        name: 'Setting',
+        meta: {
+            title: 'Setting',
+            needLogin: false
+        },
+        component: () => import('../views/setting/index.vue')
+    },
+    {
+        path: '/setting/uinfo',
+        name: 'Setting_uinfo',
+        meta: {
+            title: 'Personal information',
+            needLogin: false
+        },
+        component: () => import('../views/setting/uinfo.vue')
+    },
+    {
+        path: '/setting/google',
+        name: 'Setting_google',
+        meta: {
+            title: 'Google Authenticator',
+            needLogin: false
+        },
+        component: () => import('../views/setting/google.vue')
+    },
+    {
+        path: '/setting/auth',
+        name: 'Setting_auth',
+        meta: {
+            title: 'Real-name authentication',
+            needLogin: false
+        },
+        component: () => import('../views/setting/auth.vue')
+    },
+    {
+        path: '/setting/password',
+        name: 'Setting_password',
+        meta: {
+            title: 'Change Password',
+            needLogin: false
+        },
+        component: () => import('../views/setting/password.vue')
+    },
+    {
+        path: '/setting/password2',
+        name: 'Setting_password2',
+        meta: {
+            title: 'Payment password',
+            needLogin: false
+        },
+        component: () => import('../views/setting/password.vue')
+    },
+    {
+        path: '/setting/bank',
+        name: 'Setting_bank',
+        meta: {
+            title: 'Bind bank card',
+            needLogin: false
+        },
+        component: () => import('../views/setting/bank.vue')
+    },
+    {
+        path: '/share',
+        name: 'Share',
+        meta: {
+            title: 'Invitation',
+            needLogin: false
+        },
+        component: () => import('../views/share/index.vue')
+    },
+    {
+        path: '/service/online',
+        name: 'Service_online',
+        meta: {
+            title: 'Service',
+            needLogin: false
+        },
+        component: () => import('../views/service/online.vue')
+    },
+    {
+        path: '/recharge',
+        name: 'Finance_recharge',
+        meta: {
+            title: 'Recharge',
+            needLogin: false
+        },
+        component: () => import('../views/finance/recharge.vue')
+    },
+    {
+        path: '/payinfo',
+        name: 'Finance_payinfo',
+        meta: {
+            title: 'Order details'
+        },
+        component: () => import('../views/finance/payInfo.vue')
+    },
+    {
+        path: '/paylog',
+        name: 'Finance_paylog',
+        meta: {
+            title: 'Recharge',
+            needLogin: false
+        },
+        component: () => import('../views/finance/paylog.vue')
+    },
+    {
+        path: '/withdraw',
+        name: 'Finance_withdraw',
+        meta: {
+            title: 'Withdraw',
+            needLogin: false
+        },
+        component: () => import('../views/finance/withdraw.vue')
+    },
+    {
+        path: '/cashlog',
+        name: 'Finance_cashlog',
+        meta: {
+            title: 'Withdraw',
+            needLogin: false
+        },
+        component: () => import('../views/finance/cashlog.vue')
+    },
+    {
+        path: '/balancelog/:type?',
+        name: 'Finance_balancelog',
+        meta: {
+            title: 'Financial records',
+            needLogin: false
+        },
+        component: () => import('../views/finance/balancelog.vue')
+    },
+    {
+        path: '/reward/:type?',
+        name: 'Finance_reward',
+        meta: {
+            title: 'Financial reward',
+            needLogin: false
+        },
+        component: () => import('../views/finance/reward.vue')
+    },
+    {
+        path: '/gift/lottery/a3d044b074d37a89',
+        name: 'Gift_lottery',
+        meta: {
+            title: 'Lottery',
+            needLogin: false
+        },
+        component: () => import('../views/gift/lottery.vue')
+    },
+    {
+        path: '/gift/redpack',
+        name: 'Gift_redpack',
+        meta: {
+            title: 'Bonus',
+            needLogin: false
+        },
+        component: () => import('../views/gift/redpack.vue')
+    },
+    {
+        path: '/service',
+        name: 'Service',
+        meta: {
+            title: 'Service',
+            needLogin: true
+        },
+        component: () => import('../views/user/service.vue')
+    },
+    {
+        path: '/ext/task/:id',
+        name: 'Ext_task',
+        meta: {
+            title: 'Task',
+            needLogin: false
+        },
+        component: () => import('../views/ext/task.vue')
+    },
 ]
 
 const router = createRouter({
-    history: createWebHistory('/'),
+    //history: createWebHistory('/h5/'),
+    history: createWebHashHistory('/'),
     routes
 })
 

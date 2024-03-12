@@ -1,183 +1,703 @@
 <template>
-    <div class="conbar">
-        <el-breadcrumb separator="/"
-            style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <el-breadcrumb-item>首页</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
-    <div class="conbox">
-        <div class="consearch">
-            <el-button type="success" v-for="item in searchArr" @click="onClickSearchItem(item)">{{ item.name }}
-            </el-button>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="sStartTime" type="date"
-                placeholder="开始日期">
-            </el-date-picker>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="sEndTime" type="date"
-                placeholder="结束日期">
-            </el-date-picker>
-            <el-button type="primary" style="margin-left: 10px;" @click="onSearch">查询</el-button>
+  <div class="index">
+    <MyTab :key="menuKey" :newscount="newscount"></MyTab>
+    <div class="index_wrap">
+      <div class="index_top">
+        <div class="headbox">
+          <van-image :src="nestie" style="width: 2.2rem; height: 2.2rem;" class="logs"></van-image>
+          <div style="position: relative;right: 3rem;">
+            <P>{{ user.account }}</P>
+            <P>ID: {{ user.id }}</P>
+          </div>
+          <!-- <van-image :src="illustration" style="width: 5rem; height: 1.4rem;left:-2px;"></van-image> -->
+
+          <van-image @click="tipShow = true" :src="hasMsg ? NoMsg : NoMsg"
+            style="width: 1.2rem; height: 1.5rem;left:3rem;"></van-image>
+          <div class="u-flex u-center">
+            <MyLanguage :showIcon="true" top="unset" :switchLanStyle="switchLanStyle"></MyLanguage>
+          </div>
         </div>
 
-        <div class="indexDefaultBox">
-            <el-row>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>余额相关</template>
-                        <template #default>
-                            <div>充值钱包：{{ tableData.re_balance }}</div>
-                            <div>余额钱包：{{ tableData.ba_balance }}</div>
-                            <div>&nbsp;</div>
-                        </template>
-                    </el-card>
-                </el-col>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>投资相关</template>
-                        <template #default>
-                            <div>总投资订单：{{ tableData.invest_count }}</div>
-                            <div>总投资额度：{{ tableData.invest_money }}</div>
-                            <div>总订单分红：{{ tableData.reward_money }}</div>
-                        </template>
-                    </el-card>
-                </el-col>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>充值相关</template>
-                        <template #default>
-                            <div>总充值：{{ tableData.total_pay_money }}</div>
-                            <div>今日充值：{{ tableData.today_pay_money }}</div>
-                            <div>今日首充：{{ tableData.today_first_pay }}</div>
-                        </template>
-                    </el-card>
-                </el-col>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>提现相关</template>
-                        <template #default>
-                            <div>总提现：{{ tableData.total_cash_money }}</div>
-                            <div>今日提现：{{ tableData.today_cash_money }}</div>
-                            <div>提现待审核：{{ tableData.uncheck_cash_money }}</div>
-                        </template>
-                    </el-card>
-                </el-col>
-            </el-row>
-            <el-row>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>抽奖相关</template>
-                        <template #default>
-                            <div>中奖总额：{{ tableData.total_lottery_money }}</div>
-                            <div>今日中奖：{{ tableData.today_lottery_money }}</div>
-                            <div>&nbsp;</div>
-                        </template>
-                    </el-card>
-                </el-col>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>红包领取</template>
-                        <template #default>
-                            <div>红包总额：{{ tableData.total_redpack_money }}</div>
-                            <div>今日领取：{{ tableData.today_redpack_money }}</div>
-                            <div>&nbsp;</div>
-                        </template>
-                    </el-card>
-                </el-col>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>会员相关</template>
-                        <template #default>
-                            <div>总会员数：{{ tableData.total_member }}</div>
-                            <div>今日注册：{{ tableData.today_member }}</div>
-                            <div>有效会员：{{ tableData.effective_member }}</div>
-                        </template>
-                    </el-card>
-                </el-col>
-                <el-col :span="6">
-                    <el-card class="box-card">
-                        <template #header>动态验证码</template>
-                        <template #default>
-                            <div style="font-weight: bold;">{{ tableData.sms_code }}</div>
-                            <div>&nbsp;</div>
-                            <div>&nbsp;</div>
-                        </template>
-                    </el-card>
-                </el-col>
-            </el-row>
+        <div class="backg" style="padding: 1rem">
+          <div class="myswiper">
+            <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
+          </div>
+          <div class="money">
+            <div class="moneys">
+              <div class="money-top">
+                <img :src="Balance">
+                <div>
+                  <span class="desc">{{ t('余额') }}</span>
+                  <p>{{ cutOutNum(wallet.balance, 2) }} RS</p>
+                </div>
+              </div>
 
-            <div style="height: 100px;"></div>
+              <div @click="onLink({ name: 'Finance_recharge' })" class="recharge">
+                {{ t('充值') }}
+              </div>
+            </div>
+          </div>
 
+          <div class="malls u-flex u-bet" v-if="false">
+            <div @click="onLink({ name: 'Finance_recharge' })" style="width: 48%;">
+              <van-image :src="chance"></van-image>
+            </div>
+            <div @click="onLink({ name: 'Finance_withdraw' })" style="width: 48%;">
+              <van-image :src="integral"></van-image>
+            </div>
+          </div>
+          <div class="index_cer">
+            <div class="menubox">
+              <div
+                style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_withdraw' })">
+                  <van-image :src="m1"></van-image>
+                  <p>{{ t('提现') }}</p>
+                </a>
+                <!-- <span class="line"></span> -->
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
+                  <van-image :src="m2"></van-image>
+                  <p>{{ t('奖金') }}</p>
+                </a>
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'User_team' })">
+                  <van-image :src="m3"></van-image>
+                  <p>{{ t('团队') }}</p>
+                </a>
+                <a class="divs" href="javascript:;" @click="appdload">
+                  <van-image :src="m4"></van-image>
+                  <p>{{ t('下载') }}</p>
+                </a>
+              </div>
+
+            </div>
+            <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;">
+              <a class="divs" href="javascript:;">
+                <van-image :src="m5" style="width: 6.8rem;height: 3.4rem;"></van-image>
+              </a>
+              <a class="divs" href="javascript:;">
+                <van-image :src="m6" style="width: 6.8rem;height: 3.4rem;"></van-image>
+              </a>
+              <a class="divs" href="javascript:;" @click="onLink({ name: 'Share' })">
+                <van-image :src="m7" style="width: 6.8rem;height: 3.4rem;"></van-image>
+              </a>
+              <!-- <a class="divs" href="javascript:;" @click="appdload">
+                  <van-image :src="m8"></van-image>
+                </a> -->
+            </div>
+            <div class="videobox">
+              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc"
+                style="width: 100%;"></video>
+            </div>
+            <div class="mynotice">
+            <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" height="1.375rem"></MyNoticeBar>
+          </div>
+            <div>
+              <div class="column_title2">
+                <img :src="horn">
+                popular products
+              </div>
+              <div class="products">
+                <HomeProjects />
+              </div>
+            </div>
+            <!-- 文章
+            <div class="column_title2">
+              <img :src="News11">
+              Corporate News
+            </div>
+            <div class="index_news">
+              <div class="list" v-for="(item, index) in articledata" :key="index">
+                <van-image :src="imgFlag(item.cover)" class="img"></van-image>
+                <div class="left" @click="onLink({ name: 'About_company', params: { id: item.id, type: 'SysArticle' } })">
+                  <p class="title ellipsis-2">{{ item.title }}</p>
+                  <div class="time">
+                    <p>{{ formatDate(item.publish_time) }}</p>
+                  </div>
+                </div>
+              </div>
+            </div> -->
+          </div>
         </div>
-
+      </div>
     </div>
 
+    <van-dialog v-model:show="tipShow" style="border-radius: 8px" :showConfirmButton="false" class-name="home_tip_show"
+      class="home_tip_shows">
+      <div class="dialog_top">
+        <img :src="horn2" style="width: 5rem;position: fixed;left: 1rem;">
+        <img :src="bulletin" style="width: 20rem;margin-bottom: -1px;">
+        <!-- <p>OFFICIAL TIPS</p> -->
+        <div @click="tipShow = false" style="position: absolute; top: 1rem; right: 1rem">
+          <!-- <van-icon style="color:#64523e;font-size:26px;" name="close" /> -->
+        </div>
+      </div>
+      <div class="dialog_content">
+        <div class="notice_list">
+          <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; max-height: 14rem; overflow-y: auto"></div>
+        </div>
+      </div>
+      <div class="dialog_confirm_btn" @click="tipShow = false">
+        <span>{{ t('确定') }}</span>
+      </div>
+    </van-dialog>
+    <!-- <Service @doService="doService" /> -->
+    <div style="bottom: 10rem" class="service" @click="doService76">
+      <img :src="i76" />
+    </div>
+
+    <van-dialog v-model:show="tipShow1" style="border-radius: 0" :showConfirmButton="false" class-name="home_tip_show">
+      <div class="dialog_top">
+        <img :src="DialogBg1" />
+      </div>
+      <div style="margin-top: -6.05rem; margin-bottom: 3.4rem" class="dialog_confirm_btn" @click="t120lq()">
+        <span
+          style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
+            t('收到') }}</span>
+      </div>
+    </van-dialog>
+
+    <van-dialog v-model:show="tipShow2" style="border-radius: 0; background: none" :showConfirmButton="false"
+      class-name="home_tip_show">
+      <div class="dialog_top">
+        <img :src="DialogBg120" />
+      </div>
+      <div style="height: 3.4rem; width: 100%; margin-top: -4.9rem; margin-bottom: 3.4rem" class="dialog_confirm_btn"
+        @click="t120()">
+        <span
+          style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
+            t('收到') }}</span>
+      </div>
+    </van-dialog>
+  </div>
 </template>
 
-<script lang="ts" setup>
-import { onMounted, ref } from 'vue'
-import { useStore } from "vuex";
-import http from "../../global/network/http";
-import dayjs from "dayjs";
-import { _alert } from "../../global/common";
-const store = useStore()
+<script lang="ts">
+import { _alert, lang, cutOutNum } from "../../global/common";
+import { defineComponent, ref, reactive, onMounted } from "vue";
+import MyTab from '../../components/Tab.vue';
+import MySwiper from '../../components/Swiper.vue'
+import MyNoticeBar from '../../components/NoticeBar.vue'
+import { Image, ActionSheet, Dialog } from "vant";
+import MyLanguage from "../../components/Language.vue";
+import horn from '../../assets/img/home/horn.png'
+import horn2 from '../../assets/img/home/horn2.png'
+import bulletin from "../../assets/img/home/bulletin.png";
+import NoMsg from "../../assets/img/home/nomsg.png";
+import Msg from "../../assets/img/home/msg.png";
+import nestie from '../../assets/img/home/nestie.jpg'
+import illustration from '../../assets/img/login/illustration.png';
+import DialogBg1 from '../../assets/img/120lq.jpg';
+import DialogBg120 from '../../assets/img/120.png';
+import i76 from '../../assets/img/76.png';
+import Balance from '../../assets/img/home/Balance.png'
+import m1 from '../../assets/img/home/home-icon-1-1.png'
+import m2 from '../../assets/img/home/home-icon-1-2.png'
+import m3 from '../../assets/img/home/home-icon-1-3.png'
+import m4 from '../../assets/img/home/home-icon-1-4.png'
+import m5 from '../../assets/img/home/home-icon-1-5.png'
+import m6 from '../../assets/img/home/home-icon-1-6.png'
+import m7 from '../../assets/img/home/home-icon-1-7.png'
+import m7s from '../../assets/img/home/home-icon-1-7s.png'
+import m8 from '../../assets/img/home/home-icon-1-8.png'
+import chance from '../../assets/img/home/home-banner-3-1.png'
+import integral from '../../assets/img/home/home-banner-3-2.png'
+import videosrc from '../../assets/video/video.mp4'
+import { Card, Button, Tag, Tab, Tabs, Swipe, SwipeItem, Icon } from 'vant';
+import Nav from '../../components/Nav.vue';
+import MyListBase from '../../components/ListBase.vue';
+import MyLoading from '../../components/Loading.vue';
+import HomeProjects from '../../components/HomeProject.vue';
+import HomePurchased from '../../components/HomePurchased.vue';
 
-const tableData = ref({})
-const searchArr = [
-    { type: 1, name: '今天' },
-    { type: 2, name: '昨天' },
-    { type: 3, name: '最近7天' },
-    { type: 4, name: '最近30天' },
-    { type: 5, name: '上月' },
-    { type: 6, name: '本月' }
-]
-
-const searchItem = ref({
-    type: 0
+export default defineComponent({
+  name: "index",
+  components: {
+    MyTab, MySwiper, MyNoticeBar, MyListBase,
+    [Icon.name]: Icon,
+    [Image.name]: Image,
+    [ActionSheet.name]: ActionSheet,
+    [Dialog.Component.name]: Dialog.Component,
+    [Card.name]: Card,
+    [Button.name]: Button,
+    [Tag.name]: Tag,
+    [Tab.name]: Tab,
+    [Tabs.name]: Tabs,
+    [Swipe.name]: Swipe,
+    [SwipeItem.name]: SwipeItem
+  }
 })
-const onClickSearchItem = (item: any) => {
-    searchItem.value = item
-    doSearch()
+</script>
+<script lang="ts" setup>
+import { CSSProperties, computed } from 'vue';
+import { useRouter } from 'vue-router';
+
+
+import { checkLogin, goLogin, isLogin } from "../../global/user";
+import http from "../../global/network/http";
+import { getSrcUrl, goRoute, imgPreview } from "../../global/common";
+import { config } from "process";
+import { useStore } from "vuex";
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
+const store = useStore()
+const pageuser = isLogin()
+
+const doService76 = () => {
+
+  tipShow1.value = true;
+}
+const active = ref(0)
+const appdload = () => {
+  window.location.href = '/app'
+}
+const router = useRouter()
+const switchLanStyle = computed<CSSProperties>(() => {
+  return {
+    border: '1px solid #fff',
+    borderRadius: '0.875rem',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    boxSizing: 'border-box',
+    padding: '0 0.4rem',
+  }
+})
+const hasMsg = ref<boolean>(false)
+
+const imgFlag = (src: string) => {
+  return getSrcUrl(src, 1)
 }
 
-const sStartTime = ref('')
-const sEndTime = ref('')
+const onLink = (to: any) => {
+  goRoute(to)
+}
 
-const doSearch = () => {
-    let s_start_time = dayjs(new Date(sStartTime.value)).format('YYYY-MM-DD')
-    let s_end_time = dayjs(new Date(sEndTime.value)).format('YYYY-MM-DD')
-    http({
-        url: 'c=Default&a=getData',
-        data: {
-            type: searchItem.value.type,
-            start_time: s_start_time,
-            end_time: s_end_time
+const goInvite = () => {
+  // router.push({ path: '/invite' })
+  router.push({ path: '/points' })
+
+}
+
+const doService = () => {
+  console.log('doService')
+}
+const newsdata = ref<any>([])
+const taskdata = ref<any>([])
+const tdata = ref<any>({
+  user: {},
+  kv: [],
+  notice: [],
+  news: [],
+  about: {},
+  tip: {},
+  video: {}
+})
+// let pageUrl = ref('c=Product&a=order')
+
+
+
+
+const totask = (id: number) => {
+  router.push({ name: 'Ext_task', params: { id: id } })
+  // alert(id)
+}
+
+
+const onClickVideo = () => {
+  if (tdata.value.video.url) {
+    window.open(tdata.value.video.url)
+    return
+  }
+  onLink({ name: 'News_info', params: { id: tdata.value.video.id } })
+}
+
+const loading = ref(false)
+const t120 = () => {
+  if (loading.value) {
+    return;
+  } else {
+    loading.value = true;
+  }
+  const delayTime = Math.floor(Math.random() * 1000);
+  setTimeout(() => {
+  http({
+    url: 'a=get120rs'
+  }).then((res: any) => {
+    if (res.code != 1) {
+      _alert({
+        message: 'You have received the new reward',
+        onClose: () => {
+          tipShow2.value = false;
+          setTimeout(() => {
+            tipShow1.value = false;
+          }, 300);
         }
-    }).then((res: any) => {
-        if (res.code != 1) {
-            _alert(res.msg)
-            return
+      });
+      return
+    }
+    _alert({
+      message: 'Received successfully',
+      onClose: () => {
+        tipShow2.value = false;
+        setTimeout(() => {
+          tipShow1.value = false;
+        }, 300);
+      }
+    });
+  })
+}, delayTime)
+
+
+
+}
+const t120lq = () => {
+  if (t120ok.value != 0) {
+    _alert({
+      message: 'You have received the new reward',
+      onClose: () => {
+        setTimeout(() => {
+          tipShow1.value = false;
+        }, 300);
+      }
+    });
+    return;
+  }
+  tipShow2.value = true;
+}
+const t120ok = ref(0)
+const actions = ref([])
+const tipShow2 = ref(false)
+const tipShow1 = ref(false)
+const tipShow = ref(false)
+const appshow = ref(true)
+const newscount = ref('')
+const menuKey = ref(0)
+
+const user = ref({});
+const wallet = ref({});
+const wallet2 = ref({});
+const wallet3 = ref({});
+const t_investment = ref(0.0);
+
+const init = () => {
+
+  if (window.location.href.indexOf('csisolar.in') > 0 || window.location.href.indexOf('csisolar.life ') > 0) {
+    appshow.value = false;
+  }
+
+  http({
+    url: 'c=Ext&a=task'
+  }).then((res: any) => {
+    if (res.code != 1) {
+      return
+    }
+
+    taskdata.value = res.data.list;
+
+  })
+  http({
+    url: 'a=index'
+  }).then((res: any) => {
+    if (res.code != 1) {
+      return
+    }
+    tdata.value = res.data
+    if (tdata.value.tip) {
+      tipShow.value = true
+      hasMsg.value = true
+    }
+    t120ok.value = res.data.gift;
+    newscount.value = res.data.newscount;
+    localStorage.newscount = res.data.newscount;
+
+    var str = ',';
+    res.data.newsids.forEach(itemnews => { str += itemnews.id + ','; });
+    if (localStorage.newsids == undefined) localStorage.newsids = '';
+    if (str != localStorage.newsids) { localStorage.newsids = str; }
+    var ckcount = '';
+    if (localStorage.rnewsids != undefined) {
+      var ac = {};
+      var rstr = localStorage.rnewsids.split(',');
+      var cstr = ',';
+      rstr.forEach(element => {
+        if (element) {
+          //检查id 是否与服务端一致
+          if (localStorage.newsids.indexOf(',' + element + ',') >= 0) {
+            cstr += element + ',';
+          }
         }
-        tableData.value = res.data
+      });
+      localStorage.rnewsids = cstr;
+      for (var i = 0; i < cstr.length; i++) {
+        var chars = cstr.charAt(i);
+        if (ac[chars]) {
+          ac[chars]++;
+        } else {
+          ac[chars] = 1;
+        }
+      }
+      ckcount = ac[','] - 1;
+      ckcount = localStorage.newscount - ckcount;
+      if (ckcount <= 0) ckcount = '';
+    } else {
+      ckcount = res.data.newscount;
+    }
+    store.commit('setnewscountc', ckcount);
+    menuKey.value++;
+    if (res.data.service_arr && res.data.service_arr.length > 0) {
+      for (let i in res.data.service_arr) {
+        let item = res.data.service_arr[i]
+        actions.value.push({
+          name: item.name,
+          subname: item.type_flag + ': ' + item.account,
+          account: item.account,
+          type: item.type
+        })
+      }
+    }
+  })
+
+}
+
+
+let isRequest = false
+
+const imgShow = (src: string) => {
+  imgPreview(src)
+}
+
+const loadingShow = ref(true)
+const pageRef = ref()
+
+const tableData = ref<any>({})
+const pdata = reactive({})
+
+const onPageSuccess = (res: any) => {
+  tableData.value = res.data
+  loadingShow.value = false
+}
+
+
+
+const onReceive = (item: any) => {
+  if (isRequest) {
+    return
+  } else {
+    isRequest = true
+  }
+  http({
+    url: 'c=Product&a=receiveProfit',
+    data: { osn: item.osn }
+  }).then((res: any) => {
+    isRequest = false
+    if (res.code != 1) {
+      _alert(res.msg)
+      return
+    }
+    _alert({
+      type: 'success',
+      message: res.msg,
+      onClose: () => {
+        item.receive = 0
+      }
     })
+  })
 }
 
-const onSearch = () => {
-    searchItem.value.type = 0
-    doSearch()
+const onReceiveNo = (item: any) => {
+  _alert('Currently unavailable')
 }
+
+
 
 onMounted(() => {
-    if (!store.state.user.gid || store.state.user.gid == 92) {
-        location.href = '/h5/'
-        return
-    }
-    onSearch()
-    setTimeout(() => { store.dispatch('loadingFinish'); }, store.state.loadingTime)
-})
+  if (window.location.href.indexOf('csisolar.in') > 0 || window.location.href.indexOf('csisolar.life ') > 0) {
+    appshow.value = false;
+  }
+  http({
+    url: 'c=User&a=index'
+  }).then((res: any) => {
 
+    init()
+    user.value = res.data.user
+    wallet.value = res.data.wallet
+    wallet2.value = res.data.wallet2
+    wallet3.value = res.data.wallet3
+    t_investment.value = res.data.investment
+    // t_recharge.value = res.data.recharge
+    // t_withdraw.value = res.data.withdraw
+
+    // t_reward.value = res.data.reward
+    // t_rebate.value = res.data.rebate
+    // t_tprofit.value = res.data.tprofit
+    if (res.data.service_arr && res.data.service_arr.length > 0) {
+      for (let i in res.data.service_arr) {
+        let item = res.data.service_arr[i]
+        actions.value.push({
+          name: item.name,
+          subname: item.type_flag + ': ' + item.account,
+          account: item.account,
+          type: item.type
+        })
+      }
+    }
+  })
+})
 </script>
-<style>
-.indexDefaultBox .box-card {
-    margin: 1rem 1rem;
-    font-size: 1.5rem;
+
+ 
+
+<style scoped>
+.service {
+  width: 2.5rem;
+  height: 2.5rem;
+  position: fixed;
+  right: 0.625rem;
+  bottom: 6.75rem;
+  z-index: 10;
+}
+
+.van-stepper__input,
+.invest_wrap .cont .van-stepper button {
+  color: #3d3d3d;
+}
+
+.invest_wrap .cont .van-cell__title,
+.invest_wrap .cont .van-cell__value {
+  color: #3d3d3d;
+}
+
+.invest .van-field__control {
+  color: white;
+}
+
+.invest_wrap .cont .van-cell::after {
+  border-color: #544c4c;
+}
+
+.goodsBuyPop {
+  right: 0;
+}
+</style>
+<style lang="scss" scoped>
+@keyframes bg-pan-left {
+  0% {
+    background-position: 100% 50%
+  }
+
+  100% {
+    background-position: 0 50%
+  }
+}
+
+@keyframes clippath {
+
+  0%,
+  to {
+    -webkit-clip-path: inset(0 0 98% 0);
+    clip-path: inset(0 0 98% 0)
+  }
+
+  25% {
+    -webkit-clip-path: inset(0 98% 0 0);
+    clip-path: inset(0 98% 0 0)
+  }
+
+  50% {
+    -webkit-clip-path: inset(98% 0 0 0);
+    clip-path: inset(98% 0 0 0)
+  }
+
+  75% {
+    -webkit-clip-path: inset(0 0 0 98%);
+    clip-path: inset(0 0 0 98%)
+  }
+}
+
+.home_tip_show {
+  .dialog_top {}
+
+  .dialog_content {
+    padding: 0.825rem 0.425rem;
+    box-sizing: border-box;
+    font-size: 0.75rem;
+    background-color: #fff;
+
+    .notice_list {
+
+      .notice_item {
+        line-height: 1rem;
+        margin-bottom: 1.25rem;
+        text-align: center;
+      }
+    }
+  }
+
+  .dialog_confirm_btn {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1.25rem;
+    background-color: #fff;
+
+    span {
+      display: inline-block;
+      height: 2.25rem;
+      width: 14.0625rem;
+      line-height: 2.25rem;
+      text-align: center;
+      font-size: 0.875rem;
+      background: #00b37c;
+      color: #fff;
+      border-radius: 1.3125rem;
+    }
+  }
+}
+
+.index_wrap {
+  background-color: #84973b;
+  .money {
+    background-color: #fff;
+    padding: 0.875rem 0.875rem 0.875rem 0.275rem;
+    border-radius: 6px;
+    margin: 1rem 0;
+
+    .moneys {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #fff;
+
+      .money-top {
+        width: 40%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #84973b;
+        line-height: 22px;
+
+        p {
+          font-weight: bold;
+          white-space: nowrap;
+        }
+      }
+    }
+
+    .recharge {
+      background-color: #84973b;
+      padding: 0.6rem 1.2rem;
+      border-radius: 2rem;
+      font-weight: bold;
+      text-transform: uppercase !important;
+    }
+
+    img {
+      width: 3.575rem;
+      margin-right: 0.375rem;
+    }
+  }
+
 }
 </style>
