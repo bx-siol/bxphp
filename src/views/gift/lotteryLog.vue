@@ -23,7 +23,7 @@
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="account" label="用户账号"></el-table-column>
             <el-table-column prop="nickname" label="用户昵称"></el-table-column>
-            <el-table-column prop="type" label="奖品类型"></el-table-column>
+            <el-table-column prop="typename" label="奖品类型"></el-table-column>
             <el-table-column prop="prize_name" label="奖品"></el-table-column>
             <el-table-column prop="money" label="中奖金额"></el-table-column>
             <el-table-column prop="is_user_flag" label="是否抽奖"></el-table-column>
