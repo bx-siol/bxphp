@@ -1049,11 +1049,12 @@ class ProductController extends BaseController
 		Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $lotterynum)->update();
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
+
 		$prize_arr = array_filter($prizesList, function($var) {
-			return $var['probability'] >0;
+			return $var['probability'] > 0;
 		});
 		$prizeEmpty = array_filter($prizesList, function($var) {
-			return $var['type']  == 4;
+			return $var['type']  = 4;
 		});
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
