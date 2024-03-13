@@ -1054,7 +1054,7 @@ class ProductController extends BaseController
 			return $var['probability'] > 0;
 		});
 		$prizeEmpty = array_filter($prizesList, function($var) {
-			return $var['type']  = 4;
+			return $var['type']  == 4;
 		});
 		
 		for ($i = 0; $i < $lotterynum; $i++) 
@@ -1069,7 +1069,7 @@ class ProductController extends BaseController
 				$prize = $prizeArr[$randomNumber];
 			}
 			
-			writeLog(json_encode($prize), 'bobopay1');
+			writeLog(json_encode($prizeArr), 'bobopay1');
 			writeLog('kong' .json_encode($prizeEmpty), 'bobopay1');
 			if(count($prizeArr) == 1)
 			{
