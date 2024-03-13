@@ -1063,6 +1063,7 @@ class ProductController extends BaseController
 				array_push($prizeEmpty,$k);
 		}
 
+		writeLog(json_encode($prize_arr, JSON_UNESCAPED_SLASHES), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array();
