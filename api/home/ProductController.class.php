@@ -1052,8 +1052,8 @@ class ProductController extends BaseController
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
 		$prize_arr = [];
-		foreach ($prizesList as $k=>$v) {
-			if(intval($k['probability']) > 0)
+		foreach ($prizesList as $k) {
+			if(floatval($k['probability']) > 0)
 				$prize_arr.array_push($k);
 		}
 
@@ -1069,10 +1069,13 @@ class ProductController extends BaseController
 
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
-			$prizeArr = array_filter($prize_arr, function($var) {
-				return intval($var['buyAmountStart']) >=0 && intval($var['buyAmountEnd']) >0 && intval($var['buyAmountStart']) <= intval($pro_order['w2_money'])
-						&& intval($pro_order['money']) <= intval($var['buyAmountEnd']) ;
-			});
+			$prizeArr = [];
+			foreach ($prizesList as $k) {
+				if(floatval($k['buyAmountStart']) >= 0 && floatval($k['buyAmountEnd']) >0 && floatval($k['buyAmountStart']) <= floatval($pro_order['w2_money'])
+				&& floatval($pro_order['money']) <= floatval($k['buyAmountEnd']))
+					$prizeArr.array_push($k);
+			}
+
 			if(count($prizeArr) > 1)
 			{
 				$randomNumber = mt_rand(0, count($prizeArr));
