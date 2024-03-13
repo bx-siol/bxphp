@@ -1146,8 +1146,8 @@ class ProductController extends BaseController
 			if ($prizeInfo)
     			$prizeInfo = $prizeEmpty;
 
-			writeLog(json_encode($prizeEmpty),"bobopay1");
-			writeLog(json_encode($prizeInfo),"bobopay1");
+			writeLog('sjprizeArr'.json_encode($sjprizeArr),"bobopay1");
+			writeLog('prizeInfo'.json_encode($prizeInfo),"bobopay1");
 			for	($i = 1; $i <= $item['sjcjcs'];	$i++) 
 			{
 				Db::table('gift_prize_log')->insertGetId([
