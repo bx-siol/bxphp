@@ -1051,7 +1051,7 @@ class ProductController extends BaseController
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
-		$prize_arr = array();
+		$prize_arr = array(array());
 		foreach ($prizesList as $k => $uk) {
 			if($k['probability'] > 0)
 				array_push($prize_arr[$uk],$k);
@@ -1063,14 +1063,13 @@ class ProductController extends BaseController
 				array_push($prizeEmpty,$k);
 		}
 
-		writeLog('prize_arr1'.json_encode($prize_arr), 'bobopay1');
+		writeLog(json_encode($prize_arr), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
-			writeLog('prize_arr2'.json_encode($prize_arr), 'bobopay1');
-			$prizeArr = array(array());
-			foreach ($prize_arr as $k => $ui) {
+			$prizeArr = array();
+			foreach ($prize_arr as $k) {
 				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
-					array_push($prizeArr[$ui],$k);
+					array_push($prizeArr,$k);
 			}
 
 			if(count($prizeArr) > 1)
@@ -1078,8 +1077,6 @@ class ProductController extends BaseController
 				$randomNumber = mt_rand(0, count($prizeArr));
 				$prize = $prizeArr[$randomNumber];
 			}
-			
-			writeLog('prizeArr'.json_encode($prizeArr), 'bobopay1');
 			if(count($prizeArr) == 1)
 			{
 				$prize = $prizeArr;
