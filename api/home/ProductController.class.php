@@ -1071,7 +1071,8 @@ class ProductController extends BaseController
 					array_push($prizeArr,$k);
 			}
 
-			writeLog(json_encode($prizeArr), 'bobopay1');
+			writeLog('prizeArr'.json_encode($prizeArr), 'bobopay1');
+			writeLog('money'.$pro_order['money'], 'bobopay1');
 			if(count($prizeArr) > 1)
 			{
 				$randomNumber = mt_rand(0, count($prizeArr));
@@ -1102,7 +1103,7 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 			
-			writeLog(json_encode($prize), 'bobopay1');
+			//writeLog(json_encode($prize), 'bobopay1');
 			Db::table('pro_order')->insertGetId([
 				'split_time' => NOW_TIME,
 				'uid' => $pageuser['id'],
