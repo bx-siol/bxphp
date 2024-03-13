@@ -70,9 +70,10 @@ class GiftController extends BaseController
 			}
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 			
-			writeLog('--------------------------------','bobopay1');
+			writeLog('1--------------------------------','bobopay1');
 
 			if ($prize['type'] == 1) { //金额
+				writeLog('11--------------------------------','bobopay1');
 				$money = $this->getRandMoney($prize['from_money'], $prize['to_money']);
 				$money = number_format($money, 2, '.', '');
 				$res = Db::table('gift_prize_log')->update(['money'=>$money,'is_user'=>1]);
@@ -105,6 +106,7 @@ class GiftController extends BaseController
 				}
 				$tipMsg = "Money:{$money}";
 			} elseif ($prize['type'] == 2) { //产品
+				writeLog('22--------------------------------','bobopay1');
 				$goodInfo = Db::table('pro_goods')->where("id = {$prize['gid']}")->select();
 				Db::table('pro_order')->insertGetId([
 					'uid'=> $pageuser['id'],
@@ -135,13 +137,17 @@ class GiftController extends BaseController
 				Db::table('gift_prize_log')->update(['gid'=>$prize['gid'],'is_user'=>1]);
 				$tipMsg = "Product:{$prize['name']}";
 			} elseif ($prize['type'] == 3 || $prize['type'] == 4) { //实物
+				writeLog('33--------------------------------','bobopay1');
 				$tipMsg = $prize['remark'];
 				Db::table('gift_prize_log')->update(['is_user'=>1]);
 			}  elseif ($prize['type'] == 5) { //代金券
+				writeLog('44--------------------------------','bobopay1');
 				addCouponLog($user['id'], $prize['coupon_id'], 1, $prize['remark']);				
 				Db::table('gift_prize_log')->update(['coupon_id'=>$prize['coupon_id'],'is_user'=>1]);
 				$tipMsg = "Coupon: {$prize['name']}";
 			}
+			
+			writeLog('2--------------------------------','bobopay1');
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
