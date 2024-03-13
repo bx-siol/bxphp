@@ -1111,12 +1111,11 @@ class ProductController extends BaseController
 				'create_time' => NOW_TIME,
 				'create_day' => date('Ymd', NOW_TIME),
 				'create_ip' => '',
-				'split_time' => NOW_TIME,
+				'split_time' => date('Y-m-d H:i:s', NOW_TIME),
 				'order_money' => $pro_order['money'],
 				'is_user' => 0,
 				'gift_prize_id' => $prize['id'],
 			];
-			writeLog('db_data'.json_encode($db_data), 'bobopay1');
 			Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
 
