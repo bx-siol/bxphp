@@ -11,35 +11,41 @@
                         <div class="info" :style="{ color: '#000' }" @click="onLink({ name: 'Setting_uinfo' })">
                             <div class="vip" v-if="flase"><span class="vip_level">{{ 10 }}</span></div>
                             <p class="username">{{ user.account }}</p>
-                            <!-- <P style="color: #ff9900;">points: {{ wallet3.balance }}</P> -->
+                            <div class="yield">
+                                <p>12%</p>
+                                <p>6%</p>
+                                <p>3%</p>
+                            </div>
                         </div>
                     </div>
                     <div class="Service" @click="onLink({ name: 'Service' })"></div>
                     <div class="set" @click="onLink({ name: 'Setting' })"></div>
                 </div>
-
             </div>
+
             <div class="home_income">
                 <div class="money">
-                    <div class="money_three">
-                        <div @click="onLink({ name: 'Finance_withdraw' })" class="finance" v-if="false">
-                            <div>
-                                <p>₹{{ wallet2.balance }}</p>
-                                {{ t('提现') }}
-                            </div>
+                    <div style="display: flex;justify-content: space-between;">
+                        <div class="finance1">
+                            Current Balance
                         </div>
-                        <div @click="onLink({ name: 'Finance_recharge' })" class="finance">
-                            <div>
-                                <p>₹{{ wallet.balance }}</p>
-                                {{ t('充值') }}
-                            </div>
+                        <div class="finance1" style="border-radius: 0 8px 0 8px;">
+                            points
                         </div>
                     </div>
+                    <div class="finance2">
+                        <p>₹{{ wallet.balance }}</p>
+                        <p>{{ wallet3.balance }} </p>
+                    </div>
+                </div>
+                <div style="display: flex;justify-content: space-between;">
+                    <div class="jump" @click="onLink({ name: 'Finance_withdraw' })">{{ t('提现') }}</div>
+
+                    <div class="jump special" @click="onLink({ name: 'Finance_recharge' })">{{ t('充值') }}</div>
                 </div>
                 <van-grid :border="false" :column-num="2">
                     <van-grid-item>
-                        
-                        <p>{{  wallet2.balance }}</p>
+                        <p>{{ wallet2.balance }}</p>
                         <span>{{ t('余额') }}</span>
                     </van-grid-item>
                     <van-grid-item>
@@ -48,28 +54,28 @@
                         <span>{{ t('产品') }}</span>
                     </van-grid-item>
                     <van-grid-item>
-                        
+
                         <p>{{ cutOutNum(0) }}</p>
                         <span>{{ t('总提款') }}</span>
                     </van-grid-item>
-                    <van-grid-item>
+                    <van-grid-item style="margin-top: 0;">
                         <!-- :to="{ name: 'Finance_reward', params: { type: 1 } }" -->
                         <p>{{ cutOutNum(t_reward) }}</p>
                         <span>{{ t('总利润') }}</span>
                     </van-grid-item>
-                    <van-grid-item class="earnings_today">
+                    <van-grid-item style="margin-top: 0;">
                         <p>{{ cutOutNum(t_tprofit) }}</p>
                         <span>{{ t('今日收益') }}</span>
                     </van-grid-item>
-                    <van-grid-item>
+                    <van-grid-item style="margin-top: 0;">
                         <!-- :to="{ name: 'Finance_reward', params: { type: 2 } }" -->
                         <p>{{ cutOutNum(t_rebate) }}</p>
                         <span>{{ t('团队收入') }}</span>
                     </van-grid-item>
 
-
                 </van-grid>
             </div>
+
             <div class="home_list">
                 <van-cell-group>
                     <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Project' }"></van-cell>
@@ -78,15 +84,13 @@
                     <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
                     <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox"
                         :to="{ name: 'Setting_bank' }"></van-cell>
-                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="ico_1062" v-if="false"></van-cell>
-
+                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="ico_1062"
+                        v-if="false"></van-cell>
                     <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
                     <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }" v-if="false"></van-cell>
                     <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
                     <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
                     <van-cell :title="t('App')" :icon="app" @click="appdload"></van-cell>
-                    
-             
                 </van-cell-group>
             </div>
             <van-button class="myBtns" block type="primary" @click="onLogout" v-if="false">SIGN OUT</van-button>
@@ -162,9 +166,9 @@ const onLink = (to: any) => {
 
 
 const appdload = () => {
-
     window.location.href = '/app'
 }
+
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
@@ -187,33 +191,26 @@ const onAvatarSuccess = (src: string) => {
         cancelButtonText: 'Cancel',
         width: '280px',
         allowHtml: true,
-        beforeClose: (action: string): Promise<boolean> | boolean => {
-            if (action != 'confirm') {
-                return true
-            }
-            return new Promise((resolve) => {
-                const delayTime = Math.floor(Math.random() * 1000);
-                setTimeout(() => {
-                    http({
-                        url: 'c=Setting&a=uinfo_update',
-                        data: { headimgurl: src }
-                    }).then((res: any) => {
-                        if (res.code != 1) {
-                            _alert(res.msg)
-                            return
-                        }
-                        user.value.headimgurl = src
-                        flushUserinfo(store.state.token)
-                        resolve(true);
-                        _alert({
-                            type: 'success',
-                            message: res.msg,
-                            onClose: () => { }
-                        })
-                    })
-                }, delayTime)
-            })
-        }
+    }).then(() => {
+        return new Promise((resolve) => {
+            const delayTime = Math.floor(Math.random() * 1000);
+            setTimeout(() => {
+                http({
+                    url: "c=Setting&a=uinfo_update",
+                    data: { headimgurl: src },
+                }).then((res: any) => {
+                    if (res.code != 1) {
+                        _alert(res.msg);
+                        return;
+                    }
+                    user.value.headimgurl = src;
+                    flushUserinfo(store.state.token);
+                    resolve(true);
+                    _alert(res.message);
+                });
+            }, delayTime)
+        });
+
     }).catch(() => { })
 }
 
@@ -298,11 +295,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/*.home_list .bankIcoBox .van-icon__image{width: 1.5rem;height: 1.5rem;}*/
-.home_money .van-grid-item__content {
-    /* padding: 0.5rem 0.5rem; */
-}
-
 .van-cell__right-icon {
     display: none;
     color: #fff;
@@ -317,7 +309,7 @@ onMounted(() => {
     line-height: 14px;
     text-align: center;
     display: flex;
-    width: 50%;
+    /* width: 50%; */
     margin: 0.2rem 0;
 }
 </style>
@@ -391,91 +383,110 @@ onMounted(() => {
                         font-weight: bold;
                     }
                 }
+
+                .yield {
+                    font-size: 14px;
+                    color: #fff;
+                    margin-bottom: -1.2rem;
+                    display: flex;
+                    justify-content: space-between;
+                    width: 105%;
+
+                    p {
+                        line-height: 20px;
+                        background: #d3b826;
+                        padding: 0 0.2rem;
+                        border-radius: 0.2rem;
+                    }
+                }
             }
-            .Service{
+
+            .Service {
                 background: url(../../assets/img/user/Service.png) no-repeat center center/2rem auto;
                 width: 2rem;
                 height: 2rem;
                 position: absolute;
-              
+
                 top: -0.375rem;
                 right: 12%;
             }
+
             .set {
                 background: url(../../assets/img/user/Setting.png) no-repeat center center/2rem auto;
                 width: 2rem;
                 height: 2rem;
                 position: absolute;
-                
+
                 top: -0.375rem;
                 right: 1%;
             }
         }
 
         .money {
-            background-color: #d3b826;
-            border-radius: 8px 8px 0 0;
+            background-color: #fff;
+            border-radius: 8px;
             margin-top: 1rem;
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 1rem;
 
-            .money_three {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin-top: 1rem;
+            .finance1 {
+                padding: 0.2rem;
+                background: #d3b826;
+                color: #fff;
+                border-radius: 8px 0 8px 0;
+                width: 46%;
+                text-align: center;
             }
 
-
-            .money_three .finance {
-                padding: 18px 15px;
-                width: 40%;
-                line-height: 1.5rem;
-                border-radius: 8px;
+            .finance2 {
                 display: flex;
+                justify-content: space-between;
                 align-items: center;
-                justify-content: space-around;
-            }
-
-            .money_three .finance div {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                color: #eee;
-                font-size: 14px;
-                font-weight: bold;
+                padding: 1rem 0;
 
                 p {
-                    color: #fff;
-                    font-size: 18px;
-                    margin-bottom: 0.2rem;
                     font-weight: bold;
+                    color: #84973b;
+                    width: 50%;
+                    text-align: center;
                 }
             }
         }
 
         .home_income {
-
-            background-color: #fff;
             margin-bottom: 1rem;
             border-radius: 8px;
-            
 
             .van-grid {
                 justify-content: space-between;
+                background: #fff;
+                border-radius: 8px;
+                margin-top: 1rem;
 
                 .van-grid-item {
-
                     border-radius: 8px;
                     flex-basis: 30% !important;
-                    margin-bottom: 0.6rem;
+                    margin: 0.5rem 0;
                 }
-            }
-
-            :deep(.van-grid-item) {
-
             }
 
             :deep .van-grid-item__content p {
                 color: #84973b !important;
+            }
+
+            .jump {
+                padding: 0.4rem;
+                background: #d3b826;
+                color: #fff;
+                text-align: center;
+                border-radius: 4px;
+                font-size: 14px;
+                width: 44%;
+            }
+
+            .special {
+                margin-left: 0.2rem;
             }
         }
 
@@ -487,10 +498,6 @@ onMounted(() => {
             border-radius: 3rem;
             margin-bottom: 1.2rem;
             width: 100%;
-        }
-
-        .last-child {
-            border: none;
         }
     }
 }

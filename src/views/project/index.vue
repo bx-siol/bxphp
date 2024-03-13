@@ -89,17 +89,15 @@ onMounted(() => {
       :deep(.van-tabs__wrap) {
         .van-tabs__nav--line {
           position: fixed;
+          left: 50%;
+          transform: translateX(-50%);
           width: 100%;
           height: auto;
-          left: -0.3125rem;
-          padding-left: 0.625rem;
           box-sizing: border-box;
-          padding-right: 0.625rem;
-          padding-top: 0.625rem;
-          padding-bottom: 0.625rem;
           z-index: 10;
           background: #84973b;
-          padding-top: 1rem;
+          padding: 1rem 0.625rem 0.625rem;
+          max-width: 640px;
         }
       }
 

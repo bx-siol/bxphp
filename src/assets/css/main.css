@@ -948,7 +948,7 @@ img {
 
 .home_income .van-grid p {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .home_income .van-grid span {
@@ -972,7 +972,7 @@ img {
     background: #fff;
     display: flex;
     flex-wrap: wrap;
-    flex-direction: row;
+    flex-direction: column;
     padding: 1rem;
     
 }
@@ -986,7 +986,7 @@ img {
     align-items: center;
     padding: 0;
     width: 100%;
-    height: 3rem;
+    height: 2.6rem;
     font-size: 12px;
     border-radius: 8px;
 }

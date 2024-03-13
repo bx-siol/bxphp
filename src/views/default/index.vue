@@ -70,6 +70,7 @@
               </div>
 
             </div>
+
             <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;">
               <a class="divs" href="javascript:;">
                 <van-image :src="m5" style="width: 6.8rem;height: 3.4rem;"></van-image>
@@ -84,13 +85,14 @@
                   <van-image :src="m8"></van-image>
                 </a> -->
             </div>
+            <div class="mynotice">
+              <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" height="1.375rem"></MyNoticeBar>
+            </div>
             <div class="videobox">
               <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc"
                 style="width: 100%;"></video>
             </div>
-            <div class="mynotice">
-            <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" height="1.375rem"></MyNoticeBar>
-          </div>
+
             <div>
               <div class="column_title2">
                 <img :src="horn">
@@ -321,12 +323,23 @@ const t120 = () => {
   }
   const delayTime = Math.floor(Math.random() * 1000);
   setTimeout(() => {
-  http({
-    url: 'a=get120rs'
-  }).then((res: any) => {
-    if (res.code != 1) {
+    http({
+      url: 'a=get120rs'
+    }).then((res: any) => {
+      if (res.code != 1) {
+        _alert({
+          message: 'You have received the new reward',
+          onClose: () => {
+            tipShow2.value = false;
+            setTimeout(() => {
+              tipShow1.value = false;
+            }, 300);
+          }
+        });
+        return
+      }
       _alert({
-        message: 'You have received the new reward',
+        message: 'Received successfully',
         onClose: () => {
           tipShow2.value = false;
           setTimeout(() => {
@@ -334,19 +347,8 @@ const t120 = () => {
           }, 300);
         }
       });
-      return
-    }
-    _alert({
-      message: 'Received successfully',
-      onClose: () => {
-        tipShow2.value = false;
-        setTimeout(() => {
-          tipShow1.value = false;
-        }, 300);
-      }
-    });
-  })
-}, delayTime)
+    })
+  }, delayTime)
 
 
 
@@ -658,6 +660,7 @@ onMounted(() => {
 
 .index_wrap {
   background-color: #84973b;
+
   .money {
     background-color: #fff;
     padding: 0.875rem 0.875rem 0.875rem 0.275rem;

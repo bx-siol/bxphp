@@ -1,14 +1,14 @@
 <template>
-    <div class="choujiang" style="padding: 0 1rem;">
+    <div :class="['choujiang', { shake: isShaking }]"  style="padding: 0 1rem;">
         <MyNav>
             <template #left>
                 <div></div>
             </template>
         </MyNav>
-        <LuckyGrid ref="myLucky" width="18.5rem" height="19.5rem" :prizes="prizes" :buttons="buttons" :blocks="blocks"
-            :default-config="defaultConfig" class="myLucky" />
-
+        <LuckyGrid ref="myLucky" width="px" height="0px" :prizes="prizes" :buttons="buttons" :blocks="blocks"
+            :default-config="defaultConfig" class="myLucky" style="width: 0;height: 0;" />
         <div class="number">
+
             <div class="lotteryclick" @click="startCallback">
                 <p>lottery click</p>
                 <span>
@@ -16,7 +16,7 @@
                     {{ num }} times left
                 </span>
             </div>
-            <div class="lotterypoints">
+            <div class="lotterypoints" >
                 <p>ponints lottery </p>
                 <span>
                     <img :src="number">
@@ -60,8 +60,8 @@
         </div>
         <van-popup v-model:show="showLotteryPop">
             <div class="LotteryPop" @click="receiveGift">
-                <img :src="imgLotteryPop"
-                    style="width: 55%; position: absolute; top: 10%; left: 50%; transform: translateX(-50%);" />
+                <img :src="imgLotteryPop" />
+                <div class="content">{{ tipstr }}</div>
             </div>
         </van-popup>
     </div>
@@ -109,6 +109,7 @@ import lottery1 from '../../assets/img/lottery/lottery1.png'
 import xx from '../../assets/img/lottery/xx.png'
 import test from '../../assets/img/lottery/test.gif'
 import number from '../../assets/img/lottery/number.png'
+import Lotteryback from '../../assets/img/lottery/Lotteryback.png'
 
 const store = useStore()
 const route = useRoute()
@@ -123,17 +124,18 @@ const tdata = ref({
     notice: {},
     prize_arr: [],
 })
-const imgLotteryPop = ref(number)
+const imgLotteryPop = ref(Lotteryback)
 const receiveGift = () => {
     showLotteryPop.value = false
     myLucky.value.init()
 }
 const myLucky = ref()
-const imgArr = ref();
+const imgArr = ref('');
 const num = ref(0)
 const redpackArr = ref([])
 const actItem = ref({})
 const showAgain = ref(false)
+
 const buttons = ref<Array<any>>()
 const prizes = ref<Array<any>>([])
 const defaultConfig = ref({
@@ -156,6 +158,15 @@ const blocks = ref<Array<any>>([
 ])
 
 const tipstr = ref('Thank you')
+const isShaking = ref(false);
+
+const wobble = () => {
+    isShaking.value = true;
+    setTimeout(() => {
+        isShaking.value = false;
+    }, 5000);
+}
+
 const startCallback = () => {
     myLucky.value.play()
     const delayTime = Math.floor(Math.random() * 1000);
@@ -168,35 +179,45 @@ const startCallback = () => {
                 myLucky.value.init()
                 return
             }
+
+            myLucky.value.stop()
             num.value = res.data.lottery
+            tipstr.value = res.data.giftprizelog.prize_name
+
+            console.log(tipstr.value, '抽奖的结果');
+
             setTimeout(() => {
-                for (let index = 0; index < tdata.value.prize_arr.length; index++) {
-                    const pzitem = tdata.value.prize_arr[index];
-                    if (pzitem.id == res.data.id) {
-                        myLucky.value.stop(index)
-                        console.log(index);
+                showLotteryPop.value = true
+            }, 1000)
 
-                    }
-                }
-                setTimeout(() => {
-                    buttons.value = [
-                        {
-                            x: 1, y: 1,
-                            background: "transparent",
-                            fonts: [{ text: "Remaining \n" + num.value + " times", top: "20%", fontColor: '#fcfcfccf', fontSize: '14px', lineHeight: '26px', wordWrap: false, }],
-                        },
-                    ]
-                    for (let index = 0; index < tdata.value.prize_arr.length; index++) {
-                        const pzitem = tdata.value.prize_arr[index];
-                        if (pzitem.id == res.data.id) {
-                            tipstr.value = pzitem.name
-                            imgLotteryPop.value = imgFlag(pzitem.cover)
-                        }
-                    }
-                    showLotteryPop.value = true
+            // setTimeout(() => {
+            //     for (let index = 0; index < tdata.value.prize_arr.length; index++) {
+            //         const pzitem = tdata.value.prize_arr[index];
+            //         if (pzitem.id == res.data.id) {
+            //             myLucky.value.stop(index)
+            //             console.log(index);
+            //         }
+            //     }
 
-                }, 2000)
-            }, 1200)
+            //     setTimeout(() => {
+            //         buttons.value = [
+            //             {
+            //                 x: 1, y: 1,
+            //                 background: "transparent",
+            //                 fonts: [{ text: "Remaining \n" + num.value + " times", top: "20%", fontColor: '#fcfcfccf', fontSize: '14px', lineHeight: '26px', wordWrap: false, }],
+            //             },
+            //         ]
+            //         for (let index = 0; index < tdata.value.prize_arr.length; index++) {
+            //             const pzitem = tdata.value.prize_arr[index];
+            //             if (pzitem.id == res.data.id) {
+            //                 // tipstr.value = pzitem.name
+            //                 imgLotteryPop.value = imgFlag(pzitem.cover)
+            //             }
+            //         }
+            //         showLotteryPop.value = true
+
+            //     }, 2000)
+            // }, 1200)
         })
     }, delayTime)
 }
@@ -348,6 +369,7 @@ onMounted(() => {
 <style scoped>
 .choujiang :deep(.van-popup) {
     background: none;
+    top: 38%;
 }
 </style>
 <style lang="scss" scoped>
@@ -441,6 +463,45 @@ onMounted(() => {
             }
         }
     }
+
+}
+
+.LotteryPop {
+    width: 18rem;
+    height: 18rem;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .content {
+        height: 3rem;
+        width: 15rem;
+        position: absolute;
+        top: 6rem;
+        left: 50%;
+        transform: translateX(-54%);
+        text-align: center;
+        color: red;
+        font-weight: bold;
+        font-size: 1.2rem;
+        word-break: break-all;
+        padding-top: 0.5rem;
+    }
+}
+
+.shake {
+    animation: shake-animation 0.1s infinite alternate;
+}
+
+@keyframes shake-animation {
+    0% { transform: rotate(1deg); }
+    25% { transform: rotate(-1deg); }
+    50% { transform: rotate(1deg); }
+    100% { transform: rotate(-1deg); }
 
 }
 </style>

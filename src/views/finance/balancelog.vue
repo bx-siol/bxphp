@@ -114,14 +114,14 @@
                                         <!-- <td v-if="item.status == 9">
                                             <img :src="rech" style="width:40px;">
                                         </td> -->
-                                        <td v-if="item.status == 9" class="setof_top">
+                                        <td  class="setof_top">
                                             <div style="background-color: #ce1b22;">
                                                 <span>{{ t('充值') }}</span>
                                                 <span>{{ '+' + item.money }} RS</span>
                                             </div>
                                         </td>
 
-                                        <td v-if="item.status == 9" class="setof_bottom">
+                                        <td  class="setof_bottom">
                                             <div>
                                                 <span>Order number: {{ t(item.osn) }}</span>
                                                 <span>{{ item.create_time }}</span>
