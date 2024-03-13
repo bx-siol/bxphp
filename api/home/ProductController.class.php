@@ -1135,19 +1135,16 @@ class ProductController extends BaseController
 			else if(count($sjprizeArr) == 1)			
 				$prizeInfo = $sjprizeArr[0];
 			
-			if ($prizeInfo)
+			if (empty($prizeInfo))
 			{
 				usort($prize_arr, function(array $a, array $b){
 					return $a['probability']<$b['probability'];
 				});
     			$prizeInfo = $prize_arr[0];
-				writeLog('1111111'.json_encode($prize_arr),"bobopay1");
 			}
 			if (empty($prizeInfo))
     			$prizeInfo = $prizeEmpty;
-
-			writeLog('sjprizeArr'.json_encode($sjprizeArr),"bobopay1");
-			writeLog('prizeInfo'.json_encode($prizeInfo),"bobopay1");
+			
 			for	($i = 1; $i <= $item['sjcjcs'];	$i++) 
 			{
 				Db::table('gift_prize_log')->insertGetId([
