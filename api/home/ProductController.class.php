@@ -1041,76 +1041,6 @@ class ProductController extends BaseController
 		Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 	}
 
-	public function where(string $field, $operator, $value = null)
-    {
-        if (is_null($value)) {
-            $value    = $operator;
-            $operator = '=';
-        }
-
-        return $this->filter(function ($data) use ($field, $operator, $value) {
-            if (strpos($field, '.')) {
-                [$field, $relation] = explode('.', $field);
-
-                $result = $data[$field][$relation] ?? null;
-            } else {
-                $result = $data[$field] ?? null;
-            }
-
-            switch (strtolower($operator)) {
-                case '===':
-                    return $result === $value;
-                case '!==':
-                    return $result !== $value;
-                case '!=':
-                case '<>':
-                    return $result != $value;
-                case '>':
-                    return $result > $value;
-                case '>=':
-                    return $result >= $value;
-                case '<':
-                    return $result < $value;
-                case '<=':
-                    return $result <= $value;
-                case 'like':
-                    return is_string($result) && false !== strpos($result, $value);
-                case 'not like':
-                    return is_string($result) && false === strpos($result, $value);
-                case 'in':
-                    return is_scalar($result) && in_array($result, $value, true);
-                case 'not in':
-                    return is_scalar($result) && !in_array($result, $value, true);
-                case 'between':
-                    [$min, $max] = is_string($value) ? explode(',', $value) : $value;
-                    return is_scalar($result) && $result >= $min && $result <= $max;
-                case 'not between':
-                    [$min, $max] = is_string($value) ? explode(',', $value) : $value;
-                    return is_scalar($result) && $result > $max || $result < $min;
-                case '==':
-                case '=':
-                default:
-                    return $result == $value;
-            }
-        });
-    }
-
-	    /**
-     * 用回调函数过滤数组中的元素
-     * @access public
-     * @param callable|null $callback 回调
-     * @return static
-     */
-    public function filter(callable $callback = null)
-    {
-        if ($callback) {
-            return new static(array_filter($this->items, $callback));
-        }
-
-        return new static(array_filter($this->items));
-    }
-
-
 	//购买后赠送的相关业务
 	public function Productgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
@@ -1121,8 +1051,15 @@ class ProductController extends BaseController
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
-		$prize_arr = $this-> where('probability', '>', '0');
-		$prizeEmpty = $this-> where('type', '==', '4');
+		foreach ($prizesList as $k) {
+			if($k['probability'] > 0)
+				array_push($prize_arr,$k);
+		}
+
+		foreach ($prizesList as $k) {
+			if($k['type'] == 4)
+				array_push($prizeEmpty,$k);
+		}
 		
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
