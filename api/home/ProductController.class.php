@@ -1063,13 +1063,12 @@ class ProductController extends BaseController
 				array_push($prizeEmpty,$k);
 		}
 
-		writeLog(json_encode($prize_arr), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
-			$prizeArr = array();
-			foreach ($prize_arr as $k) {
+			$prizeArr = array(array());
+			foreach ($prize_arr as $k => $uk) {
 				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
-					array_push($prizeArr,$k);
+					array_push($prizeArr[$uk],$k);
 			}
 
 			if(count($prizeArr) > 1)
@@ -1077,6 +1076,8 @@ class ProductController extends BaseController
 				$randomNumber = mt_rand(0, count($prizeArr));
 				$prize = $prizeArr[$randomNumber];
 			}
+			
+			writeLog(json_encode($prizeArr), 'bobopay1');
 			if(count($prizeArr) == 1)
 			{
 				$prize = $prizeArr;
