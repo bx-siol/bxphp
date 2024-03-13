@@ -355,7 +355,7 @@ onMounted(() => {
 
             :deep(.van-tab) {
                 .van-tab__text {
-                    color: #fff;
+                    color: #ddd;
                     font-weight: bold;
 
                 }
@@ -364,7 +364,9 @@ onMounted(() => {
             :deep(.van-tab--active) {
                 .van-tab__text {
                     color: #fff;
-                    // border-bottom: 3px solid #5d4a35;
+                    padding: 0.2rem 0.8rem;
+                    border: 1px solid #fff;
+                    border-radius: 6px;
                 }
             }
 

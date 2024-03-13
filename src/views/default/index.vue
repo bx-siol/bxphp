@@ -97,7 +97,7 @@
                 <div style="width: 32%;">
                   <van-image :src="income"></van-image>
                 </div>
-                <div @click="onLink({ name: 'User_team' })" style="width: 32%;">
+                <div @click="onLink({ name: 'Share' })" style="width: 32%;">
                   <van-image :src="invite"></van-image>
                 </div>
               </div>

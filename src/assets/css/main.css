@@ -1510,8 +1510,8 @@ img {
 
 .invite_wrap .idbox {
     text-align: center;
-    font-size: 0.95rem;
-    padding: 2rem 0 1rem;
+    font-size: 14px;
+    padding: 2rem 0 2rem;
 }
 
 .invite_wrap .idbox span {
@@ -1538,18 +1538,18 @@ img {
 .invite_wrap .copyLinkBtn {
     display: block;
     border: 0;
-    background: #bd312d;
+    background: #64523e;
     color: #fff;
     height: 2.4rem;
-    border-radius: 0.2rem;
+    border-radius: 2rem;
     padding: 0;
-    width: 80%;
+    width: 50%;
     margin: 1rem auto 0;
 }
 
 .invite_wrap .qrcode {
     width: 52%;
-    margin: 2rem auto 0;
+    margin: 4rem auto 0;
     background: #fff;
     padding: 0.3rem;
 }
