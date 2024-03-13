@@ -1054,13 +1054,13 @@ class ProductController extends BaseController
 		$prize_arr = [];
 		foreach ($prizesList as $k=>$v) {
 			if($k['probability'] > 0)
-				array_push($prize_arr,$k);
+				$prize_arr.array_push($k);
 		}
 
 		$prizeEmpty = [];
 		foreach ($prizesList as $k) {
 			if($k['type'] == 4)
-				array_push($prizeEmpty,$k);
+				$prizeEmpty.array_push($k);
 		}
 		
 		writeLog(json_encode($prize_arr), 'bobopay1');
