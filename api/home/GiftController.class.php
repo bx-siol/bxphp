@@ -152,8 +152,9 @@ class GiftController extends BaseController
 			writeLog('2--------------------------------','bobopay1');
 			Db::commit();
 		} catch (\Exception $e) {
-			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试'.json_encode($e->getMessage()));
+			Db::rollback();			
+			writeLog('cuowu'.json_encode($e),'bobopay1');
+			jReturn(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
 			'giftprizelog' => $gift_prize_log,
