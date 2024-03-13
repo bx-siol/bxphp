@@ -1043,8 +1043,7 @@ class ProductController extends BaseController
 
 	//购买后赠送的相关业务
 	public function Productgift($item, $quantity, $pageuser, $check_num, $pro_order)
-	{
-		writeLog("11111111111111111");
+	{		
 		//送抽奖
 		$lotterynum = $quantity * intval($item['cjcs']);
 		Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $lotterynum)->update();
@@ -1093,7 +1092,8 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 
-			writeLog(json_encode($prize, JSON_UNESCAPED_UNICODE));
+			
+			writeLog(json_encode($prize, JSON_UNESCAPED_SLASHES), 'bobopay1');
 			Db::table('pro_order')->insertGetId([
 				'split_time' => NOW_TIME,
 				'uid' => $pageuser['id'],
