@@ -1057,7 +1057,7 @@ class ProductController extends BaseController
 			return $var['type']  = 4;
 		});
 		
-		writeLog('1111111', 'bobopay1');
+		writeLog($lotterynum, 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			writeLog('22222', 'bobopay1');
