@@ -71,6 +71,8 @@ class GiftController extends BaseController
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 			
 			writeLog('1--------------------------------','bobopay1');
+			writeLog('prize'.json_encode($prize),'bobopay1');
+			writeLog('gift_prize_log'.json_encode($gift_prize_log),'bobopay1');
 
 			if ($prize['type'] == 1) { //金额
 				writeLog('11--------------------------------','bobopay1');
