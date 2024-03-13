@@ -791,7 +791,7 @@ class ProductController extends BaseController
 			} else {
 				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
 				$this->invest_date($params, $pageuser, $item, $quantity, $check_num, $pro_order);
-				//$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
+				$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
 			}
 			Db::commit();
 			$return_data['osn'] = $pro_order['osn'];
@@ -1100,24 +1100,24 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 			
-			$db_data = [
-				'uid' => $pageuser['id'],
-				'type' => $prize['type'],
-				'money' => 0,
-				'gid' => $prize['gid'],
-				'coupon_id' => $prize['coupon_id'],
-				'prize_name' => $prize['name'],
-				'prize_cover' => $prize['cover'],
-				'remark' => $prize['remark'],
-				'create_time' => NOW_TIME,
-				'create_day' => date('Ymd', NOW_TIME),
-				'create_ip' => '',
-				'split_time' => NOW_TIME,
-				'order_money' => $pro_order['money'],
-				'is_user' => 0,
-				'gift_prize_id' => $prize['id'],
-			];
-			Db::table('gift_prize_log')->insertGetId($db_data);	
+			// $db_data = [
+			// 	'uid' => $pageuser['id'],
+			// 	'type' => $prize['type'],
+			// 	'money' => 0,
+			// 	'gid' => $prize['gid'],
+			// 	'coupon_id' => $prize['coupon_id'],
+			// 	'prize_name' => $prize['name'],
+			// 	'prize_cover' => $prize['cover'],
+			// 	'remark' => $prize['remark'],
+			// 	'create_time' => NOW_TIME,
+			// 	'create_day' => date('Ymd', NOW_TIME),
+			// 	'create_ip' => '',
+			// 	'split_time' => NOW_TIME,
+			// 	'order_money' => $pro_order['money'],
+			// 	'is_user' => 0,
+			// 	'gift_prize_id' => $prize['id'],
+			// ];
+			// Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
 
 		//检测当前用户是否是首次购买 
