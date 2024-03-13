@@ -1056,6 +1056,8 @@ class ProductController extends BaseController
 		$prizeEmpty = array_filter($prizesList, function($var) {
 			return $var['type']  = 4;
 		});
+		
+		writeLog('1111111', 'bobopay1/notify/pay');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array_filter($prize_arr, function($var) {
