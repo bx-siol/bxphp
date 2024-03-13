@@ -1075,10 +1075,9 @@ class ProductController extends BaseController
 				shuffle($prizeArr);
 				$prize = $prizeArr[0];
 			}
-			if(count($prizeArr) == 1)
-			{
+			else if(count($prizeArr) == 1)			
 				$prize = $prizeArr[0];
-			}
+			
 			if(empty($prize))
 			{
 				//查询除概率大于0的奖品
@@ -1099,7 +1098,7 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 			
-			$db_data = [
+			Db::table('gift_prize_log')->insertGetId([
 				'uid' => $pageuser['id'],
 				'type' => $prize['type'],
 				'money' => 0,
@@ -1115,14 +1114,59 @@ class ProductController extends BaseController
 				'order_money' => $pro_order['money'],
 				'is_user' => 0,
 				'gift_prize_id' => $prize['id'],
-			];
-			Db::table('gift_prize_log')->insertGetId($db_data);	
+			]);	
 		}
 
 		//检测当前用户是否是首次购买 
 		if ($check_num <= 0) {
 			$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->find();//送上级抽奖次数
 			Db::table('sys_user')->where("id=" . $puser['id'])->update(['lottery' => $puser['lottery'] + intval($item['sjcjcs'])]);
+
+			//赠送上级最低奖项
+			$prizeArr = array();
+			foreach ($prize_arr as $k) {
+				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
+					array_push($prizeArr,$k);
+			}
+			if(count($prizeArr) > 1)
+			{
+				shuffle($prizeArr);
+				$prizeInfo = $prizeArr[0];
+			}
+			else if(count($prizeArr) == 1)			
+				$prizeInfo = $prizeArr[0];
+			
+			if ($prizeInfo)
+			{
+				usort($prize_arr, function(array $a, array $b){
+					return $a['probability']-$b['probability'];
+				});
+    			$prizeInfo = $prizeInfo[0];
+			}
+			if ($prizeInfo)
+    			$prizeInfo = $prizeEmpty;
+
+			for	($i = 1; $i <= $item['sjcjcs'];	$i++) 
+			{
+				Db::table('gift_prize_log')->insertGetId([
+					'uid' => $pageuser['pid'],
+					'type' => $prizeInfo['type'],
+					'money' => 0,
+					'gid' => $prizeInfo['gid'],
+					'coupon_id' => $prizeInfo['coupon_id'],
+					'prize_name' => $prizeInfo['name'],
+					'prize_cover' => $prizeInfo['cover'],
+					'remark' => $prizeInfo['remark'],
+					'create_time' => NOW_TIME,
+					'create_day' => date('Ymd', NOW_TIME),
+					'create_ip' => '',
+					'split_time' => date('Y-m-d H:i:s', NOW_TIME),
+					'order_money' => $pro_order['money'],
+					'is_user' => 0,
+					'gift_prize_id' => $prizeInfo['id'],
+				]);	
+			}
+
 			if ($item['Integral'] > 0 && $puser != null)   //首次购买送上级积分 
 				updateWalletBalanceAndLog($puser['id'], $item['Integral'], 3, 1019, 'Team Buy:' . $pro_order['osn']);
 			//送推荐人产品
