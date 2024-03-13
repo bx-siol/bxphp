@@ -1116,9 +1116,10 @@ class ProductController extends BaseController
 				'split_time' => NOW_TIME,
 				'order_money' => $pro_order['money'],
 				'is_user' => 0,
-				'gift_prize_id' => $prize['Id'],
+				'gift_prize_id' => $prize['id'],
 			];
 			
+			writeLog('uid'.$pageuser['id'], 'bobopay1');
 			writeLog('db_data'.json_encode($db_data), 'bobopay1');
 			Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
