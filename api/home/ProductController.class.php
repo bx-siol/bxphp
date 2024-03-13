@@ -1123,18 +1123,18 @@ class ProductController extends BaseController
 			Db::table('sys_user')->where("id=" . $puser['id'])->update(['lottery' => $puser['lottery'] + intval($item['sjcjcs'])]);
 
 			//赠送上级最低奖项
-			$prizeArr = array();
+			$sjprizeArr = array();
 			foreach ($prize_arr as $k) {
 				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
-					array_push($prizeArr,$k);
+					array_push($sjprizeArr,$k);
 			}
-			if(count($prizeArr) > 1)
+			if(count($sjprizeArr) > 1)
 			{
-				shuffle($prizeArr);
-				$prizeInfo = $prizeArr[0];
+				shuffle($sjprizeArr);
+				$prizeInfo = $sjprizeArr[0];
 			}
-			else if(count($prizeArr) == 1)			
-				$prizeInfo = $prizeArr[0];
+			else if(count($sjprizeArr) == 1)			
+				$prizeInfo = $sjprizeArr[0];
 			
 			if ($prizeInfo)
 			{
@@ -1146,6 +1146,8 @@ class ProductController extends BaseController
 			if ($prizeInfo)
     			$prizeInfo = $prizeEmpty;
 
+			writeLog(json_encode($prizeEmpty),"bobopay1");
+			writeLog(json_encode($prizeInfo),"bobopay1");
 			for	($i = 1; $i <= $item['sjcjcs'];	$i++) 
 			{
 				Db::table('gift_prize_log')->insertGetId([
