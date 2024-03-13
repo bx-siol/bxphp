@@ -1051,10 +1051,10 @@ class ProductController extends BaseController
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
-		$prize_arr = array(array());
+		$prize_arr = array();
 		foreach ($prizesList as $k => $uk) {
 			if($k['probability'] > 0)
-				array_push($prize_arr[$uk],$k);
+				array_push($prize_arr,$k);
 		}
 
 		$prizeEmpty = array();
