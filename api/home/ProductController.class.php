@@ -1063,6 +1063,7 @@ class ProductController extends BaseController
 				$prizeEmpty.array_push($k);
 		}
 		
+		writeLog('prizesList' .json_encode($prizesList), 'bobopay1');
 		writeLog(json_encode($prize_arr), 'bobopay1');
 		writeLog('kong' .json_encode($prizeEmpty), 'bobopay1');
 
@@ -1077,10 +1078,7 @@ class ProductController extends BaseController
 				$randomNumber = mt_rand(0, count($prizeArr));
 				$prize = $prizeArr[$randomNumber];
 			}
-			
-			writeLog(json_encode($prizesList), 'bobopay1');
-			writeLog(json_encode($prizeArr), 'bobopay1');
-			writeLog('kong' .json_encode($prizeEmpty), 'bobopay1');
+
 			if(count($prizeArr) == 1)
 			{
 				$prize = $prizeArr->first();
