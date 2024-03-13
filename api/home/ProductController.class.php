@@ -1057,8 +1057,8 @@ class ProductController extends BaseController
 			return $var['type']  = 4;
 		});
 		
-		writeLog('$quantity' .$quantity 'bobopay1');
-		writeLog('$item['cjcs']' .intval($item['cjcs']) , 'bobopay1');
+		writeLog('$quantity' .$quantity, 'bobopay1');
+		writeLog('$item['cjcs']', .intval($item['cjcs']) , 'bobopay1');
 		writeLog(json_encode($item), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
