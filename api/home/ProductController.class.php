@@ -1100,7 +1100,6 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 			
-			writeLog('prize'.json_encode($prize), 'bobopay1');
 			$db_data = [
 				'uid' => $pageuser['id'],
 				'type' => $prize['type'],
@@ -1118,10 +1117,7 @@ class ProductController extends BaseController
 				'is_user' => 0,
 				'gift_prize_id' => $prize['id'],
 			];
-			
-			writeLog('uid'.$pageuser['id'], 'bobopay1');
-			writeLog('db_data'.json_encode($db_data), 'bobopay1');
-			Db::table('gift_prize_log')->insertGetId($db_data);	
+			//Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
 
 		//检测当前用户是否是首次购买 
