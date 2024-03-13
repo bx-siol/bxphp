@@ -791,7 +791,7 @@ class ProductController extends BaseController
 			} else {
 				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
 				$this->invest_date($params, $pageuser, $item, $quantity, $check_num, $pro_order);
-				$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
+				//$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
 			}
 			Db::commit();
 			$return_data['osn'] = $pro_order['osn'];
@@ -1117,7 +1117,7 @@ class ProductController extends BaseController
 				'is_user' => 0,
 				'gift_prize_id' => $prize['id'],
 			];
-			//Db::table('gift_prize_log')->insertGetId($db_data);	
+			Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
 
 		//检测当前用户是否是首次购买 
