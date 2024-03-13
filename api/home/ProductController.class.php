@@ -1051,16 +1051,16 @@ class ProductController extends BaseController
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 		$prize_arr = array_filter($prizesList, function($var) {
 			return $var['probability'] >0;
-		},ARRAY_FILTER_USE_BOTH);
+		});
 		$prizeEmpty = array_filter($prizesList, function($var) {
 			return $var['type']  == 4;
-		},ARRAY_FILTER_USE_BOTH)->first();
+		});
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array_filter($prize_arr, function($var) {
 				return intval($var['buyAmountStart']) >=0 && intval($var['buyAmountEnd']) >0 && intval($var['buyAmountStart']) <= intval($pro_order['w2_money'])
 						&& intval($pro_order['money']) <= intval($var['buyAmountEnd']) ;
-			},ARRAY_FILTER_USE_BOTH);
+			});
 			if(count($prizeArr) > 1)
 			{
 				$randomNumber = mt_rand(0, count($prizeArr));
