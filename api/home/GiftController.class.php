@@ -70,6 +70,7 @@ class GiftController extends BaseController
 			}
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 			
+			writeLog('--------------------------------','bobopay1');
 
 			if ($prize['type'] == 1) { //金额
 				$money = $this->getRandMoney($prize['from_money'], $prize['to_money']);
