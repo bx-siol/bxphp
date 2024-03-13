@@ -448,6 +448,12 @@ class GiftController extends BaseController
 			$where .= " and (u.account='{$params['s_keyword']}' or u.nickname like '%{$params['s_keyword']}%')";
 		}
 
+		$count_item = Db::table('gift_prize_log log')
+			->leftJoin('sys_user u', 'log.uid=u.id')
+			->fieldRaw('count(1) as cnt,sum(log.money) as money')
+			->where($where)
+			->find();
+
 		$list = Db::view(['gift_prize_log' => 'log'], ['*'])
 			->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
 			->where($where)
@@ -472,6 +478,7 @@ class GiftController extends BaseController
 		}
 		$return_data = [
 			'list' => $list,
+			'count' =>intval($count_item['cnt']),
 			'limit' => $this->pageSize
 		];
 		if ($params['page'] < 2) {
