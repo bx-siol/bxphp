@@ -1054,7 +1054,7 @@ class ProductController extends BaseController
 		$prize_arr = [];
 		foreach ($prizesList as $k => $uk) {
 			if($k['probability'] > 0)
-				array_push($prize_arr[$uk],$k);
+				array_push($prize_arr,$k);
 		}
 
 		$prizeEmpty = array();
