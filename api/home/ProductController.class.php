@@ -1057,10 +1057,11 @@ class ProductController extends BaseController
 			return $var['type']  = 4;
 		});
 		
-		writeLog($lotterynum, 'bobopay1');
+		writeLog('$quantity' .$quantity 'bobopay1');
+		writeLog('$item['cjcs']' .intval($item['cjcs']) , 'bobopay1');
+		writeLog(json_encode($item), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
-			writeLog('22222', 'bobopay1');
 			$prizeArr = array_filter($prize_arr, function($var) {
 				return intval($var['buyAmountStart']) >=0 && intval($var['buyAmountEnd']) >0 && intval($var['buyAmountStart']) <= intval($pro_order['w2_money'])
 						&& intval($pro_order['money']) <= intval($var['buyAmountEnd']) ;
