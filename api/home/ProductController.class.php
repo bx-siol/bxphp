@@ -1051,16 +1051,21 @@ class ProductController extends BaseController
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
-		foreach ($prizesList as $k) {
+		$prize_arr = [];
+		foreach ($prizesList as $k=>$v) {
 			if($k['probability'] > 0)
 				array_push($prize_arr,$k);
 		}
 
+		$prizeEmpty = [];
 		foreach ($prizesList as $k) {
 			if($k['type'] == 4)
 				array_push($prizeEmpty,$k);
 		}
 		
+		writeLog(json_encode($prize_arr), 'bobopay1');
+		writeLog('kong' .json_encode($prizeEmpty), 'bobopay1');
+
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array_filter($prize_arr, function($var) {
