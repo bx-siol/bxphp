@@ -80,6 +80,7 @@ class GiftController extends BaseController
 				$money = number_format($money, 2, '.', '');
 				$res = Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['money'=>$money,'is_user'=>1]);
 
+				writeLog('112--------------------------------','bobopay1');
 				$wallet = getWallet($user['id'], 2, 1);
 				if (!$wallet) {
 					throw new \Exception('钱包获取异常');
@@ -88,6 +89,7 @@ class GiftController extends BaseController
 				$wallet_data = [
 					'balance' => $wallet['balance'] + $money
 				];
+				writeLog('113--------------------------------','bobopay1');
 				//更新钱包余额
 				Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 				//写入流水记录
@@ -103,6 +105,7 @@ class GiftController extends BaseController
 					'fkey' => $res,
 					'remark' => 'Lottery'
 				]);
+				writeLog('114--------------------------------','bobopay1');
 				if (!$result) {
 					throw new \Exception('流水记录写入失败');
 				}
