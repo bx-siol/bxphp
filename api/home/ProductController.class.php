@@ -1047,6 +1047,67 @@ class ProductController extends BaseController
 		//送抽奖
 		$lotterynum = $quantity * intval($item['cjcs']);
 		Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $lotterynum)->update();
+		//增加中奖记录
+		$prizesList = Db::table('gift_prize')->order('probability')->select();
+		$prize_arr = array_filter($prizesList, function($var) {
+			return $var['probability'] >0;
+		});
+		$prizeEmpty = array_filter($prizesList, function($var) {
+			return $var['type']  == 4;
+		})->first();
+		for ($i = 0; $i < $lotterynum; $i++) 
+		{
+			$prizeArr = array_filter($prize_arr, function($var) {
+				return intval($var['buyAmountStart']) >=0 && intval($var['buyAmountEnd']) >0 && intval($var['buyAmountStart']) <= intval($pro_order['w2_money'])
+						&& intval($pro_order['money']) <= intval($var['buyAmountEnd']) ;
+			});
+			if(count($prizeArr) > 1)
+			{
+				$randomNumber = mt_rand(0, count($prizeArr));
+				$prize = $prizeArr[$randomNumber];
+			}
+			if(count($prizeArr) == 1)
+			{
+				$prize = $prizeArr->first();
+			}
+			if(empty($prize))
+			{
+				//查询除概率大于0的奖品
+				foreach($prize_arr as $item)
+					$total .= (intval($item['probability']) * 100);
+				
+				$count = 0;
+				$rand = mt_rand(1, $total);
+				foreach($prize_arr as $item)
+				{
+					$count .= (intval($item['probability']) * 100);
+					if($rand <= $count)
+					{
+						$prize = $item;
+						break;
+					}
+				}
+			}
+			if(empty($prize))
+				$prize = $prizeEmpty;
+
+			Db::table('pro_order')->insertGetId([
+				'split_time' => NOW_TIME,
+				'uid' => $pageuser['id'],
+				'type' => $prize['type'],
+				'money' => 0,
+				'gid' => 0,
+				'prize_name' => $prize['name'],
+				'prize_cover' => $prize['cover'],
+				'remark' => $prize['remark'],
+				'create_day' => date('Ymd', NOW_TIME),
+				'create_time' => NOW_TIME,
+				'is_user' => 0,
+				'order_money' => $pro_order['money'],
+				'gift_prize_id' => $prize['Id'],
+			]);	
+		}
+
 		//检测当前用户是否是首次购买 
 		if ($check_num <= 0) {
 			$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->find();//送上级抽奖次数
