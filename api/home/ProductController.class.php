@@ -1041,6 +1041,61 @@ class ProductController extends BaseController
 		Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 	}
 
+	public function where(string $field, $operator, $value = null)
+    {
+        if (is_null($value)) {
+            $value    = $operator;
+            $operator = '=';
+        }
+
+        return $this->filter(function ($data) use ($field, $operator, $value) {
+            if (strpos($field, '.')) {
+                [$field, $relation] = explode('.', $field);
+
+                $result = $data[$field][$relation] ?? null;
+            } else {
+                $result = $data[$field] ?? null;
+            }
+
+            switch (strtolower($operator)) {
+                case '===':
+                    return $result === $value;
+                case '!==':
+                    return $result !== $value;
+                case '!=':
+                case '<>':
+                    return $result != $value;
+                case '>':
+                    return $result > $value;
+                case '>=':
+                    return $result >= $value;
+                case '<':
+                    return $result < $value;
+                case '<=':
+                    return $result <= $value;
+                case 'like':
+                    return is_string($result) && false !== strpos($result, $value);
+                case 'not like':
+                    return is_string($result) && false === strpos($result, $value);
+                case 'in':
+                    return is_scalar($result) && in_array($result, $value, true);
+                case 'not in':
+                    return is_scalar($result) && !in_array($result, $value, true);
+                case 'between':
+                    [$min, $max] = is_string($value) ? explode(',', $value) : $value;
+                    return is_scalar($result) && $result >= $min && $result <= $max;
+                case 'not between':
+                    [$min, $max] = is_string($value) ? explode(',', $value) : $value;
+                    return is_scalar($result) && $result > $max || $result < $min;
+                case '==':
+                case '=':
+                default:
+                    return $result == $value;
+            }
+        });
+    }
+
+
 	//购买后赠送的相关业务
 	public function Productgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
@@ -1051,12 +1106,8 @@ class ProductController extends BaseController
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
-		$prize_arr = array_filter($prizesList, function($var) {
-			return $var['probability'] > 0;
-		});
-		$prizeEmpty = array_filter($prizesList, function($var) {
-			return $var['type']  == 4;
-		});
+		$prize_arr = $this-> where('probability', '>', '0');
+		$prizeEmpty = $this-> where('type', '==', '4');
 		
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
