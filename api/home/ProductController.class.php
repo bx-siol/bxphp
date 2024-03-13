@@ -1062,17 +1062,13 @@ class ProductController extends BaseController
 			if($k['type'] == 4)
 				array_push($prizeEmpty,$k);
 		}
-		
-		writeLog(json_encode($prize_arr), 'bobopay1');
-		writeLog('kong' .json_encode($prizeEmpty), 'bobopay1');
 
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array();
-			foreach ($prizesList as $k) {
-				if(floatval($k['buyAmountStart']) >= 0 && floatval($k['buyAmountEnd']) >0 && floatval($k['buyAmountStart']) <= floatval($pro_order['w2_money'])
-				&& floatval($pro_order['money']) <= floatval($k['buyAmountEnd']))
-					$prizeArr.array_push($k);
+			foreach ($prize_arr as $k) {
+				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
+					array_push($prizeArr,$k);
 			}
 
 			if(count($prizeArr) > 1)
@@ -1080,22 +1076,21 @@ class ProductController extends BaseController
 				$randomNumber = mt_rand(0, count($prizeArr));
 				$prize = $prizeArr[$randomNumber];
 			}
-
 			if(count($prizeArr) == 1)
 			{
-				$prize = $prizeArr->first();
+				$prize = $prizeArr;
 			}
 			if(empty($prize))
 			{
 				//查询除概率大于0的奖品
 				foreach($prize_arr as $item)
-					$total .= (intval($item['probability']) * 100);
+					$total .= intval($item['probability']) * 100;
 				
 				$count = 0;
 				$rand = mt_rand(1, $total);
 				foreach($prize_arr as $item)
 				{
-					$count .= (intval($item['probability']) * 100);
+					$count .= $item['probability'] * 100;
 					if($rand <= $count)
 					{
 						$prize = $item;
@@ -1105,7 +1100,6 @@ class ProductController extends BaseController
 			}
 			if(empty($prize))
 				$prize = $prizeEmpty;
-
 			
 			writeLog(json_encode($prize, JSON_UNESCAPED_SLASHES), 'bobopay1');
 			Db::table('pro_order')->insertGetId([
