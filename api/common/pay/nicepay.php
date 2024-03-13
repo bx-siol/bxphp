@@ -23,13 +23,13 @@ function payOrder($fin_paylog)
 	];
 	$pdata['sign'] = paySign($pdata);
 	$url = $config['pay_url'];
-	writeLog(json_encode('resultArr : ' . $pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
+	writeLog('resultArr : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
 	$result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 
 	$resultArr = $result['output'];
-	writeLog(json_encode('resultArr : ' . $resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
+	writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
 	if ($resultArr['code'] != '1')
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 
