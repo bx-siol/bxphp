@@ -1100,24 +1100,24 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 			
-			// $db_data = [
-			// 	'uid' => $pageuser['id'],
-			// 	'type' => $prize['type'],
-			// 	'money' => 0,
-			// 	'gid' => $prize['gid'],
-			// 	'coupon_id' => $prize['coupon_id'],
-			// 	'prize_name' => $prize['name'],
-			// 	'prize_cover' => $prize['cover'],
-			// 	'remark' => $prize['remark'],
-			// 	'create_time' => NOW_TIME,
-			// 	'create_day' => date('Ymd', NOW_TIME),
-			// 	'create_ip' => '',
-			// 	'split_time' => NOW_TIME,
-			// 	'order_money' => $pro_order['money'],
-			// 	'is_user' => 0,
-			// 	'gift_prize_id' => $prize['id'],
-			// ];
-			// Db::table('gift_prize_log')->insertGetId($db_data);	
+			$db_data = [
+				'uid' => $pageuser['id'],
+				'type' => $prize['type'],
+				'money' => 0,
+				'gid' => $prize['gid'],
+				'coupon_id' => $prize['coupon_id'],
+				'prize_name' => $prize['name'],
+				'prize_cover' => $prize['cover'],
+				'remark' => $prize['remark'],
+				'create_time' => NOW_TIME,
+				'create_day' => date('Ymd', NOW_TIME),
+				'create_ip' => '',
+				'split_time' => NOW_TIME,
+				'order_money' => $pro_order['money'],
+				'is_user' => 0,
+				'gift_prize_id' => $prize['id'],
+			];
+			Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
 
 		//检测当前用户是否是首次购买 
