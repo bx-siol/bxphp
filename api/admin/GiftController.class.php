@@ -458,6 +458,7 @@ class GiftController extends BaseController
 
 		foreach ($list as &$item) {
 			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['is_user_flag'] = $item['is_user'] == 0 ? '未抽奖':'已抽奖';
 		}
 		$return_data = [
 			'list' => $list,
