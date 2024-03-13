@@ -1083,18 +1083,16 @@ class ProductController extends BaseController
 			if(empty($prize))
 			{
 				writeLog('prize_arr'.json_encode($prize_arr), 'bobopay1');
-				$total = 0;
 				//查询除概率大于0的奖品
 				foreach($prize_arr as $item)
-					$total .= floatval($item['probability'] * 100);
+					$total += $item['probability'] * 100;
 				
 				
 				writeLog('total'.$total, 'bobopay1');
-				$count = 0;
 				$rand = mt_rand(1, $total);
 				foreach($prize_arr as $item)
 				{
-					$count .= floatval($item['probability'] * 100);
+					$count += $item['probability'] * 100;
 					if($rand <= $count)
 					{
 						$prize = $item;
