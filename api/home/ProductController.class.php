@@ -1053,16 +1053,14 @@ class ProductController extends BaseController
 
 		$prize_arr = [];
 		foreach ($prizesList as $k) {
-			
-			writeLog('prizesList' .$k['probability'], 'bobopay1');
 			if($k['probability'] > 0)
-				$prize_arr.array_push($k);
+				array_push($prize_arr,$k);
 		}
 
 		$prizeEmpty = [];
 		foreach ($prizesList as $k) {
 			if($k['type'] == 4)
-				$prizeEmpty.array_push($k);
+				array_push($prizeEmpty,$k);
 		}
 		
 		writeLog(json_encode($prize_arr), 'bobopay1');
