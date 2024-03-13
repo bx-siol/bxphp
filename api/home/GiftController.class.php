@@ -69,18 +69,12 @@ class GiftController extends BaseController
 				Db::table('gift_prize_log')->insertGetId($gift_prize_log);	
 			}
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
-			
-			writeLog('1--------------------------------','bobopay1');
-			writeLog('prize'.json_encode($prize),'bobopay1');
-			writeLog('gift_prize_log'.json_encode($gift_prize_log),'bobopay1');
 
 			if ($prize['type'] == 1) { //金额
-				writeLog('11--------------------------------','bobopay1');
 				$money = $this->getRandMoney($prize['from_money'], $prize['to_money']);
 				$money = number_format($money, 2, '.', '');
 				$res = Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['money'=>$money,'is_user'=>1]);
 
-				writeLog('112--------------------------------','bobopay1');
 				$wallet = getWallet($user['id'], 2, 1);
 				if (!$wallet) {
 					throw new \Exception('钱包获取异常');
@@ -89,7 +83,6 @@ class GiftController extends BaseController
 				$wallet_data = [
 					'balance' => $wallet['balance'] + $money
 				];
-				writeLog('113--------------------------------','bobopay1');
 				//更新钱包余额
 				Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 				//写入流水记录
@@ -105,13 +98,11 @@ class GiftController extends BaseController
 					'fkey' => $res,
 					'remark' => 'Lottery'
 				]);
-				writeLog('114--------------------------------','bobopay1');
 				if (!$result) {
 					throw new \Exception('流水记录写入失败');
 				}
 				$tipMsg = "Money:{$money}";
 			} elseif ($prize['type'] == 2) { //产品
-				writeLog('22--------------------------------','bobopay1');
 				$goodInfo = Db::table('pro_goods')->where("id = {$prize['gid']}")->select();
 				Db::table('pro_order')->insertGetId([
 					'uid'=> $pageuser['id'],
@@ -142,21 +133,17 @@ class GiftController extends BaseController
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['gid'=>$prize['gid'],'is_user'=>1]);
 				$tipMsg = "Product:{$prize['name']}";
 			} elseif ($prize['type'] == 3 || $prize['type'] == 4) { //实物
-				writeLog('33--------------------------------','bobopay1');
 				$tipMsg = $prize['remark'];
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['is_user'=>1]);
 			}  elseif ($prize['type'] == 5) { //代金券
-				writeLog('44--------------------------------','bobopay1');
 				addCouponLog($user['id'], $prize['coupon_id'], 1, $prize['remark']);				
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['coupon_id'=>$prize['coupon_id'],'is_user'=>1]);
 				$tipMsg = "Coupon: {$prize['name']}";
 			}
 			
-			writeLog('2--------------------------------','bobopay1');
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();			
-			writeLog('cuowu'.json_encode($e),'bobopay1');
 			jReturn(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
