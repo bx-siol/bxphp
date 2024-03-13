@@ -1095,6 +1095,21 @@ class ProductController extends BaseController
         });
     }
 
+	    /**
+     * 用回调函数过滤数组中的元素
+     * @access public
+     * @param callable|null $callback 回调
+     * @return static
+     */
+    public function filter(callable $callback = null)
+    {
+        if ($callback) {
+            return new static(array_filter($this->items, $callback));
+        }
+
+        return new static(array_filter($this->items));
+    }
+
 
 	//购买后赠送的相关业务
 	public function Productgift($item, $quantity, $pageuser, $check_num, $pro_order)
