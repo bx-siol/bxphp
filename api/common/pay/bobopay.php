@@ -20,14 +20,14 @@ function payOrder($fin_paylog, $sub_type = '')
 		'notifyUrl' => $config['notify_url'],
 	];
 	$pdata['sign'] = paySign($pdata);
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES), 'bobopay/pay');
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/pay');
 	$result = [];
 	try {
 		$result = CurlPost($config['pay_url'], $pdata, 30);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
-	writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES), 'bobopay/pay');
+	writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
@@ -74,7 +74,7 @@ function CurlPost($url, $data = [], $timeout = 30)
 			CURLOPT_TIMEOUT => $timeout,
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 			CURLOPT_HTTPHEADER => array(
 				'Content-Type:application/json'
 			)

@@ -24,7 +24,7 @@ class BhpayController extends BaseController
 		$json_str = json_encode($result, 256);
 		$time = date("Y-m-d H:i:s", time());
 		$fliepath =	LOGS_PATH . 'bhpay/pay/' . date("Y-m-d", time()) . '.txt';
-		file_put_contents($fliepath, json_encode($params, JSON_UNESCAPED_SLASHES) . "\r\n" . $json_str . "\r\n\r\n", FILE_APPEND);
+		file_put_contents($fliepath, json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" . $json_str . "\r\n\r\n", FILE_APPEND);
 		echo $json_str;
 	}
 	public function _ccash()
@@ -57,7 +57,7 @@ class BhpayController extends BaseController
 		$flpath = LOGS_PATH . 'bhpay/notify/pay' . date("Y-m-d", time()) . '.txt';
 
 		$sign = dSign($params);
-		file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES)  . "\r\n\r\n", FILE_APPEND);
+		file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)  . "\r\n\r\n", FILE_APPEND);
 		if (!$sign) {
 			jReturn(-1, 'Sign error');
 		}
@@ -80,7 +80,7 @@ class BhpayController extends BaseController
 			$params = $_POST;
 		}
 		$log_file = LOGS_PATH . 'bhpay/notify/cash' . date("Y-m-d", time()) . '.txt';
-		file_put_contents($log_file, NOW_DATE . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES)   . "\r\n\r\n", FILE_APPEND);
+		file_put_contents($log_file, NOW_DATE . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)   . "\r\n\r\n", FILE_APPEND);
 
 		$code = strtolower(CONTROLLER_NAME);
 		require_once APP_PATH . 'common/cash/' . $code . '.php';

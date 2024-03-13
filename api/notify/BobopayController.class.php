@@ -19,7 +19,7 @@ class BobopayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog(json_encode('pdata : ' . $params, JSON_UNESCAPED_SLASHES), 'bobopay/notify/pay');
+        writeLog(json_encode('pdata : ' . $params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/notify/pay');
         if (!$params)
             $params = $_POST;
         require_once APP_PATH . 'common/pay/bobopay.php';
@@ -40,7 +40,7 @@ class BobopayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog(json_encode('pdata : ' . $params, JSON_UNESCAPED_SLASHES), 'bobopay/notify/cash');
+        writeLog(json_encode('pdata : ' . $params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/notify/cash');
         if (!$params)
             $params = $_POST;
 

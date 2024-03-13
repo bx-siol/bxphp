@@ -24,7 +24,7 @@ class QlpayController extends BaseController
 		}
 		$params['callback_url'] = urldecode($params['callback_url']);
 		// $logpathd = LOGS_PATH . "qq.txt";
-		// file_put_contents($logpathd,  "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES)  . "\r\n\r\n ===============", FILE_APPEND);
+		// file_put_contents($logpathd,  "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)  . "\r\n\r\n ===============", FILE_APPEND);
 
 		$url = 'https://gw.kirinpayment.net/pay/unifiedorder?format=json';
 		$result =  $this->CurlPost($url, $params, 30);

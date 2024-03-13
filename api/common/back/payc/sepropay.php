@@ -34,7 +34,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	$pdata['sign'] = paySign($pdata);
 	$pdata['sign_type'] = 'MD5';
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
-	file_put_contents($logpathd,   "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES) . "\r\n", FILE_APPEND);
+	file_put_contents($logpathd,   "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n", FILE_APPEND);
 	if ($result['code'] != 1) {
 		file_put_contents($logpathd,  $result['code']  . "\r\n\r\n", FILE_APPEND);
 		return $result;
@@ -112,7 +112,7 @@ function payCurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_HTTPHEADER => array(
 			'Content-Type:application/x-www-form-urlencoded',
 		)
-		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		// CURLOPT_HTTPHEADER => array(
 		// 	'Content-Type: application/json;charset=UTF-8'
 		// )

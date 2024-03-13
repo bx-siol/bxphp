@@ -28,7 +28,7 @@ class DidapayController extends BaseController
 		$flpath = LOGS_PATH . 'didapay/notify/pay' . date("Y-m-d", time()) . '.txt';
 
 		$sign = dSign($params);
-		//file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES)  . "\r\n\r\n", FILE_APPEND);
+		//file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)  . "\r\n\r\n", FILE_APPEND);
 		if (!$sign) {
 			jReturn(-1, 'Sign error');
 		}
@@ -51,7 +51,7 @@ class DidapayController extends BaseController
 			$params = $_POST;
 		}
 		$log_file = LOGS_PATH . 'didapay/notify/cash' . date("Y-m-d", time()) . '.txt';
-		file_put_contents($log_file, NOW_DATE . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES)   . "\r\n\r\n", FILE_APPEND);
+		file_put_contents($log_file, NOW_DATE . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)   . "\r\n\r\n", FILE_APPEND);
 
 		$code = strtolower(CONTROLLER_NAME);
 		require_once APP_PATH . 'common/cash/' . $code . '.php';

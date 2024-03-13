@@ -74,7 +74,7 @@ class BaseController extends CommonCtl
 				CURLOPT_TIMEOUT => $timeout,
 				CURLOPT_FOLLOWLOCATION => true,
 				CURLOPT_CUSTOMREQUEST => 'POST',
-				CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+				CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 				CURLOPT_HTTPHEADER => array(
 					'Content-Type: application/json;charset=UTF-8'
 				)

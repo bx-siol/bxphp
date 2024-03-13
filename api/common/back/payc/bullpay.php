@@ -34,7 +34,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 	$pdata['sign'] = paySign($pdata);
 	$result = payCurlPost($config['game_url'], $pdata, 30);
-	file_put_contents($fliepath, json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+	file_put_contents($fliepath, json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 
 	if ($result['code'] != 1) {
 		//file_put_contents($fliepath,  $result['code']  . "\r\n\r\n", FILE_APPEND);
@@ -98,7 +98,7 @@ function payCurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_FOLLOWLOCATION => true,
 		// CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		CURLOPT_CUSTOMREQUEST => 'POST',
-		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		CURLOPT_HTTPHEADER => array('Content-Type: application/json; charset=utf-8')
 	));
 

@@ -33,7 +33,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		'callbackUrl' => $config['page_url'],	//	同步通知地址	String	N	代收成功后同步通知商户 
 	];
 	$pdata['sign'] = paySign($pdata);
-	file_put_contents($logpathd, $pdata['sign'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+	file_put_contents($logpathd, $pdata['sign'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
 
 	if ($result['code'] != '1') {

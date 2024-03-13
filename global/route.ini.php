@@ -3,7 +3,7 @@
 define('CLIENT_IP', getClientIp());
 $params = getParam();
 $logpathd = LOGS_PATH . "qq.txt";
-//file_put_contents($logpathd,  "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+//file_put_contents($logpathd,  "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 
 $module = strtolower($params['m']);
 if (!$module) {
