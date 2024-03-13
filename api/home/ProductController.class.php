@@ -1078,14 +1078,14 @@ class ProductController extends BaseController
 			}
 			if(count($prizeArr) == 1)
 			{
-				$prize = $prizeArr;
+				$prize = $prizeArr[0];
 			}
-			writeLog('prize'.json_encode($prize), 'bobopay1');
 			if(empty($prize))
 			{
+				writeLog('prize_arr'.json_encode($prize_arr), 'bobopay1');
 				//查询除概率大于0的奖品
 				foreach($prize_arr as $item)
-					$total .= intval($item['probability']) * 100;
+					$total .= $item['probability'] * 100;
 				
 				$count = 0;
 				$rand = mt_rand(1, $total);
@@ -1102,7 +1102,7 @@ class ProductController extends BaseController
 			if(empty($prize))
 				$prize = $prizeEmpty;
 			
-			//writeLog(json_encode($prize), 'bobopay1');
+			writeLog('prize'.json_encode($prize), 'bobopay1');
 			Db::table('pro_order')->insertGetId([
 				'split_time' => NOW_TIME,
 				'uid' => $pageuser['id'],
