@@ -459,6 +459,16 @@ class GiftController extends BaseController
 		foreach ($list as &$item) {
 			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
 			$item['is_user_flag'] = $item['is_user'] == 0 ? '未抽奖':'已抽奖';
+			if($item['type'] == 1)
+					$item['typename']  = "余额";
+				if($item['type'] == 2)
+					$item['typename']  = "产品";
+				if($item['type'] == 3)
+					$item['typename']  = "实物";
+				if($item['type'] == 4)
+					$item['typename']  = "空";
+				if($item['type'] == 5)
+					$item['typename']  = "奖券";
 		}
 		$return_data = [
 			'list' => $list,
