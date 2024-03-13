@@ -1052,7 +1052,7 @@ class ProductController extends BaseController
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 
 		$prize_arr = [];
-		foreach ($prizesList as $k => $uk) {
+		foreach ($prizesList as $k) {
 			if(floatval($k['probability']) > 0)
 				array_push($prize_arr,$k);
 		}
