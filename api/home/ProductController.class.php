@@ -1101,8 +1101,7 @@ class ProductController extends BaseController
 				$prize = $prizeEmpty;
 			
 			writeLog('prize'.json_encode($prize), 'bobopay1');
-			Db::table('gift_prize_log')->insertGetId([
-				'split_time' => NOW_TIME,
+			$db_data = [
 				'uid' => $pageuser['id'],
 				'type' => $prize['type'],
 				'money' => 0,
@@ -1111,12 +1110,17 @@ class ProductController extends BaseController
 				'prize_name' => $prize['name'],
 				'prize_cover' => $prize['cover'],
 				'remark' => $prize['remark'],
-				'create_day' => date('Ymd', NOW_TIME),
 				'create_time' => NOW_TIME,
-				'is_user' => 0,
+				'create_day' => date('Ymd', NOW_TIME),
+				'create_ip' => '',
+				'split_time' => NOW_TIME,
 				'order_money' => $pro_order['money'],
+				'is_user' => 0,
 				'gift_prize_id' => $prize['Id'],
-			]);	
+			];
+			
+			writeLog('db_data'.json_encode($db_data), 'bobopay1');
+			Db::table('gift_prize_log')->insertGetId($db_data);	
 		}
 
 		//检测当前用户是否是首次购买 
