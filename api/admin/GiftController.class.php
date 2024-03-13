@@ -443,18 +443,12 @@ class GiftController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		//$where.=empty($params['s_type'])?'':" and log.type={$params['s_type']}";
+		
 		if ($params['s_keyword']) {
 			$where .= " and (u.account='{$params['s_keyword']}' or u.nickname like '%{$params['s_keyword']}%')";
 		}
 
-		$count_item = Db::table('gift_lottery_log log')
-			->leftJoin('sys_user u', 'log.uid=u.id')
-			->fieldRaw('count(1) as cnt,sum(log.money) as money')
-			->where($where)
-			->find();
-
-		$list = Db::view(['gift_lottery_log' => 'log'], ['*'])
+		$list = Db::view(['gift_prize_log' => 'log'], ['*'])
 			->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
 			->where($where)
 			->order(['log.id' => 'desc'])
@@ -467,8 +461,6 @@ class GiftController extends BaseController
 		}
 		$return_data = [
 			'list' => $list,
-			'count' => intval($count_item['cnt']),
-			'money' => number_format($count_item['money'], 2, '.', ''),
 			'limit' => $this->pageSize
 		];
 		if ($params['page'] < 2) {
