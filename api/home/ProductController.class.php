@@ -1049,7 +1049,6 @@ class ProductController extends BaseController
 		Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $lotterynum)->update();
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
-
 		$prize_arr = array();
 		foreach ($prizesList as $k) {
 			if($k['probability'] > 0)
@@ -1141,7 +1140,8 @@ class ProductController extends BaseController
 				usort($prize_arr, function(array $a, array $b){
 					return $a['probability']-$b['probability'];
 				});
-    			$prizeInfo = $prizeInfo[0];
+    			$prizeInfo = $prize_arr[0];
+				writeLog('1111111'.json_encode($prize_arr),"bobopay1");
 			}
 			if ($prizeInfo)
     			$prizeInfo = $prizeEmpty;
