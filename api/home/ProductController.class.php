@@ -1057,7 +1057,7 @@ class ProductController extends BaseController
 			return $var['type']  = 4;
 		});
 		
-		writeLog('1111111', 'bobopay1/notify/pay');
+		writeLog('1111111', 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array_filter($prize_arr, function($var) {
@@ -1095,7 +1095,7 @@ class ProductController extends BaseController
 				$prize = $prizeEmpty;
 
 			
-			writeLog(json_encode($prize, JSON_UNESCAPED_SLASHES), 'bobopay1/notify/pay');
+			writeLog(json_encode($prize, JSON_UNESCAPED_SLASHES), 'bobopay1');
 			Db::table('pro_order')->insertGetId([
 				'split_time' => NOW_TIME,
 				'uid' => $pageuser['id'],
