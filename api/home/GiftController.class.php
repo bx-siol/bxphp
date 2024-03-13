@@ -36,21 +36,6 @@ class GiftController extends BaseController
 		$tipMsg = 'ok';
 		Db::startTrans();
 		try {
-			$lottery = Db::table('gift_lottery')->where("id=1")->find();
-			if (!$lottery || $lottery['status'] != 3) {
-				jReturn(-1, 'Stay tuned');
-			}
-			$now_day = date('Ymd');
-			if ($lottery['day_limit'] > 0) {
-				$check_day = Db::table('gift_prize_log')->where("uid={$pageuser['id']} and create_day={$now_day}")->count('id');
-				if ($check_day >= $lottery['day_limit']) {
-					jReturn(-1, 'The number of times to lottery has reached the maximum today');
-				}
-			}
-			$pro_order = $user = Db::table('pro_order')->where(" uid={$pageuser['id']} and is_give=0")->count();  
-			if ($pro_order == 0) {
-				jReturn(-1, 'Please participate in the lottery after purchasing the product');
-			}
 			//检测剩余抽奖次数
 			$user = Db::table('sys_user')->where("id={$pageuser['id']}")->lock(true)->find();
 			if ($user['lottery'] < 1) {
@@ -61,53 +46,35 @@ class GiftController extends BaseController
 			];
 			Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 
-			$gift_prize_log = [
-				'uid' => $user['id'],
-				'type' => 0,
-				'money' => 0,
-				'gid' => 0,
-				'prize_name' => '',
-				'prize_cover' => '',
-				'remark' => '',
-				'create_day' => $now_day,
-				'create_time' => NOW_TIME,
-				'create_ip' => CLIENT_IP
-			];
-
-			//查询除概率大于0的奖品
-			$prize_arr = Db::table('gift_prize')->where("1=1 and probability>0")->order(['probability' => 'asc'])->select()->toArray();
-			$total = 0;
-			foreach ($prize_arr as $pv) {
-				$total += $pv['probability'] * 100;
+			$gift_prize_log = Db::table("gift_prize_log")->where("is_user = 0 and uid={$pageuser['id']}")->find();
+			if(empty($gift_prize_log)) {
+				$prize = Db::table("gift_prize")->where("type=4")->select();
+				$gift_prize_log = [
+					'uid' => $pageuser['id'],
+					'type' => $prize['type'],
+					'money' => 0,
+					'gid' => $prize['gid'],
+					'coupon_id' => $prize['coupon_id'],
+					'prize_name' => $prize['name'],
+					'prize_cover' => $prize['cover'],
+					'remark' => $prize['remark'],
+					'create_time' => NOW_TIME,
+					'create_day' => date('Ymd', NOW_TIME),
+					'create_ip' => '',
+					'split_time' => date('Y-m-d H:i:s', NOW_TIME),
+					'order_money' => 0,
+					'is_user' => 0,
+					'gift_prize_id' => $prize['id'],
+				];
+				Db::table('gift_prize_log')->insertGetId($gift_prize_log);	
 			}
-
-			$count = 0;
-			$prize = [];
-			$rand = mt_rand(1, $total);
-			foreach ($prize_arr as $pv) {
-				$count += $pv['probability'] * 100;
-				if ($rand <= $count) {
-					$prize = $pv;
-					break;
-				}
-			}
-			if (!$prize) {
-				$prize = Db::table('gift_prize')->where("type=4")->orderRaw("rand()")->find();
-			}
-
-			if ($prize) {
-				$gift_prize_log['type'] = $prize['type'];
-				$gift_prize_log['remark'] = $prize['remark'];
-				$gift_prize_log['prize_name'] = $prize['name'];
-				$gift_prize_log['prize_cover'] = $prize['cover'];
-			}
+			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
+			
 
 			if ($prize['type'] == 1) { //金额
 				$money = $this->getRandMoney($prize['from_money'], $prize['to_money']);
 				$money = number_format($money, 2, '.', '');
-
-				$gift_prize_log['money'] = $money;
-				$res = Db::table('gift_prize_log')->insertGetId($gift_prize_log);
+				$res = Db::table('gift_prize_log')->update(['money'=>$money,'is_user'=>1]);
 
 				$wallet = getWallet($user['id'], 2, 1);
 				if (!$wallet) {
@@ -137,21 +104,41 @@ class GiftController extends BaseController
 				}
 				$tipMsg = "Money:{$money}";
 			} elseif ($prize['type'] == 2) { //产品
-				//giveGoods($user['id'],$prize['gid'],1,'抽奖');
-				addGoodsOrder($user['id'], $prize['gid'], 1, -1, 'lottery', 1);
-				$gift_prize_log['gid'] = $prize['gid'];
-				$res = Db::table('gift_prize_log')->insertGetId($gift_prize_log);
+				$goodInfo = Db::table('pro_goods')->where("id = {$prize['gid']}")->select();
+				Db::table('pro_order')->insertGetId([
+					'uid'=> $pageuser['id'],
+					'osn'=> getRsn(),
+					'pid' => $pageuser['pid'],
+					'cid' => $goodInfo['cid'],
+					'gid' => $prize['gid'],
+					'days' => $goodInfo['days'],
+					'rate' => $goodInfo['rate'],
+					'price' => $goodInfo['price'],
+					'price1' => 0,
+					'price2' => 0,
+					'p1' => 1,
+					'p2' => 1,
+					'p3' => 0,
+					'status' => 1,
+					'money' => $goodInfo['price'],
+					'num' => 1,
+					'create_day' => date('Ymd', NOW_TIME),
+					'create_time' => NOW_TIME,
+					'is_give' => 1,
+					'is_exchange' => 1,
+					'discount' => 1,
+					'w1_money' => $goodInfo['price'],
+					'w2_money' => 0,
+				]);
+
+				Db::table('gift_prize_log')->update(['gid'=>$prize['gid'],'is_user'=>1]);
 				$tipMsg = "Product:{$prize['name']}";
-			} elseif ($prize['type'] == 3) { //实物
+			} elseif ($prize['type'] == 3 || $prize['type'] == 4) { //实物
 				$tipMsg = $prize['remark'];
-				$res = Db::table('gift_prize_log')->insertGetId($gift_prize_log);
-			} elseif ($prize['type'] == 4) { //空
-				$tipMsg = $prize['remark'];
-				$res = Db::table('gift_prize_log')->insertGetId($gift_prize_log);
-			} elseif ($prize['type'] == 5) { //代金券
-				addCouponLog($user['id'], $prize['coupon_id'], 1, $prize['remark']);
-				$gift_prize_log['coupon_id'] = $prize['coupon_id'];
-				$res = Db::table('gift_prize_log')->insertGetId($gift_prize_log);
+				Db::table('gift_prize_log')->update(['is_user'=>1]);
+			}  elseif ($prize['type'] == 5) { //代金券
+				addCouponLog($user['id'], $prize['coupon_id'], 1, $prize['remark']);				
+				Db::table('gift_prize_log')->update(['coupon_id'=>$prize['coupon_id'],'is_user'=>1]);
 				$tipMsg = "Coupon: {$prize['name']}";
 			}
 			Db::commit();
@@ -160,7 +147,7 @@ class GiftController extends BaseController
 			jReturn(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
-			'id' => $prize['id'] ? $prize['id'] : 0,
+			'giftprizelog' => $gift_prize_log,
 			'lottery' => $sys_user['lottery']
 		];
 		jReturn(1, $tipMsg, $return_data);
