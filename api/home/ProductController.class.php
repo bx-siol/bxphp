@@ -1053,7 +1053,7 @@ class ProductController extends BaseController
 
 		$prize_arr = [];
 		foreach ($prizesList as $k => $uk) {
-			if($k['probability'] > 0)
+			if(floatval($k['probability']) > 0)
 				array_push($prize_arr,$k);
 		}
 
@@ -1063,7 +1063,7 @@ class ProductController extends BaseController
 				array_push($prizeEmpty,$k);
 		}
 
-		writeLog(json_encode($prize_arr,JSON_UNESCAPED_SLASHES), 'bobopay1');
+		writeLog(json_encode($prize_arr), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array();
