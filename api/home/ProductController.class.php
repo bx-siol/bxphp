@@ -1060,6 +1060,7 @@ class ProductController extends BaseController
 		writeLog('1111111', 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
+			writeLog('22222', 'bobopay1');
 			$prizeArr = array_filter($prize_arr, function($var) {
 				return intval($var['buyAmountStart']) >=0 && intval($var['buyAmountEnd']) >0 && intval($var['buyAmountStart']) <= intval($pro_order['w2_money'])
 						&& intval($pro_order['money']) <= intval($var['buyAmountEnd']) ;
