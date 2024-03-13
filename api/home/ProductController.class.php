@@ -1057,9 +1057,6 @@ class ProductController extends BaseController
 			return $var['type']  = 4;
 		});
 		
-		writeLog('$quantity' .$quantity, 'bobopay1');
-		writeLog('cjcs' .intval($item['cjcs']) , 'bobopay1');
-		writeLog(json_encode($item), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
 			$prizeArr = array_filter($prize_arr, function($var) {
@@ -1071,6 +1068,9 @@ class ProductController extends BaseController
 				$randomNumber = mt_rand(0, count($prizeArr));
 				$prize = $prizeArr[$randomNumber];
 			}
+			
+			writeLog(json_encode($prize), 'bobopay1');
+			writeLog('kong' .json_encode($prizeEmpty), 'bobopay1');
 			if(count($prizeArr) == 1)
 			{
 				$prize = $prizeArr->first();
