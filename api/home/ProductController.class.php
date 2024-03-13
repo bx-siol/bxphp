@@ -1073,7 +1073,8 @@ class ProductController extends BaseController
 
 			if(count($prizeArr) > 1)
 			{
-				$randomNumber = mt_rand(0, count($prizeArr));
+				$randomNumber = mt_rand(0, count($prizeArr)-1);
+				writeLog('randomNumber'.(count($prizeArr)-1), 'bobopay1');
 				$prize = $prizeArr[$randomNumber];
 			}
 			if(count($prizeArr) == 1)
