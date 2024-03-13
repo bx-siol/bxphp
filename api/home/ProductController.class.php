@@ -1071,8 +1071,6 @@ class ProductController extends BaseController
 					array_push($prizeArr,$k);
 			}
 
-			writeLog('prizeArr'.json_encode($prizeArr), 'bobopay1');
-			writeLog('money'.$pro_order['money'], 'bobopay1');
 			if(count($prizeArr) > 1)
 			{
 				$randomNumber = mt_rand(0, count($prizeArr));
@@ -1082,6 +1080,7 @@ class ProductController extends BaseController
 			{
 				$prize = $prizeArr;
 			}
+			writeLog('prize'.json_encode($prize), 'bobopay1');
 			if(empty($prize))
 			{
 				//查询除概率大于0的奖品
