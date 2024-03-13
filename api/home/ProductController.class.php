@@ -1093,7 +1093,7 @@ class ProductController extends BaseController
 				$prize = $prizeEmpty;
 
 			
-			writeLog(json_encode($prize, JSON_UNESCAPED_SLASHES), 'bobopay1');
+			writeLog(json_encode($prize, JSON_UNESCAPED_SLASHES), 'bobopay1/notify/pay');
 			Db::table('pro_order')->insertGetId([
 				'split_time' => NOW_TIME,
 				'uid' => $pageuser['id'],
