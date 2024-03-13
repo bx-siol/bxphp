@@ -1135,10 +1135,10 @@ class ProductController extends BaseController
 			else if(count($sjprizeArr) == 1)			
 				$prizeInfo = $sjprizeArr[0];
 			
-			if ($prizeInfo)
+			if (empty($prizeInfo))
 			{
 				usort($prize_arr, function(array $a, array $b){
-					return $a['probability']-$b['probability'];
+					return $b['probability'] -$a['probability'];
 				});
     			$prizeInfo = $prize_arr[0];
 				writeLog('1111111'.json_encode($prize_arr),"bobopay1");
