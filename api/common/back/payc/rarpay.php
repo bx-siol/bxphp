@@ -9,7 +9,7 @@ $_ENV['PAY_CONFIG']['rarpay'] = [
 	'pay_url' => 'https://merchant.rarpay.com/payapi',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/rarpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

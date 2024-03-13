@@ -14,7 +14,7 @@ $_ENV['PAY_CONFIG']['pokerpay'] = [
 
 	'query_url' => '',
 	'notify_url' => 'http://www.gamedreamer.in' . '/api/Notify/pokerpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

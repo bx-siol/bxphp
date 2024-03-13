@@ -10,7 +10,7 @@ $_ENV['PAY_CONFIG']['acepay'] = [
 	'pay_url' => 'https://api.ace-pay.vip/acepay/pay_in',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/acepay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

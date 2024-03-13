@@ -15,7 +15,7 @@ $_ENV['PAY_CONFIG']['didapay'] = [
 	'pay_url' => 'https://api.didapay.in/api/payin',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/didapay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 

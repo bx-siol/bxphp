@@ -14,7 +14,7 @@ $_ENV['PAY_CONFIG']['tpay'] = [
 	'pay_url' => 'https://www.tpays.in/openApi/pay/createOrder',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/tpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

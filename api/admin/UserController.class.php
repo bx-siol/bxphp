@@ -119,20 +119,19 @@ class UserController extends BaseController
 			$ids_str = implode(',', $ids_arr);
 			$where .= " and log.id in ({$ids_str})";
 		}
-		if($params['moneyFrom'] > 0)
+		if ($params['moneyFrom'] > 0)
 			$where .= " and log.total_invest2 >= {$params['moneyFrom']}";
 
-		if($params['moneyTo'] > 0)
+		if ($params['moneyTo'] > 0)
 			$where .= " and log.total_invest2 <= {$params['moneyTo']}";
 
-		if($params['regTimeRange'])
-		{
+		if ($params['regTimeRange']) {
 			$start_time = strtotime($params['regTimeRange'][0]);
-			$end_time = strtotime($params['regTimeRange'][1]);			
+			$end_time = strtotime($params['regTimeRange'][1]);
 			$where .= " and log.reg_time between {$start_time} and {$end_time}";
 		}
 
-		if($params['status'] != 0)
+		if ($params['status'] != 0)
 			$where .= " and log.status={$params['status']}";
 
 		$where .= empty($params['s_gid']) ? '' : " and log.gid={$params['s_gid']}";
@@ -173,7 +172,7 @@ class UserController extends BaseController
 			unset($item['password'], $item['password2']);
 			$item['gname'] = $sys_group[$item['gid']];
 			$item['status_flag'] = $account_status[$item['status']];
-			$item['icode_status_flag'] = $item['icode_status'] == 0 ?'正常':'禁用';
+			$item['icode_status_flag'] = $item['icode_status'] == 0 ? '正常' : '禁用';
 			// $item['is_google_flag'] = $yes_or_no[$item['is_google']];
 			$item['stop_commission_flag'] = $yes_or_no[$item['stop_commission']];
 			$item['reg_time'] = date('Y-m-d H:i:s', $item['reg_time']);
@@ -394,9 +393,9 @@ class UserController extends BaseController
 			$return_data['stop_commission_flag'] = $yse_or_no[$data['stop_commission']];
 		}
 		if (isset($data['icode_status'])) {
-			$return_data['icode_status_flag'] = $data['icode_status'] == 0 ?'正常':'禁用';
+			$return_data['icode_status_flag'] = $data['icode_status'] == 0 ? '正常' : '禁用';
 		}
-		
+
 		jReturn(1, '操作成功', $return_data);
 	}
 
@@ -644,23 +643,20 @@ class UserController extends BaseController
 		if (!$ids) {
 			jReturn(-1, '至少选择一项');
 		}
-		if($params['bs'])
-		{
-			if($params['status'] == 0)			
-				$now_day = 0;			
-			else			
+		if ($params['bs']) {
+			if ($params['status'] == 0)
+				$now_day = 0;
+			else
 				$now_day = date('Ymd', NOW_TIME);
-						
-			foreach ($ids as $item_id) {				
+
+			foreach ($ids as $item_id) {
 				Db::table('sys_user')->where("id={$item_id}")->update(["{$params['field']}" => $now_day]);
 			}
-		}
-		else
-		{
+		} else {
 			foreach ($ids as $item_id) {
 				Db::table('sys_user')->where("id={$item_id}")->update(["{$params['field']}" => $params['status']]);
 			}
-		}		
+		}
 		jReturn(1, '操作成功');
 	}
 
@@ -879,8 +875,7 @@ class UserController extends BaseController
 	public function _ulink()
 	{
 		$pageuser = checkPower();
-		$oauth_domain = $_ENV['oauth_domain'];
-		$url = "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}/#/register?icode={$pageuser['icode']}";
+		$url = REQUEST_SCHEME . '://' . HTTP_HOST . "/#/register?icode={$pageuser['icode']}";
 		$return_data = [
 			'url' => $url,
 			'qrcode' => genQrcode($url)
@@ -1084,10 +1079,9 @@ class UserController extends BaseController
 			}
 		}
 
-		if($params['regTimeRange'])
-		{
+		if ($params['regTimeRange']) {
 			$start_time = strtotime($params['regTimeRange'][0]);
-			$end_time = strtotime($params['regTimeRange'][1]);			
+			$end_time = strtotime($params['regTimeRange'][1]);
 			$where .= " and log.reg_time between {$start_time} and {$end_time}";
 		}
 

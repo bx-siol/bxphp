@@ -226,14 +226,8 @@ function checkLogin()
 		jReturn('-98', '请先登录');
 	} else {
 		session_start();
-		$_SESSION['backurl'] = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
-		if (isWx()) {
-			$callback = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/' . APP_URL . '?m=' . MODULE_NAME . '&c=Login&a=wechat';
-			$re_state = 0;
-			$url = wxAuthUrl($callback, 'userinfo', $re_state);
-		} else {
-			$url = "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}/" . APP_URL . "?m=" . MODULE_NAME . "&c=Login";
-		}
+		$_SESSION['backurl'] = REQUEST_SCHEME . '://' . HTTP_HOST . $_SERVER['REQUEST_URI'];
+		$url = REQUEST_SCHEME . '://' . HTTP_HOST . '/#/login';
 		header("Location:{$url}");
 		exit;
 	}
@@ -311,7 +305,6 @@ function doLogout()
 	actionLog(['opt_name' => '退出', 'sql_str' => json_encode($log_arr)]);
 	//清理token
 	clearToken($user['id']);
-
 	//清理节点缓存
 	$mem = new MyRedis();
 	$tag = 'usernodes_' . $user['id'];

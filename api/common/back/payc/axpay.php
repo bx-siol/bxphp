@@ -8,7 +8,7 @@ $_ENV['PAY_CONFIG']['axpay'] = [
 	'mch_key' => 'dKmDxk6GbkS4l7Gr833ZTOpBwZaeL5cbbVdkVOm3',
 	'pay_url' => 'https://merchant.axpay.vip/api/PayV2/submit',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/axpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

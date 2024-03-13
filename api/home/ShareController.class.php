@@ -169,10 +169,7 @@ class ShareController extends BaseController
 
 	private function getQrcodeUrl($icode)
 	{
-		// $qr_domain = $_SERVER['HTTP_HOST'];
-		//$qrcode_str="{$_SERVER['REQUEST_SCHEME']}://{$qr_domain}/api/?a=wxLogin&icode={$icode}";
-		// {$_SERVER['REQUEST_SCHEME']}://{$qr_domain}
-		$qrcode_str = "/h5/#/register?icode={$icode}";
+		$qrcode_str = REQUEST_SCHEME . '://' . HTTP_HOST . "/h5/#/register?icode={$icode}";
 		return $qrcode_str;
 	}
 }

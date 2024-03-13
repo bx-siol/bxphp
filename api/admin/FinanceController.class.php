@@ -625,10 +625,10 @@ class FinanceController extends BaseController
 		$imgurl = '';
 		if ($tt == 1) {
 			$ttc = rand(1, 106);
-			$imgurl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/h5/img/img (' . $ttc . ').gif';
+			$imgurl = REQUEST_SCHEME . '://' . HTTP_HOST . '/h5/img/img (' . $ttc . ').gif';
 		} else {
 			$num = rand(1, 42);
-			$imgurl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/h5/img/' . $num . '.gif';
+			$imgurl = REQUEST_SCHEME . '://' . HTTP_HOST . '/h5/img/' . $num . '.gif';
 		}
 		$url = '';
 		$data = [];

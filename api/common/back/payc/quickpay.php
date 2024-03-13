@@ -9,7 +9,7 @@ $_ENV['PAY_CONFIG']['quickpay'] = [
 	'pay_url' => 'https://ep-sl.mer.sminers.com/api/formapi',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/quickpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

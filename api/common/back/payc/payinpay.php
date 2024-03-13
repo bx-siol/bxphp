@@ -9,7 +9,7 @@ $_ENV['PAY_CONFIG']['payinpay'] = [
 	'pay_url' => 'https://Payin.pro/Pay_Index.html',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/payinpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

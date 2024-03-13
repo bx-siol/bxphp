@@ -8,7 +8,7 @@ $_ENV['PAY_CONFIG']['bullpay'] = [
 	'mch_key' => 'c525ca5fcda44f07bcb61073a149d40b',
 	'game_url' =>   'https://api.bullpay.in/bullp/trade/in',
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/bullpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

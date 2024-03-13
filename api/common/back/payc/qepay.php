@@ -10,7 +10,7 @@ $_ENV['PAY_CONFIG']['qepay'] = [
 	'pay_url' => 'http://apis.rainbowpay.xyz/client/collect/create',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/qepay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

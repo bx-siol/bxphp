@@ -543,7 +543,7 @@ class CommonCtl
 		$cnf_domain = trim(trim($_ENV['cnf_domain']), '/');
 		$language_code = 'en-us';
 		$return_data = [
-			//'img_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'],
+			//'img_url' => REQUEST_SCHEME . '://' . HTTP_HOST,
 			'name' => getConfig('sys_name'),
 			'version' => 'v1',
 			'yes_or_no' => ['1' => '是', '0' => '否'],
@@ -567,7 +567,7 @@ class CommonCtl
 		$return_data = [
 			'session_id' => $session_id,
 			't' => 'is ok!-1.21',
-			//'code' => ($_SERVER['HTTP_HOST'] == '172.21.221.245' || $_SERVER['HTTP_HOST'] == 'localhost:8000') ? $code : '',
+			//'code' => (HTTP_HOST == '172.21.221.245' || HTTP_HOST == 'localhost:8000') ? $code : '',
 			'url' => '/api/?m=' . MODULE_NAME . '&a=showVcode&sid=' . $session_id
 		];
 		jReturn(1, 'ok', $return_data);

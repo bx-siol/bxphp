@@ -9,7 +9,7 @@ $_ENV['PAY_CONFIG']['adkpay'] = [
 	'pay_url' => 'https://top.adkjk.in/rpay-api/order/submit',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/adkpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 function getMillisecond()
 {

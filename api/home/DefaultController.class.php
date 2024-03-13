@@ -289,9 +289,9 @@ class DefaultController extends BaseController
 		$RSyright = getPset('RSyright');
 
 		$tipId = 48;
-		if (IS_WIN) {
-			$tipId = 48;
-		}
+		// if (IS_WIN) {
+		// 	$tipId = 48;
+		// }
 		$tip = Db::table('news_article')->where("id={$tipId} and status=2")->field(['title', 'content'])->find();
 		$newscount = Db::table('news_article')->where("cid=50 and status=2")->field(['id'])->select()->toArray();
 
