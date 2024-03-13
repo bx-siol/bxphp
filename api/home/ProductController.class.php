@@ -1063,13 +1063,14 @@ class ProductController extends BaseController
 				array_push($prizeEmpty,$k);
 		}
 
+		writeLog('prize_arr1'.json_encode($prize_arr), 'bobopay1');
 		for ($i = 0; $i < $lotterynum; $i++) 
 		{
-			writeLog('prize_arr'.json_encode($prize_arr), 'bobopay1');
+			writeLog('prize_arr2'.json_encode($prize_arr), 'bobopay1');
 			$prizeArr = array(array());
-			foreach ($prize_arr as $k => $uk) {
+			foreach ($prize_arr as $k => $ui) {
 				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
-					array_push($prizeArr[$uk],$k);
+					array_push($prizeArr[$ui],$k);
 			}
 
 			if(count($prizeArr) > 1)
