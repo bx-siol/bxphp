@@ -1,16 +1,6 @@
 <template>
     <Page :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #search="{params,tdata,doSearch}">
-
-<!--            <el-input
-                    style="width: 280px;margin-left: 10px;"
-                    placeholder="ID/账号/昵称"
-                    clearable
-                    v-model="params.s_user"
-                    @keyup.enter="doSearch">
-                <template #prepend>用户</template>
-            </el-input>-->
-
             <span style="margin-left: 10px;color: #909399;">日期:</span>
             <el-date-picker
                     :style="{marginLeft:'10px',width:'150px'}"
@@ -31,19 +21,14 @@
 
         <template #table="myScope">
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
-            <el-table-column prop="lsn" label="中奖码"></el-table-column>
             <el-table-column prop="account" label="用户账号"></el-table-column>
             <el-table-column prop="nickname" label="用户昵称"></el-table-column>
+            <el-table-column prop="type" label="奖品类型"></el-table-column>
+            <el-table-column prop="prize_name" label="奖品"></el-table-column>
             <el-table-column prop="money" label="中奖金额"></el-table-column>
-            <el-table-column prop="create_day" label="领取日期"></el-table-column>
+            <el-table-column prop="is_user_flag" label="是否抽奖"></el-table-column>
             <el-table-column prop="create_time" label="时间"></el-table-column>
         </template>
-
-        <template #summary="{tdata}">
-            <span>记录数：{{tdata.count}}</span>
-            <span>累计金额：{{tdata.money}}</span>
-        </template>
-
         <template #layer="{tdata}">
 
         </template>
