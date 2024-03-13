@@ -1053,7 +1053,7 @@ class ProductController extends BaseController
 
 		$prize_arr = [];
 		foreach ($prizesList as $k=>$v) {
-			if($k['probability'] > 0)
+			if(intval($k['probability']) > 0)
 				$prize_arr.array_push($k);
 		}
 
