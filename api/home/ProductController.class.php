@@ -1087,6 +1087,8 @@ class ProductController extends BaseController
 				foreach($prize_arr as $item)
 					$total .= $item['probability'] * 100;
 				
+				
+				writeLog('total'.$total, 'bobopay1');
 				$count = 0;
 				$rand = mt_rand(1, $total);
 				foreach($prize_arr as $item)
