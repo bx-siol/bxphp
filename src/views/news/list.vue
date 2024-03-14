@@ -19,7 +19,7 @@
                     <template #default="{ list }">
                         <ul>
                             <li v-for="item in list" @click="onLink({ name: 'News_info', params: { id: item.id } })">
-                                <van-image :src="imgFlag(item.cover)" width="5.5rem" height="3.5rem"
+                                <van-image :src="imgFlag(item.cover)" width="7rem" height="4rem"
                                     class="imgs"></van-image>
                                 <div class="infoRight">
                                     <p class="titles" :style="{ color: '#3d3d3b', }">{{ item.title }}</p>

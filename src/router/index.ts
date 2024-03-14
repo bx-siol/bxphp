@@ -221,6 +221,15 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/user/team.vue')
     },
     {
+        path: '/user/team/:id',
+        name: 'User_teamlist',
+        meta: {
+            title: 'team',
+             needLogin: false
+        },
+        component: () => import('../views/user/teamlist.vue')
+    },
+    {
         path: '/setting',
         name: 'Setting',
         meta: {

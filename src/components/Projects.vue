@@ -231,12 +231,12 @@ onMounted(() => {
         flex-direction: column;
         position: relative;
         box-shadow: 0px 0px 12px 2px rgb(225, 225, 225);
-        padding: 0.8rem;
+        padding: 0.6rem 0.8rem 0.8rem;
 
         .basicItemLeft {
-          width: 5rem;
-          height: 4rem;
-          margin: 0.275rem 0.275rem 1rem;
+          width: 6.2rem;
+          height: 6rem;
+          // margin: 0.275rem 0.275rem 1rem;
           position: relative;
 
           .productImg {

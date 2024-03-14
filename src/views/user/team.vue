@@ -8,7 +8,7 @@
         <div class="will">
             <div class="card">
                 <div class="item">
-                    <p class="p1"> {{ teamusercount1 }}</p>
+                    <p class="p1"> {{ teamcount }}</p>
                     <p class="p2">Total: </p>
                 </div>
             </div>
@@ -18,7 +18,7 @@
             <div class="list-box">
 
                 <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
-                    <van-tab title="B 10%">
+                    <van-tab :title="fy.lv1">
                         <div class="levelTabMember">
                             <div class="levelTabValidMember" @click="SwitchMembers(1, 0)">{{ t('有效成员') }}</div>
                             <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">{{ t('无效成员') }}</div>
@@ -27,23 +27,24 @@
                             <template #default="{ list }">
                                 <div class="listHead">
                                     <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('推荐人') }}</p>
-                                    <p>{{ t('团队规模') }}</p>
+                                    <p>{{ t('等级') }}</p>
+                                    <p>{{ t('时间') }}</p>
                                     <p>{{ t('资产') }}</p>
                                 </div>
                                 <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
-                                    <p>{{ item.referrer }}</p>
-                                    <p>{{ item.teamSize }}</p>
-                                    <p style="text-align: end;padding-right:1em;">
-                                        {{ item.assets }}RS
-                                        <!--<span class="plus"><van-icon @click="onLink({ name: 'Purchase' })" name="plus"></van-icon></span>-->
+                                    <p>{{ item.level }}</p>
+                                    <p>{{ item.reg_time }}</p>
+                                    <p>{{ item.assets }}RS
+                                        <span class="plus">
+                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
+                                                name="arrow"></van-icon></span>
                                     </p>
                                 </div>
                             </template>
                         </MyListBase>
                     </van-tab>
-                    <van-tab title="C 5%">
+                    <van-tab :title="fy.lv2">
                         <div class="levelTabMember">
                             <div class="levelTabValidMember" @click="SwitchMembers(2, 0)">{{ t('有效成员') }}</div>
                             <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">{{ t('无效成员') }}</div>
@@ -52,24 +53,24 @@
                             <template #default="{ list }">
                                 <div class="listHead">
                                     <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('推荐人') }}</p>
-                                    <p>{{ t('团队规模') }}</p>
+                                    <p>{{ t('等级') }}</p>
+                                    <p>{{ t('时间') }}</p>
                                     <p>{{ t('资产') }}</p>
                                 </div>
                                 <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
-                                    <p>{{ item.referrer }}</p>
-                                    <p>{{ item.teamSize }}</p>
-                                    <p style="text-align: end;padding-right:1em;">
-                                        {{ item.assets }}RS
-                                        <span class="plus"><van-icon @click="onLink({ name: 'Purchase' })"
-                                                name="plus"></van-icon></span>
+                                    <p>{{ item.level }}</p>
+                                    <p>{{ item.reg_time }}</p>
+                                    <p>{{ item.assets }}RS
+                                        <span class="plus">
+                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
+                                                name="arrow"></van-icon></span>
                                     </p>
                                 </div>
                             </template>
                         </MyListBase>
                     </van-tab>
-                    <van-tab title="D 3%">
+                    <van-tab :title="fy.lv3">
                         <div class="levelTabMember">
                             <div class="levelTabValidMember" @click="SwitchMembers(3, 0)">{{ t('有效成员') }}</div>
                             <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">{{ t('无效成员') }}</div>
@@ -78,17 +79,18 @@
                             <template #default="{ list }">
                                 <div class="listHead">
                                     <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('推荐人') }}</p>
-                                    <p>{{ t('团队规模') }}</p>
+                                    <p>{{ t('等级') }}</p>
+                                    <p>{{ t('时间') }}</p>
                                     <p>{{ t('资产') }}</p>
                                 </div>
                                 <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
-                                    <p>{{ item.referrer }}</p>
-                                    <p>{{ item.teamSize }}</p>
-                                    <p style="text-align: end;padding-right:1em;">
-                                        {{ item.assets }}RS
-                                        <!--<span class="plus"><van-icon @click="onLink({ name: 'Purchase' })" name="plus"></van-icon></span>-->
+                                    <p>{{ item.level }}</p>
+                                    <p>{{ item.reg_time }}</p>
+                                    <p>{{ item.assets }}RS
+                                        <span class="plus">
+                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
+                                                name="arrow"></van-icon></span>
                                     </p>
                                 </div>
                             </template>
@@ -103,7 +105,7 @@
 </template>
 
 <script lang="ts">
-import { _alert, lang } from "../../global/common"
+import { _alert, lang, goRoute } from "../../global/common"
 import { defineComponent, onMounted, reactive, ref, computed } from 'vue';
 import { Image } from 'vant';
 import Nav from '../../components/Nav.vue';
@@ -111,7 +113,7 @@ import MyTab from "../../components/Tab.vue";
 import MyListBase from '../../components/ListBase.vue';
 import Service from '../../components/service.vue';
 import MyLoading from '../../components/Loading.vue';
-import { Button, Tab, Tabs, Grid, GridItem, Cell, Field } from "vant";
+import { Button, Tab, Tabs, Grid, GridItem, Cell, Field, Icon } from "vant";
 import { type } from 'os';
 export default defineComponent({
     components: {
@@ -124,6 +126,8 @@ export default defineComponent({
         [GridItem.name]: GridItem,
         [Cell.name]: Cell,
         [Field.name]: Field,
+        [Icon.name]: Icon,
+
     }
 })
 </script>
@@ -146,6 +150,9 @@ const levelList = ref<Array<level>>([
     { img: 'avatar', numbering: 'numbering', number: 910284049 },
 ])
 
+const onLink = (to: any) => {
+    goRoute(to)
+}
 
 const loadingShow = ref(true)
 const pageRef = ref()
@@ -160,7 +167,23 @@ const pdata = reactive({})
 const atype = ref();
 const teamusercount = ref(0);
 const teamusercount1 = ref(0);
+const teamcount = ref(0)
 const LVv = ref('');
+const fy = ref({
+    lv1: '',
+    lv2: '',
+    lv3: ''
+})
+
+const lv1 = ref({
+    people: 0
+})
+const lv2 = ref({
+    people: 0
+})
+const lv3 = ref({
+    people: 0
+})
 
 const linkCopyRef = ref();
 const linkCopyRefCode = ref();
@@ -243,6 +266,106 @@ const onLinkc = (type: string) => {
             loadingShow.value = false
     }
 }
+const getTeam = () => {
+    var delayTime = Math.floor(Math.random() * 1000);
+    setTimeout(() => {
+        http({
+            url: 'c=User&a=GetTeamHierarchyPeopleNum'
+        }).then((res: any) => {
+            for (var it of res.data) {
+                if (it.level == "1") {
+                    lv1.value.people += 1;
+                } else if (it.level == "2") {
+                    lv2.value.people += 1;
+                } else if (it.level == "3") {
+                    lv3.value.people += 1;
+                }
+            }
+
+            var fylStr = res.data.length;
+            // console.log(fylStr);
+            teamcount.value = res.data.length;
+            // console.log(teamcount.value,'人数');
+
+            fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%-(' + lv1.value.people + ')';
+            fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%-(' + lv2.value.people + ')';
+            fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%-(' + lv3.value.people + ')';
+
+
+        })
+    }, delayTime)
+}
+
+const SwitchMembers = (lv: number, type: number) => {
+    // loadingShow.value = true
+    console.log(type);
+
+    if (type == 0) {
+        requesturl1.value = "c=User&a=team&lv=1&type=pay";
+        requesturl2.value = "c=User&a=team&lv=2&type=pay";
+        requesturl3.value = "c=User&a=team&lv=3&type=pay";
+        cpageRef.value = ("c=User&a=team&lv=" + lv + "type=pay");
+        // console.log(requesturl1.value);
+
+    }
+    else {
+        requesturl1.value = "c=User&a=team&lv=1&type=unpay";
+        requesturl2.value = "c=User&a=team&lv=2&type=unpay";
+        requesturl3.value = "c=User&a=team&lv=3&type=unpay";
+        cpageRef.value = ("c=User&a=team&lv=" + lv + "type=unpay");
+    }
+
+    var InactiveMember = document.getElementsByClassName('levelTabValidMember');
+    var levelTabInactiveMember = document.getElementsByClassName('levelTabInactiveMember');
+    if (lv == 1) {
+        if (type == 0) {
+            InactiveMember[0].style.background = "#ccc";
+            InactiveMember[0].style.color = "#002544";
+            levelTabInactiveMember[0].style.background = "#c49b6c";
+            levelTabInactiveMember[0].style.color = "#fff";
+        }
+        else {
+            InactiveMember[0].style.background = "#c49b6c";
+            InactiveMember[0].style.color = "#fff";
+            levelTabInactiveMember[0].style.background = "#ccc";
+            levelTabInactiveMember[0].style.color = "#002544";
+        }
+    }
+    else if (lv == 2) {
+        if (type == 0) {
+            InactiveMember[1].style.background = "#ccc";
+            InactiveMember[1].style.color = "#002544";
+            levelTabInactiveMember[1].style.background = "#c49b6c";
+            levelTabInactiveMember[1].style.color = "#fff";
+        }
+        else {
+            InactiveMember[1].style.background = "#c49b6c";
+            InactiveMember[1].style.color = "#fff";
+            levelTabInactiveMember[1].style.background = "#ccc";
+            levelTabInactiveMember[1].style.color = "#002544";
+        }
+    }
+    else if (lv == 3) {
+        if (type == 0) {
+            InactiveMember[2].style.background = "#ccc";
+            InactiveMember[2].style.color = "#002544";
+            levelTabInactiveMember[2].style.background = "#c49b6c";
+            levelTabInactiveMember[2].style.color = "#fff";
+        }
+        else {
+            InactiveMember[2].style.background = "#c49b6c";
+            InactiveMember[2].style.color = "#fff";
+            levelTabInactiveMember[2].style.background = "#ccc";
+            levelTabInactiveMember[2].style.color = "#002544";
+        }
+    }
+}
+
+onMounted(() => {
+    getusercount()
+    getTeam();
+
+})
 
 const getusercount = () => {
     http({
@@ -262,32 +385,6 @@ const getusercount = () => {
         teamusercount1.value = res.data.count1;
     })
 }
-onMounted(() => {
-    getusercount()
-})
-onMounted(() => {
-    var delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
-        http({
-            url: "c=Share&a=index",
-            data: {
-                Path: window.location.href
-            }
-        }).then((res: any) => {
-            tdata.value = res.data;
-            copy(linkCopyRef.value.$el, {
-                text: (target: HTMLElement) => {
-                    return montage.value.urls.toLocaleLowerCase();
-                },
-            });
-            copy(linkCopyRefCode.value.$el, {
-                text: (target: HTMLElement) => {
-                    return tdata.value.icode;
-                },
-            });
-        });
-    }, delayTime)
-});
 </script>
 <style>
 .van-hairline--top:after {
@@ -401,8 +498,9 @@ onMounted(() => {
                     float: left;
                     border-radius: 10px;
                     text-align: center;
-                    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+                    background: #c49b6c;
                     color: #fff;
+                    font-weight: bold;
                 }
 
                 .levelTabInactiveMember {
@@ -412,8 +510,9 @@ onMounted(() => {
                     float: right;
                     border-radius: 10px;
                     text-align: center;
-                    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+                    background: #c49b6c;
                     color: #fff;
+                    font-weight: bold;
                 }
             }
         }
@@ -493,22 +592,24 @@ onMounted(() => {
 
             p {
                 text-align: center;
-                font: bold 14px/16px 'Rotobo';
+                font: bold 12px/16px 'Rotobo';
 
                 &:nth-child(1) {
-                    width: 32%;
+                    width: 28%;
                 }
 
                 &:nth-child(2) {
-                    width: 20%;
+                    width: 10%;
                 }
 
                 &:nth-child(3) {
-                    width: 20%;
+                    width: 28%;
+                    text-align: right;
                 }
 
                 &:nth-child(4) {
-                    width: 28%;
+                    width: 32%;
+                    text-align: right;
                 }
             }
 

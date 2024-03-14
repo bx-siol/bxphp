@@ -63,7 +63,7 @@
       </div>
       <div class="desc_notice">
         <div class="noticeList">
-          <div class="tablecon" v-html="info.content" style="padding-bottom: 4rem"></div>
+          <div class="tablecon" v-html="info.content"></div>
         </div>
       </div>
     </div>
@@ -194,7 +194,6 @@
   </div>
   <!-- <MyTab></MyTab> -->
   <MyLoading :show="loadingShow" title="Submit"></MyLoading>
-
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
@@ -213,7 +212,7 @@ const imgFlag = (src: string) => {
 export default defineComponent({
   name: "productDet",
   components: {
-    MySwiper, Nav,MyLoading,
+    MySwiper, Nav, MyLoading,
     [Swipe.name]: Swipe,
     [SwipeItem.name]: SwipeItem,
     [Image.name]: Image,
@@ -649,13 +648,20 @@ onMounted(() => {
     .desc_notice {
       margin-top: 1.25rem;
 
-      .noticeList {
-        .tablecon {
-          font-size: 14px;
-          color: #666;
+      .tablecon {
+        font-size: 14px;
+        color: #666;
+        padding-bottom: 4rem;
+        width: 100%;
+        overflow-x: auto;
+
+        p {
+          word-wrap: break-word;
         }
       }
+
     }
+
   }
 }
 </style>
