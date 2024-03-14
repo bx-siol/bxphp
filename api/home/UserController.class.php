@@ -181,8 +181,9 @@ class UserController extends BaseController
 
 			if(empty($teamSize_str))
 				$teamSizeDate = Db::query($teamSize_str);
-				
-			$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
+			
+			if(empty($order_str))
+				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 
 			foreach ($list as &$item) {
 				$item["teamSize"] = 0;
