@@ -171,8 +171,6 @@ class UserController extends BaseController
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
 
-			$teamSize_str = '';
-			$order_str = '';
 			foreach ($list as &$v) {
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
@@ -183,19 +181,14 @@ class UserController extends BaseController
 
 			writeLog('444444444444-'.$teamSize_str,'bobopay1');
 			$teamSizeDate = array();
-			if(!empty($teamSize_str))
+			if(!$teamSize_str)
 			{
 				writeLog('1-'.$teamSize_str,'bobopay1');
 				$teamSizeDate = Db::query($teamSize_str);
-			}else
-			{
-				writeLog('2-'.$teamSize_str,'bobopay1');
-				$teamSizeDate = Db::query($teamSize_str);
-			}
-				
+			}				
 			
 			$orderDate = array();
-			if(!empty($order_str))
+			if(!$order_str)
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 
 			foreach ($list as &$item) {
