@@ -143,11 +143,13 @@ class UserController extends BaseController
 			}
 			$where = " log.pids like '" . $lvstr;
 
+			//有效
 			$count_item1 =  Db::table('sys_user log')
 				->fieldRaw('count(1) as paycnt')
 				->where($where . " and log.first_pay_day>0")
 				->find();
 
+			//无效
 			$count_item2 = Db::table('sys_user log')
 				->fieldRaw('count(1) as unpaycnt')
 				->where($where . " and log.first_pay_day=0")
@@ -159,6 +161,7 @@ class UserController extends BaseController
 				$where .= " and log.first_pay_day=0";
 			}
 
+			//团队总人数
 			$count_item = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where($where)->find();
 
 			$list = Db::view(['sys_user' => 'log'], ['id', 'account', 'nickname', 'headimgurl', 'reg_time'])
@@ -166,8 +169,39 @@ class UserController extends BaseController
 				->order(['log.reg_time' => 'desc'])
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
+			
+			foreach ($list as &$v) {
+				$referrer_str .= $v["id"] . ",";
+				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from syso_user where pids like '%{$v['id']}%';";
+				$order_str .= $v["id"] . ",";
+			}
+			$referrer_str = substr($referrer_str,0, strlen($referrer_str) - 1);
+			$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
+			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
+			$order_str =substr($order_str,0, strlen($order_str) - 1);
+
+			$referrerData = Db::table('syso_user')->where('first_pay_day>0 and pid in ({$referrer_str})')->find('pid,count(pid) as referrer')->group('pid')->select();
+			$teamSizeDate = Db::query($teamSize_str);
+			$orderDate = Db::table('pro_order')->where('uid in ({$order_str})')->find('uid,sum(money) as assets')->group('uid')->select();
 
 			foreach ($list as &$item) {
+				$item["referrer"] = 0;
+				$item["teamSize"] = 0;
+				$item["amount"] = 0;
+				$item["assets"] = 0;
+				
+				foreach ($referrerData as &$v) 
+    				if ($item["id"] == $v['pid'])
+        				$item["referrer"] = $v['referrer'];
+
+				foreach	($teamSizeDate as &$v)
+					if($item["id"] == $v['id'])
+						$item["teamSize"] = $v["teamSize"];
+
+				foreach ($orderDate as &$v)
+					if ($v["id"] == $v["uid"])
+						$item["assets"] = $v['assets'];
+
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv;
 			}
