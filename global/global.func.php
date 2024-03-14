@@ -20,12 +20,6 @@ function writeLog($message, $logFile = "sys")
 }
 /*******缓存redis*******/
 
-//通配符删除
-function redis_delall($key = '', $redis = new MyRedis())
-{
-	return $redis->rmall($key);
-}
-
 //短链接模式 读取
 function redis_get($key)
 {
