@@ -35,3 +35,4 @@ class ServiceController extends BaseController{
 		jReturn(1,'ok',$data);
 	}
 }
+?>
