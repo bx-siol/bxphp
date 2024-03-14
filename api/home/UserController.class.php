@@ -180,11 +180,11 @@ class UserController extends BaseController
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
 			$teamSizeDate = array();
-			if(!$teamSize_str)
+			if($teamSize_str)
 				$teamSizeDate = Db::query($teamSize_str);
 			
 			$orderDate = array();
-			if(!$order_str)
+			if($order_str)
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 
 			foreach ($list as &$item) {
