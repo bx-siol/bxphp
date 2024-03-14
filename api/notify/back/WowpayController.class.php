@@ -30,7 +30,7 @@ class WowpayController extends BaseController
 
 		$sign = paySign($params);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [
@@ -46,10 +46,10 @@ class WowpayController extends BaseController
 	{
 		// $user = checkLogin();
 		// if (!$user) {
-		// 	jReturn(-1, '提交失败，请先打开后台登录后提交');
+		// 	ReturnToJson(-1, '提交失败，请先打开后台登录后提交');
 		// }
 		// if ($user['gid'] == 92) {
-		// 	jReturn(-1, 'error');
+		// 	ReturnToJson(-1, 'error');
 		// }
 		$osn =  $_POST["osn"] ?? $_GET["osn"];
 		$order = Db::table('fin_paylog')->where("osn='{$osn}'")->find();
@@ -78,11 +78,11 @@ class WowpayController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$sign = $signFunc($params);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		//$order=Db::table('fin_cashlog')->where("osn='{$params['merchantCode']}'")->find();

@@ -17,15 +17,15 @@ class UserController extends BaseController
 		$pageuser = checkPower('User_user_update_yx');
 		$params = $this->params;
 		if (!$params['id']) {
-			jReturn(-1, '请填写转出账号');
+			ReturnToJson(-1, '请填写转出账号');
 		}
 		$now_day = date('Ymd', NOW_TIME);
 		$user = Db::table('sys_user')->where(' id=' . $params['id'])->find();
 		if (!$user)
-			jReturn(0, '用户不存在');
+			ReturnToJson(0, '用户不存在');
 		$user['first_pay_day'] = ($user['first_pay_day'] == 0 ? $now_day : 0);
 		Db::table('sys_user')->where(' id=' . $user['id'])->update(['first_pay_day' => $user['first_pay_day']]);
-		jReturn(1, '切换成功', $user);
+		ReturnToJson(1, '切换成功', $user);
 	}
 	public function _user()
 	{
@@ -199,7 +199,7 @@ class UserController extends BaseController
 		if ($params['page'] < 2) {
 			$return_data['p_usn'] = $pageuser['usn'];
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _user_update()
@@ -208,7 +208,7 @@ class UserController extends BaseController
 		$params = $this->params;
 		$item_id = intval($params['id']);
 		if (!$params['nickname']) {
-			jReturn(-1, '请填写昵称');
+			ReturnToJson(-1, '请填写昵称');
 		}
 		$data = [
 			'nickname' => $params['nickname'],
@@ -223,12 +223,12 @@ class UserController extends BaseController
 
 		if ($params['phone']) {
 			if (!isPhone($params['phone'])) {
-				jReturn(-1, '请填写正确的手机号');
+				ReturnToJson(-1, '请填写正确的手机号');
 			}
 			$check_phone = Db::table('sys_user')->whereRaw('phone=:phone', ['phone' => $params['phone']])->find();
 			if ($check_phone) {
 				if (!$item_id || ($item_id && $item_id != $check_phone['id'])) {
-					jReturn(-1, '手机号已存在请更换');
+					ReturnToJson(-1, '手机号已存在请更换');
 				}
 			}
 			$data['phone'] = $params['phone'];
@@ -264,11 +264,11 @@ class UserController extends BaseController
 		$data['gid'] = intval($params['gid']);
 		$sys_group = getGroupsIdx();
 		if (!array_key_exists($data['gid'], $sys_group)) {
-			jReturn(-1, '不存在相应分组');
+			ReturnToJson(-1, '不存在相应分组');
 		}
 		if ($pageuser['gid'] != 1) {
 			if ($data['gid'] <= $pageuser['gid']) {
-				jReturn(-1, '您的级别不足以设置该所属分组');
+				ReturnToJson(-1, '您的级别不足以设置该所属分组');
 			}
 		}
 
@@ -289,12 +289,12 @@ class UserController extends BaseController
 					if ($item_id) {
 						$down_ids = getDownUser($item_id);
 						if (in_array($p_user['id'], $down_ids)) {
-							jReturn(-1, '邀请人不能是该用户的下级');
+							ReturnToJson(-1, '邀请人不能是该用户的下级');
 						}
 					}
 					$data['pid'] = $p_user['id'];
 				} else {
-					jReturn(-1, '不存在该邀请人账号：' . $params['p_account']);
+					ReturnToJson(-1, '不存在该邀请人账号：' . $params['p_account']);
 				}
 			}
 		} else {
@@ -307,15 +307,15 @@ class UserController extends BaseController
 
 		if (!$item_id) {
 			if (!$params['account']) {
-				jReturn(-1, '请填写账号');
+				ReturnToJson(-1, '请填写账号');
 			}
 			if (utf8_strlen($params['account']) < 4 || utf8_strlen($params['account']) > 50) {
-				jReturn('-1', '请输入4-50个字符的账号');
+				ReturnToJson('-1', '请输入4-50个字符的账号');
 			}
 			//检查帐号是否已经存在
 			$account = Db::table('sys_user')->whereRaw('account=:account', ['account' => $params['account']])->find();
 			if ($account['id']) {
-				jReturn(-1, "账号{$params['account']}已经存在");
+				ReturnToJson(-1, "账号{$params['account']}已经存在");
 			}
 
 			$data['icode'] = genIcode();
@@ -327,12 +327,12 @@ class UserController extends BaseController
 			if ($pageuser['gid'] > 41) {
 				$uid_arr = getDownUser($pageuser['id']);
 				if (!in_array($item_id, $uid_arr)) {
-					jReturn(-1, '不是自己下级用户无法编辑');
+					ReturnToJson(-1, '不是自己下级用户无法编辑');
 				}
 			}
 			// if ($item_id == 1) {
 			// 	if ($pageuser['id'] != 1) {
-			// 		jReturn(-1, '没有修改该账号的权限');
+			// 		ReturnToJson(-1, '没有修改该账号的权限');
 			// 	}
 			// 	$data['gid'] = 1;
 			// 	$data['status'] = 2;
@@ -346,7 +346,7 @@ class UserController extends BaseController
 		try {
 			if ($item_id) {
 				if ($data['pid'] == $item_id) {
-					jReturn(-1, '无法将上级设置为自己');
+					ReturnToJson(-1, '无法将上级设置为自己');
 				}
 				$res = Db::table('sys_user')->whereRaw('id=:id', ['id' => $item_id])->update($data);
 				$user = Db::table('sys_user')->whereRaw('id=:id', ['id' => $item_id])->find();
@@ -367,7 +367,7 @@ class UserController extends BaseController
 				$data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试', ['msgc' => $e->getMessage()]);
+			ReturnToJson(-1, '系统繁忙请稍后再试', ['msgc' => $e->getMessage()]);
 		}
 
 		//刷新用户信息缓存
@@ -396,7 +396,7 @@ class UserController extends BaseController
 			$return_data['icode_status_flag'] = $data['icode_status'] == 0 ? '正常' : '禁用';
 		}
 
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	//删除
@@ -405,26 +405,26 @@ class UserController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		if ($item_id == 1) {
-			jReturn(-1, '超级管理员不能删除');
+			ReturnToJson(-1, '超级管理员不能删除');
 		}
 		if ($pageuser['gid'] > 41) {
 			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 			if (!in_array($item_id, $uid_arr)) {
-				jReturn(-1, '不是自己的用户无法删除');
+				ReturnToJson(-1, '不是自己的用户无法删除');
 			}
 		}
 		$item = Db::table('sys_user')->whereRaw('id=:id', ['id' => $item_id])->find();
 		if (!$item) {
-			jReturn('-1', '不存在相应的用户');
+			ReturnToJson('-1', '不存在相应的用户');
 		}
 		$sys_user = ['status' => 99];
 		updateUserinfo($item_id, $sys_user);
 		kickUser($item_id);
 		actionLog(['opt_name' => '删除用户', 'sql_str' => json_encode($item, 256)]);
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	//踢下线
@@ -433,19 +433,19 @@ class UserController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		if ($pageuser['gid'] != 1) {
 			$uid_arr = getDownUser($pageuser['id']);
 			if (!in_array($item_id, $uid_arr)) {
-				jReturn(-1, '不是自己的用户无法踢下线');
+				ReturnToJson(-1, '不是自己的用户无法踢下线');
 			}
 		}
 		$res = kickUser($item_id);
 		if ($res === false) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '成功踢下线');
+		ReturnToJson(1, '成功踢下线');
 	}
 
 	//后台统一充值余
@@ -453,41 +453,41 @@ class UserController extends BaseController
 	{
 		$pageuser = checkPower();
 		$params = $this->params;
-		$params['id'] = intval($params['id']);
+		$userid = intval($params['id']);
 		$money = floatval($params['money']);
 		if ($money == 0) {
-			jReturn(-1, '填写的额度不正确');
+			ReturnToJson(-1, '填写的额度不正确');
 		}
 		$pageuser = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		$password2 = getPassword($params['password2']);
 		if ($pageuser['password2'] != $password2) {
-			jReturn(-1, '二级密码不正确');
+			ReturnToJson(-1, '二级密码不正确');
 		}
 		Db::startTrans();
 		try {
-			$user = Db::table('sys_user')->whereRaw('id=:id', ['id' => $params['id']])->lock(true)->find();
+			$user = Db::table('sys_user')->whereRaw('id=:id', ['id' => $userid])->lock(true)->find();
 			if (!$user) {
-				jReturn('-1', '不存在要操作的用户');
+				ReturnToJson('-1', '不存在要操作的用户');
 			}
 
 			if ($pageuser['gid'] > 41) {
-				jReturn('-1', '未开放充值类型');
+				ReturnToJson('-1', '未开放充值类型');
 			}
 			$sys_user = [];
 			if ($params['ptype'] == 1) {
 				$sys_user['balance'] = $user['balance'] + $money;
 				if ($sys_user['balance'] < 0) {
-					jReturn(-1, '用户可用余额不足');
+					ReturnToJson(-1, '用户可用余额不足');
 				}
 				$res2 = balanceLog($user, 1, 2, $money, $user['id'], $params['remark']);
 			} elseif ($params['ptype'] == 2) {
 				$sys_user['fz_balance'] = $user['fz_balance'] + $money;
 				if ($sys_user['fz_balance'] < 0) {
-					jReturn(-1, '用户可用冻结不足');
+					ReturnToJson(-1, '用户可用冻结不足');
 				}
 				$res2 = balanceLog($user, 2, 3, $money, $user['id'], $params['remark']);
 			} else {
-				jReturn(-1, '未知操作类型');
+				ReturnToJson(-1, '未知操作类型');
 			}
 			$res = Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 			if (!$res || !$res2 || !$res2) {
@@ -500,10 +500,10 @@ class UserController extends BaseController
 				'balance' => $new_user['balance'],
 				'fz_balance' => $new_user['fz_balance']
 			];
-			jReturn(1, '操作成功', $return_data);
+			ReturnToJson(1, '操作成功', $return_data);
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 	}
 
@@ -518,26 +518,26 @@ class UserController extends BaseController
 		$password2 = getPassword($params['password2'] ?? '');
 
 		if (!$from_account || !$to_account) {
-			jReturn(-1, '请填写转入/转出账号');
+			ReturnToJson(-1, '请填写转入/转出账号');
 		}
 		if ($from_account == $to_account) {
-			jReturn(-1, '转入账号和转出账号不能相同');
+			ReturnToJson(-1, '转入账号和转出账号不能相同');
 		}
 
 		if ($pageuser['password2'] != $password2) {
-			jReturn(-1, '二级密码不正确');
+			ReturnToJson(-1, '二级密码不正确');
 		}
 
 		$from_user = Db::table('sys_user')->where("account='{$from_account}'")->find();
 		$to_user = Db::table('sys_user')->where("account='{$to_account}'")->find();
 
 		if (!$from_user || !$to_user) {
-			jReturn(-1, '账号不存在');
+			ReturnToJson(-1, '账号不存在');
 		}
 		$down_ids = getDownUser($from_user['id']);
 		$uid_str = implode(',', $down_ids);
 		if (in_array($to_user['id'], $down_ids)) {
-			jReturn(-1, '转入账号不能是转出账号的下级');
+			ReturnToJson(-1, '转入账号不能是转出账号的下级');
 		}
 		$sq = 0;
 		Db::startTrans();
@@ -552,7 +552,7 @@ class UserController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		sleep(1);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
@@ -566,7 +566,7 @@ class UserController extends BaseController
 			$sq += Db::execute($sql);
 		}
 		$sq += Db::execute($sql);
-		jReturn(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
+		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
 	}
 
 	public function _transferAct3()
@@ -574,12 +574,12 @@ class UserController extends BaseController
 		$pageuser = checkPower();
 		$sys_user = $this->params;
 		if (!$sys_user['from_account']) {
-			jReturn(-1, '请填写要同步的账户');
+			ReturnToJson(-1, '请填写要同步的账户');
 		}
 		$sys_user = Db::table('sys_user')->where("account='{$sys_user['from_account']}'")->find();
 		//更新sys_user表的pidg1 pidg2
 		$down_arr = Db::table('sys_user')->where("account='{$sys_user['account']}'")->update(['pidg1' => 0, 'pidg2' => 0]);
-		jReturn(1, '同步成功 数量：' . $down_arr);
+		ReturnToJson(1, '同步成功 数量：' . $down_arr);
 	}
 
 
@@ -588,7 +588,7 @@ class UserController extends BaseController
 		$pageuser = checkPower();
 		$params = $this->params;
 		if (!$params['deft']) {
-			jReturn(-1, '没有需要同步的账户');
+			ReturnToJson(-1, '没有需要同步的账户');
 		}
 
 		Db::startTrans();
@@ -600,9 +600,9 @@ class UserController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '同步成功');
+		ReturnToJson(1, '同步成功');
 	}
 
 	public function _transferAct1()
@@ -610,18 +610,18 @@ class UserController extends BaseController
 		$pageuser = checkPower();
 		$params = $this->params;
 		if (!$params['from_account']) {
-			jReturn(-1, '请填写转出账号');
+			ReturnToJson(-1, '请填写转出账号');
 		}
 		if ($pageuser['password2'] != getPassword($params['password2'])) {
-			jReturn(-1, '二级密码不正确');
+			ReturnToJson(-1, '二级密码不正确');
 		}
 		$from_user = Db::table('sys_user')->where("account='{$params['from_account']}'")->find();
 		if (!$from_user) {
-			jReturn(-1, '不存在代理账号');
+			ReturnToJson(-1, '不存在代理账号');
 		}
 		$arr1 = getDownUser($from_user['id']);
 		$arr2 = getDownUser($from_user['id'], false, $from_user);
-		jReturn(1, '转移成功', ['arr1' => $arr1, 'arr2' => $arr2]);
+		ReturnToJson(1, '转移成功', ['arr1' => $arr1, 'arr2' => $arr2]);
 	}
 
 	//批量禁用和解禁，转有效无效
@@ -631,7 +631,7 @@ class UserController extends BaseController
 		$params['status'] = intval($params['status']);
 		$ids = [];
 		if (!$this->params['ids']) {
-			jReturn(-1, '至少选择一项');
+			ReturnToJson(-1, '至少选择一项');
 		}
 		foreach ($this->params['ids'] as $id) {
 			$id = intval($id);
@@ -641,7 +641,7 @@ class UserController extends BaseController
 			$ids[] = $id;
 		}
 		if (!$ids) {
-			jReturn(-1, '至少选择一项');
+			ReturnToJson(-1, '至少选择一项');
 		}
 		if ($params['bs']) {
 			if ($params['status'] == 0)
@@ -657,7 +657,7 @@ class UserController extends BaseController
 				Db::table('sys_user')->where("id={$item_id}")->update(["{$params['field']}" => $params['status']]);
 			}
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	//##################用户管理结束##################
@@ -710,7 +710,7 @@ class UserController extends BaseController
 		if ($params['page'] < 2) {
 			$return_data['rauth_status'] = $cnf_rauth_status;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _rauth_check()
@@ -720,24 +720,24 @@ class UserController extends BaseController
 		$params['status'] = intval($params['status']);
 		$cnf_rauth_status = getConfig('cnf_rauth_status');
 		if (!array_key_exists($params['status'], $cnf_rauth_status)) {
-			jReturn(-1, '未知审核状态');
+			ReturnToJson(-1, '未知审核状态');
 		}
 		$item_id = intval($params['uid']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('sys_user_rauth');
 		$item = $model->whereRaw('uid=:id', ['id' => $item_id])->find();
 		if (!$item) {
-			jReturn(-1, '不存在相应的记录');
+			ReturnToJson(-1, '不存在相应的记录');
 		}
 		if (!in_array($item['status'], [1, 2])) {
-			jReturn(-1, '当前状态不可操作');
+			ReturnToJson(-1, '当前状态不可操作');
 		}
 		if ($pageuser['gid'] > 41) {
 			$uid_arr = getDownUser($pageuser['id']);
 			if (!in_array($item['uid'], $uid_arr)) {
-				jReturn(-1, '不是自己的用户无法操作');
+				ReturnToJson(-1, '不是自己的用户无法操作');
 			}
 		}
 		$db_data = [
@@ -748,7 +748,7 @@ class UserController extends BaseController
 		try {
 			$model->where("uid={$item['uid']}")->update($db_data);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		updateUserinfo($item['uid'], ['realname' => $item['realname']]);
 		$cnf_rauth_status = getConfig('cnf_rauth_status');
@@ -757,7 +757,7 @@ class UserController extends BaseController
 			'status_flag' => $cnf_rauth_status[$db_data['status']],
 			'check_time' => date('m-d H:i', $db_data['check_time'])
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	//用户分组
@@ -792,7 +792,7 @@ class UserController extends BaseController
 			'count' => intval($count_item['cnt']),
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	public function _group_update()
@@ -803,13 +803,13 @@ class UserController extends BaseController
 		$params['nid'] = intval($params['nid']);
 		$params['sort'] = intval($params['sort']);
 		if ($params['nid'] < 0) {
-			jReturn(-1, '请填写正确的ID');
+			ReturnToJson(-1, '请填写正确的ID');
 		}
 		if (!$params['name']) {
-			jReturn(-1, '请填写名称');
+			ReturnToJson(-1, '请填写名称');
 		}
 		if (!$params['cover']) {
-			jReturn(-1, '请上传图标');
+			ReturnToJson(-1, '请上传图标');
 		}
 		$db_data = [
 			'name' => $params['name'],
@@ -831,12 +831,12 @@ class UserController extends BaseController
 				$db_data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$this->flushGroups();
 		actionLog(['opt_name' => '更新', 'sql_str' => json_encode($db_data)]);
 		$return_data = [];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _group_delete()
@@ -844,25 +844,25 @@ class UserController extends BaseController
 		checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		} else {
 			if ($item_id == 1) {
-				jReturn(-1, '超管组不可删除');
+				ReturnToJson(-1, '超管组不可删除');
 			}
 		}
 		$model = Db::table('sys_group');
 		$item = $model->where("id={$item_id} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		$db_data = ['status' => 99];
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$this->flushGroups();
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	private function flushGroups()
@@ -880,7 +880,7 @@ class UserController extends BaseController
 			'url' => $url,
 			'qrcode' => genQrcode($url)
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//用户留言
@@ -895,7 +895,7 @@ class UserController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -926,7 +926,7 @@ class UserController extends BaseController
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	public function _message_delete()
@@ -934,20 +934,20 @@ class UserController extends BaseController
 		checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('msg_list');
 		$item = $model->where("id={$item_id} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		$db_data = ['status' => 99];
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	public function _message_log()
@@ -962,7 +962,7 @@ class UserController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -989,7 +989,7 @@ class UserController extends BaseController
 		if ($params['page'] < 2) {
 		}
 		Db::table('msg_list')->where("id={$params['mid']}")->update(['is_new' => 0]);
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	public function _message_reply()
@@ -998,14 +998,14 @@ class UserController extends BaseController
 		$params = $this->params;
 		$params['mid'] = intval($params['mid']);
 		if (!$params['mid']) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		if (!$params['content']) {
-			jReturn(-1, '请填写回复内容');
+			ReturnToJson(-1, '请填写回复内容');
 		}
 		$item = Db::table('msg_list')->where("id={$params['mid']} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '不存在相应的记录');
+			ReturnToJson(-1, '不存在相应的记录');
 		}
 		try {
 			$msg_list_log = [
@@ -1016,9 +1016,9 @@ class UserController extends BaseController
 			];
 			Db::table('msg_list_log')->insertGetId($msg_list_log);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	//会员统计
@@ -1091,7 +1091,7 @@ class UserController extends BaseController
 		$params['s_money_to'] = floatval($params['s_money_to']);
 		if ($params['s_money_from'] > 0 && $params['s_money_to'] > 0) {
 			if ($params['s_money_from'] > $params['s_money_to']) {
-				jReturn(-1, '起始金额不能小于结束金额');
+				ReturnToJson(-1, '起始金额不能小于结束金额');
 			}
 			$where .= " and log.total_invest2 between {$params['s_money_from']} and {$params['s_money_to']}";
 		}
@@ -1160,7 +1160,7 @@ class UserController extends BaseController
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	//代理查询
@@ -1180,7 +1180,7 @@ class UserController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:01');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始日期不能超过结束日期');
+				ReturnToJson(-1, '开始日期不能超过结束日期');
 			}
 		}
 		if ($params['type'] == 1) {
@@ -1343,6 +1343,6 @@ class UserController extends BaseController
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 }

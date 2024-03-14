@@ -73,7 +73,7 @@ class DefaultController extends BaseController
 		$return_data = [
 			'notice' => $notice,
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _notice()
@@ -121,7 +121,7 @@ class DefaultController extends BaseController
 			'notice' => $notice,
 			//'p' => $prize
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _GetService()
@@ -146,12 +146,12 @@ class DefaultController extends BaseController
 		$return_data = [
 			'service_arr' => $service_arr
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _get120rs()
 	{
-		jReturn(-1, 'The event has expired, please look forward to new events');
+		ReturnToJson(-1, 'The event has expired, please look forward to new events');
 		return;
 		$pageuser = checkLogin();
 		$wallet = getWallet($pageuser['id'], 2);
@@ -160,7 +160,7 @@ class DefaultController extends BaseController
 		}
 		$user = Db::table('sys_user')->where("id={$pageuser['id']}")->lock(true)->find();
 		if (intval($user['gift']) != 0) {
-			jReturn(-1, 'You have received the new reward');
+			ReturnToJson(-1, 'You have received the new reward');
 			return;
 		}
 		Db::table('sys_user')->where("id={$user['id']}")->update(['gift' => 1]);
@@ -184,7 +184,7 @@ class DefaultController extends BaseController
 		if (!$result) {
 			throw new \Exception('流水记录写入失败');
 		}
-		jReturn(1, 'ok');
+		ReturnToJson(1, 'ok');
 	}
 	public function _index()
 	{
@@ -309,6 +309,6 @@ class DefaultController extends BaseController
 			'gift' => $pageuser['gift'],
 			//'service_arr' => $service_arr
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 }

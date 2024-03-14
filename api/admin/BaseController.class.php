@@ -19,9 +19,9 @@ class BaseController extends CommonCtl{
 		try{
 			Db::table($table)->where([$id_name=>$id_value])->save([$field=>$value]); // 根据条件保存修改的数据
 		}catch(\Exception $e){
-			jReturn(-1,'系统繁忙请稍后再试');
+			ReturnToJson(-1,'系统繁忙请稍后再试');
 		}
-		jReturn(1,'操作成功');
+		ReturnToJson(1,'操作成功');
 	}
 	
 }

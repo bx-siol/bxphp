@@ -37,7 +37,7 @@ class Fastpay3Controller extends BaseController
 
 		if ($params['sign'] != $sign) {
 			file_put_contents($logpathd, NOW_DATE . "\r\n" . 'singree' . "\r\n\r\n", FILE_APPEND);
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [
@@ -69,14 +69,14 @@ class Fastpay3Controller extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$sign = $signFunc($params);
 
 		file_put_contents($logpathd, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params) . "\r\n\r\n", FILE_APPEND);
 
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		//$order=Db::table('fin_cashlog')->where("osn='{$params['merchantCode']}'")->find();

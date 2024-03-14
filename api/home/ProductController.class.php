@@ -15,7 +15,7 @@ class ProductController extends BaseController
 	{
 		$category_arr = Db::table('pro_category')->where("pid=0 and status=2")->order(['sort' => 'desc', 'id' => 'asc'])->select()->toArray();
 		$return_data = ['category_arr' => $category_arr];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	public function _list1()
 	{
@@ -52,55 +52,69 @@ class ProductController extends BaseController
 				$c1time,
 			]
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	public function _list()
 	{
-		$intime = time(); //
+
 		$cpageSize = 200;
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$logintime = time(); //
 		$params['page'] = intval($params['page']);
 		if ($params['page'] < 1) {
 			$params['page'] = 1;
 		}
+		$rediskey = RedisKeys::Goods . "_list_{$params['page']}_";
 		$params['cid'] = intval($params['cid']);
 
 		$where = "1=1 and log.status>1 and log.status<99";
 		if ($params['cid']) {
 			$where .= " and log.cid={$params['cid']}";
+			$rediskey .= $params['cid'];
 		} else {
-			if (intval($params['ishot']) != 1)
-				$where .= " and log.cid !=1019";
+			$where .= " and log.pointshop !=1";
+			$rediskey .= "pointshop";
 		}
 
 		if (intval($params['ishot']) == 1) {
 			$where .= " and log.is_hot=1";
+			$rediskey .= 'is_hot';
 		}
-		$count_item = Db::table('pro_goods log')
-			->leftJoin('pro_category c', 'log.cid=c.id')
-			->fieldRaw('count(1) as cnt')
-			->where($where)
-			->find();
 
-		$list = Db::view(['pro_goods' => 'log'], ['*'])
-			->view(['pro_category' => 'c'], ['name' => 'category_name'], 'log.cid=c.id', 'LEFT')
-			->where($where)
-			->order(['log.sort' => 'desc'])
-			->page($params['page'], $cpageSize)
-			->select()->toArray();
-		$list1time = time(); //
-		foreach ($list as &$item) {
-			$this->goodsItem($item);
-			if ($item['covers']) {
-				$item['covers'] = [$item['covers'][0]];
+		$count_item = $this->redis->get($rediskey . 'count');
+		if (!$count_item) {
+			$count_item = Db::table('pro_goods log')
+				->leftJoin('pro_category c', 'log.cid=c.id')
+				->fieldRaw('count(1) as cnt')
+				->where($where)
+				->find();
+			$this->redis->set($rediskey . 'count', $count_item);
+		}
+
+		$list = $this->redis->get($rediskey);
+		if (!$list) {
+			$list = Db::view(['pro_goods' => 'log'], ['*'])
+				->view(['pro_category' => 'c'], ['name' => 'category_name'], 'log.cid=c.id', 'LEFT')
+				->where($where)
+				->order(['log.sort' => 'desc'])
+				->page($params['page'], $cpageSize)
+				->select()->toArray();
+
+			foreach ($list as &$item) {
+				$this->goodsItem($item);
+				if ($item['covers']) {
+					$item['covers'] = [$item['covers'][0]];
+				}
+				$item['djss'] = time();
 			}
-			$item['djss'] = time();
+			$this->redis->set($rediskey, $list);
 		}
 
-		$category_arr = Db::table('pro_category')->where("pid=0 and status=2")->order(['sort' => 'desc', 'id' => 'asc'])->select()->toArray();
-		$c1time = time(); //
+		$category_arr = $this->redis->get(RedisKeys::Goods . "category");
+		if (!$category_arr) {
+			$category_arr = Db::table('pro_category')->where("pid=0 and status=2")->order(['sort' => 'desc', 'id' => 'asc'])->select()->toArray();
+			$this->redis->set(RedisKeys::Goods . "category", $category_arr);
+		}
 		$total_page = ceil($count_item['cnt'] / $cpageSize);
 		$return_data = [
 			'list' => $list,
@@ -109,39 +123,42 @@ class ProductController extends BaseController
 			'finished' => $params['page'] >= $total_page ? true : false,
 			'limit' => $cpageSize,
 			'category_arr' => $category_arr,
-			'time' => [
-				$intime,
-				$logintime,
-				$list1time,
-				$c1time,
-			]
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _goods()
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		if (!$params['gsn']) {
-			jReturn(-1, '缺少参数');
-		}
-		$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
+		if (!$params['gsn'])
+			ReturnToJson(-1, '缺少参数');
+		$rediskey_goods = RedisKeys::Goods . $params['gsn'];
+		$item = $this->redis->get($rediskey_goods);
 		if (!$item) {
-			jReturn(-1, '不存在相应的记录');
+			$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
+			$this->redis->set($rediskey_goods, $item, 86400);
 		}
+
+
+		if (!$item)
+			ReturnToJson(-1, '不存在相应的记录');
+
 		$this->goodsItem($item);
 		$wallet1 = getWallet($pageuser['id'], 1);
 		$wallet2 = getWallet($pageuser['id'], 2);
 		$wallet3 = getWallet($pageuser['id'], 3);
+
 		//可用代金券
 		$now_time = time();
+
 		$coupon_list = rows2arr(Db::table('coupon_list')->where("1=1")->field(['id', 'name', 'cover'])->select()->toArray());
 
 		$cp_where = " uid={$pageuser['id']} and type=1 and status in (1,2) and num > used and ( effective_time=0 or (effective_time>0 and effective_time>{$now_time})) ";
 		$coupon_logs = Db::table('coupon_log')->where($cp_where)->field(['id', 'cid', 'money', 'discount', 'num', 'used', 'create_time', 'effective_time'])->select()->toArray();
+
 		$coupon_arr = [];
 		$coupon_cids = [];
 		if ($coupon_logs) {
@@ -172,7 +189,7 @@ class ProductController extends BaseController
 			'wallet3' => $wallet3,
 			'coupon_arr' => $coupon_arr
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	private function goodsItem(&$item)
@@ -207,7 +224,7 @@ class ProductController extends BaseController
 		$money = floatval($params['money']);
 		$quantity = intval($params['quantity']);
 		if ($quantity < 1 || $quantity > 1000) {
-			jReturn(-1, 'Incorrect purchase quantity');
+			ReturnToJson(-1, 'Incorrect purchase quantity');
 		}
 		$return_data = [];
 		Db::startTrans();
@@ -215,19 +232,19 @@ class ProductController extends BaseController
 			$pageuser = Db::table('sys_user')->where("id='{$pageuser['id']}'")->find();
 			$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 			if (!$item) {
-				jReturn(-1, '不存在相应的产品');
+				ReturnToJson(-1, '不存在相应的产品');
 			} else {
 				if ($item['djs'] != 0 && $item['djs'] < time()) {
-					jReturn(-1, 'The final purchase deadline for the current product has expired');
+					ReturnToJson(-1, 'The final purchase deadline for the current product has expired');
 				}
 				if ($item['status'] != 3) {
 					if ($item['status'] == 9) {
-						//jReturn(-1,'该成品已没有可投资额度');
-						jReturn(-1, 'The product has been sold out');
+						//ReturnToJson(-1,'该成品已没有可投资额度');
+						ReturnToJson(-1, 'The product has been sold out');
 					} elseif ($item['status'] == 2) {
-						jReturn(-1, 'Unable to activate during pre-sale');
+						ReturnToJson(-1, 'Unable to activate during pre-sale');
 					} else {
-						jReturn(-1, '该产品已下线');
+						ReturnToJson(-1, '该产品已下线');
 					}
 				}
 				$money = $quantity * $item['price'];
@@ -235,7 +252,7 @@ class ProductController extends BaseController
 				if (in_array($item['id'], ['78', '79', '80', '81', '82', '83'])) {
 					$user_numold = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 ")->sum('num');
 					if ($user_numold <= 0) {
-						jReturn(-1, 'Purchase failed, please contact the person in charge');
+						ReturnToJson(-1, 'Purchase failed, please contact the person in charge');
 					}
 				}
 				//要求用户邀请新人才可以购买
@@ -246,7 +263,7 @@ class ProductController extends BaseController
 
 					$xjcount = Db::table('sys_user')->where(' first_pay_day>0 and pid=' . $pageuser['id'])->count();
 					if ($xjcount < $item['yaoqing']) {
-						jReturn(-1, 'This product needs more than ' . $item['yaoqing'] . ' people in your team to purchase valid products');
+						ReturnToJson(-1, 'This product needs more than ' . $item['yaoqing'] . ' people in your team to purchase valid products');
 					}
 				}
 
@@ -257,7 +274,7 @@ class ProductController extends BaseController
 					if ($user_num1 == 0)
 						$p3 = 1;
 					if ($user_num + $quantity > $item['invest_limit']) {
-						jReturn(-1, 'Purchase quantity exceeds the limit');
+						ReturnToJson(-1, 'Purchase quantity exceeds the limit');
 					}
 				}
 			}
@@ -265,7 +282,7 @@ class ProductController extends BaseController
 			if ($item['is_xskc'] == 1) {
 				if ($item['kc'] < $quantity) {
 					Db::rollback();
-					jReturn(-1, 'The current inventory is insufficient, please reduce the purchase quantity or contact your manager');
+					ReturnToJson(-1, 'The current inventory is insufficient, please reduce the purchase quantity or contact your manager');
 				}
 				$kc = $item['kc'] - $quantity;
 				$kc = $kc > 0 ? $kc : 0;
@@ -312,7 +329,7 @@ class ProductController extends BaseController
 				$w3_money = $quantity * $item['price'];
 				if ($wallet3['balance'] < $w3_money) {
 					Db::rollback();
-					jReturn(-1, 'Your points are insufficient');
+					ReturnToJson(-1, 'Your points are insufficient');
 				}
 				$wallet_data3 = [
 					'balance' => $wallet3['balance'] - $w3_money
@@ -342,25 +359,25 @@ class ProductController extends BaseController
 				if ($params['coupon'] != '-1' && $params['coupon']) {
 					$coupon = Db::table('coupon_log')->where("id={$params['coupon']}")->lock(true)->find();
 					if (!$coupon || $coupon['status'] > 2) {
-						jReturn(-1, 'This discount coupon is not available');
+						ReturnToJson(-1, 'This discount coupon is not available');
 					}
 					if ($coupon['uid'] != $pageuser['id']) {
-						jReturn(-1, 'This discount coupon is not available');
+						ReturnToJson(-1, 'This discount coupon is not available');
 					}
 					if ($coupon['num'] <= $coupon['used']) {
-						jReturn(-1, 'This discount coupon is not available');
+						ReturnToJson(-1, 'This discount coupon is not available');
 					}
 					$gids = json_decode($coupon['gids'], true);
 					if ($gids && !in_array($item['id'], $gids)) {
-						jReturn(-1, 'This product cannot be used for this coupon');
+						ReturnToJson(-1, 'This product cannot be used for this coupon');
 					}
 					if ($coupon['effective_time'] && $coupon['effective_time'] <= NOW_TIME) {
-						jReturn(-1, 'This coupon has expired');
+						ReturnToJson(-1, 'This coupon has expired');
 					}
 
 					if ($coupon['cid'] == 16) {
 						if (!in_array($item['id'], [76, 77, 78, 79, 80, 81])) {
-							jReturn(-1, 'This product cannot use the coupon');
+							ReturnToJson(-1, 'This product cannot use the coupon');
 						}
 					}
 
@@ -393,7 +410,7 @@ class ProductController extends BaseController
 					$w2_money = 0;
 					if (floatval($wallet1['balance']) < $discount_total) {
 						Db::rollback();
-						jReturn(-1, '您的余额不足');
+						ReturnToJson(-1, '您的余额不足');
 					}
 				} else {
 					//首次购买，保留余额钱包
@@ -403,11 +420,11 @@ class ProductController extends BaseController
 								$w1_money = $discount_total;
 							} else {
 								Db::rollback();
-								jReturn(-1, '您的余额不足');
+								ReturnToJson(-1, '您的余额不足');
 							}
 						} else {
 							Db::rollback();
-							jReturn(-1, '您的余额不足');
+							ReturnToJson(-1, '您的余额不足');
 						}
 					} else {
 						if ($wallet2['balance'] > 0) { //余额钱包有余额
@@ -432,11 +449,11 @@ class ProductController extends BaseController
 
 				if ($wallet1['balance'] < $w1_money) {
 					Db::rollback();
-					jReturn(-1, '您的余额不足');
+					ReturnToJson(-1, '您的余额不足');
 				}
 				if ($wallet2['balance'] < $w2_money) {
 					Db::rollback();
-					jReturn(-1, '您的余额不足');
+					ReturnToJson(-1, '您的余额不足');
 				}
 
 
@@ -755,9 +772,9 @@ class ProductController extends BaseController
 			$return_data['osn1'] = $sjcq;
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
+			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
 		}
-		jReturn(1, 'Successful purchase', $return_data);
+		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
 
 
@@ -770,7 +787,7 @@ class ProductController extends BaseController
 		$money = floatval($params['money']);
 		$quantity = intval($params['quantity']);
 		if ($quantity < 1 || $quantity > 1000)
-			jReturn(-1, 'Incorrect purchase quantity');
+			ReturnToJson(-1, 'Incorrect purchase quantity');
 		$return_data = [];
 		Db::startTrans();
 		try {
@@ -779,7 +796,7 @@ class ProductController extends BaseController
 			if (!$item) {
 				$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 				if (!$item)
-					jReturn(-1, '不存在相应的产品');
+					ReturnToJson(-1, '不存在相应的产品');
 				$this->redis->set('pro_goods_' . $params['gsn'], $item, 60 * 60);
 			}
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
@@ -794,12 +811,13 @@ class ProductController extends BaseController
 				$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
 			}
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_ORDER . $pageuser['id']);
 			$return_data['osn'] = $pro_order['osn'];
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
+			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
 		}
-		jReturn(1, 'Successful purchase', $return_data);
+		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
 
 	//验证产品购买条件
@@ -808,29 +826,29 @@ class ProductController extends BaseController
 		$err = "";
 		$p3 = 0;
 		if ($item['djs'] != 0 && $item['djs'] < time()) {
-			jReturn(-1, 'The final purchase deadline for the current product has expired');
+			ReturnToJson(-1, 'The final purchase deadline for the current product has expired');
 		}
 		if ($item['status'] != 3) {
 			if ($item['status'] == 9) {
-				jReturn(-1, 'The product has been sold out');
+				ReturnToJson(-1, 'The product has been sold out');
 			} elseif ($item['status'] == 2) {
-				jReturn(-1, 'Unable to activate during pre-sale');
+				ReturnToJson(-1, 'Unable to activate during pre-sale');
 			} else {
-				jReturn(-1, 'The product has been sold out');
+				ReturnToJson(-1, 'The product has been sold out');
 			}
 		}
 		//老用户专属购买  以下产品需要已经购买了其他产品才能购买
 		// if (in_array($item['id'], ['78', '79', '80', '81', '82', '83'])) {
 		// 	$user_numold = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 ")->sum('num');
 		// 	if ($user_numold <= 0) {
-		// 		jReturn(-1, 'Purchase failed, please contact the person in charge');
+		// 		ReturnToJson(-1, 'Purchase failed, please contact the person in charge');
 		// 	}
 		// }
 		//要求用户邀请新人才可以购买
 		if ($item['yaoqing'] > 0) {
 			$xjcount = Db::table('sys_user')->where(' first_pay_day>0 and pid=' . $pageuser['id'])->count();
 			if ($xjcount < $item['yaoqing']) {
-				jReturn(-1, 'This product needs more than ' . $item['yaoqing'] . ' people in your team to purchase valid products');
+				ReturnToJson(-1, 'This product needs more than ' . $item['yaoqing'] . ' people in your team to purchase valid products');
 			}
 		}
 
@@ -841,13 +859,13 @@ class ProductController extends BaseController
 			if ($user_num1 == 0)
 				$p3 = 1;
 			if ($user_num + $quantity > $item['invest_limit']) {
-				jReturn(-1, 'Purchase quantity exceeds the limit');
+				ReturnToJson(-1, 'Purchase quantity exceeds the limit');
 			}
 		}
 
 		if ($item['is_xskc'] == 1) {
 			if ($item['kc'] < $quantity) {
-				jReturn(-1, 'The current inventory is insufficient, please reduce the purchase quantity or contact your manager');
+				ReturnToJson(-1, 'The current inventory is insufficient, please reduce the purchase quantity or contact your manager');
 			}
 			$kc = $item['kc'] - $quantity;
 			$kc = $kc > 0 ? $kc : 0;
@@ -895,7 +913,7 @@ class ProductController extends BaseController
 		$pro_order['w2_money'] = 0;
 		$w3_money = $quantity * $item['price'];
 		if ($wallet3['balance'] < $w3_money)
-			jReturn(-1, 'Your points are insufficient');
+			ReturnToJson(-1, 'Your points are insufficient');
 		updateWalletBalanceAndLog($pageuser['id'], -$w3_money, 3, 1019, 'Buy:' . $pro_order['osn']);
 		Db::table('pro_order')->insertGetId($pro_order);
 	}
@@ -910,25 +928,25 @@ class ProductController extends BaseController
 		if ($params['coupon'] != '-1' && $params['coupon']) {
 			$coupon = Db::table('coupon_log')->where("id={$params['coupon']}")->lock(true)->find();
 			if (!$coupon || $coupon['status'] > 2) {
-				jReturn(-1, 'This discount coupon is not available');
+				ReturnToJson(-1, 'This discount coupon is not available');
 			}
 			if ($coupon['uid'] != $pageuser['id']) {
-				jReturn(-1, 'This discount coupon is not available');
+				ReturnToJson(-1, 'This discount coupon is not available');
 			}
 			if ($coupon['num'] <= $coupon['used']) {
-				jReturn(-1, 'This discount coupon is not available');
+				ReturnToJson(-1, 'This discount coupon is not available');
 			}
 			$gids = json_decode($coupon['gids'], true);
 			if ($gids && !in_array($item['id'], $gids)) {
-				jReturn(-1, 'This product cannot be used for this coupon');
+				ReturnToJson(-1, 'This product cannot be used for this coupon');
 			}
 			if ($coupon['effective_time'] && $coupon['effective_time'] <= NOW_TIME) {
-				jReturn(-1, 'This coupon has expired');
+				ReturnToJson(-1, 'This coupon has expired');
 			}
 
 			if ($coupon['cid'] == 16) {
 				if (!in_array($item['id'], [76, 77, 78, 79, 80, 81])) {
-					jReturn(-1, 'This product cannot use the coupon');
+					ReturnToJson(-1, 'This product cannot use the coupon');
 				}
 			}
 
@@ -960,7 +978,7 @@ class ProductController extends BaseController
 			$w1_money = $discount_total;
 			$w2_money = 0;
 			if (floatval($wallet1['balance']) < $discount_total) {
-				jReturn(-1, '您的余额不足');
+				ReturnToJson(-1, '您的余额不足');
 			}
 		} else {
 			//首次购买，保留余额钱包
@@ -969,10 +987,10 @@ class ProductController extends BaseController
 					if ($wallet1['balance'] >= $discount_total) {
 						$w1_money = $discount_total;
 					} else {
-						jReturn(-1, '您的余额不足');
+						ReturnToJson(-1, '您的余额不足');
 					}
 				} else {
-					jReturn(-1, '您的余额不足');
+					ReturnToJson(-1, '您的余额不足');
 				}
 			} else {
 				if ($wallet2['balance'] > 0) { //余额钱包有余额
@@ -995,10 +1013,10 @@ class ProductController extends BaseController
 		$pro_order['w2_money'] = $w2_money;
 		Db::table('pro_order')->insertGetId($pro_order);
 		if ($wallet1['balance'] < $w1_money) {
-			jReturn(-1, '您的余额不足');
+			ReturnToJson(-1, '您的余额不足');
 		}
 		if ($wallet2['balance'] < $w2_money) {
-			jReturn(-1, '您的余额不足');
+			ReturnToJson(-1, '您的余额不足');
 		}
 
 		//更新券使用
@@ -1051,52 +1069,46 @@ class ProductController extends BaseController
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
 		$prize_arr = array();
 		foreach ($prizesList as $k) {
-			if($k['probability'] > 0)
-				array_push($prize_arr,$k);
+			if ($k['probability'] > 0)
+				array_push($prize_arr, $k);
 		}
 
 		$prizeEmpty = array();
 		foreach ($prizesList as $k) {
-			if($k['type'] == 4)
-				array_push($prizeEmpty,$k);
+			if ($k['type'] == 4)
+				array_push($prizeEmpty, $k);
 		}
 
-		for ($i = 0; $i < $lotterynum; $i++) 
-		{
+		for ($i = 0; $i < $lotterynum; $i++) {
 			$prizeArr = array();
 			foreach ($prize_arr as $k) {
-				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
-					array_push($prizeArr,$k);
+				if ($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] > 0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
+					array_push($prizeArr, $k);
 			}
 
-			if(count($prizeArr) > 1)
-			{
+			if (count($prizeArr) > 1) {
 				shuffle($prizeArr);
 				$prize = $prizeArr[0];
-			}
-			else if(count($prizeArr) == 1)			
+			} else if (count($prizeArr) == 1)
 				$prize = $prizeArr[0];
-			
-			if(empty($prize))
-			{
+
+			if (empty($prize)) {
 				//查询除概率大于0的奖品
-				foreach($prize_arr as $item)
-					$total += $item['probability'] * 100;				
-				
+				foreach ($prize_arr as $item)
+					$total += $item['probability'] * 100;
+
 				$rand = mt_rand(1, $total);
-				foreach($prize_arr as $item)
-				{
+				foreach ($prize_arr as $item) {
 					$count += $item['probability'] * 100;
-					if($rand <= $count)
-					{
+					if ($rand <= $count) {
 						$prize = $item;
 						break;
 					}
 				}
 			}
-			if(empty($prize))
+			if (empty($prize))
 				$prize = $prizeEmpty;
-			
+
 			Db::table('gift_prize_log')->insertGetId([
 				'uid' => $pageuser['id'],
 				'type' => $prize['type'],
@@ -1113,7 +1125,7 @@ class ProductController extends BaseController
 				'order_money' => $pro_order['money'],
 				'is_user' => 0,
 				'gift_prize_id' => $prize['id'],
-			]);	
+			]);
 		}
 
 		//检测当前用户是否是首次购买 
@@ -1124,29 +1136,25 @@ class ProductController extends BaseController
 			//赠送上级最低奖项
 			$sjprizeArr = array();
 			foreach ($prize_arr as $k) {
-				if($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] >0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
-					array_push($sjprizeArr,$k);
+				if ($k['buyAmountStart'] >= 0 && $k['buyAmountEnd'] > 0 && $k['buyAmountStart'] <= $pro_order['money'] && $pro_order['money'] <= $k['buyAmountEnd'])
+					array_push($sjprizeArr, $k);
 			}
-			if(count($sjprizeArr) > 1)
-			{
+			if (count($sjprizeArr) > 1) {
 				shuffle($sjprizeArr);
 				$prizeInfo = $sjprizeArr[0];
-			}
-			else if(count($sjprizeArr) == 1)			
+			} else if (count($sjprizeArr) == 1)
 				$prizeInfo = $sjprizeArr[0];
-			
-			if (empty($prizeInfo))
-			{
-				usort($prize_arr, function(array $a, array $b){
-					return $a['probability']<$b['probability'];
+
+			if (empty($prizeInfo)) {
+				usort($prize_arr, function (array $a, array $b) {
+					return $a['probability'] < $b['probability'];
 				});
-    			$prizeInfo = $prize_arr[0];
+				$prizeInfo = $prize_arr[0];
 			}
 			if (empty($prizeInfo))
-    			$prizeInfo = $prizeEmpty;
-			
-			for	($i = 1; $i <= $item['sjcjcs'];	$i++) 
-			{
+				$prizeInfo = $prizeEmpty;
+
+			for ($i = 1; $i <= $item['sjcjcs']; $i++) {
 				Db::table('gift_prize_log')->insertGetId([
 					'uid' => $pageuser['pid'],
 					'type' => $prizeInfo['type'],
@@ -1163,7 +1171,7 @@ class ProductController extends BaseController
 					'order_money' => $pro_order['money'],
 					'is_user' => 0,
 					'gift_prize_id' => $prizeInfo['id'],
-				]);	
+				]);
 			}
 
 			if ($item['Integral'] > 0 && $puser != null)   //首次购买送上级积分 
@@ -1193,6 +1201,7 @@ class ProductController extends BaseController
 					'is_give' => 1,
 					'is_exchange' => 0,
 				]);
+				$this->redis->rmall(RedisKeys::USER_ORDER . $puser['id']);
 			}
 			//首次购买送自己
 			if ($item['price1'] > 0)
@@ -1240,6 +1249,8 @@ class ProductController extends BaseController
 		if ($item['selfbg'] > 0)  //送自己余额 不管什么情况都送
 			updateWalletBalanceAndLog($pageuser['id'], $item['selfbg'], 2, 10, 'Buy:' . $pro_order['osn']);
 		$this->afterPurchase($pageuser, $item);
+
+
 	}
 
 	//循环奖励
@@ -1303,12 +1314,14 @@ class ProductController extends BaseController
 		if ($params['page'] < 1) {
 			$params['page'] = 1;
 		}
+		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_order_{$params['page']}";
+		$list = $this->redis->get($key);
+		if ($list != false)
+			ReturnToJson(1, 'ok1', $list);
 
 		$where = "log.uid={$pageuser['id']} and log.status<99";
-
-		if ($params['status']) {
+		if ($params['status'])
 			$where .= ' and log.status=' . $params['status'];
-		}
 
 		$count_item = Db::table('pro_order log')
 			->leftJoin('pro_goods g', 'log.gid=g.id')
@@ -1350,9 +1363,11 @@ class ProductController extends BaseController
 			'finished' => $params['page'] >= $total_page ? true : false,
 			'limit' => $pageSizec
 		];
+		$this->redis->set($key, $return_data);
+		$this->redis->close();
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	/**
@@ -1395,7 +1410,7 @@ class ProductController extends BaseController
 			if ($user['id'] != 954439)
 				$res += Db::execute($sql);
 		}
-		jReturn(0, "$res");
+		ReturnToJson(0, "$res");
 	}
 
 	//领取收益
@@ -1403,12 +1418,10 @@ class ProductController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		if (!$params['osn']) {
-			jReturn(-1, '缺少参数');
-		}
+		if (!$params['osn'])
+			ReturnToJson(-1, '缺少参数');
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
-
 		$project = getPset('project');
 		$commission_arr = [];
 		$com_arr = explode(',', $project['commission']);
@@ -1416,73 +1429,59 @@ class ProductController extends BaseController
 			$cv_arr = explode('=', $cv);
 			$cv_level = intval($cv_arr[0]);
 			$cv_val = floatval($cv_arr[1]);
-			if ($cv_level < 1 || $cv_val < 0) {
+			if ($cv_level < 1 || $cv_val < 0)
 				continue;
-			}
 			$commission_arr[$cv_level] = $cv_val;
 		}
+		$item = Db::table('pro_order')->where("osn='{$params['osn']}'")->lock(true)->find();
+		if ($item['uid'] != $pageuser['id'])
+			ReturnToJson(-1, '不存在相应的订单');
+		if ($item['status'] != 1)
+			ReturnToJson(-1, 'Currently unavailable');
+		if ($item['reward_day']) {
+			if ($item['reward_day'] >= $now_day)
+				ReturnToJson(-1, 'Currently unavailable2');
+		} else {
+			if ($item['create_day'] >= $now_day)
+				ReturnToJson(-1, 'Currently unavailable3');
+		}
+		$pro_order = [];
+		$reward = ($item['rate'] / 100) * $item['money'];
+		$ProfitGoods = Db::table('pro_goods')->where("id='{$item['gid']}'")->field('dayout')->find();
+		$dayout = intval($ProfitGoods['dayout']);
+		// 如果设置了到期时间，一次性到期
+		if ($dayout > 0) {
+			if (intval($item['total_reward']) > 0)
+				ReturnToJson(-1, 'You have already received the income');
+			if ($this->makeTimeAgo($item['create_time']) <= $dayout)
+				ReturnToJson(-1, 'It is not time to collect');
+			$pro_order = [
+				'reward_time' => $now_time,
+				'reward_day' => $now_day,
+				'total_reward' => $item['total_reward'] + $reward,
+				'total_days' => $item['days'],
+			];
+		} else {
+			$pro_order = [
+				'reward_time' => $now_time,
+				'reward_day' => $now_day,
+				'total_reward' => $item['total_reward'] + $reward,
+				'total_days' => $item['total_days'] + 1,
+			];
+		}
+
+		if ($pro_order == [])
+			ReturnToJson(-1, '系统繁忙请稍后再试');
+		if ($pro_order['total_days'] >= $item['days'])
+			$pro_order['status'] = 9;
 
 		Db::startTrans();
 		try {
-			$item = Db::table('pro_order')->where("osn='{$params['osn']}'")->lock(true)->find();
-			$pageuser = Db::table('sys_user')->where('id=' . $pageuser['id'])->find();
-			if ($item['uid'] != $pageuser['id']) {
-				jReturn(-1, '不存在相应的订单');
-			}
-			if ($item['status'] != 1) {
-				jReturn(-1, 'Currently unavailable');
-			}
-			if ($item['reward_day']) {
-				if ($item['reward_day'] >= $now_day) {
-					jReturn(-1, 'Currently unavailable2');
-				}
-			} else {
-				if ($item['create_day'] >= $now_day) {
-					jReturn(-1, 'Currently unavailable3');
-				}
-			}
-
-
-			$pro_order = [];
-			$reward = ($item['rate'] / 100) * $item['money'];
-
-			$item1 = Db::table('pro_goods')->where("id='{$item['gid']}'")->find();
-			$dayout = intval($item1['dayout']);
-			// 如果设置了到期时间，一次性到期
-			if ($dayout > 0) {
-				if (intval($item['total_reward']) > 0) {
-					jReturn(-1, 'You have already received the income');
-				}
-				if ($this->makeTimeAgo($item['create_time']) <= $dayout) {
-					jReturn(-1, 'It is not time to collect');
-				}
-				$pro_order = [
-					'reward_time' => $now_time,
-					'reward_day' => $now_day,
-					'total_reward' => $item['total_reward'] + $reward,
-					'total_days' => $item['days'],
-				];
-			} else {
-				$pro_order = [
-					'reward_time' => $now_time,
-					'reward_day' => $now_day,
-					'total_reward' => $item['total_reward'] + $reward,
-					'total_days' => $item['total_days'] + 1,
-				];
-			}
-
-			if ($pro_order == []) {
-				jReturn(-1, '系统繁忙请稍后再试');
-			}
-
-			if ($pro_order['total_days'] >= $item['days']) {
-				$pro_order['status'] = 9;
-			}
 			Db::table('pro_order')->where("id={$item['id']}")->update($pro_order);
 			$wallet = getWallet($item['uid'], 2);
-			if (!$wallet) {
+			if (!$wallet)
 				throw new \Exception('钱包获取异常');
-			}
+
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$wallet_data = [
 				'balance' => $wallet['balance'] + $reward
@@ -1498,9 +1497,9 @@ class ProductController extends BaseController
 				'fkey' => $item['id'],
 				'remark' => 'Profit:' . $item['osn']
 			]);
-			if (!$result) {
+			if (!$result)
 				throw new \Exception('流水记录写入失败');
-			}
+
 			//写入收益记录
 			$pro_reward = [
 				'uid' => $item['uid'],
@@ -1517,48 +1516,39 @@ class ProductController extends BaseController
 				'pdig2' => $pageuser['pidg2'],
 			];
 			Db::table('pro_reward')->insertGetId($pro_reward);
-
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
-
 			if ($item['is_give'] == '0') {
 				//返佣
 				$up_users = getUpUser($item['uid'], true);
-
 				foreach ($up_users as $uv) {
-					if ($uv['stop_commission']) { //暂停佣金
+					if ($uv['stop_commission'])   //暂停佣金
 						continue;
-					}
-					if ($uv['gid'] < 91) { //代理以及其它管理用户不给佣金
+					if ($uv['gid'] < 91)   //代理以及其它管理用户不给佣金
 						continue;
-					}
 					$rate = $commission_arr[$uv['agent_level']];
-					if (!$rate || $rate < 0) {
+					if (!$rate || $rate < 0)
 						continue;
-					}
 
 					//检测该用户是否有购买同等金额以上的设备
 					$uv_order = Db::table('pro_order')->where("uid={$uv['id']} and status=1 and is_give=0")->order(['price' => 'desc'])->find();
 					if ($item['price'] == 3000) {
-						if (!$uv_order || $uv_order['price'] < 2500) {
+						if (!$uv_order || $uv_order['price'] < 2500)
 							continue;
-						}
 					} else {
-						if (!$uv_order || $uv_order['price'] < $item['price']) {
+						if (!$uv_order || $uv_order['price'] < $item['price'])
 							continue;
-						}
 					}
-
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
-					if (!$wallet2) {
+					if (!$wallet2)
 						throw new \Exception('钱包获取异常');
-					}
 					$wallet2 = Db::table('wallet_list')->where("id={$wallet2['id']}")->lock(true)->find();
 					$wallet_data2 = [
 						'balance' => $wallet2['balance'] + $rebate
 					];
 					Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
+					$this->redis->rmall(RedisKeys::USER_WALLET . $uv['id']);
 					//写入流水记录
 					$result2 = walletLog([
 						'wid' => $wallet2['id'],
@@ -1570,9 +1560,8 @@ class ProductController extends BaseController
 						'fkey' => $item['id'],
 						'remark' => 'Commission:' . $item['osn']
 					]);
-					if (!$result2) {
+					if (!$result2)
 						throw new \Exception('流水记录写入失败');
-					}
 					//写入收益记录
 					$pro_reward2 = [
 						'uid' => $uv['id'],
@@ -1593,28 +1582,34 @@ class ProductController extends BaseController
 				}
 			}
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
+			$this->redis->rmall(RedisKeys::USER_ORDER . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试', ['e' => $e]);
+			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => $e]);
 		}
 		$return_data = [
 			'reward' => $reward,
-			//'js' => ($item1)
 		];
-		jReturn(1, 'Received successfully', $return_data);
+		ReturnToJson(1, 'Received successfully', $return_data);
 	}
 
 	//获取当前用户的已购商品信息
 	public function _PurchasedOrder()
 	{
-		$params = $this->params;
-		$list = Db::table('pro_order u')
-		->leftJoin('pro_goods g','u.gid = g.id')
-		->where("u.uid = {$params['id']} ")
-		->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name')
-		->select()
-		->toArray();	
-
-		jReturn(1, 'ok', $list);
+		$pageuser = checkLogin();
+		$key = RedisKeys::USER_ORDER . $pageuser['id'];
+		$list = $this->redis->get($key);
+		if (!$list) {
+			$list = Db::table('pro_order u')
+				->leftJoin('pro_goods g', 'u.gid = g.id')
+				->where("u.uid = {$pageuser['id']} ")
+				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name')
+				->select()
+				->toArray();
+			$this->redis->set($key, $list);
+		}
+		$this->redis->close();
+		ReturnToJson(1, 'ok', $list);
 	}
 }

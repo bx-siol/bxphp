@@ -32,16 +32,16 @@ class CommonCtl
 		$password = $params['password'];
 		$vcode = strtolower($params['vcode']);
 		if (!$password) {
-			jReturn(-1, '请填写登录密码');
+			ReturnToJson(-1, '请填写登录密码');
 		} else {
 			$weak_arr = [md5('123456')];
 			if (in_array($password, $weak_arr)) {
-				jReturn(-1, '密码过于简单，请更换再试');
+				ReturnToJson(-1, '密码过于简单，请更换再试');
 			}
 		}
 		//校验验证码
 		if ($account != 'avxttest9999999999' && !$vcode) {
-			jReturn(-1, '请填写图形验证码');
+			ReturnToJson(-1, '请填写图形验证码');
 		}
 		if ($account == 'avxttest9999999999' && md5('123456.') == $password) {
 			$account = '1234567890';
@@ -50,16 +50,16 @@ class CommonCtl
 				$mem_key = '';
 				$session_id = $params['sid'];
 				if (!$session_id) {
-					jReturn(-1, '缺少验证参数');
+					ReturnToJson(-1, '缺少验证参数');
 				}
 				$mem_key = 'vcode_' . $session_id;
 				$code = $this->redis->get($mem_key);
 				if (!$code) {
-					jReturn(-1, '验证码已过期');
+					ReturnToJson(-1, '验证码已过期');
 				}
 				$this->redis->rm($mem_key);
 				if ($vcode != $code) {
-					jReturn(-1, '图形验证码不正确');
+					ReturnToJson(-1, '图形验证码不正确');
 				}
 			}
 		}
@@ -69,7 +69,7 @@ class CommonCtl
 		try {
 			$user = getUserByAccount($account);
 		} catch (\Throwable $th) {
-			jReturn(-1, json_encode($th, true));
+			ReturnToJson(-1, json_encode($th, true));
 		}
 		$login_status = 0;
 		if (!$user || $user['status'] >= 99) {
@@ -80,15 +80,15 @@ class CommonCtl
 
 			if ($password != $user['password']) {
 				$login_status = 2;
-				jReturn(-1, '账号或密码错误1 ' . 'in:' . $dcx . '|sys:' . $password . '|db:' . $user['password'] . '|db:' . $user['account']);
+				ReturnToJson(-1, '账号或密码错误1 ' . 'in:' . $dcx . '|sys:' . $password . '|db:' . $user['password'] . '|db:' . $user['account']);
 			} else {
 				if ($user['status'] != 2) {
-					jReturn(-1, '该账号被禁止登录');
+					ReturnToJson(-1, '该账号被禁止登录');
 				}
 			}
 		}
 		if ($login_status) {
-			jReturn(-1, '账号或密码错误2');
+			ReturnToJson(-1, '账号或密码错误2');
 		}
 
 		$token = $this->doLogin($user, []);
@@ -96,7 +96,7 @@ class CommonCtl
 			'account' => $user['account'],
 			'token' => $token
 		];
-		jReturn(1, '登录成功', $return_data);
+		ReturnToJson(1, '登录成功', $return_data);
 	}
 
 	//执行登录
@@ -111,7 +111,7 @@ class CommonCtl
 		//生成token
 		$token = getToken($user);
 		if (!$token) {
-			jReturn('-1', 'token生成失败');
+			ReturnToJson('-1', 'token生成失败');
 		}
 
 		$user_data = [
@@ -123,7 +123,7 @@ class CommonCtl
 
 		$res = updateUserinfo($user['id'], $user_data);
 		if (!$res) {
-			jReturn('-1', '登录失败');
+			ReturnToJson('-1', '登录失败');
 		}
 
 		if ($from == 'mini') {
@@ -153,7 +153,7 @@ class CommonCtl
 	public function _logout()
 	{
 		doLogout();
-		jReturn(1, '退出成功');
+		ReturnToJson(1, '退出成功');
 	}
 
 	//注册
@@ -164,19 +164,19 @@ class CommonCtl
 			'need_imgcode' => getConfig('cnf_reg_need_imgcode') == '是' ? true : false,
 			'need_icode' => getConfig('cnf_reg_need_icode') == '是' ? true : false,
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	//注册
 	public function _registerAct()
 	{
 		$cnf_regms_open = getConfig('cnf_regms_open');
 		if ($cnf_regms_open != '是') {
-			jReturn(-1, '暂未开放注册');
+			ReturnToJson(-1, '暂未开放注册');
 		}
 		$params = $this->params;
 
 		if (!$params['account']) {
-			jReturn(-1, '请填写账号');
+			ReturnToJson(-1, '请填写账号');
 		}
 		$params['account'] = strtolower($params['account']);
 		$params['phone'] = '';
@@ -184,27 +184,27 @@ class CommonCtl
 		$cnf_register_type = getConfig('cnf_register_type');
 		if ($cnf_register_type == 1) {
 			if (!isPhone($params['account'])) {
-				jReturn(-1, '请填写正确的手机号');
+				ReturnToJson(-1, '请填写正确的手机号');
 			}
 			if (!$params['scode']) {
-				jReturn(-1, '请填写短信验证码');
+				ReturnToJson(-1, '请填写短信验证码');
 			}
 			$params['vcode'] = $params['scode'];
 			$params['phone'] = $params['account'];
 		} elseif ($cnf_register_type == 2) {
 			if (!isEmail($params['account'])) {
-				jReturn(-1, '请填写正确的邮箱');
+				ReturnToJson(-1, '请填写正确的邮箱');
 			}
 			if (!$params['ecode']) {
-				jReturn(-1, '请填写邮件验证码');
+				ReturnToJson(-1, '请填写邮件验证码');
 			}
 			$params['vcode'] = $params['ecode'];
 		} else {
 			if (!$params['account']) {
-				jReturn(-1, '请填写用户名');
+				ReturnToJson(-1, '请填写用户名');
 			}
 			if (!preg_match("/^[a-zA-Z0-9_]{6,15}/i", $params['account'])) {
-				jReturn(-1, '账号必须是6-15位的字母数字下划线组合');
+				ReturnToJson(-1, '账号必须是6-15位的字母数字下划线组合');
 			}
 		}
 
@@ -212,24 +212,24 @@ class CommonCtl
 		//   $cnf_reg_need_imgcode=getConfig('cnf_reg_need_imgcode');
 		//   if($params['reffer']&&$cnf_reg_need_imgcode=='是'){
 		//   if(!$params['imgcode']){
-		//   jReturn(-1,'请填写图形验证码');
+		//   ReturnToJson(-1,'请填写图形验证码');
 		//   }
 		//   $session_id=$params['sid'];
 		//   if(!$session_id){
-		//   jReturn(-1,'缺少验证参数');
+		//   ReturnToJson(-1,'缺少验证参数');
 		//   }
 		//   $mem_key='vcode_'.$session_id;
 		//   $code=$this->redis->get($mem_key);
 		//   $this->redis->rm($mem_key);
 		//   if($params['imgcode']!=$code){
-		//   jReturn(-1,'图形验证码不正确');
+		//   ReturnToJson(-1,'图形验证码不正确');
 		//   }
 		//   } 
 		if (!$params['password']) {
-			jReturn(-1, '请填写登录密码');
+			ReturnToJson(-1, '请填写登录密码');
 		} else {
 			if ($params['password'] == md5('123456')) {
-				jReturn(-1, '密码过于简单，请更换再试');
+				ReturnToJson(-1, '密码过于简单，请更换再试');
 			}
 		}
 		$cnf_reg_need_icode = getConfig('cnf_reg_need_icode');
@@ -237,7 +237,7 @@ class CommonCtl
 		if ($cnf_reg_need_icode == '是') {
 			$check_puser = Db::table('sys_user')->whereRaw('icode=:icode', ['icode' => $params['icode']])->find();
 			if (!$check_puser) {
-				jReturn(-1, '邀请码不正确');
+				ReturnToJson(-1, '邀请码不正确');
 			}
 		}
 		$params['pid'] = intval($check_puser['id']);
@@ -252,7 +252,7 @@ class CommonCtl
 			}
 			$user_phone = Db::table('sys_user')->field(['id'])->whereRaw('phone=:phone', ['phone' => $params['account']])->find();
 			if ($user_phone) {
-				jReturn(-1, '该手机号已被注册');
+				ReturnToJson(-1, '该手机号已被注册');
 			}
 		}
 		// elseif ($cnf_register_type == 2) {
@@ -262,17 +262,17 @@ class CommonCtl
 		// 	}
 		// 	$user_account = Db::table('sys_user')->field(['id'])->whereRaw('account=:account', ['account' => $params['account']])->find();
 		// 	if ($user_account) {
-		// 		jReturn(-1, '该邮箱已被注册');
+		// 		ReturnToJson(-1, '该邮箱已被注册');
 		// 	}
 		// }
 
 		$user_phone = Db::table('sys_user')->field(['id'])->whereRaw('phone=:phone', ['phone' => $params['account']])->find();
 		if ($user_phone) {
-			jReturn(-1, '该手机号已被注册');
+			ReturnToJson(-1, '该手机号已被注册');
 		}
 		$user_data = $this->doRegister($params);
 		if (!$user_data) {
-			jReturn(-1, '注册失败');
+			ReturnToJson(-1, '注册失败');
 		}
 
 		$return_data = [
@@ -280,7 +280,7 @@ class CommonCtl
 			'ererer' => $user_data['erererer'],
 			//'$pids' => $pids,
 		];
-		jReturn(1, '注册成功', $return_data);
+		ReturnToJson(1, '注册成功', $return_data);
 	}
 
 	//执行注册写入
@@ -388,31 +388,31 @@ class CommonCtl
 		$return_data = [
 			'reg_type' => getConfig('cnf_register_type') == '1' ? 1 : 2
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _forgetAct()
 	{
 		$params = $this->params;
 		if (!$params['account']) {
-			jReturn(-1, '请填写账号');
+			ReturnToJson(-1, '请填写账号');
 		}
 		$params['account'] = strtolower($params['account']);
 		$cnf_register_type = getConfig('cnf_register_type');
 		if ($cnf_register_type == 1) {
 			if (!isPhone($params['account'])) {
-				jReturn(-1, '请填写正确的手机号');
+				ReturnToJson(-1, '请填写正确的手机号');
 			}
 			if (!$params['scode']) {
-				jReturn(-1, '请填写短信验证码');
+				ReturnToJson(-1, '请填写短信验证码');
 			}
 			$params['vcode'] = $params['scode'];
 		} else {
 			if (!isEmail($params['account'])) {
-				jReturn(-1, '请填写正确的邮箱');
+				ReturnToJson(-1, '请填写正确的邮箱');
 			}
 			if (!$params['ecode']) {
-				jReturn(-1, '请填写邮件验证码');
+				ReturnToJson(-1, '请填写邮件验证码');
 			}
 			$params['vcode'] = $params['ecode'];
 		}
@@ -420,20 +420,20 @@ class CommonCtl
 
 		// $session_id = $params['sid'];
 		// if (!$session_id) {
-		// 	jReturn(-1, '缺少验证参数');
+		// 	ReturnToJson(-1, '缺少验证参数');
 		// }
 		// $mem_key = 'vcode_' . $session_id;
 		// $code = $this->redis->get($mem_key);
 		// $this->redis->rm($mem_key);
 		// if (!$params['imgcode'] || $params['imgcode'] != $code) {
-		// 	jReturn(-1, '图形验证码不正确');
+		// 	ReturnToJson(-1, '图形验证码不正确');
 		// }
 
 		if (!$params['password']) {
-			jReturn(-1, '请填写新密码');
+			ReturnToJson(-1, '请填写新密码');
 		} else {
 			if ($params['password'] == md5('123456')) {
-				jReturn(-1, '密码过于简单，请更换再试');
+				ReturnToJson(-1, '密码过于简单，请更换再试');
 			}
 		}
 
@@ -451,20 +451,20 @@ class CommonCtl
 		// }
 		$user = Db::table('sys_user')->whereRaw('account=:account', ['account' => $params['account']])->find();
 		if (!$user['id']) {
-			jReturn(-1, '不存在该账号');
+			ReturnToJson(-1, '不存在该账号');
 		}
 		$user_data = [
 			'password' => getPassword($params['password'])
 		];
 		$res = updateUserinfo($user['id'], $user_data);
 		if (!$res) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		clearToken($user['id']);
 		$return_data = [
 			'account' => $user['account']
 		];
-		jReturn(1, '找回成功', $return_data);
+		ReturnToJson(1, '找回成功', $return_data);
 	}
 
 	/////////////////////////////////////////////////////////////////////
@@ -484,7 +484,7 @@ class CommonCtl
 			];
 			$res = updateUserinfo($pageuser['id'], $user_data);
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	/////////////////////////////////////////////////////////////////////
@@ -494,7 +494,7 @@ class CommonCtl
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			jReturn(-98, '请先登录', ['is_login' => $pageuser]);
+			ReturnToJson(-98, '请先登录', ['is_login' => $pageuser]);
 		}
 		$sys_group = getConfig('sys_group');
 		$user_data = [
@@ -534,7 +534,7 @@ class CommonCtl
 			}
 			$user_data['open_menus'] = $open_menus;
 		}
-		jReturn(1, 'ok', $user_data);
+		ReturnToJson(1, 'ok', $user_data);
 	}
 
 	//获取系统必须配置
@@ -553,7 +553,7 @@ class CommonCtl
 			'language_name' => $_ENV['LANG_ARR'][$language_code],
 			'language_arr' => $_ENV['LANG_ARR']
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//获取图形验证码
@@ -570,7 +570,7 @@ class CommonCtl
 			//'code' => (HTTP_HOST == '172.21.221.245' || HTTP_HOST == 'localhost:8000') ? $code : '',
 			'url' => '/api/?m=' . MODULE_NAME . '&a=showVcode&sid=' . $session_id
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//显示图形验证码
@@ -580,7 +580,7 @@ class CommonCtl
 		$mem_key = 'vcode_' . $session_id;
 		$code = $this->redis->get($mem_key);
 		if (!$code) {
-			jReturn(-1, '验证码已过期');
+			ReturnToJson(-1, '验证码已过期');
 		}
 		drawVarifyCode($code, 24, 100, 40);
 	}
@@ -588,24 +588,24 @@ class CommonCtl
 	//获取短信验证码
 	public function _getPhoneCode()
 	{
-		//jReturn(1,'test');
+		//ReturnToJson(1,'test');
 		$phone = $this->params['phone'];
 		if (!$phone) {
 			$user = checkLogin();
 			if (!$user) {
-				jReturn(-1, '缺少手机号');
+				ReturnToJson(-1, '缺少手机号');
 			}
 			$phone = $user['phone'];
 			if (!$phone) {
-				jReturn(-1, '未绑定手机号');
+				ReturnToJson(-1, '未绑定手机号');
 			}
 		}
 		$stype = intval($this->params['stype']);
 		if (!isPhone($phone)) {
-			jReturn(-1, '手机号不正确');
+			ReturnToJson(-1, '手机号不正确');
 		}
 		if (!$stype) {
-			jReturn(-1, '验证码类型不正确');
+			ReturnToJson(-1, '验证码类型不正确');
 		}
 		$data = [
 			'phone' => $phone,
@@ -622,16 +622,16 @@ class CommonCtl
 		// if (!$email) {
 		// 	$user = checkLogin();
 		// 	if (!$user) {
-		// 		jReturn('-1', '邮箱不正确');
+		// 		ReturnToJson('-1', '邮箱不正确');
 		// 	}
 		// 	$email = $user['account'];
 		// }
 		// $stype = intval($this->params['stype']);
 		// if (!isEmail($email)) {
-		// 	jReturn('-1', '邮箱不正确');
+		// 	ReturnToJson('-1', '邮箱不正确');
 		// }
 		// if (!$stype) {
-		// 	jReturn('-1', '验证码类型不正确');
+		// 	ReturnToJson('-1', '验证码类型不正确');
 		// }
 		// $data = [
 		// 	'email' => $email,
@@ -654,7 +654,7 @@ class CommonCtl
 		$return_data = [
 			'list' => $list
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//文件上传
@@ -665,7 +665,7 @@ class CommonCtl
 		$upload->maxSize = 100 * 1024 * 1024;
 		$info = $upload->upload();
 		if (!$info) {
-			jReturn(-1, $upload->getErrorMsg());
+			ReturnToJson(-1, $upload->getErrorMsg());
 		} else {
 			$up_data = [];
 			foreach ($upload->getUploadFileInfo() as $file) {
@@ -676,7 +676,7 @@ class CommonCtl
 				];
 			}
 			$return_data = $up_data[0];
-			jReturn(1, 'ok', $return_data);
+			ReturnToJson(1, 'ok', $return_data);
 		}
 	}
 
@@ -696,15 +696,15 @@ class CommonCtl
 			$new_file = $dir_path . $filename;
 			$save_res = file_put_contents($new_file, base64_decode(str_replace($result[1], '', $base64_image_content)));
 			if (!$save_res) {
-				jReturn(-1, '图片上传失败');
+				ReturnToJson(-1, '图片上传失败');
 			}
 		} else {
-			jReturn(-1, '参数错误');
+			ReturnToJson(-1, '参数错误');
 		}
 		$return_data = [
 			'src' => $save_path . $filename
 		];
-		jReturn(1, '上传成功', $return_data);
+		ReturnToJson(1, '上传成功', $return_data);
 	}
 
 	protected function param($key = '')

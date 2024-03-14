@@ -27,7 +27,7 @@ class GiftController extends BaseController
 			'prize_arr' => $prize_arr,
 			'tip' => $project['drawtip'] ? nl2br($project['drawtip']) : ''
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _turntableAct()
@@ -39,7 +39,7 @@ class GiftController extends BaseController
 			//检测剩余抽奖次数
 			$user = Db::table('sys_user')->where("id={$pageuser['id']}")->lock(true)->find();
 			if ($user['lottery'] < 1) {
-				jReturn(-1, 'You currently have no chance of lucky draw, purchase products will get more chance to draw.');
+				ReturnToJson(-1, 'You currently have no chance of lucky draw, purchase products will get more chance to draw.');
 			} 
 			$sys_user = [
 				'lottery' => $user['lottery'] - 1
@@ -144,13 +144,13 @@ class GiftController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();			
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
 			'giftprizelog' => $gift_prize_log,
 			'lottery' => $sys_user['lottery']
 		];
-		jReturn(1, $tipMsg, $return_data);
+		ReturnToJson(1, $tipMsg, $return_data);
 	}
 
 	//////////////////////////////////////////////////////////
@@ -173,29 +173,29 @@ class GiftController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		if (!$params['rsn']) {
-			jReturn(-1, 'Please enter the redpack code');
+			ReturnToJson(-1, 'Please enter the redpack code');
 		}
 		Db::startTrans();
 		try {
 			$check_detail = Db::table('gift_redpack_detail')->where("rsn='{$params['rsn']}' and uid={$pageuser['id']}")->find();
 			if ($check_detail) {
-				jReturn(-1, 'You have received this redpack');
+				ReturnToJson(-1, 'You have received this redpack');
 			}
 			$item = Db::table('gift_redpack')->where("rsn='{$params['rsn']}'")->lock(true)->find();
 			if (!$item) {
-				jReturn(-1, 'The redpack code is incorrect');
+				ReturnToJson(-1, 'The redpack code is incorrect');
 			} else {
 				if ($item['status'] != 3) {
-					jReturn(-1, 'The redpack has been offline');
+					ReturnToJson(-1, 'The redpack has been offline');
 				}
 			}
 			$detail = Db::table('gift_redpack_detail')->where("rsn='{$item['rsn']}' and uid=0")->find();
 			if (!$detail) {
-				jReturn(-1, 'The redpack has been collected');
+				ReturnToJson(-1, 'The redpack has been collected');
 			}
 			$detail = Db::table('gift_redpack_detail')->where("id={$detail['id']}")->lock(true)->find();
 			if (!$detail || $detail['uid']) {
-				jReturn(-1, 'The redpack has been collected');
+				ReturnToJson(-1, 'The redpack has been collected');
 			}
 
 			if ($detail['create_id'] > 1) {
@@ -208,7 +208,7 @@ class GiftController extends BaseController
 					}
 				}
 				if (!$canReceive) {
-					jReturn(-1, 'You cannot claim the red envelope');
+					ReturnToJson(-1, 'You cannot claim the red envelope');
 				}
 			}
 
@@ -256,13 +256,13 @@ class GiftController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
 			'money' => $detail['money'],
 			'dsn' => $detail['dsn']
 		];
-		jReturn(1, '领取成功', $return_data);
+		ReturnToJson(1, '领取成功', $return_data);
 	}
 
 	//红包记录
@@ -306,6 +306,6 @@ class GiftController extends BaseController
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 }

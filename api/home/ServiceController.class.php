@@ -23,7 +23,7 @@ class ServiceController extends BaseController{
 		$return_data=[
 			'service_arr'=>$service_arr
 		];
-		jReturn(1,'ok',$return_data);
+		ReturnToJson(1,'ok',$return_data);
 	}
 	
 	public function _GetService_Online()
@@ -32,7 +32,7 @@ class ServiceController extends BaseController{
 		$params = $this->params;
 		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->find();
 		$data = Db::query(" select * from ext_service where  type={$params['type']} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");		
-		jReturn(1,'ok',$data);
+		ReturnToJson(1,'ok',$data);
 	}
 }
 ?>

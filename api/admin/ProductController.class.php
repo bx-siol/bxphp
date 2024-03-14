@@ -20,7 +20,7 @@ class ProductController extends BaseController
 		$return_data = [
 			'list' => $tree
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _category_update()
@@ -32,12 +32,12 @@ class ProductController extends BaseController
 		$params['sort'] = intval($params['sort']);
 		$params['status'] = intval($params['status']);
 		if (!$params['name']) {
-			jReturn(-1, '请填写分类名称');
+			ReturnToJson(-1, '请填写分类名称');
 		}
 		if ($params['pid']) {
 			$pitem = Db::table('pro_category')->where("id={$params['pid']} and status<99")->find();
 			if (!$pitem) {
-				jReturn(-1, '不存在相应的父级分类');
+				ReturnToJson(-1, '不存在相应的父级分类');
 			}
 		}
 		$pro_category = [
@@ -53,7 +53,7 @@ class ProductController extends BaseController
 			if ($params['id']) {
 				$item = Db::table('pro_category')->where("id={$params['id']} and status<99")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				Db::table('pro_category')->where("id={$item['id']}")->update($pro_category);
 			} else {
@@ -61,9 +61,10 @@ class ProductController extends BaseController
 				Db::table('pro_category')->insertGetId($pro_category);
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		$this->redis->rm(RedisKeys::Goods . "category");
+		ReturnToJson(1, '操作成功');
 	}
 
 	public function _category_delete()
@@ -73,7 +74,7 @@ class ProductController extends BaseController
 		$params['id'] = intval($params['id']);
 		$item = Db::table('pro_category')->where("id={$params['id']}")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已被删除');
+			ReturnToJson(-1, '该记录已被删除');
 		}
 		$pro_category = ['status' => 99];
 		$list = Db::table('pro_category')->where("status<99")->order(['sort' => 'desc'])->select()->toArray();
@@ -82,9 +83,10 @@ class ProductController extends BaseController
 		try {
 			Db::table('pro_category')->where("id in ({$ids_str})")->update($pro_category);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		$this->redis->rm(RedisKeys::Goods . "category");
+		ReturnToJson(1, '操作成功');
 	}
 
 	/////////////////////////////////////////////////////////
@@ -144,7 +146,7 @@ class ProductController extends BaseController
 			$return_data['category_tree'] = $category_tree;
 			$return_data['status_arr'] = $cnf_product_status;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _goods_update()
@@ -172,46 +174,46 @@ class ProductController extends BaseController
 
 
 		if (!$params['name']) {
-			jReturn(-1, '请填写名称');
+			ReturnToJson(-1, '请填写名称');
 		}
 		$category = [];
 		if (!$params['cid']) {
-			jReturn(-1, '请选择分类');
+			ReturnToJson(-1, '请选择分类');
 		} else {
 			$category = Db::table('pro_category')->where("id={$params['cid']} and status<99")->find();
 			if (!$category) {
-				jReturn(-1, '不存在相应分类');
+				ReturnToJson(-1, '不存在相应分类');
 			}
 		}
 		if ($params['scale'] < 0) {
-			jReturn(-1, '项目金额不正确');
+			ReturnToJson(-1, '项目金额不正确');
 		}
 		if ($params['price'] < 0) {
-			jReturn(-1, '产品单价不正确');
+			ReturnToJson(-1, '产品单价不正确');
 		}
 		if ($params['price1'] < 0) {
-			jReturn(-1, '首购送自己单价不正确');
+			ReturnToJson(-1, '首购送自己单价不正确');
 		}
 		if ($params['price0'] < 0) {
-			jReturn(-1, '复购送自己单价不正确');
+			ReturnToJson(-1, '复购送自己单价不正确');
 		}
 		if ($params['price2'] < 0) {
-			jReturn(-1, '送上级单价不正确');
+			ReturnToJson(-1, '送上级单价不正确');
 		}
 		if ($params['days'] < 1) {
-			jReturn(-1, '产品期限不正确');
+			ReturnToJson(-1, '产品期限不正确');
 		}
 		if ($params['rate'] < 0 || $params['rate'] > 1000) {
-			jReturn(-1, '收益率不正确');
+			ReturnToJson(-1, '收益率不正确');
 		}
 		if ($params['invest_min'] < 0) {
-			jReturn(-1, '起投金额不正确');
+			ReturnToJson(-1, '起投金额不正确');
 		}
 		if ($params['invest_limit'] < 0) {
-			jReturn(-1, '限购数量不正确');
+			ReturnToJson(-1, '限购数量不正确');
 		}
 		if (!$params['icon']) {
-			jReturn(-1, '请上传图标');
+			ReturnToJson(-1, '请上传图标');
 		}
 		$covers = [];
 		if (!$params['covers']) {
@@ -272,10 +274,10 @@ class ProductController extends BaseController
 			if ($item_id) {
 				$item = $model->where("id={$item_id} and status<99")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				if ($item['invested'] > $params['scale']) {
-					//jReturn(-1,'项目金额不能小于已投资金额');
+					//ReturnToJson(-1,'项目金额不能小于已投资金额');
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 				$db_data['id'] = $item_id;
@@ -286,7 +288,7 @@ class ProductController extends BaseController
 				$db_data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		actionLog(['opt_name' => '更新产品', 'sql_str' => json_encode($db_data)]);
 		$yes_or_no = getConfig('yes_or_no');
@@ -297,7 +299,8 @@ class ProductController extends BaseController
 			'status_flag' => $cnf_product_status[$db_data['status']],
 			'category_name' => $category['name']
 		];
-		jReturn(1, '操作成功', $return_data);
+		$this->redis->rm(RedisKeys::Goods);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _goods_delete()
@@ -305,20 +308,21 @@ class ProductController extends BaseController
 		checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('pro_goods');
 		$item = $model->where("id={$item_id} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		$db_data = ['status' => 99];
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		$this->redis->rm(RedisKeys::Goods);
+		ReturnToJson(1, '操作成功');
 	}
 
 	////////////////////////////////////////////////////////
@@ -365,7 +369,7 @@ class ProductController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -441,7 +445,7 @@ class ProductController extends BaseController
 			$return_data['goods_arr'] = $goods_arr;
 			$return_data['status_arr'] = $cnf_product_order_status;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//订单更新
@@ -454,30 +458,30 @@ class ProductController extends BaseController
 		$params['days'] = intval($params['days']);
 		$params['num'] = intval($params['num']);
 		if (!$params['account']) {
-			jReturn(-1, '请填写用户账号');
+			ReturnToJson(-1, '请填写用户账号');
 		}
 		$user = Db::table('sys_user')->where("account='{$params['account']}'")->find();
 		if (!$user) {
-			jReturn(-1, '不存在相应的账号');
+			ReturnToJson(-1, '不存在相应的账号');
 		}
 		if (!checkDataAction()) {
 			$down_arr = getDownUser($pageuser['id'], false, $pageuser); // getDownUser($pageuser['id'], false, $pageuser);
 			if (!in_array($user['id'], $down_arr)) {
-				jReturn(-1, '没有该账号的操作权限');
+				ReturnToJson(-1, '没有该账号的操作权限');
 			}
 		}
 		if (!$params['gid']) {
-			jReturn(-1, '请选择赠送设备');
+			ReturnToJson(-1, '请选择赠送设备');
 		}
 		$give_item = Db::table('pro_goods')->where("id={$params['gid']}")->find();
 		// if (!$give_item || $give_item['status'] != 3) {
-		// 	jReturn(-1, '该设备已下线');
+		// 	ReturnToJson(-1, '该设备已下线');
 		// }
 		if ($params['num'] < 1) {
-			jReturn(-1, '赠送数量不正确');
+			ReturnToJson(-1, '赠送数量不正确');
 		}
 		if ($params['days'] < 1) {
-			jReturn(-1, '收益天数不正确');
+			ReturnToJson(-1, '收益天数不正确');
 		}
 		$db_data = [
 			'days' => $params['days'],
@@ -489,10 +493,10 @@ class ProductController extends BaseController
 			if ($item_id) {
 				$item = $model->where("id={$item_id} and status<99")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				if ($item['status'] != 1) {
-					jReturn(-1, '当前状态不可操作');
+					ReturnToJson(-1, '当前状态不可操作');
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 				$db_data['id'] = $item_id;
@@ -517,7 +521,7 @@ class ProductController extends BaseController
 				$db_data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试', $e);
+			ReturnToJson(-1, '系统繁忙请稍后再试', $e);
 		}
 
 		$return_data = [
@@ -525,7 +529,8 @@ class ProductController extends BaseController
 			'money' => $db_data['money'],
 			'days' => $db_data['days']
 		];
-		jReturn(1, '操作成功', $return_data);
+		$this->redis->rmall(RedisKeys::USER_ORDER . $user['id']);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _order_delete()
@@ -533,29 +538,30 @@ class ProductController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('pro_order');
 		$item = $model->where("id={$item_id} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		if (!$item['is_give']) {
-			jReturn(-1, '非赠送设备不可删除');
+			ReturnToJson(-1, '非赠送设备不可删除');
 		}
 		if (!checkDataAction()) {
 			$down_arr = getDownUser($pageuser['id'], false, $pageuser);
 			if (!in_array($item['uid'], $down_arr)) {
-				jReturn(-1, '没有该账号的操作权限');
+				ReturnToJson(-1, '没有该账号的操作权限');
 			}
 		}
 		$db_data = ['status' => 99];
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		$this->redis->rmall(RedisKeys::USER_ORDER . $item['uid']);
+		ReturnToJson(1, '操作成功');
 	}
 
 	//订单设置
@@ -566,32 +572,31 @@ class ProductController extends BaseController
 		$item_id = intval($params['id']);
 		$status = intval($params['status']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		if (!in_array($status, [1, 3])) {
-			jReturn(-1, '未知状态');
+			ReturnToJson(-1, '未知状态');
 		}
+		//注意锁，和事务同步，不然容易死锁
+		$item = Db::table('pro_order')->where("id={$item_id}")->field('uid')->find();
 		Db::startTrans();
 		try {
 			$item = Db::table('pro_order')->where("id={$item_id}")->lock(true)->find();
 			if (!$item || $item['status'] > 99) {
-				jReturn(-1, '不存在相应的订单');
+				ReturnToJson(-1, '不存在相应的订单');
 			}
-
 			if (!checkDataAction()) {
 				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 				if (!in_array($item['uid'], $uid_arr)) {
-					jReturn(-1, '不存在相应的订单.');
+					ReturnToJson(-1, '不存在相应的订单.');
 				}
 			}
-			$pro_order = [
-				'status' => $status
-			];
+			$pro_order = ['status' => $status];
 			Db::table('pro_order')->where("id={$item['id']}")->update($pro_order);
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		actionLog(['opt_name' => '设置产品订单', 'sql_str' => Db::getLastSql()]);
 		$cnf_product_order_status = getConfig('cnf_product_order_status');
@@ -599,7 +604,8 @@ class ProductController extends BaseController
 			'status' => $status,
 			'status_flag' => $cnf_product_order_status[$status]
 		];
-		jReturn(1, '操作成功', $return_data);
+		$this->redis->rmall(RedisKeys::USER_ORDER . $item['uid']);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 	//首购赠送审核
 	public function _order_set1()
@@ -609,7 +615,7 @@ class ProductController extends BaseController
 		$item_id = intval($params['id']);
 		$status = intval($params['status']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$this->Uporder_set($item_id, $pageuser, $status);
 		$cnf_product_order_status = getConfig('cnf_product_order_status');
@@ -617,32 +623,8 @@ class ProductController extends BaseController
 			'status' => $status,
 			'status_flag' => $cnf_product_order_status[$status]
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
-
-
-	//ALTER TABLE `bx`.`pro_reward` ADD INDEX `idx_uid_type_createtime` (`uid`, `type`, `create_time`)
-
-	// SELECT `log`.`type`, `log`.`money`, `log`.`remark`, `log`.`create_time`, `log`.`level`, `log`.`base_money`, `log`.`rate`
-	// FROM `pro_reward` AS `log`
-	// INNER JOIN (SELECT `id`
-	// FROM `pro_reward` AS `log`
-	// WHERE `log`.`uid` = 252062 AND `log`.`create_time` BETWEEN ASYMMETRIC 1666204201 AND 1666290599 AND `log`.`type` = 2
-	// ORDER BY `log`.`id` DESC
-	// LIMIT 15
-	// OFFSET 0) AS `tmp_0` USING (`id`)
-
-
-	// SELECT `log`.`type`, `log`.`money`, `log`.`remark`, `log`.`create_time`, `log`.`level`
-	// 	, `log`.`base_money`, `log`.`rate`
-	// FROM `pro_reward` `log`
-	// WHERE log.uid = 252062
-	// 	AND log.create_time BETWEEN 1666204201 AND 1666290599
-	// 	AND log.type = 2
-	// ORDER BY `log`.`id` DESC
-	// LIMIT 0, 15
-
-
 
 	public function Uporder_set($item_id, $pageuser, $status)
 	{
@@ -652,13 +634,13 @@ class ProductController extends BaseController
 		try {
 			$item = Db::table('pro_order')->where("id={$item_id}")->lock(true)->find();
 			if (!$item || $item['status'] > 99) {
-				jReturn(-1, '不存在相应的订单');
+				ReturnToJson(-1, '不存在相应的订单');
 			}
 
 			if (!checkDataAction()) {
 				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 				if (!in_array($item['uid'], $uid_arr)) {
-					jReturn(-1, '不存在相应的订单.');
+					ReturnToJson(-1, '不存在相应的订单.');
 				}
 			}
 			$pro_order = [
@@ -765,7 +747,7 @@ class ProductController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		actionLog(['opt_name' => '首购赠送审核', 'sql_str' => Db::getLastSql()]);
 	}
@@ -778,7 +760,7 @@ class ProductController extends BaseController
 		$params['status'] = intval($params['status']);
 		$ids = [];
 		if (!$this->params['ids']) {
-			jReturn(-1, '至少选择一项');
+			ReturnToJson(-1, '至少选择一项');
 		}
 		foreach ($this->params['ids'] as $id) {
 			$id = intval($id);
@@ -788,15 +770,15 @@ class ProductController extends BaseController
 			$ids[] = $id;
 		}
 		if (!$ids) {
-			jReturn(-1, '至少选择一项');
+			ReturnToJson(-1, '至少选择一项');
 		}
 		if (!in_array($params['status'], [1, 2])) {
-			jReturn(-1, '未知审核状态');
+			ReturnToJson(-1, '未知审核状态');
 		}
 		foreach ($ids as $item_id) {
 			$this->Uporder_set($item_id, $pageuser, $params['status']);
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 	//////////////////////////////////////////////////////////
 	//收益记录	
@@ -845,7 +827,7 @@ class ProductController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -902,7 +884,7 @@ class ProductController extends BaseController
 			$return_data['goods_arr'] = $goods_arr;
 			$return_data['type_arr'] = $cnf_reward_type;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _rebate()
@@ -960,7 +942,7 @@ class ProductController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -1020,7 +1002,7 @@ class ProductController extends BaseController
 			$return_data['goods_arr'] = $goods_arr;
 			$return_data['type_arr'] = $cnf_reward_type;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	public function _getGoodsByCid()
 	{
@@ -1033,7 +1015,7 @@ class ProductController extends BaseController
 		$return_data = [
 			'list' => $list
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 
@@ -1077,7 +1059,7 @@ class ProductController extends BaseController
 		if ($params['page'] < 2) {
 			$return_data['goods_arr'] = Db::table('pro_goods')->where("status=3")->field(['id', 'name', 'price'])->select()->toArray();
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _guser_update()
@@ -1089,36 +1071,36 @@ class ProductController extends BaseController
 		$params['days'] = intval($params['days']);
 		$params['num'] = intval($params['num']);
 		if (!$params['account']) {
-			jReturn(-1, '请填写用户账号');
+			ReturnToJson(-1, '请填写用户账号');
 		}
 		$user = Db::table('sys_user')->where("account='{$params['account']}'")->find();
 		if (!$user) {
-			jReturn(-1, '不存在相应的账号');
+			ReturnToJson(-1, '不存在相应的账号');
 		}
 		$check_guser = Db::table('pro_guser')->where("uid={$user['id']} and status<99")->find();
 		if ($check_guser) {
 			if ($item_id && $check_guser['id'] != $item_id) {
-				jReturn(-1, '该用户已存在记录，请进行编辑');
+				ReturnToJson(-1, '该用户已存在记录，请进行编辑');
 			}
 		}
 		if (!checkDataAction()) {
 			$down_arr = getDownUser($pageuser['id'], false, $pageuser);
 			if (!in_array($user['id'], $down_arr)) {
-				jReturn(-1, '没有该账号的操作权限');
+				ReturnToJson(-1, '没有该账号的操作权限');
 			}
 		}
 		if (!$params['gid']) {
-			jReturn(-1, '请选择赠送设备');
+			ReturnToJson(-1, '请选择赠送设备');
 		}
 		$goods = Db::table('pro_goods')->where("id={$params['gid']}")->find();
 		if (!$goods || $goods['status'] != 3) {
-			jReturn(-1, '该设备已下线');
+			ReturnToJson(-1, '该设备已下线');
 		}
 		if ($params['num'] < 1) {
-			jReturn(-1, '赠送数量不正确');
+			ReturnToJson(-1, '赠送数量不正确');
 		}
 		if ($params['days'] < 1) {
-			jReturn(-1, '收益天数不正确');
+			ReturnToJson(-1, '收益天数不正确');
 		}
 		$db_data = [
 			'uid' => $user['id'],
@@ -1131,7 +1113,7 @@ class ProductController extends BaseController
 			if ($item_id) {
 				$item = $model->where("id={$item_id} and status<99")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 				$db_data['id'] = $item_id;
@@ -1142,7 +1124,7 @@ class ProductController extends BaseController
 				$db_data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$cnf_redpack_status = getConfig('cnf_redpack_status');
 		$return_data = [
@@ -1151,7 +1133,7 @@ class ProductController extends BaseController
 			'goods_name' => $goods['name'],
 			'price' => $goods['price']
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _guser_delete()
@@ -1159,25 +1141,25 @@ class ProductController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('pro_guser');
 		$item = $model->where("id={$item_id} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		if (!checkDataAction()) {
 			$down_arr = getDownUser($pageuser['id'], false, $pageuser);
 			if (!in_array($item['uid'], $down_arr)) {
-				jReturn(-1, '没有该账号的操作权限');
+				ReturnToJson(-1, '没有该账号的操作权限');
 			}
 		}
 		$db_data = ['status' => 99];
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 }

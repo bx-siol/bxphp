@@ -58,7 +58,7 @@ class WalletController extends BaseController
 			$return_data['currency_arr'] = getCurrency();
 			$return_data['qrcode'] = genQrcode($pageuser['id']);
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//转账
@@ -70,32 +70,32 @@ class WalletController extends BaseController
 		$account = $params['account'];
 		$quantity = floatval($params['quantity']);
 		if (!$currency) {
-			jReturn(-1, '请选择币种');
+			ReturnToJson(-1, '请选择币种');
 		}
 		if (!$account) {
-			jReturn(-1, '请填写接收方账号或ID');
+			ReturnToJson(-1, '请填写接收方账号或ID');
 		}
 		if ($quantity < 0.01) {
-			jReturn(-1, '转账数量不正确');
+			ReturnToJson(-1, '转账数量不正确');
 		}
 		$wallet = getPset('wallet');
 		if ($quantity < $wallet['transfer']['min']) {
-			jReturn(-1, '最小转账数量为 ' . $wallet['transfer']['min']);
+			ReturnToJson(-1, '最小转账数量为 ' . $wallet['transfer']['min']);
 		}
 		if ($quantity > $wallet['transfer']['max']) {
-			jReturn(-1, '最大转账数量为 ' . $wallet['transfer']['max']);
+			ReturnToJson(-1, '最大转账数量为 ' . $wallet['transfer']['max']);
 		}
 		if (getPassword($params['password2']) != $pageuser['password2']) {
-			jReturn(-1, '二级密码不正确');
+			ReturnToJson(-1, '二级密码不正确');
 		}
 		$currency_item = Db::table('cnf_currency')->where("id={$currency}")->find();
 		if (!$currency_item) {
-			jReturn(-1, '不存在相应的币种');
+			ReturnToJson(-1, '不存在相应的币种');
 		}
 
 		$myOrder = Db::table('nft_order')->where("uid={$pageuser['id']} and is_experience=0")->find();
 		if (!$myOrder) {
-			jReturn(-1, '未购买过卡片无法转账');
+			ReturnToJson(-1, '未购买过卡片无法转账');
 		}
 
 		//检测对方账号
@@ -108,12 +108,12 @@ class WalletController extends BaseController
 			$to_user = Db::table('sys_user')->field(['id', 'account', 'nickname'])->whereRaw("account=:acc", ['acc' => $account])->find();
 		}
 		if (!$to_user) {
-			jReturn(-1, '请填写正确的账号或ID');
+			ReturnToJson(-1, '请填写正确的账号或ID');
 		}
 
 		$toOrder = Db::table('nft_order')->where("uid={$to_user['id']} and is_experience=0")->find();
 		if (!$toOrder) {
-			jReturn(-1, '接收方未购买过卡片无法转账');
+			ReturnToJson(-1, '接收方未购买过卡片无法转账');
 		}
 
 		Db::startTrans();
@@ -128,7 +128,7 @@ class WalletController extends BaseController
 				'balance' => $wallet['balance'] - $quantity
 			];
 			if ($wallet_data['balance'] < 0) {
-				jReturn(-1, '您的余额不足');
+				ReturnToJson(-1, '您的余额不足');
 			}
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
@@ -176,9 +176,9 @@ class WalletController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '转账成功');
+		ReturnToJson(1, '转账成功');
 	}
 
 	//钱包详情
@@ -189,7 +189,7 @@ class WalletController extends BaseController
 		$params['page'] = intval($params['page']);
 		$params['s_type'] = intval($params['s_type']);
 		if (!$params['waddr']) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 
 		$where = "log.uid={$pageuser['id']} and w.waddr='{$params['waddr']}'";
@@ -197,7 +197,7 @@ class WalletController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -250,7 +250,7 @@ class WalletController extends BaseController
 
 			$return_data['type_arr'] = getConfig('cnf_balance_type');
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//转入余额宝
@@ -258,15 +258,15 @@ class WalletController extends BaseController
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$params = $this->params;
 		if (!$params['ye']) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$yeb = $params['ye'];
 		// if ($yeb < 500) {
-		// 	jReturn(-1, '缺少参数');
+		// 	ReturnToJson(-1, '缺少参数');
 		// }
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
@@ -304,7 +304,7 @@ class WalletController extends BaseController
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			if ($wallet['balance'] < $yeb) {
-				jReturn(-1, 'Sorry, your credit is running low');
+				ReturnToJson(-1, 'Sorry, your credit is running low');
 			}
 			$wallet_data = [
 				'balance' => $wallet['balance'] - $yeb,
@@ -354,10 +354,10 @@ class WalletController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
-			//jReturn(-1, var_export($e));
+			ReturnToJson(-1, '系统繁忙请稍后再试');
+			//ReturnToJson(-1, var_export($e));
 		}
-		jReturn(1, 'successfully');
+		ReturnToJson(1, 'successfully');
 	}
 
 
@@ -366,15 +366,15 @@ class WalletController extends BaseController
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$params = $this->params;
 		if (!$params['ye']) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$yeb = $params['ye'];
 		// if ($yeb < 500) {
-		// 	jReturn(-1, '缺少参数');
+		// 	ReturnToJson(-1, '缺少参数');
 		// }
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
@@ -412,7 +412,7 @@ class WalletController extends BaseController
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			if ($wallet3['balance'] < $yeb) {
-				jReturn(-1, 'Sorry, your credit is running low');
+				ReturnToJson(-1, 'Sorry, your credit is running low');
 			}
 			$wallet_data = [
 				'balance' => $wallet3['balance'] - $yeb,
@@ -458,10 +458,10 @@ class WalletController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
-			//jReturn(-1, var_export($e));
+			ReturnToJson(-1, '系统繁忙请稍后再试');
+			//ReturnToJson(-1, var_export($e));
 		}
-		jReturn(1, 'successfully');
+		ReturnToJson(1, 'successfully');
 	}
 
 	//读取余额宝
@@ -469,7 +469,7 @@ class WalletController extends BaseController
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		/*
 		1.余额 ok
@@ -510,9 +510,9 @@ class WalletController extends BaseController
 				'all' => $all,
 				'ral' => ($ral ?? '8.5') . '%',
 			];
-			jReturn(1, 'success', $result);
+			ReturnToJson(1, 'success', $result);
 		} catch (\Exception $th) {
-			jReturn(-1, 'error');
+			ReturnToJson(-1, 'error');
 		}
 	}
 }

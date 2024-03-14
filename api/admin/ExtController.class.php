@@ -46,7 +46,7 @@ class ExtController extends BaseController
 		if ($params['page'] < 2) {
 			$return_data['type_arr'] = $cnf_service_type;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _service_update()
@@ -56,18 +56,18 @@ class ExtController extends BaseController
 		$item_id = intval($params['id']);
 		$params['type'] = intval($params['type']);
 		if (!$params['name']) {
-			jReturn(-1, '请填写客服名称');
+			ReturnToJson(-1, '请填写客服名称');
 		}
 		if (!$params['account']) {
-			jReturn(-1, '请填写客服账号');
+			ReturnToJson(-1, '请填写客服账号');
 		}
 		$cnf_service_type = getConfig('cnf_service_type');
 		if (!array_key_exists($params['type'], $cnf_service_type)) {
-			jReturn(-1, '客服类型不正确');
+			ReturnToJson(-1, '客服类型不正确');
 		}
 		/*
 		if(!$params['qrcode']){
-			jReturn(-1,'请上传二维码');
+			ReturnToJson(-1,'请上传二维码');
 		}
 		*/
 		$db_data = [
@@ -84,11 +84,11 @@ class ExtController extends BaseController
 			if ($item_id) {
 				$item = $model->where("id={$item_id}")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				if (!checkDataAction()) {
 					if ($item['uid'] != $pageuser['id']) {
-						jReturn(-1, '没有操作权限');
+						ReturnToJson(-1, '没有操作权限');
 					}
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
@@ -99,12 +99,12 @@ class ExtController extends BaseController
 				$db_data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
 			'type_flag' => $cnf_service_type[$db_data['type']]
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _service_delete()
@@ -112,24 +112,24 @@ class ExtController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('ext_service');
 		$item = $model->where("id={$item_id}")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		if (!checkDataAction()) {
 			if ($item['uid'] != $pageuser['id']) {
-				jReturn(-1, '没有操作权限');
+				ReturnToJson(-1, '没有操作权限');
 			}
 		}
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->delete();
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 
@@ -167,7 +167,7 @@ class ExtController extends BaseController
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _task_update()
@@ -180,16 +180,16 @@ class ExtController extends BaseController
 		$params['award'] = floatval($params['award']);
 		$params['all_limit'] = intval($params['all_limit']);
 		if (!$params['name']) {
-			jReturn(-1, '请填写任务名称');
+			ReturnToJson(-1, '请填写任务名称');
 		}
 		if ($params['day_limit'] < 1) {
-			jReturn(-1, '用户每日限量不正确');
+			ReturnToJson(-1, '用户每日限量不正确');
 		}
 		if ($params['award'] < 0) {
-			jReturn(-1, '奖励额度不正确');
+			ReturnToJson(-1, '奖励额度不正确');
 		}
 		if (!$_POST['content']) {
-			jReturn(-1, '请填写任务要求');
+			ReturnToJson(-1, '请填写任务要求');
 		}
 		$db_data = [
 			'gid' => $pageuser['gid'],
@@ -210,11 +210,11 @@ class ExtController extends BaseController
 			if ($item_id) {
 				$item = $model->where("id={$item_id}")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				if (!checkDataAction()) {
 					if ($item['uid'] != $pageuser['id']) {
-						jReturn(-1, '没有操作权限');
+						ReturnToJson(-1, '没有操作权限');
 					}
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
@@ -225,10 +225,10 @@ class ExtController extends BaseController
 				$db_data['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试' . $e->getMessage());
+			ReturnToJson(-1, '系统繁忙请稍后再试' . $e->getMessage());
 		}
 		$return_data = [];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _task_delete()
@@ -236,24 +236,24 @@ class ExtController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$model = Db::table('ext_task');
 		$item = $model->where("id={$item_id}")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		if (!checkDataAction()) {
 			if ($item['uid'] != $pageuser['id']) {
-				jReturn(-1, '没有操作权限');
+				ReturnToJson(-1, '没有操作权限');
 			}
 		}
 		try {
 			$res = $model->whereRaw('id=:id', ['id' => $item_id])->delete();
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	public function _tasklog()
@@ -273,7 +273,7 @@ class ExtController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -369,7 +369,7 @@ class ExtController extends BaseController
 		if ($params['page'] < 2) {
 			$return_data['status_arr'] = $cnf_task_status;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _tasklog_check()
@@ -379,25 +379,25 @@ class ExtController extends BaseController
 		$item_id = intval($params['id']);
 		$params['status'] = intval($params['status']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$item = Db::table('ext_tasklog')->where("id={$item_id}")->find();
 		if (!$item) {
-			jReturn(-1, '参数错误');
+			ReturnToJson(-1, '参数错误');
 		} else {
 			if (!in_array($item['status'], [1, 2, 3])) {
-				jReturn(-1, '当前状态不可操作');
+				ReturnToJson(-1, '当前状态不可操作');
 			}
 		}
 		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 			$uid_arr[] = $pageuser['id'];
 			if (!in_array($item['uid'], $uid_arr)) {
-				jReturn(-1, '没有操作权限');
+				ReturnToJson(-1, '没有操作权限');
 			}
 		}
 		if (!in_array($params['status'], [3, 9])) {
-			jReturn(-1, '未知审核状态');
+			ReturnToJson(-1, '未知审核状态');
 		}
 		Db::startTrans();
 		try {
@@ -438,13 +438,13 @@ class ExtController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$cnf_task_status = getConfig('cnf_task_status');
 		$return_data = [
 			'status_flag' => $cnf_task_status[$db_data['status']],
 			'check_time' => date('m-d H:i:s', NOW_TIME)
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 }

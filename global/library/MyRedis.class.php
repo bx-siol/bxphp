@@ -104,6 +104,29 @@ class MyRedis
         return $result;
     }
 
+
+    //通配符删除缓存  如：userinfo_  就会删除对应的缓存
+    public function rmall($prefix)
+    {
+        $pattern = $this->getCacheKey($prefix) . '*';
+        $cursor = null;
+        $keysDeleted = 0;
+        do {
+            // SCAN 命令用于迭代数据库中的数据库键。
+            $keys = $this->handler->scan($cursor, $pattern, 100); // 一次扫描100匹，可以根据实际情况调整
+            if (!empty($keys)) {
+                foreach ($keys as $key) {
+                    $this->handler->del($key);
+                    $keysDeleted++;
+                }
+            }
+        } while ($cursor !== 0); // 当返回的游标为 0 时，表示迭代已经结束。
+
+        return $keysDeleted; // 返回删除键的数量，方便进行检测
+    }
+
+
+
     //关闭连接
     public function close()
     {
@@ -160,14 +183,11 @@ class MyRedis
      * @access public
      * @param string            $name 缓存变量名
      * @param mixed             $value  存储数据
-     * @param integer|\DateTime $expire  有效时间（秒）
+     * @param integer|\DateTime $expire  有效时间（秒）默认1小时
      * @return boolean
      */
-    public function set($name, $value, $expire = null, $tag = null)
+    public function set($name, $value, $expire = 60 * 60, $tag = null)
     {
-        if (is_null($expire)) {
-            $expire = 60 * 60;
-        }
         if ($expire instanceof \DateTime) {
             $expire = $expire->getTimestamp() - time();
         }
@@ -194,7 +214,6 @@ class MyRedis
     public function inc($name, $step = 1)
     {
         $key = $this->getCacheKey($name);
-
         return $this->handler->incrby($key, $step);
     }
 

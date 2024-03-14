@@ -6,7 +6,7 @@ class BaseController extends CommonCtl{
 	
 	public function __construct(){
 		parent::__construct();
-		//jReturn(-1,'System maintenance');
+		//ReturnToJson(-1,'System maintenance');
 	}
 	
 	//获取用户的收款方式
@@ -21,7 +21,7 @@ class BaseController extends CommonCtl{
 		$return_data=[
 			'list'=>$list
 		];
-		jReturn(1,'ok',$return_data);
+		ReturnToJson(1,'ok',$return_data);
 	}
 	
 	public function _getPc(){
@@ -33,7 +33,7 @@ class BaseController extends CommonCtl{
 		$return_data=[
 			'list'=>$list
 		];
-		jReturn(1,'ok',$return_data);
+		ReturnToJson(1,'ok',$return_data);
 	}
 	
 }

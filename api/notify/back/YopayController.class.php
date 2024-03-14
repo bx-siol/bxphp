@@ -30,7 +30,7 @@ class YopayController extends BaseController
 		$sign = paySign([$ooc['orderid'], $ooc['payamount']]);
 		file_put_contents($log_file, NOW_DATE . "\r\n" . var_export($params, true) . "\r\n" . $sign . "\r\n", FILE_APPEND);
 		if ($ooc['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [
@@ -55,14 +55,14 @@ class YopayController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 
 		$ooc = json_decode(stripslashes($params['data']), true);
 		$sign = $signFunc([$ooc['orderid'], $ooc['amount']]);
 		file_put_contents($log_file, NOW_DATE . "\r\n" . var_export($params, true) . "\r\n" . $sign . "\r\n", FILE_APPEND);
 		if ($ooc['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 

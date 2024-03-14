@@ -83,7 +83,7 @@ class CouponController extends BaseController
 		];
 		if ($params['page'] < 2) {
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _exchange()
@@ -95,25 +95,25 @@ class CouponController extends BaseController
 		try {
 			$coupon = Db::table('coupon_log')->where("id={$item_id}")->lock(true)->find();
 			if (!$coupon || $coupon['uid'] != $pageuser['id'] || $coupon['status'] >= 99) {
-				jReturn(-1, '不存在相应的记录');
+				ReturnToJson(-1, '不存在相应的记录');
 			}
 			if ($coupon['type'] != 2) {
-				jReturn(-1, 'This discount coupon is not available');
+				ReturnToJson(-1, 'This discount coupon is not available');
 			}
 			if ($coupon['status'] > 2) {
-				jReturn(-1, 'This discount coupon is not available');
+				ReturnToJson(-1, 'This discount coupon is not available');
 			}
 			if ($coupon['num'] <= $coupon['used']) {
-				jReturn(-1, 'This discount coupon is not available');
+				ReturnToJson(-1, 'This discount coupon is not available');
 			}
 			if ($coupon['effective_time'] && $coupon['effective_time'] <= NOW_TIME) {
-				jReturn(-1, 'This coupon has expired');
+				ReturnToJson(-1, 'This coupon has expired');
 			}
 
 			//检测是否符合邀请条件
 			$pro_order = Db::table('pro_order')->where("pid={$pageuser['id']} and is_exchange=0 and create_time>={$coupon['create_time']}")->lock(true)->find(); //and create_time>={$coupon['create_time']}
 			if (!$pro_order) {
-				jReturn(-1, 'Exchange conditions are not met. Invite 1 person to join and get cash.');
+				ReturnToJson(-1, 'Exchange conditions are not met. Invite 1 person to join and get cash.');
 			}
 			$pro_order_data = [
 				'is_exchange' => 1
@@ -176,13 +176,13 @@ class CouponController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试', $e->getMessage());
+			ReturnToJson(-1, '系统繁忙请稍后再试', $e->getMessage());
 		}
 		$return_data = [
 			'status' => $coupon_log['status'],
 			'used' => $coupon_log['used'],
 
 		];
-		jReturn(1, 'You have received (' . $coupon['money'] . ') RS bonus', $return_data);
+		ReturnToJson(1, 'You have received (' . $coupon['money'] . ') RS bonus', $return_data);
 	}
 }

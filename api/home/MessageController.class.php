@@ -44,7 +44,7 @@ class MessageController extends BaseController{
 			'finished'=>$params['page']>=$total_page?true:false,
 			'limit'=>$this->pageSize
 		];
-		jReturn(1,'ok',$return_data);
+		ReturnToJson(1,'ok',$return_data);
 	}
 	
 	//详情
@@ -55,7 +55,7 @@ class MessageController extends BaseController{
 		//->view(['news_category'=>'c'],['name'=>'cat_name'],'log.cid=c.id','LEFT')
 		->where($where)->find();
 		if(!$item){
-			jReturn(-1,'不存在相应的记录');
+			ReturnToJson(-1,'不存在相应的记录');
 		}
 		$item['create_time']=date('m-d H:i',$item['create_time']);
 		$item['content']=nl2br($item['content']);
@@ -64,7 +64,7 @@ class MessageController extends BaseController{
 		$return_data=[
 			'item'=>$item
 		];
-		jReturn(1,'ok',$return_data);
+		ReturnToJson(1,'ok',$return_data);
 	}
 	
 	public function _add(){
@@ -72,27 +72,27 @@ class MessageController extends BaseController{
 		$params=$this->params;
 		
 		if(!$params['content']){
-			jReturn(-1,'请输入内容');
+			ReturnToJson(-1,'请输入内容');
 		}
 		
 		if(!$params['phone']){
-			jReturn(-1,'请输入手机号');
+			ReturnToJson(-1,'请输入手机号');
 		}else{
 			if(!isPhone($params['phone'])){
-				jReturn(-1,'手机号不正确');
+				ReturnToJson(-1,'手机号不正确');
 			}
 		}
 		
 		if(!$params['email']){
-			jReturn(-1,'请输入邮箱');
+			ReturnToJson(-1,'请输入邮箱');
 		}else{
 			if(!isEmail($params['email'])){
-				jReturn(-1,'邮箱不正确');
+				ReturnToJson(-1,'邮箱不正确');
 			}
 		}
 		/*
 		if(!$params['title']){
-			jReturn(-1,'请输入标题');
+			ReturnToJson(-1,'请输入标题');
 		}*/
 		$covers=[];
 		if($params['covers']){
@@ -113,12 +113,12 @@ class MessageController extends BaseController{
 		try{
 			Db::table('msg_list')->insertGetId($msg_list);
 		}catch(\Exceptioin $e){
-			jReturn(-1,'系统繁忙请稍后再试');
+			ReturnToJson(-1,'系统繁忙请稍后再试');
 		}
 		$return_data=[
 			'msn'=>$msg_list['msn']
 		];
-		jReturn(1,'提交成功',$return_data);
+		ReturnToJson(1,'提交成功',$return_data);
 	}
 	
 	public function _log_list(){
@@ -127,7 +127,7 @@ class MessageController extends BaseController{
 		$params['page']=intval($params['page']);
 		$mitem=Db::table('msg_list')->where("msn='{$params['msn']}'")->find();
 		if(!$mitem||$mitem['uid']!=$pageuser['id']){
-			jReturn(-1,'不存在相应的记录');
+			ReturnToJson(-1,'不存在相应的记录');
 		}
 		$where='1=1';
 		//$where.=empty($params['s_cid'])?'':" and log.cid={$params['s_cid']}";
@@ -164,21 +164,21 @@ class MessageController extends BaseController{
 			'finished'=>$params['page']>=$total_page?true:false,
 			'limit'=>$this->pageSize
 		];
-		jReturn(1,'ok',$return_data);
+		ReturnToJson(1,'ok',$return_data);
 	}
 	
 	public function _addLog(){
 		$pageuser=checkLogin();
 		$params=$this->params;
 		if(!$params['msn']){
-			jReturn(-1,'缺少参数');
+			ReturnToJson(-1,'缺少参数');
 		}
 		if(!$params['content']){
-			jReturn(-1,'请填写内容');
+			ReturnToJson(-1,'请填写内容');
 		}
 		$item=Db::table('msg_list')->where("msn='{$params['msn']}'")->find();
 		if(!$item||$item['uid']!=$pageuser['id']){
-			jReturn(-1,'不存在相应的记录');
+			ReturnToJson(-1,'不存在相应的记录');
 		}
 		$msg_list_log=[
 			'mid'=>$item['id'],
@@ -190,9 +190,9 @@ class MessageController extends BaseController{
 			Db::table('msg_list_log')->insertGetId($msg_list_log);
 			Db::table('msg_list')->where("id={$item['id']}")->update(['is_new'=>1]);
 		}catch(\Exceptioin $e){
-			jReturn(-1,'系统繁忙请稍后再试');
+			ReturnToJson(-1,'系统繁忙请稍后再试');
 		}
-		jReturn(1,'提交成功');
+		ReturnToJson(1,'提交成功');
 	}
 	
 }

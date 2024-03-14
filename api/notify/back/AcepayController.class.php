@@ -30,7 +30,7 @@ class AcepayController extends BaseController
 		$sign = paySign($params['data']);
 		if ($params['data']['sign'] != $sign) {
 			file_put_contents(LOGS_PATH . 'acepay/pay/bkacepayNotify' . CONTROLLER_NAME . '.txt', NOW_DATE . "\r\n" .  'singree' . "\r\n\r\n", FILE_APPEND);
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [
@@ -58,11 +58,11 @@ class AcepayController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$sign = $signFunc($params['data']);
 		if ($params['data']['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		//$order=Db::table('fin_cashlog')->where("osn='{$params['merchantCode']}'")->find();

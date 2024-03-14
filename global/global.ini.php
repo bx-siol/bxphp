@@ -63,6 +63,7 @@ Db::setConfig($_ENV['DB']);
 
 //基本类库
 require_once LIB_PATH . 'MyRedis.class.php';
+require_once GLOBAL_PATH . 'const/RedisKeys.php';
 require_once LIB_PATH . 'Image.class.php';
 require_once LIB_PATH . 'UploadFile.class.php';
 require_once LIB_PATH . 'QRcode.class.php';

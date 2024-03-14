@@ -30,7 +30,7 @@ class WepayplusController extends BaseController
 
 		$sign = paySign($params);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 		file_put_contents(LOGS_PATH . strtolower(CONTROLLER_NAME) . '/notify/pay' . $time . '.txt', NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n\r\n", FILE_APPEND);
 
@@ -61,11 +61,11 @@ class WepayplusController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$sign = $signFunc($params);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 		file_put_contents(LOGS_PATH . strtolower(CONTROLLER_NAME) . '/notify/pay' . $time . '.txt', NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n\r\n", FILE_APPEND);
 

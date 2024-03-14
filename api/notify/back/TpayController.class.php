@@ -30,7 +30,7 @@ class TpayController extends BaseController
 		$sign = paySign($params);
 		file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)  . "\r\n\r\n", FILE_APPEND);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [
@@ -58,11 +58,11 @@ class TpayController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$sign = $signFunc($params);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		//$order=Db::table('fin_cashlog')->where("osn='{$params['merchantCode']}'")->find();

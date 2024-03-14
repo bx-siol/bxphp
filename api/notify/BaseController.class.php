@@ -100,7 +100,7 @@ class BaseController extends CommonCtl
 			$pdata['successStr'] = 'success';
 		}
 		if ($pdata['code'] != 1) {
-			jReturn(-1, $pdata['failStr']);
+			ReturnToJson(-1, $pdata['failStr']);
 		}
 
 		//$time = date("Y-m-d", time());
@@ -242,7 +242,7 @@ class BaseController extends CommonCtl
 			if ($pdata['failStr']) {
 				exit($pdata['failStr']);
 			} else {
-				jReturn(-1, 'fail:' . $e->getMessage());
+				ReturnToJson(-1, 'fail:' . $e->getMessage());
 			}
 		}
 		echo $pdata['successStr'];
@@ -265,7 +265,7 @@ class BaseController extends CommonCtl
 		$selectifsc = false;
 		$order = Db::table('fin_cashlog')->where("osn='{$osn}'")->find();
 		if (!$order) {
-			jReturn(-1, 'No order');
+			ReturnToJson(-1, 'No order');
 		}
 
 		if ($order['pay_status'] == 9) {
@@ -309,7 +309,7 @@ class BaseController extends CommonCtl
 					$fin_cashlog['status'] = 3; //3失败 
 					$wallet = getWallet($order['uid'], 2);
 					if (!$wallet) {
-						//jReturn(-1,'钱包获取异常');
+						//ReturnToJson(-1,'钱包获取异常');
 						return ['code' => -1, 'msg' => '钱包获取异常'];
 					}
 					$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
@@ -379,7 +379,7 @@ class BaseController extends CommonCtl
 		} catch (\Exception $e) {
 			Db::rollback();
 			//file_put_contents($log_file,   "\r\n {$osn} err" . var_export($e, true) . "\r\n\r\n", FILE_APPEND);
-			jReturn(-1, $failStr);
+			ReturnToJson(-1, $failStr);
 		}
 		echo $successStr;
 	}
@@ -402,7 +402,7 @@ class BaseController extends CommonCtl
 		$selectifsc = false;
 		$order = Db::table('fin_cashlog')->where("osn='{$osn}'")->find();
 		if (!$order) {
-			jReturn(-1, 'No order');
+			ReturnToJson(-1, 'No order');
 		}
 
 		if ($order['pay_status'] == 9) {
@@ -442,7 +442,7 @@ class BaseController extends CommonCtl
 					$fin_cashlog['status'] = 3; //3失败 
 					$wallet = getWallet($order['uid'], 2);
 					if (!$wallet) {
-						//jReturn(-1,'钱包获取异常');
+						//ReturnToJson(-1,'钱包获取异常');
 						return ['code' => -1, 'msg' => '钱包获取异常'];
 					}
 					$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
@@ -505,7 +505,7 @@ class BaseController extends CommonCtl
 		} catch (\Exception $e) {
 			Db::rollback();
 			//file_put_contents($log_file,   "\r\n {$osn} err" . var_export($e, true) . "\r\n\r\n", FILE_APPEND);
-			jReturn(-1, $failStr);
+			ReturnToJson(-1, $failStr);
 		}
 		echo $successStr;
 	}

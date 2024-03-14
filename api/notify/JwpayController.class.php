@@ -26,7 +26,7 @@ class JwpayController extends BaseController
         $sign = paySign($params);
         //writeLog($sign, 'jwpay/notify/pay');
         if ($sign != $params['sign'])
-            jReturn(-1, 'Sign error');
+            ReturnToJson(-1, 'Sign error');
         $pdata = [
             'code' => $params['status'] == '1' ? 1 : -1,
             'osn' => $params['orderId'],
@@ -49,7 +49,7 @@ class JwpayController extends BaseController
         $sign = CashSign($params);
         //writeLog($sign, 'jwpay/notify/pay');
         if ($sign != $params['sign'])
-            jReturn(-1, 'Sign error');
+            ReturnToJson(-1, 'Sign error');
 
         $pdata = [
             'osn' => $params['orderId'],

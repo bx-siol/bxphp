@@ -35,7 +35,7 @@ class NiceController extends BaseController{
 		
 		$sign=paySign($params);
 		if($params['sign']!=$sign){
-			jReturn(-1,'Sign error');
+			ReturnToJson(-1,'Sign error');
 		}
 
 		$pdata=[
@@ -73,11 +73,11 @@ class NiceController extends BaseController{
 
 		$signFunc=$code.'CashSign';
 		if(!function_exists($signFunc)){
-			jReturn(-1,'Sign func no exist');
+			ReturnToJson(-1,'Sign func no exist');
 		}
 		$sign=$signFunc($params);
 		if($params['sign']!=$sign){
-			jReturn(-1,'Sign error');
+			ReturnToJson(-1,'Sign error');
 		}
 		
 		//$order=Db::table('fin_cashlog')->where("osn='{$params['merchantCode']}'")->find();

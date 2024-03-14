@@ -60,7 +60,7 @@ class WinpayController extends BaseController
 
 		if ($params['sign'] != $sign) {
 			file_put_contents($logpathd, NOW_DATE .  PHP_EOL  .  'singree' .  PHP_EOL .  PHP_EOL, FILE_APPEND);
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [
@@ -88,14 +88,14 @@ class WinpayController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$sign = $signFunc($params);
 
 		file_put_contents($logpathd, NOW_DATE .  PHP_EOL  . $sign .  PHP_EOL  . json_encode($params) .  PHP_EOL .  PHP_EOL, FILE_APPEND);
 
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		//$order=Db::table('fin_cashlog')->where("osn='{$params['merchantCode']}'")->find();

@@ -21,7 +21,7 @@ class DfController extends BaseController{
 		
 	// 	$order=Db::table('fin_cashlog')->where("osn='{$osn}'")->find();
 	// 	if(!$order){
-	// 		jReturn(-1,'No order');
+	// 		ReturnToJson(-1,'No order');
 	// 	}
 	// 	if($order['pay_status']!=2){
 	// 		if($order['pay_status']==9){
@@ -33,7 +33,7 @@ class DfController extends BaseController{
 	// 		}
 	// 	}
 	// 	if(abs($order['real_money']-$amount)>0.1){
-	// 		jReturn(-1,'Money error');
+	// 		ReturnToJson(-1,'Money error');
 	// 	}
 	// 	Db::startTrans();
 	// 	try{
@@ -49,7 +49,7 @@ class DfController extends BaseController{
 	// 		Db::commit();
 	// 	}catch(\Exception $e){
 	// 		Db::rollback();
-	// 		jReturn(-1,$failStr);
+	// 		ReturnToJson(-1,$failStr);
 	// 	}
 	// 	echo $successStr;
 	// }
@@ -77,11 +77,11 @@ class DfController extends BaseController{
 		
 	// 	$signFunc=$code.'CashSign';
 	// 	if(!function_exists($signFunc)){
-	// 		jReturn(-1,'Sign func no exist');
+	// 		ReturnToJson(-1,'Sign func no exist');
 	// 	}
 	// 	$sign=$signFunc($params);
 	// 	if($params['sign']!=$sign){
-	// 		jReturn(-1,'Sign error');
+	// 		ReturnToJson(-1,'Sign error');
 	// 	}
 		
 	// 	$pdata=[
@@ -106,11 +106,11 @@ class DfController extends BaseController{
 
 	// 	$signFunc=$code.'CashSign';
 	// 	if(!function_exists($signFunc)){
-	// 		jReturn(-1,'Sign func no exist');
+	// 		ReturnToJson(-1,'Sign func no exist');
 	// 	}
 	// 	$sign=$signFunc($params);
 	// 	if($params['signs']!=$sign){
-	// 		jReturn(-1,'Sign error');
+	// 		ReturnToJson(-1,'Sign error');
 	// 	}
 		
 	// 	$pdata=[
@@ -135,11 +135,11 @@ class DfController extends BaseController{
 
 	// 	$signFunc=$code.'CashSign';
 	// 	if(!function_exists($signFunc)){
-	// 		jReturn(-1,'Sign func no exist');
+	// 		ReturnToJson(-1,'Sign func no exist');
 	// 	}
 	// 	$sign=$signFunc($params);
 	// 	if($params['sign']!=$sign){
-	// 		jReturn(-1,'Sign error');
+	// 		ReturnToJson(-1,'Sign error');
 	// 	}
 		
 	// 	$pdata=[

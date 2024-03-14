@@ -30,7 +30,7 @@ class TransController extends BaseController{
 			Db::table('sys_lang')->where('id=:id',['id'=>$item['id']])->update($sys_lang);
 		}
 		$this->genLangFile();
-		jReturn('1','保存成功');
+		ReturnToJson('1','保存成功');
 	}
 	
 	public function _trans_google(){
@@ -69,7 +69,7 @@ class TransController extends BaseController{
 		$pageuser=checkPower();
 		$data=['其他杂项','常见问答','新闻公告'];
 		//'title'=>'设置',
-		//jReturn('-1','请填写谷歌验证码');
+		//ReturnToJson('-1','请填写谷歌验证码');
 		//'msg'=>'短信发送失败'
 		// $homePath=ROOT_PATH.'home/controller/';
 		// $file_arr=[
@@ -99,8 +99,8 @@ class TransController extends BaseController{
 		// 		}
 		// 	}
 			
-		// 	//preg_match_all('/jReturn\([\'|\"]-?\d+[\'|\"],[\'|\"](.*?)[\'|\"]\)/',$con,$matchs3);
-		// 	preg_match_all('/jReturn\([\'|\"]-?\d+[\'|\"],[\'|\"](.*?)[\'|\"]/',$con,$matchs3);
+		// 	//preg_match_all('/ReturnToJson\([\'|\"]-?\d+[\'|\"],[\'|\"](.*?)[\'|\"]\)/',$con,$matchs3);
+		// 	preg_match_all('/ReturnToJson\([\'|\"]-?\d+[\'|\"],[\'|\"](.*?)[\'|\"]/',$con,$matchs3);
 		// 	if($matchs3[1]){
 		// 		foreach($matchs3[1] as $mv){
 		// 			$data[]=trim($mv);
@@ -193,7 +193,7 @@ class TransController extends BaseController{
 			Db::table('sys_lang')->insert($sys_lang);
 		}
 		//p($data);
-		jReturn('1','更新成功');
+		ReturnToJson('1','更新成功');
 	}
 	
 }

@@ -31,7 +31,7 @@ class AdkpayController extends BaseController
 		$sign = paySign(['merchantId' => $ooc['merchantId'], 'merchantOrderId' => $ooc['merchantOrderId'], 'amount' => $ooc['amount']]);
 		file_put_contents($log_file, NOW_DATE . "\r\n" . var_export($params, true) . "\r\n" . $sign . "\r\n", FILE_APPEND);
 		if ($ooc['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 		$pdata = [
 			'code' => $ooc['status'] == '1' ? 1 : -1,
@@ -55,14 +55,14 @@ class AdkpayController extends BaseController
 
 		$signFunc = $code . 'CashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 
 		$ooc = $params; //json_decode(stripslashes($params['data']), true);
 		$sign = $signFunc(['merchantId' => $ooc['merchantId'], 'merchantOrderId' => $ooc['merchantOrderId'], 'amount' => $ooc['amount']]);
 		file_put_contents($log_file, NOW_DATE . "\r\n" . var_export($params, true) . "\r\n" . $sign . "\r\n", FILE_APPEND);
 		if ($ooc['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		$pdata = [

@@ -21,7 +21,7 @@ function checkIp($pageuser)
 		$ip_arr = explode(',', $pageuser['white_ip']);
 		if ($ip_arr) {
 			if (!in_array(CLIENT_IP, $ip_arr)) {
-				jReturn('-1', 'IP Forbidden');
+				ReturnToJson('-1', 'IP Forbidden');
 			}
 		}
 	}
@@ -36,7 +36,7 @@ function getUserinfo($uid)
 		return false;
 	}
 	$mem = new MyRedis(0);
-	$mem_key = 'userinfo_' . $uid;
+	$mem_key = RedisKeys::USER_INFO . $uid;
 	$user = [];
 	$user = $mem->get($mem_key);
 	if (!$user || !is_array($user)) {
@@ -74,8 +74,9 @@ function flushUserinfo($uid)
 	}
 	$mem = new MyRedis(0);
 
-	$mem_key = 'userinfo_' . $uid;
+	$mem_key = RedisKeys::USER_INFO . $uid;
 	$mem->rm($mem_key);
+	$mem->rmall(RedisKeys::USER_WALLET . $uid);
 	$mem->close();
 	unset($mem);
 	$user = getUserinfo($uid);
@@ -87,7 +88,7 @@ function delCashUserinfo($uid)
 {
 	$uid = intval($uid);
 	$mem = new MyRedis(0);
-	$mem_key = 'userinfo_' . $uid;
+	$mem_key = RedisKeys::USER_INFO . $uid;
 	$mem->rm($mem_key);
 	$user = Db::table('sys_user')->where("id={$uid}")->field(['account'])->find();
 	$rkey = 'acc2uid_' . $user['account'];
@@ -223,7 +224,7 @@ function checkLogin()
 		return false;
 	}
 	if (isAjax()) {
-		jReturn('-98', '请先登录');
+		ReturnToJson('-98', '请先登录');
 	} else {
 		session_start();
 		$_SESSION['backurl'] = REQUEST_SCHEME . '://' . HTTP_HOST . $_SERVER['REQUEST_URI'];

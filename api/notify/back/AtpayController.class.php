@@ -41,7 +41,7 @@ class AtpayController extends BaseController
 		//. json_encode($_SERVER, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)
 		if ($sign != $pdata1['X-Qu-Signature']) {
 			//file_put_contents($logpathd, NOW_DATE . "\r\n" . 'singree' . "\r\n", FILE_APPEND);
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 		if ($params['resource']['tradeStatus'] == 'PROCESSING') {
 			echo 'OK';
@@ -81,7 +81,7 @@ class AtpayController extends BaseController
 		require_once APP_PATH . 'common/cash/' . $code . '.php';
 		$signFunc = 'atpayCashSign';
 		if (!function_exists($signFunc)) {
-			jReturn(-1, 'Sign func no exist');
+			ReturnToJson(-1, 'Sign func no exist');
 		}
 		$pdata1 = [
 			'X-Qu-Access-Key' => $_SERVER['HTTP_X_QU_ACCESS_KEY'],
@@ -95,7 +95,7 @@ class AtpayController extends BaseController
 		$sign = $signFunc($pdata1);
 		file_put_contents($logpathd, NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), FILE_APPEND);
 		if ($params['sign'] != $sign) {
-			jReturn(-1, 'Sign error');
+			ReturnToJson(-1, 'Sign error');
 		}
 
 		if ($params['resource']['payStatus'] == 'PROCESSING') {

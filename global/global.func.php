@@ -18,6 +18,45 @@ function writeLog($message, $logFile = "sys")
 	// 写入日志内容
 	file_put_contents($logFile, $logContent, FILE_APPEND | LOCK_EX);
 }
+/*******缓存redis*******/
+
+//通配符删除
+function redis_delall($key = '', $redis = new MyRedis())
+{
+	return $redis->rmall($key);
+}
+
+//短链接模式 读取
+function redis_get($key)
+{
+	$redis = new MyRedis(0);
+	$data = $redis->get($key);
+	$redis->close();
+	return $data;
+}
+//短链接模式 写入
+function redis_set($key = '', $data = [], $time = 60 * 20)
+{
+	if ($data == [] || $key == '')
+		return false;
+	$redis = new MyRedis(0);
+	$res = $redis->set($key, $data, $time);
+	$redis->close();
+	return $res;
+}
+//短链接模式 删除
+function redis_rm($key = '')
+{
+	if ($key == '')
+		return false;
+	$redis = new MyRedis(0);
+	$res = $redis->rm($key);
+	$redis->close();
+	return $res;
+}
+
+/*******缓存redis*******/
+
 
 
 //更新用户的父id
@@ -883,7 +922,7 @@ function getClientIp($type = 0)
 }
 
 //格式化返回
-function jReturn($code, $msg, $data = [])
+function ReturnToJson($code, $msg, $data = [])
 {
 	$return = [
 		'code' => $code,

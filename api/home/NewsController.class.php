@@ -47,7 +47,7 @@ class NewsController extends BaseController
 			'finished' => $params['page'] >= $total_page ? true : false,
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//消息公告
@@ -99,7 +99,7 @@ class NewsController extends BaseController
 			$cnf_problems = getConfig('cnf_problems');
 			$return_data['problems_arr'] = $cnf_problems;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _feedbackAct()
@@ -108,10 +108,10 @@ class NewsController extends BaseController
 		$params = $this->params;
 		$params['problem'] = intval($params['problem']);
 		if (!$params['title']) {
-			jReturn(-1, '请填写标题');
+			ReturnToJson(-1, '请填写标题');
 		}
 		if (!$params['content']) {
-			jReturn(-1, '请填写内容');
+			ReturnToJson(-1, '请填写内容');
 		}
 		$db_item = [
 			'uid' => $pageuser['id'],
@@ -124,9 +124,9 @@ class NewsController extends BaseController
 		try {
 			Db::table('news_feedback')->insertGetId($db_item);
 		} catch (\Exceptioin $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '提交成功');
+		ReturnToJson(1, '提交成功');
 	}
 
 	public function _feedbackList()
@@ -169,7 +169,7 @@ class NewsController extends BaseController
 			'finished' => $params['page'] >= $total_page ? true : false,
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _list()
@@ -223,7 +223,7 @@ class NewsController extends BaseController
 				$return_data['category'] = Db::table('news_category')->where("id={$params['s_cid']}")->find();
 			}
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//文章详情
@@ -241,7 +241,7 @@ class NewsController extends BaseController
 			->view(['news_category' => 'c'], ['name' => 'cat_name'], 'log.cid=c.id', 'LEFT')
 			->where($where)->find();
 		if (!$item) {
-			jReturn(-1, '不存在相应的记录');
+			ReturnToJson(-1, '不存在相应的记录');
 		}
 		$item['publish_time'] = date('m-d H:i', $item['publish_time']);
 		$pre = Db::table('news_article')->whereRaw("id<{$item['id']}")->field(['id', 'title'])->order(['id' => 'desc'])->limit(1)->find();
@@ -251,7 +251,7 @@ class NewsController extends BaseController
 			'pre' => $pre,
 			'next' => $next
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	//社区新闻列表
 	public function _communitylist()
@@ -285,7 +285,7 @@ class NewsController extends BaseController
 			$this->redis->set($mem_key, $return_data, 120);
 		}
 
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//添加赞
@@ -295,6 +295,6 @@ class NewsController extends BaseController
 		$params = $this->params;
 		$item = Db::table('news_community')->where(' id=' . $params['id'])->lock(true)->find();
 		Db::table('news_community')->where(' id=' . $params['id'])->update(['commendatory' => $item['commendatory'] + 1]);
-		jReturn(1, 'ok');
+		ReturnToJson(1, 'ok');
 	}
 }

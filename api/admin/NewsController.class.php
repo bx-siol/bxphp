@@ -20,7 +20,7 @@ class NewsController extends BaseController
 		$return_data = [
 			'list' => $tree
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _category_update()
@@ -32,12 +32,12 @@ class NewsController extends BaseController
 		$params['sort'] = intval($params['sort']);
 		$params['status'] = intval($params['status']);
 		if (!$params['name']) {
-			jReturn(-1, '请填写分类名称');
+			ReturnToJson(-1, '请填写分类名称');
 		}
 		if ($params['pid']) {
 			$pitem = Db::table('news_category')->where("id={$params['pid']} and status<99")->find();
 			if (!$pitem) {
-				jReturn(-1, '不存在相应的父级分类');
+				ReturnToJson(-1, '不存在相应的父级分类');
 			}
 		}
 		$news_category = [
@@ -53,7 +53,7 @@ class NewsController extends BaseController
 			if ($params['id']) {
 				$item = Db::table('news_category')->where("id={$params['id']} and status<99")->find();
 				if (!$item) {
-					jReturn(-1, '不存在相应的记录');
+					ReturnToJson(-1, '不存在相应的记录');
 				}
 				Db::table('news_category')->where("id={$item['id']}")->update($news_category);
 			} else {
@@ -61,9 +61,9 @@ class NewsController extends BaseController
 				Db::table('news_category')->insertGetId($news_category);
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	public function _category_delete()
@@ -73,7 +73,7 @@ class NewsController extends BaseController
 		$params['id'] = intval($params['id']);
 		$item = Db::table('news_category')->where("id={$params['id']}")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已被删除');
+			ReturnToJson(-1, '该记录已被删除');
 		}
 		$news_category = ['status' => 99];
 		$list = Db::table('news_category')->where("status<99")->order(['sort' => 'desc'])->select()->toArray();
@@ -82,9 +82,9 @@ class NewsController extends BaseController
 		try {
 			Db::table('news_category')->where("id in ({$ids_str})")->update($news_category);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	///////////////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ class NewsController extends BaseController
 			$category_tree = list2Select($category_list);
 			$return_data['category_tree'] = $category_tree;
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _article_update()
@@ -151,21 +151,21 @@ class NewsController extends BaseController
 		$is_recommend = intval($params['is_recommend']);
 		$category = [];
 		if (!$cid) {
-			jReturn(-1, '请选择分类');
+			ReturnToJson(-1, '请选择分类');
 		} else {
 			$category = Db::table('news_category')->where("id={$cid} and status<99")->find();
 			if (!$category) {
-				jReturn(-1, '不存在相应分类');
+				ReturnToJson(-1, '不存在相应分类');
 			}
 		}
 		if (!$params['title']) {
-			jReturn(-1, '请填写文章标题');
+			ReturnToJson(-1, '请填写文章标题');
 		}
 		if (!$params['cover']) {
-			jReturn(-1, '请上传封面图');
+			ReturnToJson(-1, '请上传封面图');
 		}
 		if (!$status) {
-			jReturn(-1, '未知文章状态');
+			ReturnToJson(-1, '未知文章状态');
 		}
 		if ($params['publish_time_flag']) {
 			$publish_time = strtotime($params['publish_time_flag']);
@@ -196,7 +196,7 @@ class NewsController extends BaseController
 				$news_article['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$sys_arc_status = getConfig('sys_arc_status');
 		$yes_or_no = getConfig('yes_or_no');
@@ -206,7 +206,7 @@ class NewsController extends BaseController
 			'status_flag' => $sys_arc_status[$news_article['status']],
 			'is_recommend_flag' => $yes_or_no[$news_article['is_recommend']],
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _article_delete()
@@ -214,15 +214,15 @@ class NewsController extends BaseController
 		checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$news_article = ['status' => 99];
 		try {
 			Db::table('news_article')->whereRaw('id=:id', ['id' => $item_id])->update($news_article);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	/////////////////公告列表/////////////
@@ -254,7 +254,7 @@ class NewsController extends BaseController
 			'count' => intval($count_item['cnt']),
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 
@@ -266,7 +266,7 @@ class NewsController extends BaseController
 		$item_id = intval($params['id']);
 		$params['sort'] = intval($params['sort']);
 		if (!$params['text']) {
-			jReturn(-1, '请填写内容');
+			ReturnToJson(-1, '请填写内容');
 		}
 		$news_notice = [
 			'title' => $params['title'],
@@ -283,11 +283,11 @@ class NewsController extends BaseController
 				$news_notice['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		actionLog(['opt_name' => '更新', 'sql_str' => json_encode($news_notice)]);
 		$return_data = [];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	//删除
@@ -296,19 +296,19 @@ class NewsController extends BaseController
 		checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$item = Db::table('news_notice')->where("id={$item_id} and status<99")->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		$news_notice = ['status' => 99];
 		try {
 			$res = Db::table('news_notice')->whereRaw('id=:id', ['id' => $item_id])->update($news_notice);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 
@@ -342,7 +342,7 @@ class NewsController extends BaseController
 			'count' => intval($count_item['cnt']),
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _community_update()
@@ -352,10 +352,10 @@ class NewsController extends BaseController
 		$item_id = intval($params['id']);
 
 		if (!$params['content']) {
-			jReturn(-1, '请填写社区内容');
+			ReturnToJson(-1, '请填写社区内容');
 		}
 		if (!$params['imgs']) {
-			jReturn(-1, '请上传社区图');
+			ReturnToJson(-1, '请上传社区图');
 		}
 
 		if ($params['releasetime']) {
@@ -383,13 +383,13 @@ class NewsController extends BaseController
 				$news_community['id'] = $res;
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$return_data = [
 			'id' => $news_community['id'],
 			'publish_time' => $publish_time,
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _community_delete()
@@ -397,14 +397,14 @@ class NewsController extends BaseController
 		checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$news_community = ['status' => 99];
 		try {
 			Db::table('news_community')->whereRaw('id=:id', ['id' => $item_id])->update($news_community);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 }

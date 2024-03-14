@@ -26,7 +26,7 @@ class NicepayController extends BaseController
         $sign = paySign($params, true);
         //writeLog($sign, 'nicepay/notify/pay');
         if (!$sign)
-            jReturn(-1, 'Sign error');
+            ReturnToJson(-1, 'Sign error');
         $pdata = [
             'code' => $params['status'] == '1' ? 1 : -1,
             'osn' => $params['orderId'],
@@ -48,7 +48,7 @@ class NicepayController extends BaseController
         $sign = CashSign($params);
         //writeLog($sign, 'nicepay/notify/pay');
         if ($sign != $params['sign'])
-            jReturn(-1, 'Sign error');
+            ReturnToJson(-1, 'Sign error');
         $pdata = [
             'osn' => $params['orderId'],
             'out_osn' => $params['orderId'],

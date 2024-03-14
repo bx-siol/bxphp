@@ -45,7 +45,7 @@ class SysController extends BaseController
 
 		$lottery['url'] = REQUEST_SCHEME . '://' . HTTP_HOST . "/#/h5/lottery/{$lottery['rsn']}";
 		$return_data['lottery'] = $lottery;
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _pset_update()
@@ -90,7 +90,7 @@ class SysController extends BaseController
 				$res = Db::table('sys_pset')->where("id={$check['id']}")->update($sys_pset);
 			}
 		}
-		jReturn(1, '保存成功');
+		ReturnToJson(1, '保存成功');
 	}
 
 
@@ -106,19 +106,19 @@ class SysController extends BaseController
 		$params['lottery_min'] = intval($params['lottery_min']);
 		$params['status'] = intval($params['status']);
 		if ($params['stock_money'] < 0) {
-			jReturn(-1, '库存额度不正确');
+			ReturnToJson(-1, '库存额度不正确');
 		}
 		if ($params['from_money'] <= 0) {
-			jReturn(-1, '单个红包起始金额不正确');
+			ReturnToJson(-1, '单个红包起始金额不正确');
 		}
 		if ($params['from_money'] > $params['to_money']) {
-			jReturn(-1, '起始金额不正确');
+			ReturnToJson(-1, '起始金额不正确');
 		}
 		if ($params['day_limit'] < 0 || $params['from_money'] < 0) {
-			jReturn(-1, '单用户领取限制不正确');
+			ReturnToJson(-1, '单用户领取限制不正确');
 		}
 		if (!in_array($params['status'], [1, 3])) {
-			jReturn(-1, '未知状态');
+			ReturnToJson(-1, '未知状态');
 		}
 		$db_item = [
 			'stock_money' => $params['stock_money'],
@@ -132,9 +132,9 @@ class SysController extends BaseController
 		try {
 			Db::table('gift_lottery')->where("id=1")->update($db_item);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 	//##################日志管理开始##################
 
@@ -177,7 +177,7 @@ class SysController extends BaseController
 			'count' => $count_item['cnt'],
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	//##################日志管理结束##################
@@ -230,23 +230,23 @@ class SysController extends BaseController
 			'limit' => $this->pageSize,
 			'top' => $top_node
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _node_update()
 	{
 		$pageuser = checkPower();
 		if ($pageuser['id'] != 1 && $pageuser['id'] != 2) {
-			jReturn(-1, '没有权限操作' . ($pageuser['id']));
+			ReturnToJson(-1, '没有权限操作' . ($pageuser['id']));
 		}
 		$params = $this->params;
 		$item_id = intval($params['id']);
 		$pid = intval($params['pid']);
 		if (!$params['nkey']) {
-			jReturn(-1, '请填写NKEY');
+			ReturnToJson(-1, '请填写NKEY');
 		}
 		if (!$params['name']) {
-			jReturn(-1, '请填写节点名称');
+			ReturnToJson(-1, '请填写节点名称');
 		}
 		$sys_node = [
 			'name' => $params['name'],
@@ -268,13 +268,13 @@ class SysController extends BaseController
 		try {
 			if ($item_id) {
 				if ($pid == $item_id) {
-					jReturn(-1, '父节点不能设置成自己');
+					ReturnToJson(-1, '父节点不能设置成自己');
 				} else {
 					if ($pid) {
 						//检查自己是否有子节点，如果有子节点不允许直接将自己设置成其他节点的子节点
 						$check_sub = Db::table('sys_node')->field(['id'])->whereRaw('pid=:pid', ['pid' => $item_id])->find();
 						if ($check_sub) {
-							jReturn(-1, '该节点下面有子节点，请先清除');
+							ReturnToJson(-1, '该节点下面有子节点，请先清除');
 						}
 					}
 				}
@@ -284,7 +284,7 @@ class SysController extends BaseController
 				$res = Db::table('sys_node')->insert($sys_node);
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		actionLog(['opt_name' => '更新节点', 'sql_str' => Db::getLastSql()]);
 		$yes_or_no = getConfig('yes_or_no');
@@ -292,35 +292,35 @@ class SysController extends BaseController
 			'public_flag' => $yes_or_no[$sys_node['public']],
 			'type_flag' => $yes_or_no[$sys_node['type']]
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _node_delete()
 	{
 		$pageuser = checkPower();
 		if ($pageuser['id'] != 1) {
-			jReturn(-1, '没有权限操作');
+			ReturnToJson(-1, '没有权限操作');
 		}
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		if ($item_id < 50) {
-			//jReturn(-1,'系统基础节点不能删除');
+			//ReturnToJson(-1,'系统基础节点不能删除');
 		}
 		Db::startTrans();
 		try {
 			$item = Db::table('sys_node')->whereRaw('id=:id', ['id' => $item_id])->lock(true)->find();
 			if (!$item) {
-				jReturn(-1, '该节点已经删除');
+				ReturnToJson(-1, '该节点已经删除');
 			}
 			Db::table('sys_node')->where("id={$item['id']} or pid={$item['id']}")->delete();
 			Db::commit();
 			actionLog(['opt_name' => '删除节点', 'sql_str' => json_encode($item)]);
-			jReturn(1, '操作成功');
+			ReturnToJson(1, '操作成功');
 		} catch (\Exception $e) {
 			Db::rollback();
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 	}
 	//##################节点管理结束##################
@@ -360,23 +360,23 @@ class SysController extends BaseController
 			'count' => $count_item['cnt'],
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	public function _bset_update()
 	{
 		$pageuser = checkPower();
 		if ($pageuser['id'] != 1) {
-			jReturn(-1, '没有权限操作');
+			ReturnToJson(-1, '没有权限操作');
 		}
 		$params = $this->params;
 		$params['name'] = $_POST['name'];
 		$item_id = intval($params['id']);
 		if (!$params['skey']) {
-			jReturn(-1, '请填写SKEY');
+			ReturnToJson(-1, '请填写SKEY');
 		}
 		if (!$params['name']) {
-			jReturn(-1, '请填写配置名称');
+			ReturnToJson(-1, '请填写配置名称');
 		}
 		$sys_config = [
 			'name' => $params['name'],
@@ -392,7 +392,7 @@ class SysController extends BaseController
 				$res = Db::table('sys_config')->insert($sys_config);
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '没有修改或系统繁忙!请检查SKEY是否有重复！');
+			ReturnToJson(-1, '没有修改或系统繁忙!请检查SKEY是否有重复！');
 		}
 		$this->flushBset($params['skey']);
 		actionLog(['opt_name' => '更新配置', 'sql_str' => Db::getLastSql()]);
@@ -430,34 +430,34 @@ class SysController extends BaseController
 			'config_flag' => nl2br($sys_config['config']),
 			'single_flag' => $yes_no[$sys_config['single']]
 		];
-		jReturn(1, '操作成功', $return_data);
+		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function _bset_delete()
 	{
 		$pageuser = checkPower();
 		if ($pageuser['id'] != 1) {
-			jReturn(-1, '没有权限操作');
+			ReturnToJson(-1, '没有权限操作');
 		}
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		if ($item_id < 256) {
-			jReturn(-1, '系统基础配置不能删除');
+			ReturnToJson(-1, '系统基础配置不能删除');
 		}
 		$item = Db::table('sys_config')->whereRaw('id=:id', ['id' => $item_id])->find();
 		if (!$item) {
-			jReturn(-1, '该配置已删除');
+			ReturnToJson(-1, '该配置已删除');
 		}
 		try {
 			Db::table('sys_config')->where("id={$item['id']}")->delete();
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$this->flushBset($item['skey']);
 		actionLog(['opt_name' => '删除配置', 'sql_str' => json_encode($item)]);
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	//刷新配置
@@ -483,7 +483,7 @@ class SysController extends BaseController
 		if ($account) {
 			$user = Db::table('sys_user')->field(['id', 'gid'])->whereRaw('account=:account', ['account' => $account])->find();
 			if (!$user) {
-				jReturn(-1, '不存在账号：' . $account);
+				ReturnToJson(-1, '不存在账号：' . $account);
 			}
 			$access = Db::table('sys_access')
 				->field(['node_ids'])
@@ -566,14 +566,14 @@ class SysController extends BaseController
 			'checked' => $checked,
 			'sys_group' => getGroupsIdx()
 		];
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	public function _oauth_update()
 	{
 		$pageuser = checkPower();
 		if ($pageuser['id'] != 1 && $pageuser['id'] != 2) {
-			jReturn(-1, '没有权限操作');
+			ReturnToJson(-1, '没有权限操作');
 		}
 		$params = $this->params;
 		$account = $params['account'];
@@ -597,7 +597,7 @@ class SysController extends BaseController
 			if ($account) {
 				$user = Db::table('sys_user')->field(['id', 'gid'])->whereRaw('account=:account', ['account' => $account])->find();
 				if (!$user) {
-					jReturn(-1, '不存在账号：' . $account);
+					ReturnToJson(-1, '不存在账号：' . $account);
 				}
 				$check_user = Db::table('sys_access')->field(['id'])->where("uid={$user['id']}")->find();
 				if ($check_user) {
@@ -609,7 +609,7 @@ class SysController extends BaseController
 			} elseif ($gid) {
 				$sys_group = getGroupsIdx();
 				if (!array_key_exists($gid, $sys_group)) {
-					jReturn(-1, '不存在系统分组：' . $gid);
+					ReturnToJson(-1, '不存在系统分组：' . $gid);
 				}
 				$check_group = Db::table('sys_access')->field(['id'])->whereRaw('gid=:gid', ['gid' => $gid])->find();
 				if ($check_group) {
@@ -619,7 +619,7 @@ class SysController extends BaseController
 					$res = Db::table('sys_access')->insert($sys_access);
 				}
 			} else {
-				jReturn(-1, '缺少授权对象，请选择分组或者账号进行授权');
+				ReturnToJson(-1, '缺少授权对象，请选择分组或者账号进行授权');
 			}
 			if ($user) {
 				$tag = 'usernodes_' . $user['id'];
@@ -628,9 +628,9 @@ class SysController extends BaseController
 				$this->redis->clear(); //清理所有缓存
 			}
 			unset($this->redis);
-			jReturn(1, '操作成功');
+			ReturnToJson(1, '操作成功');
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 	}
 
@@ -647,7 +647,7 @@ class SysController extends BaseController
 		$return_data = [
 			'user' => $user
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _profile_update()
@@ -657,7 +657,7 @@ class SysController extends BaseController
 		$user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		$password2_ck = getPassword($params['password2_ck']);
 		if ($password2_ck != $user['password2']) {
-			jReturn(-1, '当前二级密码不正确');
+			ReturnToJson(-1, '当前二级密码不正确');
 		}
 		$sys_user = [];
 		if ($params['realname']) {
@@ -666,20 +666,20 @@ class SysController extends BaseController
 		if ($params['nickname']) {
 			$sys_user['nickname'] = $params['nickname'];
 		} else {
-			jReturn(-1, '请填写昵称');
+			ReturnToJson(-1, '请填写昵称');
 		}
 		if ($params['headimgurl']) {
 			$sys_user['headimgurl'] = $params['headimgurl'];
 		} else {
-			jReturn(-1, '请上传头像');
+			ReturnToJson(-1, '请上传头像');
 		}
 		try {
 			Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		flushUserinfo($pageuser['id']);
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	//安全设置
@@ -700,7 +700,7 @@ class SysController extends BaseController
 			'user' => $user,
 			// 'google_qrcode' => $google_qrcode
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _safety_update()
@@ -710,17 +710,17 @@ class SysController extends BaseController
 		$sys_user = [];
 		if ($params['phone']) {
 			if (!isPhone($params['phone'])) {
-				jReturn(-1, '手机号格式不正确');
+				ReturnToJson(-1, '手机号格式不正确');
 			}
 			if ($params['phone'] == $pageuser['phone']) {
-				//jReturn(-1,'新手机号没有变化');
+				//ReturnToJson(-1,'新手机号没有变化');
 			}
 			if (!$params['pcode']) {
-				//jReturn('-1','请填写短信验证码');
+				//ReturnToJson('-1','请填写短信验证码');
 			}
 			$user = Db::table('sys_user')->field(['id'])->whereRaw('phone=:phone', ['phone' => $params['phone']])->find();
 			if ($user && $user['id'] != $pageuser['id']) {
-				jReturn(-1, '该手机号已被占用');
+				ReturnToJson(-1, '该手机号已被占用');
 			}
 			/*
 									   $check_res=checkPhoneCode(['stype'=>$params['stype'],'phone'=>$params['phone'],'code'=>$params['pcode']]);
@@ -740,7 +740,7 @@ class SysController extends BaseController
 
 		$password2_ck = getPassword($params['password2_ck']);
 		if ($password2_ck != $user['password2']) {
-			jReturn(-1, '当前二级密码不正确');
+			ReturnToJson(-1, '当前二级密码不正确');
 		}
 
 		// $sys_user['is_google'] = intval($params['is_google']);
@@ -755,17 +755,17 @@ class SysController extends BaseController
 		}
 		$sys_user['white_ip'] = implode(',', array_unique($ip_arr));
 		if (!$sys_user) {
-			jReturn(-1, '没有任何修改');
+			ReturnToJson(-1, '没有任何修改');
 		}
 		try {
 			Db::table('sys_user')->where("id={$pageuser['id']}")->update($sys_user);
 		} catch (\Exception $e) {
-			jReturn('-1', '系统繁忙请稍后再试');
+			ReturnToJson('-1', '系统繁忙请稍后再试');
 		}
 		flushUserinfo($pageuser['id']);
 		//踢所有端下线
 		//kickUser($pageuser['id']);
-		jReturn('1', '操作成功');
+		ReturnToJson('1', '操作成功');
 	}
 
 	//隐藏谷歌配置信息
@@ -776,9 +776,9 @@ class SysController extends BaseController
 		// try {
 		// 	Db::table('sys_user')->where("id={$pageuser['id']}")->update($sys_user);
 		// } catch (\Exception $e) {
-		// 	jReturn('-1', '系统繁忙请稍后再试');
+		// 	ReturnToJson('-1', '系统繁忙请稍后再试');
 		// }
-		jReturn('1', '操作成功');
+		ReturnToJson('1', '操作成功');
 	}
 
 	//##################语言翻译开始##################
@@ -809,7 +809,7 @@ class SysController extends BaseController
 			'count' => $count_item['cnt'],
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $data);
+		ReturnToJson(1, 'ok', $data);
 	}
 
 	public function _trans_update()
@@ -818,14 +818,14 @@ class SysController extends BaseController
 		$params = $this->params;
 		$item_id = intval($params['id']);
 		if (!$params['cn']) {
-			jReturn(-1, '请填写简体中文');
+			ReturnToJson(-1, '请填写简体中文');
 		}
 		/*
 						  if(!$params['tw']){
-							  jReturn(-1,'请填写繁体中文');
+							  ReturnToJson(-1,'请填写繁体中文');
 						  }
 						  if(!$params['en']){
-							  jReturn(-1,'请填写英文');
+							  ReturnToJson(-1,'请填写英文');
 						  }*/
 		$sys_lang = [
 			'cn' => $params['cn'],
@@ -842,10 +842,10 @@ class SysController extends BaseController
 				$res = Db::table('sys_lang')->insert($sys_lang);
 			}
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$this->genLangFile();
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	public function _trans_delete()
@@ -853,20 +853,20 @@ class SysController extends BaseController
 		$pageuser = checkPower();
 		$item_id = intval($this->params['id']);
 		if (!$item_id) {
-			jReturn(-1, '缺少参数');
+			ReturnToJson(-1, '缺少参数');
 		}
 		$item = Db::table('sys_lang')->whereRaw('id=:id', ['id' => $item_id])->find();
 		if (!$item) {
-			jReturn(-1, '该记录已删除');
+			ReturnToJson(-1, '该记录已删除');
 		}
 		try {
 			Db::table('sys_lang')->where("id={$item['id']}")->delete();
 		} catch (\Exception $e) {
-			jReturn(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$this->genLangFile();
 		actionLog(['opt_name' => '删除翻译', 'sql_str' => json_encode($item)]);
-		jReturn(1, '操作成功');
+		ReturnToJson(1, '操作成功');
 	}
 
 	private function genLangFile()

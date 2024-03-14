@@ -70,29 +70,38 @@ function createWalletBycid($uid, $cid = 0)
 {
 	$uid = intval($uid);
 	$user = Db::table('sys_user')->field(['id', 'status'])->where("id={$uid}")->find();
-	if (!$user) {
+	if (!$user)
 		return false;
-	}
-
 	Db::startTrans();
+	$list = [];
 	try {
-		$db_item = [
+		$list = [
 			'uid' => $user['id'],
 			'waddr' => getRsn(),
 			'cid' => $cid,
-			'create_time' => time()
+			'create_time' => time(),
+			'balance' => 0,
+			'fz_balance' => 0,
+			'lasttime' => 0,
 		];
-		Db::table('wallet_list')->insertGetId($db_item);
+		$list['id'] = Db::table('wallet_list')->insertGetId($list);
 	} catch (\Exception $e) {
 		Db::rollback();
 		return false;
 	}
 	Db::commit();
+	if ($list != []) {
+		$redis = new MyRedis();
+		$rediskey = RedisKeys::USER_WALLET . $uid . "_{$cid}";
+		$redis->set($rediskey, $list);
+		$redis->close();
+	}
 }
 //获取用户的钱包
 function getWallet($uid, $cid = 0, $type = '')
 {
 	$uid = intval($uid);
+	$rediskey = RedisKeys::USER_WALLET . $uid . "_{$cid}";
 	if (!$uid) {
 		return [];
 	}
@@ -101,6 +110,11 @@ function getWallet($uid, $cid = 0, $type = '')
 	if ($cid) {
 		$where .= " and cid={$cid}";
 	}
+	$redis = new MyRedis();
+	$list = $redis->get($rediskey);
+	if ($list != false)
+		return $list;
+
 	$list = Db::table('wallet_list')->where($where)->select()->toArray();
 	if (!$list) {
 		createWalletBycid($uid, $cid);
@@ -110,8 +124,10 @@ function getWallet($uid, $cid = 0, $type = '')
 		return getWallet($uid, $cid, '1');
 	}
 	if ($cid) {
+		$redis->set($rediskey, $list[0]);
 		return $list[0];
 	}
+	$redis->set($rediskey, $list);
 	return $list;
 }
 
@@ -207,13 +223,15 @@ function updateWalletBalanceAndLog($id, $money, $cid, $type, $remark)
 {
 	$wallet = Db::table('wallet_list')->where('uid=' . $id . ' and cid=' . $cid)->lock(true)->find();
 	if ($wallet == []) {
-		$id = Db::table('wallet_list')->insertGetId(['uid' => $id, 'waddr' => getRsn(), 'cid' => $cid, 'balance' => 0, 'create_time' => time(),]);
-		$wallet = Db::table('wallet_list')->where('id=' . $id)->lock(true)->find();
+		$wid = Db::table('wallet_list')->insertGetId(['uid' => $id, 'waddr' => getRsn(), 'cid' => $cid, 'balance' => 0, 'create_time' => time(),]);
+		$wallet = Db::table('wallet_list')->where('id=' . $wid)->lock(true)->find();
 	}
 	$oriBalance = $wallet['balance'];
 	$newBalance = $wallet['balance'] + $money;
 	$wallet_data = ['balance' => $newBalance];
 	$result = Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
+	$redis = new MyRedis();
+	$redis->rm(RedisKeys::USER_WALLET . $id . "_{$cid}");
 	walletLog([
 		'wid' => $wallet['id'],
 		'uid' => $id,

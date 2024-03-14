@@ -16,7 +16,7 @@ class UserController extends BaseController
 		$pageuser = checkLogin();
 		$user = Db::table('sys_user')->field(['id', 'account', 'phone', 'nickname', 'gid', 'headimgurl', 'reg_time', 'pidg1', 'pidg2', 'teamcount'])->where("id={$pageuser['id']}")->find();
 		if (!$user) {
-			jReturn(-1, '账号异常');
+			ReturnToJson(-1, '账号异常');
 		}
 		// $user['group'] = getGroups($user['gid']);
 
@@ -96,7 +96,7 @@ class UserController extends BaseController
 			'service_arr' => $service_arr,
 			//'pidg1' => $ccth
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	//获取今天团队注册人数
 	public function _gettodayregusercount()
@@ -111,7 +111,7 @@ class UserController extends BaseController
 			'count1' => $count1,
 			//'$where1' => $where1
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	//团队 
 	public function _team()
@@ -120,7 +120,7 @@ class UserController extends BaseController
 		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
 
 		if (!$params['lv']) {
-			jReturn(1, 'System error');
+			ReturnToJson(1, 'System error');
 		}
 		$lv = intval($params['lv']);
 		$mem_key = 'user_team_' . $lv  . $pageuser['id'] . $params['page']  . $params['type'];
@@ -229,7 +229,7 @@ class UserController extends BaseController
 			];
 			$this->redis->set($mem_key, $return_data, 300);
 		}
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 	//我的团队--层级人数
 	public function _GetTeamHierarchyPeopleNum()
@@ -245,7 +245,7 @@ class UserController extends BaseController
 			'list'=> $list,
 			'fy'=> getConfig('FYSZ'),
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//收益中心
@@ -263,7 +263,7 @@ class UserController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, '开始/结束日期选择不正确');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -298,6 +298,6 @@ class UserController extends BaseController
 			'finished' => $params['page'] >= $total_page ? true : false,
 			'limit' => $this->pageSize
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 }

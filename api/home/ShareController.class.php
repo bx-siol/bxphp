@@ -33,7 +33,7 @@ class ShareController extends BaseController
 			'RS' => $RS,
 			'people' => $people
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	public function _download()

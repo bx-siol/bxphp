@@ -21,7 +21,7 @@ class DefaultController extends BaseController
 			$tag = 'usernodes_' . $pageuser['id'];
 			$this->redis->clear($tag);
 		}
-		jReturn(1, '缓存清理成功');
+		ReturnToJson(1, '缓存清理成功');
 	}
 
 	//获取后台首页数据
@@ -59,7 +59,7 @@ class DefaultController extends BaseController
 			$start_time = strtotime($params['start_time'] . ' 00:00:01');
 			$end_time = strtotime($params['end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始日期不能超过结束日期');
+				ReturnToJson(-1, '开始日期不能超过结束日期');
 			}
 		}
 		if ($params['type'] == 1) {
@@ -220,7 +220,7 @@ class DefaultController extends BaseController
 			// 总结余
 			'sql' => $uWhere2
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//获取后台首页数据
@@ -258,7 +258,7 @@ class DefaultController extends BaseController
 			$start_time = strtotime($params['start_time'] . ' 00:00:01');
 			$end_time = strtotime($params['end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始日期不能超过结束日期');
+				ReturnToJson(-1, '开始日期不能超过结束日期');
 			}
 		}
 		if ($params['type'] == 1) {
@@ -332,7 +332,7 @@ class DefaultController extends BaseController
 			'reward_money' => floatval($reward['money']),
 			'reward_money_today' => floatval($reward_money_today),
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 	//获取后台首页数据
@@ -370,7 +370,7 @@ class DefaultController extends BaseController
 			$start_time = strtotime($params['start_time'] . ' 00:00:01');
 			$end_time = strtotime($params['end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始日期不能超过结束日期');
+				ReturnToJson(-1, '开始日期不能超过结束日期');
 			}
 		}
 		if ($params['type'] == 1) {
@@ -465,7 +465,7 @@ class DefaultController extends BaseController
 
 
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 
@@ -504,7 +504,7 @@ class DefaultController extends BaseController
 			$start_time = strtotime($params['start_time'] . ' 00:00:01');
 			$end_time = strtotime($params['end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				jReturn(-1, '开始日期不能超过结束日期');
+				ReturnToJson(-1, '开始日期不能超过结束日期');
 			}
 		}
 		if ($params['type'] == 1) {
@@ -600,7 +600,7 @@ class DefaultController extends BaseController
 			'today_member' => intval($today_member),
 			'effective_member' => intval($effective_member),
 		];
-		jReturn(1, 'ok', $return_data);
+		ReturnToJson(1, 'ok', $return_data);
 	}
 
 		//万能验证码
@@ -613,6 +613,6 @@ class DefaultController extends BaseController
 			$return_data = [
 				'sms_code' => $cnf_global_smscode,
 			];
-			jReturn(1, 'ok', $return_data);
+			ReturnToJson(1, 'ok', $return_data);
 		}
 }
