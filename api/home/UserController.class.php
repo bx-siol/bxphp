@@ -179,22 +179,24 @@ class UserController extends BaseController
 			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
-			if($teamSize_str)
+			$teamSizeDate = array();
+			if(!$teamSize_str)
 				$teamSizeDate = Db::query($teamSize_str);
 			
-			if($order_str)
+			$orderDate = array();
+			if(!$order_str)
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 
 			foreach ($list as &$item) {
 				$item["teamSize"] = 0;
 				$item["assets"] = 0;
 
-				if($teamSizeDate)
+				if(count($teamSizeDate))
 					foreach	($teamSizeDate as &$v)
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if($orderDate)
+				if(count($orderDate))
 					foreach ($orderDate as &$v)
 						if ($item["id"] == $v["uid"])
 							$item["assets"] = $v['assets'];
