@@ -175,14 +175,12 @@ class UserController extends BaseController
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
 			}
-			$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
-			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
-			$order_str =substr($order_str,0, strlen($order_str) - 1);
-
-			writeLog('444444444444-'.$teamSize_str,'bobopay1');
+			
 			$teamSizeDate = array();
 			if($teamSize_str)
 			{
+				$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
+				$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
 				writeLog('1-'.$teamSize_str,'bobopay1');
 				$teamSizeDate = Db::query($teamSize_str);
 			}				
@@ -190,6 +188,7 @@ class UserController extends BaseController
 			$orderDate = array();
 			if($order_str)
 			{
+				$order_str =substr($order_str,0, strlen($order_str) - 1);
 				writeLog('2-'.$order_str,'bobopay1');
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 			}				
