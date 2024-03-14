@@ -124,8 +124,8 @@ $_ENV['PAY_CONFIG']['nicepay'] = [
 	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay',
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/',
-	'notifyUrl' => 'http://' . PAY_BACKURL . '/' . 'api/Notify/nicepay/cash',
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/' . 'api/Notify/nicepay/cash'
+	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash',
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash'
 ];
 
 $_ENV['PAY_CONFIG']['bobopay'] = [
@@ -138,7 +138,7 @@ $_ENV['PAY_CONFIG']['bobopay'] = [
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/',
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/bobopay/pay',
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/' . 'api/Notify/bobopay/cash'
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/bobopay/cash'
 ];
 
 $_ENV['PAY_CONFIG']['jwpay'] = [
@@ -148,9 +148,9 @@ $_ENV['PAY_CONFIG']['jwpay'] = [
 	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder',
 	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder',
 	'balance_url' => 'https://api.jwpay.net/api/payout/balance',
-	
+
 	'query_url' => '',
 	'returnUrl' => 'http://' . PAY_BACKURL . '/',
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/bobopay/pay',
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/' . 'api/Notify/bobopay/cash'
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay',
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash'
 ];
