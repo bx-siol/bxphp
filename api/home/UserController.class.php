@@ -241,7 +241,11 @@ class UserController extends BaseController
 			$pidsArr = explode(",", $item["pids"]);
 			$item["level"] = array_search($pageuser['id'], $pidsArr);
 		}
-		jReturn(1, 'ok', $list);
+		$return_data = [
+			'list'=> $list,
+			'fy'=> getConfig('FYSZ'),
+		];
+		jReturn(1, 'ok', $return_data);
 	}
 
 	//收益中心
