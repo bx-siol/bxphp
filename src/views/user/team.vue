@@ -247,7 +247,7 @@ const onClickTab = (title: any) => {
         loadingShow.value = true
         cpageRef.value.doSearch()
     }
-
+    // doSearch();
 };
 const onLinkc = (type: string) => {
     cpageRef.value.delall();
@@ -290,6 +290,13 @@ const getTeam = () => {
     }, delayTime)
 }
 
+// 执行搜索操作
+// const doSearch = () => {
+//     if (cpageRef && cpageRef.value) {
+//         loadingShow.value = true;
+//         cpageRef.value.doSearch();
+//     }
+// };
 const SwitchMembers = (lv: number, type: number) => {
     // loadingShow.value = true
     console.log(type);
@@ -298,7 +305,7 @@ const SwitchMembers = (lv: number, type: number) => {
         requesturl1.value = "c=User&a=team&lv=1&type=pay";
         requesturl2.value = "c=User&a=team&lv=2&type=pay";
         requesturl3.value = "c=User&a=team&lv=3&type=pay";
-        cpageRef.value = ("c=User&a=team&lv=" + lv + "type=pay");
+        cpageRef.value = "c=User&a=team&lv=" + lv + "type=pay";
         // console.log(requesturl1.value);
 
     }
@@ -306,7 +313,7 @@ const SwitchMembers = (lv: number, type: number) => {
         requesturl1.value = "c=User&a=team&lv=1&type=unpay";
         requesturl2.value = "c=User&a=team&lv=2&type=unpay";
         requesturl3.value = "c=User&a=team&lv=3&type=unpay";
-        cpageRef.value = ("c=User&a=team&lv=" + lv + "type=unpay");
+        cpageRef.value = "c=User&a=team&lv=" + lv + "type=unpay";
     }
 
     var InactiveMember = document.getElementsByClassName('levelTabValidMember');
@@ -353,6 +360,7 @@ const SwitchMembers = (lv: number, type: number) => {
             levelTabInactiveMember[2].style.color = "#002544";
         }
     }
+    // doSearch();
 }
 
 onMounted(() => {

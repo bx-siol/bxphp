@@ -1,16 +1,17 @@
 <template>
+    <MyNav leftText=''></MyNav>
     <div class="teamlist">
-        <div style="height: 2rem; width: 100%; margin-top: 0.1rem;text-align:center;font-size:1rem;font-weight:bold">
-            <div style="width:33%;float:left;">Product</div>
-            <div style="width:33%;float:left">Price</div>
-            <div style="width:33%;float:left">Amount</div>
+        <div style="height: 2rem; width: 100%; margin-top: 0.1rem;text-align:center;font-size:1rem;font-weight:bold;color:#64523e ;">
+            <div style="width:40%;float:left;">Product</div>
+            <div style="width:26%;float:left">Price</div>
+            <div style="width:32%;float:left">Amount</div>
         </div>
         <div style="height: 20rem; width: 100%;overflow-y:auto;">
             <div v-for="(item, index) in GoodsList" :key="index"
-                style="width: 100%; text-align: center; color: #696767;height:2rem; font-size:0.9rem;">
-                <div style="width:33%;float:left">{{ item.goods_name }}</div>
-                <div style="width:33%;float:left">{{ item.price }} RS</div>
-                <div style="width:33%;float:left">{{ item.num }}</div>
+                style="width: 100%; text-align: center; color: #002544;height:2rem; font-size:12px;">
+                <div style="width:40%;float:left">{{ item.goods_name }}</div>
+                <div style="width:26%;float:left;">{{ item.price }} RS</div>
+                <div style="width:32%;float:left">{{ item.num }}</div>
             </div>
         </div>
     </div>
@@ -72,8 +73,9 @@ import {
     nextTick,
 } from "vue";
 import http from "../../global/network/http";
-import { useRouter } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+const route = useRoute()
 
 const GoodsList = ref([]);
 
@@ -81,11 +83,12 @@ const GoodsList = ref([]);
 onMounted(() => {
     var delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
+        let url = 'c=Product&a=PurchasedOrder&id=' + route.params.id
         http({
-            url: 'PurchasedOrder',
+            url: url,
             data: { size: 10000 }
         }).then((res: any) => {
-            GoodsList.value = res.data.list;
+            GoodsList.value = res.data;
         })
     })
 
@@ -93,7 +96,7 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.teamlist{
+.teamlist {
     padding: 1rem;
 }
 </style>
