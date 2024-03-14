@@ -5,7 +5,7 @@ use think\facade\Db;
 
 
 
-function payOrder($fin_paylog)
+function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG']['nicepay'];
 	//$rand_arr = [6, 7, 8, 9];

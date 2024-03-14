@@ -119,6 +119,8 @@ class FinanceController extends BaseController
 					$file_name = 'rapay';
 				} elseif (in_array($params['pay_type'], ['bobopay'])) {
 					$file_name = 'bobopay';
+				} elseif (in_array($params['pay_type'], ['jwpay'])) {
+					$file_name = 'jwpay';
 				} else {
 					$pay_type_arr = explode('_', $params['pay_type']);
 					$file_name = trim($pay_type_arr[0]);
@@ -126,6 +128,7 @@ class FinanceController extends BaseController
 						$sub_pay_type = trim($pay_type_arr[1]);
 					}
 				}
+
 				$pay_file = APP_PATH . 'common/pay/' . $file_name . '.php';
 				if (!file_exists($pay_file)) {
 					jReturn(-1, 'Unknown recharge type:' . $params['pay_type']);
@@ -134,6 +137,8 @@ class FinanceController extends BaseController
 					$sub_pay_type = 1;
 				} elseif (($params['pay_type'] == 'rapay11101')) {
 					$sub_pay_type = 11101;
+				} elseif (($params['pay_type'] == 'jwpay')) {
+					$sub_pay_type = 1;
 				}
 
 				require_once $pay_file;
@@ -725,20 +730,20 @@ class FinanceController extends BaseController
 				'client_ip' => CLIENT_IP
 			];
 			/*
-																																																																																																																																																   if($banklog['type']==1){
-																																																																																																																																																	   $fin_cashlog['receive_bank_id']=$banklog['bank_id'];
-																																																																																																																																																	   $fin_cashlog['receive_account']=$banklog['account'];
-																																																																																																																																																	   $fin_cashlog['receive_realname']=$banklog['realname'];
-																																																																																																																																																	   $fin_cashlog['receive_routing']=$banklog['routing'];
-																																																																																																																																																   }elseif($banklog['type']>1&&$banklog['type']<4){
-																																																																																																																																																	   $fin_cashlog['receive_account']=$banklog['account'];
-																																																																																																																																																	   $fin_cashlog['receive_realname']=$banklog['realname'];
-																																																																																																																																																	   $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
-																																																																																																																																																   }else{
-																																																																																																																																																	   $fin_cashlog['receive_protocol']=$banklog['protocal'];
-																																																																																																																																																	   $fin_cashlog['receive_address']=$banklog['address'];
-																																																																																																																																																	   $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
-																																																																																																																																																   }*/
+																																																																																																																																																														 if($banklog['type']==1){
+																																																																																																																																																															 $fin_cashlog['receive_bank_id']=$banklog['bank_id'];
+																																																																																																																																																															 $fin_cashlog['receive_account']=$banklog['account'];
+																																																																																																																																																															 $fin_cashlog['receive_realname']=$banklog['realname'];
+																																																																																																																																																															 $fin_cashlog['receive_routing']=$banklog['routing'];
+																																																																																																																																																														 }elseif($banklog['type']>1&&$banklog['type']<4){
+																																																																																																																																																															 $fin_cashlog['receive_account']=$banklog['account'];
+																																																																																																																																																															 $fin_cashlog['receive_realname']=$banklog['realname'];
+																																																																																																																																																															 $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
+																																																																																																																																																														 }else{
+																																																																																																																																																															 $fin_cashlog['receive_protocol']=$banklog['protocal'];
+																																																																																																																																																															 $fin_cashlog['receive_address']=$banklog['address'];
+																																																																																																																																																															 $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
+																																																																																																																																																														 }*/
 			$fin_cashlog['receive_account'] = $banklog['account'];
 			$fin_cashlog['receive_realname'] = $banklog['realname'];
 			$fin_cashlog['receive_phone'] = $banklog['phone'];
@@ -922,7 +927,7 @@ class FinanceController extends BaseController
 			->where($where)
 			->find();
 
-		$list = Db::view(['wallet_log' => 'log'], ['type', 'money', 'remark', 'create_time', 'id'.'ori_balance','new_balance'])
+		$list = Db::view(['wallet_log' => 'log'], ['type', 'money', 'remark', 'create_time', 'id' . 'ori_balance', 'new_balance'])
 			->view(['wallet_list' => 'w'], ['waddr'], 'log.wid=w.id', 'LEFT')
 			->view(['cnf_currency' => 'c'], ['name' => 'currency_name'], 'w.cid=c.id', 'LEFT')
 			->where($where)

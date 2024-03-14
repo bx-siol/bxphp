@@ -176,6 +176,8 @@ class FinanceController extends BaseController
 					$file_name = 'rapay';
 				} elseif (in_array($params['pay_type'], ['bobopay'])) {
 					$file_name = 'bobopay';
+				} elseif (in_array($params['pay_type'], ['jwpay'])) {
+					$file_name = 'jwpay';
 				} else {
 					$pay_type_arr = explode('_', $params['pay_type']);
 					$file_name = trim($pay_type_arr[0]);
@@ -183,6 +185,7 @@ class FinanceController extends BaseController
 						$sub_pay_type = trim($pay_type_arr[1]);
 					}
 				}
+
 				$pay_file = APP_PATH . 'common/pay/' . $file_name . '.php';
 				if (!file_exists($pay_file)) {
 					jReturn(-1, 'Unknown recharge type:' . $params['pay_type']);
@@ -191,6 +194,8 @@ class FinanceController extends BaseController
 					$sub_pay_type = 1;
 				} elseif (($params['pay_type'] == 'rapay11101')) {
 					$sub_pay_type = 11101;
+				} elseif (($params['pay_type'] == 'jwpay')) {
+					$sub_pay_type = 1;
 				}
 				require_once $pay_file;
 				$result = payOrder($fin_paylog, $sub_pay_type);
