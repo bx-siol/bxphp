@@ -179,23 +179,25 @@ class UserController extends BaseController
 			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
-			if(empty($teamSize_str))
+			if(!$teamSize_str)
 				$teamSizeDate = Db::query($teamSize_str);
 			
-			if(empty($order_str))
+			if(!$order_str)
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 
 			foreach ($list as &$item) {
 				$item["teamSize"] = 0;
 				$item["assets"] = 0;
 
-				foreach	($teamSizeDate as &$v)
-					if($item["id"] == $v['id'])
-						$item["teamSize"] = $v["teamSize"];
+				if(!$teamSizeDate)
+					foreach	($teamSizeDate as &$v)
+						if($item["id"] == $v['id'])
+							$item["teamSize"] = $v["teamSize"];
 
-				foreach ($orderDate as &$v)
-					if ($item["id"] == $v["uid"])
-						$item["assets"] = $v['assets'];
+				if(!$orderDate)
+					foreach ($orderDate as &$v)
+						if ($item["id"] == $v["uid"])
+							$item["assets"] = $v['assets'];
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
