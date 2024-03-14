@@ -5,7 +5,7 @@ use think\facade\Db;
 
 
 
-function payOrder($fin_paylog)
+function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG']['nicepay'];
 	//$rand_arr = [6, 7, 8, 9];
@@ -30,8 +30,11 @@ function payOrder($fin_paylog)
 
 	$resultArr = $result['output'];
 	writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
-	if ($resultArr['code'] != '1')
+	if ($resultArr['code'] != '1') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
+	}
+
 
 
 	$return_data = [

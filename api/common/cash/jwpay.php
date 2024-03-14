@@ -7,14 +7,16 @@ use think\facade\Db;
 
 function CashOrder($fin_cashlog)
 {
-
 	// $rand_arr = [6, 7, 8, 9];
 	// $phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999); 
-	$config = $_ENV['PAY_CONFIG']['bobopay'];
+	$config = $_ENV['PAY_CONFIG']['jwpay'];
+	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
+	$milliseconds = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
+		'outType' => 'IMPS',
 		'merchantId' => $config['mch_id'],
 		'orderid' => $fin_cashlog['osn'],
-		'timestamp' => time(),
+		'timestamp' => $milliseconds,
 		'amount' => $fin_cashlog['real_money'],
 		'accountHolder' => $fin_cashlog['receive_realname'],
 		'accountNumber' => ($fin_cashlog['receive_account']),
@@ -23,14 +25,14 @@ function CashOrder($fin_cashlog)
 	];
 	$pdata['sign'] = CashSign($pdata);
 	$url = $config['dpay_url'];
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash');
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash');
 	$result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
-	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash');
-	if ($resultArr['status'] != '1') {
-		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash/error');
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash');
+	if ($resultArr['code'] != '100') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
@@ -40,7 +42,7 @@ function CashOrder($fin_cashlog)
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => $resultArr['msg']['transaction_id']
+			'out_osn' => $resultArr['payOrderId']
 		]
 	];
 	return $return_data;
@@ -49,11 +51,11 @@ function CashOrder($fin_cashlog)
 function CashSign($params)
 {
 	// sign	是	string	签名，md5(amount+merchantId+orderId+timestamp+secret)进行MD5加密，32位小写。
-	$config = $_ENV['PAY_CONFIG']['bobopay'];
+	$config = $_ENV['PAY_CONFIG']['jwpay'];
 	$signStr = $params['amount'] . $params['merchantId'] . $params['orderId'] . $params['timestamp'] . $config['mch_key'];
-	//writeLog(json_encode('signStr : ' . $signStr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay');
+	//writeLog(json_encode('signStr : ' . $signStr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay');
 	$outstr = strtolower(md5($signStr));
-	//writeLog(json_encode('outstr : ' . $outstr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay');
+	//writeLog(json_encode('outstr : ' . $outstr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay');
 	return $outstr;
 }
 function CurlPost($url, $data = [], $timeout = 30)

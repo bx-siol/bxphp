@@ -7,44 +7,41 @@ use think\facade\Db;
 
 function payOrder($fin_paylog, $sub_type = '')
 {
-	$config = $_ENV['PAY_CONFIG']['bobopay'];
-	//$name = getRsn();
-	$rand_arr = [6, 7, 8, 9];
-	$phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999);
+	$config = $_ENV['PAY_CONFIG']['jwpay'];
+	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
+	$milliseconds = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
 		'merchantId' => $config['mch_id'],
 		'orderId' => $fin_paylog['osn'],
-		'phone' => $phone,
-		'amount' => strval($fin_paylog['money']),
-		'timestamp' => time(),
+		'amount' => strval($fin_paylog['money'] * 100),
+		'timestamp' => $milliseconds,
 		'notifyUrl' => $config['notify_url'],
 	];
 	$pdata['sign'] = paySign($pdata);
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/pay');
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/pay');
 	$result = [];
 	try {
 		$result = CurlPost($config['pay_url'], $pdata, 30);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
-	writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/pay');
+	writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
 	$resultArr = $result['output'];
-	if ($resultArr['status'] != '200') {
-		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/pay/error');
+	if ($resultArr['code'] != '100') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/pay/error');
 		return ['code' => -1, 'msg' => 'Channel is not open'];
 	}
-	$resultArr['params'] = json_decode($resultArr['params'], true);
 	$return_data = [
 		'code' => 1,
-		'msg' => $result['message'],
+		'msg' => $result['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
-			'out_osn' => $resultArr['data']['payOrderId'],
-			'pay_url' => $resultArr['data']['paymentUrl']
+			'out_osn' => $resultArr['payOrderId'],
+			'pay_url' => $resultArr['paymentUrl']
 		]
 	];
 	return $return_data;
@@ -53,15 +50,13 @@ function payOrder($fin_paylog, $sub_type = '')
 function paySign($params)
 {
 	// md5(amount+merchantId+orderId+timestamp+密钥)进行MD5，32位小写加密。密钥开户后提供. 	
-	$config = $_ENV['PAY_CONFIG']['bobopay'];
+	$config = $_ENV['PAY_CONFIG']['jwpay'];
 	$signStr = $params['amount'] . $params['merchantId'] . $params['orderId'] . $params['timestamp'] . $config['mch_key'];
 	$outstr = strtolower(md5($signStr));
 	return $outstr;
 }
 function CurlPost($url, $data = [], $timeout = 30)
 {
-	$time = date("Y-m-d", time());
-	$logpath = LOGS_PATH . "bobopay/Post{$time}.txt";
 	$curl = curl_init();
 	curl_setopt_array(
 		$curl,
