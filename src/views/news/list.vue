@@ -20,7 +20,7 @@
                         <ul>
                             <li v-for="item in list" @click="onLink({ name: 'News_info', params: { id: item.id } })"
                                 style="display:flex">
-                                <van-image :src="imgFlag(item.cover)" width="5.5rem" height="3.5rem"></van-image>
+                                <van-image :src="imgFlag(item.cover)" width="6.5rem" height="4rem"></van-image>
                                 <div class="infoRight">
                                     <p class="titles" :style="{ color: '#fff', }">{{ item.title }}</p>
                                     <p class="desc" v-html="item.ndesc"></p>

@@ -55,7 +55,7 @@
                     </van-grid-item>
                     <van-grid-item>
 
-                        <p>{{ cutOutNum(0) }}</p>
+                        <p>{{ cutOutNum(withdraw) }}</p>
                         <span>{{ t('总提款') }}</span>
                     </van-grid-item>
                     <van-grid-item style="margin-top: 0;">
@@ -221,6 +221,7 @@ const t_withdraw = ref(0.00)
 const t_reward = ref(0.00)
 const t_rebate = ref(0.00)
 const t_tprofit = ref(0.00)
+const withdraw = ref(0.00)
 
 const serviceShow = ref(false)
 const actions = ref([]) //{ name: '选项三', subname: '描述信息' }
@@ -270,6 +271,7 @@ onMounted(() => {
             wallet.value = res.data.wallet
             wallet2.value = res.data.wallet2
             wallet3.value = res.data.wallet3
+            withdraw.value =res.data.withdraw
             t_investment.value = res.data.investment
             t_recharge.value = res.data.recharge
             t_withdraw.value = res.data.withdraw

@@ -301,6 +301,7 @@ export default {
     邀请链接: 'Invitation link',
     我的团队: 'my team',
     团队规模: 'Team Size',
+    邀请: 'Invitation',
     您将从团队的每一项投资中获得收入: 'You will earn income from every investment made by your team',
     转介存款回扣: 'Deposit rebates from referrals',
     邀请码: 'Invitation Code',

@@ -208,7 +208,9 @@ onMounted(() => {
 
 .login {
     padding: 0 1rem;
-
+    background: url("../../assets//img//login/back.png") no-repeat 0 0;
+    background-size: 100% 8rem;
+    background-color: #84973b;
     .deckout {
         position: absolute;
         top: -2.4rem;

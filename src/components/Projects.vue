@@ -252,8 +252,8 @@ onMounted(() => {
         position: relative;
 
         .basicItemLeft {
-          width: 6rem;
-          height: 5rem;
+          width: 8rem;
+          height: 6rem;
           margin: 0.675rem auto 0.875rem;
           position: relative;
 

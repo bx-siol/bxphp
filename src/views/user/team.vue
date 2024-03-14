@@ -4,13 +4,13 @@
         <div class="will">
             <div class="card">
 
-                <div class="item" v-if="memberstatus === 1">
+                <div class="item">
                     <p class="p1"> {{ tableData.unpaycount }}</p>
-                    <p class="p1">Unrecharge Member</p>
+                    <!-- <p class="p1">Unrecharge Member</p> -->
                 </div>
-                <div class="item" v-else>
+                <div class="item">
                     <p class="p1">{{ tableData.paycount }}</p>
-                    <p class="p1">Active Member</p>
+                    <!-- <p class="p1">Active Member</p> -->
                 </div>
 
             </div>
@@ -19,72 +19,75 @@
         <div class="paylogBoxWrapper">
             <div class="list-box">
                 <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
-                    <van-tab title="B 10%">
+                    <van-tab :title="fy.lv1">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">{{ t('Unrecharge Member') }}</div>
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">{{ t('Unrecharge Member') }}
+                            </div>
                             <div class="levelTabValidMember" @click="SwitchMembers(1, 0)">{{ t('Active Member') }}</div>
                         </div>
                         <MyListBase :url="requesturl1" ref="pageRef" @success="onPageSuccess">
                             <template #default="{ list }">
                                 <div class="listHead">
                                     <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('推荐人') }}</p>
-                                    <p>{{ t('团队规模') }}</p>
+                                    <p>{{ t('邀请') }}</p>
                                     <p>{{ t('资产') }}</p>
+                                    <p>{{ t('Is Get') }}</p>
                                 </div>
                                 <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <!-- <img :src="nestie"> -->
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
-                                    <p>{{ item.teamSize }}</p>
-                                    <p>{{ item.assets }} </p>
-                                    <span class="plus"><van-icon name="arrow"></van-icon></span>
+                                    <p>{{ item.assets }}</p>
+                                    <p>{{ item.first_pay_day_flag }} </p>
+                                    <span class="plus"><van-icon name="arrow" @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
                                 </div>
                             </template>
                         </MyListBase>
                     </van-tab>
-                    <van-tab title="C 5%">
+                    <van-tab :title="fy.lv2">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">{{ t('Unrecharge Member') }}</div>
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">{{ t('Unrecharge Member') }}
+                            </div>
                             <div class="levelTabValidMember" @click="SwitchMembers(2, 0)">{{ t('Active Member') }}</div>
                         </div>
                         <MyListBase :url="requesturl2" ref="pageRef1" @success="onPageSuccess">
                             <template #default="{ list }">
                                 <div class="listHead">
                                     <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('推荐人') }}</p>
-                                    <p>{{ t('团队规模') }}</p>
+                                    <p>{{ t('邀请') }}</p>
                                     <p>{{ t('资产') }}</p>
+                                    <p>{{ t('Is Get') }}</p>
                                 </div>
                                 <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
-                                    <p>{{ item.teamSize }}</p>
                                     <p>{{ item.assets }}</p>
-                                    <span class="plus"><van-icon name="arrow"></van-icon></span>
+                                    <p>{{ item.first_pay_day_flag }}</p>
+                                    <span class="plus"><van-icon name="arrow" @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
                                 </div>
                             </template>
                         </MyListBase>
                     </van-tab>
-                    <van-tab title="D 2%">
+                    <van-tab :title="fy.lv3">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">{{ t('Unrecharge Member') }}</div>
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">{{ t('Unrecharge Member') }}
+                            </div>
                             <div class="levelTabValidMember" @click="SwitchMembers(3, 0)">{{ t('Active Member') }}</div>
                         </div>
                         <MyListBase :url="requesturl3" ref="pageRef2" @success="onPageSuccess">
                             <template #default="{ list }">
                                 <div class="listHead">
                                     <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('推荐人') }}</p>
-                                    <p>{{ t('团队规模') }}</p>
+                                    <p>{{ t('邀请') }}</p>
                                     <p>{{ t('资产') }}</p>
+                                    <p>{{ t('Is Get') }}</p>
                                 </div>
                                 <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
-                                    <p>{{ item.teamSize }}</p>
-                                    <p>{{ item.assets }} </p>
-                                    <span class="plus"><van-icon name="arrow"></van-icon></span>
+                                    <p>{{ item.assets }}</p>
+                                    <p>{{ item.first_pay_day_flag }} </p>
+                                    <span class="plus"><van-icon name="arrow" @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
                                 </div>
                             </template>
                         </MyListBase>
@@ -112,7 +115,7 @@ import { Button, Tab, Tabs, Grid, GridItem, Cell, Field, Icon } from "vant";
 import { type } from 'os';
 export default defineComponent({
     components: {
-        Nav, MyListBase,
+        Nav, MyListBase,MyLoading,
         [Button.name]: Button,
         [Image.name]: Image,
         [Tab.name]: Tab,
@@ -144,17 +147,7 @@ const levelList = ref<Array<level>>([
     { img: 'avatar', numbering: 'numbering', number: 910284049 },
 ])
 
-const imgFlag = (src: string) => {
-    return getSrcUrl(src, 1)
-}
 
-const imgShow = (src: string) => {
-    imgPreview(src)
-}
-
-const doService = () => {
-    console.log('im service')
-}
 const onLink = (to: any) => {
     goRoute(to)
 }
@@ -188,9 +181,21 @@ const lists = [
     }
 ]
 
-const linkCopyRef = ref();
-const linkCopyRefCode = ref();
+const fy = ref({
+    lv1: '',
+    lv2: '',
+    lv3: ''
+})
 
+const lv1 = ref({
+    people: 0
+})
+const lv2 = ref({
+    people: 0
+})
+const lv3 = ref({
+    people: 0
+})
 
 const tdata = ref({
     icode: "",
@@ -289,27 +294,50 @@ const getusercount = () => {
         teamusercount1.value = res.data.count1;
     })
 }
+const getTeam = () => {
+    var delayTime = Math.floor(Math.random() * 1000);
+    setTimeout(() => {
+        http({
+            url: 'c=User&a=GetTeamHierarchyPeopleNum'
+        }).then((res: any) => {
+            for (var it of res.data.list) {
+                if (it.level == "1") {
+                    lv1.value.people += 1;
+                } else if (it.level == "2") {
+                    lv2.value.people += 1;
+                } else if (it.level == "3") {
+                    lv3.value.people += 1;
+                }
+            }
+
+            var fylStr = res.data.fy;
+            fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%(' + lv1.value.people + ')';
+            fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%(' + lv2.value.people + ')';
+            fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%(' + lv3.value.people + ')';
+        })
+    }, delayTime)
+}
+
 onMounted(() => {
     getusercount()
+    getTeam()
 })
 
 const SwitchMembers = (lv: number, type: number) => {
-    memberstatus.value = type;
-    // loadingShow.value = true
+    loadingShow.value = true
     
-    // if (type == 0) {
-    //     requesturl1.value = "GetTeamValidMember?lv=1";
-    //     requesturl2.value = "GetTeamValidMember?lv=2";
-    //     requesturl3.value = "GetTeamValidMember?lv=2";
-    //     cpageRef.value.ValidMember("GetTeamValidMember?lv=" + lv);
-    // }
-    // else {
-    //     requesturl1.value = "GetTeamInactiveMember?lv=1";
-    //     requesturl2.value = "GetTeamInactiveMember?lv=2";
-    //     requesturl3.value = "GetTeamInactiveMember?lv=2";
-    //     cpageRef.value.ValidMember("GetTeamInactiveMember?lv=" + lv);
-    // }
-
+    if (type == 0) {
+        requesturl1.value = "c=User&a=team&lv=1&type=pay";
+        requesturl2.value = "c=User&a=team&lv=2&type=pay";
+        requesturl3.value = "c=User&a=team&lv=3&type=pay";
+        cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=pay");
+    }
+    else {
+        requesturl1.value = "c=User&a=team&lv=1&type=unpay";
+        requesturl2.value = "c=User&a=team&lv=2&type=unpay";
+        requesturl3.value = "c=User&a=team&lv=3&type=unpay";
+        cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=unpay");
+    }
     var InactiveMember = document.getElementsByClassName('levelTabValidMember');
     var levelTabInactiveMember = document.getElementsByClassName('levelTabInactiveMember');
     if (lv == 1) {
@@ -360,7 +388,7 @@ const SwitchMembers = (lv: number, type: number) => {
             levelTabInactiveMember[2].style.color = "#fff";
         }
     }
-    
+
 }
 
 </script>
@@ -382,6 +410,7 @@ const SwitchMembers = (lv: number, type: number) => {
         margin: 1rem;
         border-radius: 10px;
         margin-top: 4rem;
+        width: 88%;
 
         .card {
             display: flex;
@@ -394,7 +423,7 @@ const SwitchMembers = (lv: number, type: number) => {
                 display: flex;
                 flex-direction: row-reverse;
                 justify-content: space-around;
-                width: 50%;
+                width: 48%;
                 text-align: center;
 
                 .p1 {
@@ -421,7 +450,7 @@ const SwitchMembers = (lv: number, type: number) => {
         .list-box {
 
             .levelTab {
-                margin-top: 1.45rem;
+                margin-top: 0.8rem;
                 margin-bottom: 3rem;
 
                 :deep(.van-tabs__nav) {
@@ -471,12 +500,15 @@ const SwitchMembers = (lv: number, type: number) => {
                 }
 
                 .levelTabMember {
-                    width: 90%;
                     height: 2rem;
-                    margin: 1rem 0 1rem 5%;
                     font-size: 0.8rem;
                     position: absolute;
-                    top: -7rem;
+                    top: -5.5rem;
+                    display: flex;
+                    justify-content: space-evenly;
+                    align-items: center;
+                    width: 100%;
+                    flex-direction: row-reverse;
 
                     .levelTabValidMember {
                         width: 32%;
@@ -506,7 +538,7 @@ const SwitchMembers = (lv: number, type: number) => {
                 display: flex;
                 justify-content: space-between;
                 margin-bottom: 1rem;
-                color: #fff;    
+                color: #fff;
 
 
                 p {
@@ -526,7 +558,7 @@ const SwitchMembers = (lv: number, type: number) => {
                     }
 
                     &:nth-child(4) {
-                        width: 35%;
+                        width: 30%;
                     }
                 }
             }
@@ -537,6 +569,7 @@ const SwitchMembers = (lv: number, type: number) => {
                 margin-bottom: 1rem;
                 font-size: 14px;
                 color: #fff;
+
                 p {
                     text-align: center;
                     font: bold 14px/16px 'Rotobo';
@@ -550,11 +583,11 @@ const SwitchMembers = (lv: number, type: number) => {
                     }
 
                     &:nth-child(3) {
-                        width: 20%;
+                        width: 30%;
                     }
 
                     &:nth-child(4) {
-                        width: 28%;
+                        width: 18%;
                     }
                 }
 
@@ -578,5 +611,4 @@ const SwitchMembers = (lv: number, type: number) => {
         color: #64523e;
         font-weight: bold;
     }
-}
-</style>
+}</style>

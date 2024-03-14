@@ -72,14 +72,14 @@
             </div>
 
             <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;">
-              <a class="divs" href="javascript:;">
-                <van-image :src="m5" style="width: 6.8rem;height: 3.4rem;"></van-image>
+              <a class="divs" href="javascript:;" style="width: 32%;">
+                <van-image :src="m5" ></van-image>
               </a>
-              <a class="divs" href="javascript:;">
-                <van-image :src="m6" style="width: 6.8rem;height: 3.4rem;"></van-image>
+              <a class="divs" href="javascript:;" style="width: 32%;">
+                <van-image :src="m6" ></van-image>
               </a>
-              <a class="divs" href="javascript:;" @click="onLink({ name: 'Share' })">
-                <van-image :src="m7" style="width: 6.8rem;height: 3.4rem;"></van-image>
+              <a class="divs" href="javascript:;" style="width: 32%;" @click="onLink({ name: 'Share' })">
+                <van-image :src="m7" ></van-image>
               </a>
               <!-- <a class="divs" href="javascript:;" @click="appdload">
                   <van-image :src="m8"></van-image>

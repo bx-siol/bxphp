@@ -225,7 +225,7 @@ onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
         http({
-            url: 'GetService_Online',
+            url: 'c=Service&a=GetService_Online&type=1or2',
             data: {
                 type: 0
             }

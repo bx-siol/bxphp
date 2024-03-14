@@ -491,15 +491,16 @@ onMounted(() => {
   }
 
   .project_img {
-    width: 15.75rem;
+    width: 18.75rem;
     height: 12.75rem;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    padding: 0.4rem 2rem;
+    padding: 0.4rem 1rem;
     background: #fff;
     border-radius: 8px;
     display: flex;
+    justify-content: center;
     align-items: center;
     .describe {
       width: 3rem;
@@ -626,6 +627,7 @@ onMounted(() => {
     bottom: 0.5rem;
     left: 50%;
     transform: translateX(-50%);
+    max-width: 640px;
   }
 
   .touziBtns .Actual {
