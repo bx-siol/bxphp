@@ -180,6 +180,7 @@ class UserController extends BaseController
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
 			$teamSizeDate = array();
+			writeLog('1-'.$teamSize_str,'bobopay1');
 			if(strlen($teamSize_str) > 0)
 				$teamSizeDate = Db::query($teamSize_str);
 			
