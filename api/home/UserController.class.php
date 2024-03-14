@@ -181,6 +181,7 @@ class UserController extends BaseController
 			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
+			writeLog('444444444444-'.$teamSize_str,'bobopay1');
 			$teamSizeDate = array();
 			if(!empty($teamSize_str))
 			{
