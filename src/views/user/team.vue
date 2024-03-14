@@ -16,7 +16,6 @@
 
         <div class="paylogBoxWrapper">
             <div class="list-box">
-
                 <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
                     <van-tab :title="fy.lv1">
                         <div class="levelTabMember">
@@ -37,8 +36,8 @@
                                     <p>{{ item.reg_time }}</p>
                                     <p>{{ item.assets }}RS
                                         <span class="plus">
-                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
-                                                name="arrow"></van-icon></span>
+                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
+                                        </span>
                                     </p>
                                 </div>
                             </template>
@@ -63,8 +62,8 @@
                                     <p>{{ item.reg_time }}</p>
                                     <p>{{ item.assets }}RS
                                         <span class="plus">
-                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
-                                                name="arrow"></van-icon></span>
+                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
+                                        </span>
                                     </p>
                                 </div>
                             </template>
@@ -89,8 +88,8 @@
                                     <p>{{ item.reg_time }}</p>
                                     <p>{{ item.assets }}RS
                                         <span class="plus">
-                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
-                                                name="arrow"></van-icon></span>
+                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
+                                        </span>
                                     </p>
                                 </div>
                             </template>
@@ -106,7 +105,7 @@
 
 <script lang="ts">
 import { _alert, lang, goRoute } from "../../global/common"
-import { defineComponent, onMounted, reactive, ref, computed } from 'vue';
+import { defineComponent, onMounted, reactive, ref } from 'vue';
 import { Image } from 'vant';
 import Nav from '../../components/Nav.vue';
 import MyTab from "../../components/Tab.vue";
@@ -117,7 +116,7 @@ import { Button, Tab, Tabs, Grid, GridItem, Cell, Field, Icon } from "vant";
 import { type } from 'os';
 export default defineComponent({
     components: {
-        Nav, MyTab, MyListBase,
+        Nav, MyTab, MyListBase,MyLoading,
         [Button.name]: Button,
         [Image.name]: Image,
         [Tab.name]: Tab,
@@ -127,43 +126,32 @@ export default defineComponent({
         [Cell.name]: Cell,
         [Field.name]: Field,
         [Icon.name]: Icon,
-
     }
 })
 </script>
 <script lang="ts" setup>
-
 import { getSrcUrl, imgPreview, copy } from "../../global/common";
 import http from "../../global/network/http";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
 let isRequest = false
 const active = ref(0)
-
 type level = {
     img: string,
     numbering: string,
     number: number | string
 }
-const levelList = ref<Array<level>>([
-    { img: 'avatar', numbering: 'numbering', number: 910284049 },
-    { img: 'avatar', numbering: 'numbering', number: 910284049 },
-])
-
 const onLink = (to: any) => {
     goRoute(to)
 }
-
 const loadingShow = ref(true)
 const pageRef = ref()
 const pageRef1 = ref()
 const pageRef2 = ref()
-
 const cpageRef = ref()
-const lv = ref()
 
+const lv = ref()
 const tableData = ref<any>({})
-const pdata = reactive({})
 const atype = ref();
 const teamusercount = ref(0);
 const teamusercount1 = ref(0);
@@ -185,20 +173,10 @@ const lv3 = ref({
     people: 0
 })
 
-const linkCopyRef = ref();
-const linkCopyRefCode = ref();
-
-
 const tdata = ref({
     icode: "",
     url: "",
     qrocde: "",
-});
-
-const montage = computed(() => {
-    return {
-        urls: location.origin + '/#/Register?Icode=' + tdata.value.icode,
-    };
 });
 
 const requesturl1 = ref('c=User&a=team&lv=1')
@@ -207,7 +185,6 @@ const requesturl3 = ref('c=User&a=team&lv=3')
 
 
 const onPageSuccess = (res: any) => {
-    // console.log(res.all)
     tableData.value = res.all
     loadingShow.value = false
     if (cpageRef.value == undefined) {
@@ -228,26 +205,22 @@ const onClickTab = (title: any) => {
             cpageRef.value = pageRef.value
             LVv.value = 'Lv1'
             requesturl1.value = "c=User&a=team&lv=1"
-
             break;
         case 1:
             cpageRef.value = pageRef1.value
             LVv.value = 'Lv2'
             requesturl2.value = "c=User&a=team&lv=2"
-
             break;
         case 2:
             cpageRef.value = pageRef2.value
             LVv.value = 'Lv3'
             requesturl3.value = "c=User&a=team&lv=3"
-
             break;
     }
     if (cpageRef.value != undefined) {
         loadingShow.value = true
         cpageRef.value.doSearch()
     }
-    // doSearch();
 };
 const onLinkc = (type: string) => {
     cpageRef.value.delall();
@@ -290,30 +263,19 @@ const getTeam = () => {
     }, delayTime)
 }
 
-// 执行搜索操作
-// const doSearch = () => {
-//     if (cpageRef && cpageRef.value) {
-//         loadingShow.value = true;
-//         cpageRef.value.doSearch();
-//     }
-// };
 const SwitchMembers = (lv: number, type: number) => {
-    // loadingShow.value = true
-    console.log(type);
-
+    loadingShow.value = true
     if (type == 0) {
         requesturl1.value = "c=User&a=team&lv=1&type=pay";
         requesturl2.value = "c=User&a=team&lv=2&type=pay";
         requesturl3.value = "c=User&a=team&lv=3&type=pay";
-        cpageRef.value = "c=User&a=team&lv=" + lv + "type=pay";
-        // console.log(requesturl1.value);
-
+        cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=pay");
     }
     else {
         requesturl1.value = "c=User&a=team&lv=1&type=unpay";
         requesturl2.value = "c=User&a=team&lv=2&type=unpay";
         requesturl3.value = "c=User&a=team&lv=3&type=unpay";
-        cpageRef.value = "c=User&a=team&lv=" + lv + "type=unpay";
+        cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=unpay");
     }
 
     var InactiveMember = document.getElementsByClassName('levelTabValidMember');
@@ -360,7 +322,6 @@ const SwitchMembers = (lv: number, type: number) => {
             levelTabInactiveMember[2].style.color = "#002544";
         }
     }
-    // doSearch();
 }
 
 onMounted(() => {
