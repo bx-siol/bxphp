@@ -164,15 +164,23 @@ class UserController extends BaseController
 			//团队总人数
 			$count_item = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where($where)->find();
 
-			$list = Db::view(['sys_user' => 'log'], ['id', 'account', 'nickname', 'headimgurl', 'reg_time'])
+			$list = Db::view(['sys_user' => 'log'], ['id', 'account', 'nickname', 'headimgurl', 'reg_time','first_pay_day'])
 				->where($where)
 				->order(['log.reg_time' => 'desc'])
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
 
 			foreach ($list as &$v) {
+				$referrer_str .= $v["id"] . ",";
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
+			}
+
+			$referrerData = array();
+			if($referrer_str)
+			{
+				$referrer_str =substr($referrer_str,0, strlen($referrer_str) - 1);
+				$referrerData = Db::table('sys_user')->where("pid in ({$referrer_str})")->field('pid,count(1) as referrer')->group('pid')->select();
 			}
 
 			$teamSizeDate = array();
@@ -191,8 +199,14 @@ class UserController extends BaseController
 			}				
 
 			foreach ($list as &$item) {
+				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
 				$item["assets"] = 0;
+
+				if(count($referrerData) > 0)
+					foreach ($referrerData as &$v)
+						if ($item["id"] == $v["pid"])
+							$item["referrer"] = $v['referrer'];
 
 				if(count($teamSizeDate) > 0)
 					foreach	($teamSizeDate as &$v)
@@ -206,6 +220,7 @@ class UserController extends BaseController
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
+				$item['first_pay_day_flag'] = $item['first_pay_day']  > 0 ? 'yes' : 'no' ;
 			}
 
 
