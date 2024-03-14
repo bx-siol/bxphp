@@ -12,13 +12,10 @@ if (!defined('APP_PATH'))
 define('GLOBAL_PATH', ROOT_PATH . 'global/');
 define('LIB_PATH', GLOBAL_PATH . 'library/');
 
-
-
-
 // define('PAY_BACKURL_o', '47.242.112.159');
 
 define('LOGS_PATH', ROOT_PATH . 'logs/');
-define('APP_URL', $_SERVER['DOCUMENT_URI'] != null ? trim($_SERVER['DOCUMENT_URI'], '/') : 'api/index.php?');
+// define('APP_URL', $_SERVER['DOCUMENT_URI'] != null ? trim($_SERVER['DOCUMENT_URI'], '/') : 'api/index.php?');
 define('NOW_TIME', time());
 define('NOW_DATE', date('Y-m-d H:i:s', NOW_TIME));
 if (APP_DEBUG) {
@@ -45,12 +42,12 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 use think\facade\Db;
 
 //按项目规范参数
-if (file_exists(dirname(ROOT_PATH . 'nestle'))) {
+if (file_exists(ROOT_PATH . 'nestlexm')) {
 	define('PAY_BACKURL', 'www.indianestle.com');
 	define('REQUEST_SCHEME', 'https');
 	define('HTTP_HOST', 'www.indianestle.com');
 	require_once GLOBAL_PATH . 'db.conf_n.php';
-} else if (file_exists(dirname(ROOT_PATH . 'syngenta'))) {
+} else if (file_exists(ROOT_PATH . 'syngentaxm')) {
 	define('PAY_BACKURL', 'www.syngentainr.com');
 	define('REQUEST_SCHEME', 'https');
 	define('HTTP_HOST', 'www.syngentainr.com');
