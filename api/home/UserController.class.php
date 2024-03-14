@@ -116,6 +116,7 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
+		writeLog('---------------------------------------------------------','bobopay1');
 		$params = $this->params;
 		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
 
