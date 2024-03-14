@@ -175,6 +175,7 @@ class UserController extends BaseController
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from syso_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
 			}
+			writeLog('teamSize_str' . $teamSize_str,'bobopay1');
 			$referrer_str = substr($referrer_str,0, strlen($referrer_str) - 1);
 			$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
 			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
@@ -189,7 +190,7 @@ class UserController extends BaseController
 				$item["teamSize"] = 0;
 				$item["amount"] = 0;
 				$item["assets"] = 0;
-				
+
 				foreach ($referrerData as &$v) 
     				if ($item["id"] == $v['pid'])
         				$item["referrer"] = $v['referrer'];
