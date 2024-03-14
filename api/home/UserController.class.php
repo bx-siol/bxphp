@@ -116,7 +116,7 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
-		//writeLog('---------------------------------------------------------','bobopay1');
+		writeLog('---------------------------------------------------------','bobopay1');
 		$params = $this->params;
 		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
 
@@ -180,9 +180,16 @@ class UserController extends BaseController
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
 			$teamSizeDate = array();
-			writeLog('1-'.$teamSize_str,'bobopay1');
 			if(strlen($teamSize_str) > 0)
+			{
+				writeLog('1-'.$teamSize_str,'bobopay1');
 				$teamSizeDate = Db::query($teamSize_str);
+			}else
+			{
+				writeLog('2-'.$teamSize_str,'bobopay1');
+				$teamSizeDate = Db::query($teamSize_str);
+			}
+				
 			
 			$orderDate = array();
 			if(strlen($order_str) > 0)
