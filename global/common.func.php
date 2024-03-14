@@ -116,7 +116,7 @@ function getWallet($uid, $cid = 0, $type = '')
 }
 
 //钱包流水日志
-function walletLog($pdata = [])
+function walletLog($pdata = [], $create_id = 0)
 {
 	$pdata['wid'] = intval($pdata['wid']);
 	$pdata['uid'] = intval($pdata['uid']);
@@ -128,7 +128,10 @@ function walletLog($pdata = [])
 	if (!array_key_exists($type, $cnf_balance_type)) {
 		return false;
 	}
-	$pageuser = checkLogin();
+	if ($create_id == 0)
+		$pageuser = checkLogin();
+	else
+		$pageuser = $create_id;
 	if (!$pageuser) {
 		$pageuser = [];
 	}
