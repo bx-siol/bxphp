@@ -33,7 +33,7 @@ class BobopayController extends BaseController
             'amount' => $params['amount'],
             'successStr' => 'OK'
         ];
-        $this->payAct($pdata);
+        $this->payAct($pdata, 'bobopay');
     }
 
     public function _cash()

@@ -141,6 +141,8 @@ $_ENV['PAY_CONFIG']['bobopay'] = [
 	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/bobopay/pay',
 	'dnotify_url' => 'https://' . PAY_BACKURL . '/' . 'api/Notify/bobopay/cash'
 ];
+
+//RRz8E1EaFPDlzL4  200152
 $_ENV['PAY_CONFIG']['jwpay'] = [
 	'mch_id' => '100',
 	'mch_key' => 'nrCV5HpZ3FzvuX6L',
@@ -151,6 +153,6 @@ $_ENV['PAY_CONFIG']['jwpay'] = [
 	
 	'query_url' => '',
 	'returnUrl' => 'https://' . PAY_BACKURL . '/',
-	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/bobopay/pay',
-	'dnotify_url' => 'https://' . PAY_BACKURL . '/' . 'api/Notify/bobopay/cash'
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/jwpay/pay',
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/' . 'api/Notify/jwpay/cash'
 ];
