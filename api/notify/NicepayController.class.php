@@ -24,7 +24,7 @@ class NicepayController extends BaseController
             $params = $_POST;
         require_once APP_PATH . 'common/pay/nicepay.php';
         $sign = paySign($params, true);
-        writeLog($sign, 'nicepay/notify/pay');
+        //writeLog($sign, 'nicepay/notify/pay');
         if (!$sign)
             jReturn(-1, 'Sign error');
         $pdata = [
@@ -46,7 +46,7 @@ class NicepayController extends BaseController
 
         require_once APP_PATH . 'common/cash/nicepay.php';
         $sign = CashSign($params);
-        writeLog($sign, 'nicepay/notify/pay');
+        //writeLog($sign, 'nicepay/notify/pay');
         if ($sign != $params['sign'])
             jReturn(-1, 'Sign error');
         $pdata = [

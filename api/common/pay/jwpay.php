@@ -25,7 +25,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
-	writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/pay');
+	//writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}

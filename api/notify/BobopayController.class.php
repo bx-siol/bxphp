@@ -24,7 +24,7 @@ class BobopayController extends BaseController
             $params = $_POST;
         require_once APP_PATH . 'common/pay/bobopay.php';
         $sign = paySign($params);
-        writeLog($sign, 'bobopay/notify/pay');
+        //writeLog($sign, 'bobopay/notify/pay');
         if ($sign != $params['sign'])
             jReturn(-1, 'Sign error');
         $pdata = [
@@ -46,7 +46,7 @@ class BobopayController extends BaseController
 
         require_once APP_PATH . 'common/cash/bobopay.php';
         $sign = CashSign($params);
-        writeLog($sign, 'bobopay/notify/pay');
+        //writeLog($sign, 'bobopay/notify/pay');
         if ($sign != $params['sign'])
             jReturn(-1, 'Sign error');
         $pdata = [

@@ -24,7 +24,7 @@ class JwpayController extends BaseController
             $params = $_POST;
         require_once APP_PATH . 'common/pay/jwpay.php';
         $sign = paySign($params);
-        writeLog($sign, 'jwpay/notify/pay');
+        //writeLog($sign, 'jwpay/notify/pay');
         if ($sign != $params['sign'])
             jReturn(-1, 'Sign error');
         $pdata = [
@@ -33,7 +33,7 @@ class JwpayController extends BaseController
             'amount' => $params['amount'] / 100,
             'successStr' => 'OK'
         ];
-        writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/notify/pay');
+        //writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/notify/pay');
         $this->payAct($pdata, 'jwpay');
     }
 
@@ -47,7 +47,7 @@ class JwpayController extends BaseController
 
         require_once APP_PATH . 'common/cash/jwpay.php';
         $sign = CashSign($params);
-        writeLog($sign, 'jwpay/notify/pay');
+        //writeLog($sign, 'jwpay/notify/pay');
         if ($sign != $params['sign'])
             jReturn(-1, 'Sign error');
 

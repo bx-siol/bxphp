@@ -20,11 +20,6 @@ define('CONTROLLER_NAME', $params['c']);
 define('ACTION_NAME', $params['a']);
 define('NKEY', CONTROLLER_NAME . '_' . ACTION_NAME);
 require_once APP_PATH . 'common/app.conf.php';
-///api/Notify/bobopay/pay
-if ($_SERVER['REMOTE_ADDR'] == '13.235.58.16' || (MODULE_NAME == 'Notify' && CONTROLLER_NAME == 'bobopay' && ACTION_NAME == 'pay')) {
-	// 将POST数据转换为字符串 
-	writeLog('pdata : ' . json_encode($_POST, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/notify/pay');
-}
 $controller = CONTROLLER_NAME . 'Controller';
 $action = '_' . ACTION_NAME;
 
