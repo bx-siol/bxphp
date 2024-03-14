@@ -180,7 +180,7 @@ class UserController extends BaseController
 			if($referrer_str)
 			{
 				$referrer_str =substr($referrer_str,0, strlen($referrer_str) - 1);
-				$referrerData = Db::table('syso_user')->where("pid in ({$referrer_str})")->field('pid,count(1) as referrer')->group('pid')->select();
+				$referrerData = Db::table('sys_user')->where("pid in ({$referrer_str})")->field('pid,count(1) as referrer')->group('pid')->select();
 			}
 
 			$teamSizeDate = array();
