@@ -67,7 +67,8 @@ const onGoPayinfo = (item: any) => {
             osn: item.osn,
             money: item.money,
             par1: item.create_time,
-            par2: t(item.status_flag),
+            par2: item.pay_type,
+            par3: t(item.status_flag),
         }
     })
 }

@@ -68,7 +68,7 @@ const onGoPayinfo = (item: any) => {
             money: item.money,
             par1: item.real_money,
             par2: item.create_time,
-            par3: 'ICICI Bank',
+            par3: item.receive_bank_name,
             par4: item.receive_account,
             par5: item.receive_realname,
             par6: item.receive_ifsc,

@@ -329,7 +329,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/finance/rechargelog.vue')
     },
     {
-        path: '/orderdetails/:osn/:money/:par1/:par2',
+        path: '/orderdetails/:osn/:money/:par1/:par2/:par3',
         name: 'Finance_order',
         meta: {
             title: 'order details',

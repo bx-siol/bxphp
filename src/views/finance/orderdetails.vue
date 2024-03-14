@@ -17,8 +17,12 @@
                     <p>{{ route.params.par1 }}</p>
                 </li>
                 <li>
+                    <p>Payment Method: </p>
+                    <p>{{ route.params.par2 }}</p>
+                </li>
+                <li>
                     <p>State:</p>
-                    <p>{{ t(route.params.par2) }}</p>
+                    <p>{{ t(route.params.par3) }}</p>
                 </li>
             </ul>
 
