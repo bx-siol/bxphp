@@ -170,7 +170,9 @@ class UserController extends BaseController
 				->order(['log.reg_time' => 'desc'])
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
-			
+
+			$teamSize_str = '';
+			$order_str = '';
 			foreach ($list as &$v) {
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
