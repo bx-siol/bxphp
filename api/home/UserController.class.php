@@ -116,7 +116,6 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
-		writeLog('---------------------------------------------------------','bobopay1');
 		$params = $this->params;
 		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
 
@@ -126,8 +125,8 @@ class UserController extends BaseController
 		$lv = intval($params['lv']);
 		$mem_key = 'user_team_' . $lv  . $pageuser['id'] . $params['page']  . $params['type'];
 		$params['page'] = intval($params['page']);
-		//$return_data = $this->redis->get($mem_key);
-		//if (!$return_data) {
+		$return_data = $this->redis->get($mem_key);
+		if (!$return_data) {
 			switch ($lv) {
 				case 1:
 					$lvstr =  $pageuser['id'] . ",%'";
@@ -175,13 +174,12 @@ class UserController extends BaseController
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
 			}
-			
+
 			$teamSizeDate = array();
 			if($teamSize_str)
 			{
 				$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
 				$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
-				writeLog('1-'.$teamSize_str,'bobopay1');
 				$teamSizeDate = Db::query($teamSize_str);
 			}				
 			
@@ -189,7 +187,6 @@ class UserController extends BaseController
 			if($order_str)
 			{
 				$order_str =substr($order_str,0, strlen($order_str) - 1);
-				writeLog('2-'.$order_str,'bobopay1');
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 			}				
 
@@ -230,8 +227,8 @@ class UserController extends BaseController
 				'lv' => $lv,
 				'$total_page' => $total_page,
 			];
-			//$this->redis->set($mem_key, $return_data, 300);
-		//}
+			$this->redis->set($mem_key, $return_data, 300);
+		}
 		jReturn(1, 'ok', $return_data);
 	}
 	//我的团队--层级人数
