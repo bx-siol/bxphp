@@ -19,7 +19,7 @@ class JwpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/notify/pay');
+        writeLog('pdatajwt : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/notify/pay');
         if (!$params)
             $params = $_POST;
         require_once APP_PATH . 'common/pay/jwpay.php';
@@ -33,7 +33,8 @@ class JwpayController extends BaseController
             'amount' => $params['amount'] / 100,
             'successStr' => 'OK'
         ];
-        $this->payAct($pdata);
+        writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/notify/pay');
+        $this->payAct($pdata, 'jwpay');
     }
 
     public function _cash()

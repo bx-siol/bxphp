@@ -33,7 +33,7 @@ class NicepayController extends BaseController
             'amount' => $params['orderAmt'],
             'successStr' => 'success'
         ];
-        $this->payAct($pdata);
+        $this->payAct($pdata, 'nicepay');
     }
 
     public function _cash()
