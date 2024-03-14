@@ -143,11 +143,13 @@ class UserController extends BaseController
 			}
 			$where = " log.pids like '" . $lvstr;
 
+			//有效
 			$count_item1 =  Db::table('sys_user log')
 				->fieldRaw('count(1) as paycnt')
 				->where($where . " and log.first_pay_day>0")
 				->find();
 
+			//无效
 			$count_item2 = Db::table('sys_user log')
 				->fieldRaw('count(1) as unpaycnt')
 				->where($where . " and log.first_pay_day=0")
@@ -159,6 +161,7 @@ class UserController extends BaseController
 				$where .= " and log.first_pay_day=0";
 			}
 
+			//团队总人数
 			$count_item = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where($where)->find();
 
 			$list = Db::view(['sys_user' => 'log'], ['id', 'account', 'nickname', 'headimgurl', 'reg_time'])
@@ -167,9 +170,42 @@ class UserController extends BaseController
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
 
+			foreach ($list as &$v) {
+				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
+				$order_str .= $v["id"] . ",";
+			}
+
+			$teamSizeDate = array();
+			if($teamSize_str)
+			{
+				$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
+				$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
+				$teamSizeDate = Db::query($teamSize_str);
+			}				
+			
+			$orderDate = array();
+			if($order_str)
+			{
+				$order_str =substr($order_str,0, strlen($order_str) - 1);
+				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
+			}				
+
 			foreach ($list as &$item) {
+				$item["teamSize"] = 0;
+				$item["assets"] = 0;
+
+				if(count($teamSizeDate) > 0)
+					foreach	($teamSizeDate as &$v)
+						if($item["id"] == $v['id'])
+							$item["teamSize"] = $v["teamSize"];
+
+				if(count($orderDate) > 0)
+					foreach ($orderDate as &$v)
+						if ($item["id"] == $v["uid"])
+							$item["assets"] = $v['assets'];
+
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
-				$item['level'] = $lv;
+				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
 			}
 
 
@@ -199,13 +235,17 @@ class UserController extends BaseController
 	public function _GetTeamHierarchyPeopleNum()
 	{
 		$pageuser = checkLogin();
-		$list = Db::table('syso_user')->where("pids like '%{$pageuser['id']}%' ")->order("reg_time")->select();
+		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' ")->field('id,pids')->order("reg_time")->select()->toArray();
 		foreach ($list as &$item) 
 		{
 			$pidsArr = explode(",", $item["pids"]);
-			$item["level"] = array_search($pageuser['id'], $pidsArr);
+			$item["level"] = array_search($pageuser['id'], $pidsArr) +1;
 		}
-		jReturn(1, 'ok', $list);
+		$return_data = [
+			'list'=> $list,
+			'fy'=> getConfig('FYSZ'),
+		];
+		jReturn(1, 'ok', $return_data);
 	}
 
 	//收益中心

@@ -1603,4 +1603,18 @@ class ProductController extends BaseController
 		];
 		jReturn(1, 'Received successfully', $return_data);
 	}
+
+	//获取当前用户的已购商品信息
+	public function _PurchasedOrder()
+	{
+		$params = $this->params;
+		$list = Db::table('pro_order u')
+		->leftJoin('pro_goods g','u.gid = g.id')
+		->where("u.uid = {$params['id']} ")
+		->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name')
+		->select()
+		->toArray();	
+
+		jReturn(1, 'ok', $list);
+	}
 }

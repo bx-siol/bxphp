@@ -927,7 +927,7 @@ class FinanceController extends BaseController
 			->where($where)
 			->find();
 
-		$list = Db::view(['wallet_log' => 'log'], ['type', 'money', 'remark', 'create_time', 'id' . 'ori_balance', 'new_balance'])
+		$list = Db::view(['wallet_log' => 'log'], ['type', 'money', 'remark', 'create_time', 'id' ,'ori_balance', 'new_balance'])
 			->view(['wallet_list' => 'w'], ['waddr'], 'log.wid=w.id', 'LEFT')
 			->view(['cnf_currency' => 'c'], ['name' => 'currency_name'], 'w.cid=c.id', 'LEFT')
 			->where($where)
