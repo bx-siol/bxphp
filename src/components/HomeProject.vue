@@ -166,12 +166,12 @@ const goProjectDetail = (item: any) => {
         border-radius: 10px;
         box-shadow: 0px 0px 12px 2px rgba(225, 225, 225);
         margin-bottom: 1rem;
-        padding: 0.625rem;
+        padding: 0.425rem 0.625rem 0.625rem;
         width: 48%;  
 
         .basicItemLeft {
-          width: 6rem;
-          height: 5rem;
+          width: 8rem;
+          height: 7rem;
           // margin: 1rem auto 0.8rem;
           position: relative;
 
