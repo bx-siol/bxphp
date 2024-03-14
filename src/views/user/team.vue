@@ -272,7 +272,7 @@ const getTeam = () => {
         http({
             url: 'c=User&a=GetTeamHierarchyPeopleNum'
         }).then((res: any) => {
-            for (var it of res.data) {
+            for (var it of res.data.list) {
                 if (it.level == "1") {
                     lv1.value.people += 1;
                 } else if (it.level == "2") {
@@ -282,16 +282,10 @@ const getTeam = () => {
                 }
             }
 
-            var fylStr = res.data.length;
-            // console.log(fylStr);
-            teamcount.value = res.data.length;
-            // console.log(teamcount.value,'人数');
-
+            var fylStr = res.data.fy;
             fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%-(' + lv1.value.people + ')';
             fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%-(' + lv2.value.people + ')';
             fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%-(' + lv3.value.people + ')';
-
-
         })
     }, delayTime)
 }
