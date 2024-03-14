@@ -64,7 +64,7 @@ class PokerpayController extends BaseController
 		}
 
 		$sign = dSign($params);
-		file_put_contents($logpathd, NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES), FILE_APPEND);
+		file_put_contents($logpathd, NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), FILE_APPEND);
 		if (!$sign) {
 			file_put_contents($logpathd, NOW_DATE . "\r\n" .  'singree' . "\r\n", FILE_APPEND);
 			jReturn(-1, 'Sign error');
@@ -97,7 +97,7 @@ class PokerpayController extends BaseController
 		}
 
 		$sign = $signFunc($params);
-		file_put_contents($logpathd, NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES), FILE_APPEND);
+		file_put_contents($logpathd, NOW_DATE . "\r\n" . $sign . "\r\n" . $params['sign'] . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), FILE_APPEND);
 		if ($params['sign'] != $sign) {
 			jReturn(-1, 'Sign error');
 		}

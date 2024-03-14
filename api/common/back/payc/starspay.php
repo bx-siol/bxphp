@@ -10,7 +10,7 @@ $_ENV['PAY_CONFIG']['starspay'] = [
 	'pay_url' => 'https://api.stars-pay.com/api/gateway/pay',
 	'query_url' => '',
 	'notify_url' => 'http://47.243.82.107/api/Notify/starspay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')

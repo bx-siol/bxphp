@@ -19,7 +19,7 @@ class NicepayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog(json_encode('pdata : ' . $params, JSON_UNESCAPED_SLASHES), 'nicepay/notify/pay');
+        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/notify/pay');
         if (!$params)
             $params = $_POST;
         require_once APP_PATH . 'common/pay/nicepay.php';
@@ -40,7 +40,7 @@ class NicepayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog(json_encode('pdata : ' . $params, JSON_UNESCAPED_SLASHES), 'nicepay/notify/cash');
+        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/notify/cash');
         if (!$params)
             $params = $_POST;
 

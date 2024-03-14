@@ -195,7 +195,7 @@ class FinanceController extends BaseController
 				require_once $pay_file;
 				$result = payOrder($fin_paylog, $sub_pay_type);
 				if ($params['pay_type'] != 'OfflinePay') {
-					//file_put_contents(LOGS_PATH . $file_name . '/payResult' . date("Y-m-d", time()) . '.txt',   json_encode($result, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+					//file_put_contents(LOGS_PATH . $file_name . '/payResult' . date("Y-m-d", time()) . '.txt',   json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 				}
 				if ($result['code'] != 1) {
 					jReturn(-1, $result['msg']);
@@ -625,10 +625,10 @@ class FinanceController extends BaseController
 		$imgurl = '';
 		if ($tt == 1) {
 			$ttc = rand(1, 106);
-			$imgurl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/h5/img/img (' . $ttc . ').gif';
+			$imgurl = REQUEST_SCHEME . '://' . HTTP_HOST . '/h5/img/img (' . $ttc . ').gif';
 		} else {
 			$num = rand(1, 42);
-			$imgurl = $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST'] . '/h5/img/' . $num . '.gif';
+			$imgurl = REQUEST_SCHEME . '://' . HTTP_HOST . '/h5/img/' . $num . '.gif';
 		}
 		$url = '';
 		$data = [];

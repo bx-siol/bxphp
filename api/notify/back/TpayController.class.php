@@ -28,7 +28,7 @@ class TpayController extends BaseController
 		$flpath = LOGS_PATH . 'tpay/notify/pay' . date("Y-m-d", time()) . '.txt';
 
 		$sign = paySign($params);
-		file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES)  . "\r\n\r\n", FILE_APPEND);
+		file_put_contents($flpath, NOW_DATE . "\r\n" . $sign . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE)  . "\r\n\r\n", FILE_APPEND);
 		if ($params['sign'] != $sign) {
 			jReturn(-1, 'Sign error');
 		}

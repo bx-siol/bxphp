@@ -40,13 +40,13 @@ function hrpay2CashOrder($fin_cashlog)
 	$pdata['sign'] = hrpay2CashSign($pdata);
 	//$pdata['sign_type'] = 'MD5'; 
 	$url = $config['dpay_url'];
-	//file_put_contents($logpathd, $url . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+	//file_put_contents($logpathd, $url . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 	$result = hrpay2CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1) {
 		return $result;
 	}
 	$resultArr = $result['output'];
-	file_put_contents($logpathd, $url . "\r\n" . json_encode($resultArr, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+	file_put_contents($logpathd, $url . "\r\n" . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 	if ($resultArr['status'] != '1') {
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
@@ -78,7 +78,7 @@ function hrpay2CashSign($params)
 	$logpath = LOGS_PATH . "hrpay2/paySign{$time}.txt";
 	file_put_contents($logpath,  "signstr:\r\n" . $signStr . "\r\n", FILE_APPEND);
 	$outstr = strtoupper(md5($signStr));
-	//file_put_contents($logpath,  "signstr:\r\n" . $signStr . "\r\n" . $outstr . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES), FILE_APPEND);
+	//file_put_contents($logpath,  "signstr:\r\n" . $signStr . "\r\n" . $outstr . "\r\n" . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), FILE_APPEND);
 	return $outstr;
 }
 function hrpay2CurlPost($url, $data = [], $timeout = 30)
@@ -99,7 +99,7 @@ function hrpay2CurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_HTTPHEADER => array(
 			'Content-Type:application/x-www-form-urlencoded',
 		)
-		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		// CURLOPT_HTTPHEADER => array(
 		// 	'Content-Type: application/json;charset=UTF-8'
 		// )

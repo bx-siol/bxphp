@@ -569,10 +569,10 @@ class BaseController extends CommonCtl
 		$imgurl = '';
 		if ($tt == 1) {
 			$ttc = rand(1, 106);
-			$imgurl = REQUEST_SCHEME . '://' . $cnf_domain . '/h5/img/img (' . $ttc . ').gif';
+			$imgurl = $_SERVER['REQUEST_SCHEME'] . '://' . $cnf_domain . '/h5/img/img (' . $ttc . ').gif';
 		} else {
 			$num = rand(1, 42);
-			$imgurl = REQUEST_SCHEME . '://' . $cnf_domain . '/h5/img/' . $num . '.gif';
+			$imgurl = $_SERVER['REQUEST_SCHEME'] . '://' . $cnf_domain . '/h5/img/' . $num . '.gif';
 		}
 		$url = '';
 		$data = [];

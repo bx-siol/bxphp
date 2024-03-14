@@ -9,7 +9,7 @@ $_ENV['PAY_CONFIG']['adkpay'] = [
 	'pay_url' => 'https://top.adkjk.in/rpay-api/order/submit',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/adkpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 function getMillisecond()
 {
@@ -48,7 +48,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 	$ooc = $resultArr['data']; // json_decode(stripslashes($resultArr['data']), true);
-	file_put_contents($logpathd,   "\r\n =============== \r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n" .  json_encode($resultArr, JSON_UNESCAPED_SLASHES) . "\r\n"
+	file_put_contents($logpathd,   "\r\n =============== \r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" .  json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n"
 		. $resultArr['data'] . "\r\n", FILE_APPEND);
 
 	$return_data = [
@@ -94,7 +94,7 @@ function payCurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_TIMEOUT => $timeout,
 		CURLOPT_FOLLOWLOCATION => true,
 		CURLOPT_CUSTOMREQUEST => 'POST',
-		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		CURLOPT_HTTPHEADER => array('Content-Type: application/json;charset=UTF-8')
 	));
 	$response = curl_exec($curl);

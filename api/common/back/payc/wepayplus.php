@@ -9,7 +9,7 @@ $_ENV['PAY_CONFIG']['wepayplus'] = [
 	'pay_url' => 'http://apis.wepayplus.com/client/collect/create',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/wepayplus/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')
@@ -30,7 +30,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		'callBackUrl' => $config['page_url'], //支付成功之后的跳转页面 
 	];
 	$pdata['sign'] = paySign($pdata);
-	//file_put_contents($logpathd, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+	//file_put_contents($logpathd, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
 
 	if ($result['code'] != 1) {
@@ -38,7 +38,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		return $result;
 	}
 	$resultArr = $result['output'];
-	file_put_contents($logpathd, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n" . json_encode($resultArr, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+	file_put_contents($logpathd, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 	if ($resultArr['code'] != '200') {
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
@@ -108,7 +108,7 @@ function payCurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_HTTPHEADER => array(
 			'Content-Type:application/x-www-form-urlencoded',
 		)
-		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		// CURLOPT_HTTPHEADER => array(
 		// 	'Content-Type: application/json;charset=UTF-8'
 		// )

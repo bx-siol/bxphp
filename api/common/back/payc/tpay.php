@@ -14,7 +14,7 @@ $_ENV['PAY_CONFIG']['tpay'] = [
 	'pay_url' => 'https://www.tpays.in/openApi/pay/createOrder',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/tpay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')
@@ -57,7 +57,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	$pdata['sign'] = paySign($pdata);
 	//$pdata['sign_type'] = 'MD5';
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
-	//file_put_contents($fliepath, json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+	//file_put_contents($fliepath, json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n" . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 
 	if ($result['code'] != 1) {
 		file_put_contents($fliepath,  $result['code']  . "\r\n\r\n", FILE_APPEND);

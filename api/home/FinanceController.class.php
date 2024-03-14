@@ -114,8 +114,6 @@ class FinanceController extends BaseController
 			$res = Db::table('fin_paylog')->insertGetId($fin_paylog);
 
 			if ($res) {
-
-			 
 				$sub_pay_type = 0;
 				if (in_array($params['pay_type'], ['rapay101'])) {
 					$file_name = 'rapay';
@@ -137,14 +135,17 @@ class FinanceController extends BaseController
 				} elseif (($params['pay_type'] == 'rapay11101')) {
 					$sub_pay_type = 11101;
 				}
+
 				require_once $pay_file;
 				$result = payOrder($fin_paylog, $sub_pay_type);
 				// if ($params['pay_type'] != 'OfflinePay') {
-				// 	//file_put_contents(LOGS_PATH . $file_name . '/payResult' . date("Y-m-d", time()) . '.txt',   json_encode($result, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+				// 	//file_put_contents(LOGS_PATH . $file_name . '/payResult' . date("Y-m-d", time()) . '.txt',   json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 				// }
 				if ($result['code'] != 1) {
-					jReturn(-1, $result['msg']);
+					writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), "rechargeAct/Error" . $params['pay_type']);
+					jReturn(-1, "Failed to initiate payment request, please try again later");
 				}
+
 				$resultArr = $result['data'];
 				Db::table('fin_paylog')->where("id={$res}")->update(['out_osn' => $resultArr['out_osn']]);
 				$return_data = [
@@ -723,20 +724,20 @@ class FinanceController extends BaseController
 				'client_ip' => CLIENT_IP
 			];
 			/*
-																																																																																																																														   if($banklog['type']==1){
-																																																																																																																															   $fin_cashlog['receive_bank_id']=$banklog['bank_id'];
-																																																																																																																															   $fin_cashlog['receive_account']=$banklog['account'];
-																																																																																																																															   $fin_cashlog['receive_realname']=$banklog['realname'];
-																																																																																																																															   $fin_cashlog['receive_routing']=$banklog['routing'];
-																																																																																																																														   }elseif($banklog['type']>1&&$banklog['type']<4){
-																																																																																																																															   $fin_cashlog['receive_account']=$banklog['account'];
-																																																																																																																															   $fin_cashlog['receive_realname']=$banklog['realname'];
-																																																																																																																															   $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
-																																																																																																																														   }else{
-																																																																																																																															   $fin_cashlog['receive_protocol']=$banklog['protocal'];
-																																																																																																																															   $fin_cashlog['receive_address']=$banklog['address'];
-																																																																																																																															   $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
-																																																																																																																														   }*/
+																																																																																																																																																   if($banklog['type']==1){
+																																																																																																																																																	   $fin_cashlog['receive_bank_id']=$banklog['bank_id'];
+																																																																																																																																																	   $fin_cashlog['receive_account']=$banklog['account'];
+																																																																																																																																																	   $fin_cashlog['receive_realname']=$banklog['realname'];
+																																																																																																																																																	   $fin_cashlog['receive_routing']=$banklog['routing'];
+																																																																																																																																																   }elseif($banklog['type']>1&&$banklog['type']<4){
+																																																																																																																																																	   $fin_cashlog['receive_account']=$banklog['account'];
+																																																																																																																																																	   $fin_cashlog['receive_realname']=$banklog['realname'];
+																																																																																																																																																	   $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
+																																																																																																																																																   }else{
+																																																																																																																																																	   $fin_cashlog['receive_protocol']=$banklog['protocal'];
+																																																																																																																																																	   $fin_cashlog['receive_address']=$banklog['address'];
+																																																																																																																																																	   $fin_cashlog['receive_qrcode']=$banklog['qrcode'];
+																																																																																																																																																   }*/
 			$fin_cashlog['receive_account'] = $banklog['account'];
 			$fin_cashlog['receive_realname'] = $banklog['realname'];
 			$fin_cashlog['receive_phone'] = $banklog['phone'];

@@ -10,7 +10,7 @@ $_ENV['PAY_CONFIG']['acepay'] = [
 	'pay_url' => 'https://api.ace-pay.vip/acepay/pay_in',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/acepay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')
@@ -36,7 +36,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 	$pdata['sign'] = paySign($pdata);
 	$pdata['sign_type'] = 'MD5';
-	file_put_contents($logpath, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+	file_put_contents($logpath, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
 
 	if ($result['code'] != 1) {

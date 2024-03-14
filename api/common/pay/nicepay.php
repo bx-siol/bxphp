@@ -23,13 +23,13 @@ function payOrder($fin_paylog)
 	];
 	$pdata['sign'] = paySign($pdata);
 	$url = $config['pay_url'];
-	writeLog(json_encode('resultArr : ' . $pdata, JSON_UNESCAPED_SLASHES), 'nicepay/pay');
+	writeLog('resultArr : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
 	$result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 
 	$resultArr = $result['output'];
-	writeLog(json_encode('resultArr : ' . $resultArr, JSON_UNESCAPED_SLASHES), 'nicepay/pay');
+	writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
 	if ($resultArr['code'] != '1')
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 
@@ -115,7 +115,7 @@ function CurlPost($url, $data = [], $timeout = 30)
 			CURLOPT_TIMEOUT => $timeout,
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 			CURLOPT_HTTPHEADER => array('Content-Type:application/json')
 		)
 	);

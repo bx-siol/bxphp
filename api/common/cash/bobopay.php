@@ -23,12 +23,12 @@ function CashOrder($fin_cashlog)
 	];
 	$pdata['sign'] = CashSign($pdata);
 	$url = $config['dpay_url'];
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES), 'bobopay/cash');
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash');
 	$result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
-	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES), 'bobopay/cash');
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash');
 	if ($resultArr['status'] != '1')
 		return ['code' => -1, 'msg' => $resultArr['msg']]; 
 	$return_data = [
@@ -48,9 +48,9 @@ function CashSign($params)
 	// sign	是	string	签名，md5(amount+merchantId+orderId+timestamp+secret)进行MD5加密，32位小写。
 	$config = $_ENV['PAY_CONFIG']['bobopay'];
 	$signStr = $params['amount'] . $params['merchantId'] . $params['orderId'] . $params['timestamp'] . $config['mch_key'];
-	writeLog(json_encode('signStr : ' . $signStr, JSON_UNESCAPED_SLASHES), 'bobopay');
+	writeLog(json_encode('signStr : ' . $signStr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay');
 	$outstr = strtolower(md5($signStr));
-	writeLog(json_encode('outstr : ' . $outstr, JSON_UNESCAPED_SLASHES), 'bobopay');
+	writeLog(json_encode('outstr : ' . $outstr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay');
 	return $outstr;
 }
 function CurlPost($url, $data = [], $timeout = 30)
@@ -68,7 +68,7 @@ function CurlPost($url, $data = [], $timeout = 30)
 			CURLOPT_TIMEOUT => $timeout,
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_CUSTOMREQUEST => 'POST',
-			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 			CURLOPT_HTTPHEADER => array(
 				'Content-Type:application/json'
 			)

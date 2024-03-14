@@ -10,7 +10,7 @@ $_ENV['PAY_CONFIG']['qepay'] = [
 	'pay_url' => 'http://apis.rainbowpay.xyz/client/collect/create',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/qepay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')
@@ -34,7 +34,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 	$pdata['sign'] = paySign($pdata);
 	// $pdata['sign_type'] = 'MD5';
-	file_put_contents($logpathd, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+	file_put_contents($logpathd, $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
 
 	if ($result['code'] != 1) {
@@ -120,7 +120,7 @@ function payCurlPost($url, $data = [], $timeout = 30)
 		// 	'Accept-Charset: UTF-8,utf-8;q=0.7,*;q=0.3',
 		// 	// 'Content-Type:application/x-www-form-urlencoded',
 		// )
-		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		CURLOPT_HTTPHEADER => array(
 			'Content-Type: application/json;charset=UTF-8'
 		)

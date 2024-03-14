@@ -100,7 +100,7 @@ function mcopayCurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_HTTPHEADER => array(
 			'Content-Type:application/x-www-form-urlencoded',
 		)
-		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		// CURLOPT_HTTPHEADER => array(
 		// 	'Content-Type: application/json;charset=UTF-8'
 		// )

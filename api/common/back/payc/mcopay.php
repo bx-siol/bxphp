@@ -11,7 +11,7 @@ $_ENV['PAY_CONFIG']['mcopay'] = [
 	'query_url' => '',
 
 	'notify_url' => 'http://'.PAY_BACKURL . '/api/Notify/mcopay/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')
@@ -40,7 +40,7 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	];
 	$pdata['sign'] = paySign($pdata);
-    file_put_contents($logpathd, $pdata['sign'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n ===============", FILE_APPEND);
+    file_put_contents($logpathd, $pdata['sign'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n ===============", FILE_APPEND);
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
 
 	if ($result['code'] != 1) {

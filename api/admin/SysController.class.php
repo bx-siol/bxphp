@@ -43,7 +43,7 @@ class SysController extends BaseController
 		$return_data = array_merge($return_data, $pset_arr);
 		$lottery = Db::table('gift_lottery')->where("id=1")->field(['rsn', 'stock_money', 'from_money', 'to_money', 'status', 'day_limit', 'week_limit', 'lottery_min'])->find();
 
-		$lottery['url'] = "{$_SERVER['REQUEST_SCHEME']}://{$_SERVER['HTTP_HOST']}/h5/lottery/{$lottery['rsn']}";
+		$lottery['url'] = REQUEST_SCHEME . '://' . HTTP_HOST . "/#/h5/lottery/{$lottery['rsn']}";
 		$return_data['lottery'] = $lottery;
 		jReturn(1, 'ok', $return_data);
 	}
@@ -723,10 +723,10 @@ class SysController extends BaseController
 				jReturn(-1, '该手机号已被占用');
 			}
 			/*
-					 $check_res=checkPhoneCode(['stype'=>$params['stype'],'phone'=>$params['phone'],'code'=>$params['pcode']]);
-					 if($check_res['code']!='1'){
-						 exit(json_encode($check_res));
-					 }*/
+									   $check_res=checkPhoneCode(['stype'=>$params['stype'],'phone'=>$params['phone'],'code'=>$params['pcode']]);
+									   if($check_res['code']!='1'){
+										   exit(json_encode($check_res));
+									   }*/
 			$sys_user['phone'] = $params['phone'];
 		}
 
@@ -821,12 +821,12 @@ class SysController extends BaseController
 			jReturn(-1, '请填写简体中文');
 		}
 		/*
-			  if(!$params['tw']){
-				  jReturn(-1,'请填写繁体中文');
-			  }
-			  if(!$params['en']){
-				  jReturn(-1,'请填写英文');
-			  }*/
+						  if(!$params['tw']){
+							  jReturn(-1,'请填写繁体中文');
+						  }
+						  if(!$params['en']){
+							  jReturn(-1,'请填写英文');
+						  }*/
 		$sys_lang = [
 			'cn' => $params['cn'],
 			'tw' => $params['tw'],

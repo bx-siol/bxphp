@@ -63,12 +63,13 @@ $_ENV['MEMCACHE'] = [
 	'prefix' => strtolower($_ENV['PREFIX']) . '_'
 ];
 
+$_ENV['API_URL'] = 'https://www.syngentainr.com/';
+$_ENV['cnf_domain'] = 'www.syngentainr.com';
+$_ENV['oauth_domain'] = 'www.syngentainr.com';
 
 $_ENV['CONFIG'] = [];
 $_ENV['CONFIG']['TOKEN_EXPIRE_TIME'] = 7200; //token有效时间 秒 0则不限
-$_ENV['API_URL'] = 'http://38.55.214.59:740/';
-$_ENV['cnf_domain'] = '38.55.214.59:740';
-$_ENV['oauth_domain'] = '38.55.214.59:740';
+
 //语言配置
 $_ENV['LANG_ARR'] = [
 	// 'zh-cn'=>'简体中文',

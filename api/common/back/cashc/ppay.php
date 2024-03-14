@@ -122,7 +122,7 @@ function ppayCurlPost($url, $data = [], $timeout = 30)
 		// CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		CURLOPT_CUSTOMREQUEST => 'POST',
 		CURLOPT_POSTFIELDS => http_build_query($data),
-		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		// CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		// CURLOPT_HTTPHEADER => array(
 		// 	'Content-Type: application/json'
 		// )

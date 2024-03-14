@@ -12,12 +12,10 @@ if (!defined('APP_PATH'))
 define('GLOBAL_PATH', ROOT_PATH . 'global/');
 define('LIB_PATH', GLOBAL_PATH . 'library/');
 
-define('PAY_BACKURL_N', 'www.indianestle.com');
-define('PAY_BACKURL_S', 'www.syngentainr.com');
 // define('PAY_BACKURL_o', '47.242.112.159');
 
 define('LOGS_PATH', ROOT_PATH . 'logs/');
-define('APP_URL', $_SERVER['DOCUMENT_URI'] != null ? trim($_SERVER['DOCUMENT_URI'], '/') : 'api/index.php?');
+// define('APP_URL', $_SERVER['DOCUMENT_URI'] != null ? trim($_SERVER['DOCUMENT_URI'], '/') : 'api/index.php?');
 define('NOW_TIME', time());
 define('NOW_DATE', date('Y-m-d H:i:s', NOW_TIME));
 if (APP_DEBUG) {
@@ -26,11 +24,11 @@ if (APP_DEBUG) {
 	error_reporting(0);
 }
 
-if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
-	define('IS_WIN', true);
-} else {
-	define('IS_WIN', false);
-}
+// if (strtolower(substr(PHP_OS, 0, 3)) === 'win') {
+// 	define('IS_WIN', true);
+// } else {
+// 	define('IS_WIN', false);
+// }
 
 if (strtolower(php_sapi_name()) == 'cli') {
 	define('PHP_CLI', true);
@@ -38,13 +36,28 @@ if (strtolower(php_sapi_name()) == 'cli') {
 	define('PHP_CLI', false);
 }
 
-if (!$_SERVER['REQUEST_SCHEME']) {
-	$_SERVER['REQUEST_SCHEME'] = 'http';
-}
+
 
 require_once ROOT_PATH . 'vendor/autoload.php';
-require_once GLOBAL_PATH . 'db.conf.php';
 use think\facade\Db;
+
+//按项目规范参数
+if (file_exists(ROOT_PATH . 'nestlexm')) {
+	define('PAY_BACKURL', 'www.indianestle.com');
+	define('REQUEST_SCHEME', 'https');
+	define('HTTP_HOST', 'www.indianestle.com');
+	require_once GLOBAL_PATH . 'db.conf_n.php';
+} else if (file_exists(ROOT_PATH . 'syngentaxm')) {
+	define('PAY_BACKURL', 'www.syngentainr.com');
+	define('REQUEST_SCHEME', 'https');
+	define('HTTP_HOST', 'www.syngentainr.com');
+	require_once GLOBAL_PATH . 'db.conf_s.php';
+} else {//测试服
+	define('PAY_BACKURL', '38.55.214.59:741');
+	define('REQUEST_SCHEME', 'http');
+	define('HTTP_HOST', '38.55.214.59:741');
+	require_once GLOBAL_PATH . 'db.conf.php';
+}
 
 Db::setConfig($_ENV['DB']);
 

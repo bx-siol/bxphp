@@ -10,7 +10,7 @@ $_ENV['PAY_CONFIG']['nice'] = [
 	'pay_url' => 'http://123.56.24.108:3020/api/collection/create',
 	'query_url' => '',
 	'notify_url' => 'http://'.PAY_BACKURL. '/api/Notify/Nice/pay',
-	'page_url' => $_SERVER['REQUEST_SCHEME'] . '://' . $_SERVER['HTTP_HOST']
+	'page_url' => REQUEST_SCHEME . '://' . HTTP_HOST
 ];
 
 function payOrder($fin_paylog, $sub_type = '')
@@ -41,7 +41,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 	$pdata['sign'] = paySign($pdata);
 	//file_put_contents(LOGS_PATH.'payOrderZhongle.txt',$config['pay_url']."\r\n".var_export($pdata,true)."\r\n\r\n",FILE_APPEND);
-	file_put_contents(LOGS_PATH . 'payOrderNice.txt', $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES) . "\r\n\r\n", FILE_APPEND);
+	file_put_contents(LOGS_PATH . 'payOrderNice.txt', $config['pay_url'] . "\r\n" . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
 	$result = payCurlPost($config['pay_url'], $pdata, 30);
 	if ($result['code'] != 1) {
 		return $result;
@@ -110,7 +110,7 @@ function payCurlPost($url, $data = [], $timeout = 30)
 		CURLOPT_FOLLOWLOCATION => true,
 		CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
 		CURLOPT_CUSTOMREQUEST => 'POST',
-		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES),
+		CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
 		CURLOPT_HTTPHEADER => array(
 			'Content-Type: application/json'
 		)
