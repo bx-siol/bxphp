@@ -184,6 +184,7 @@ class UserController extends BaseController
 				$teamSizeDate = Db::query($teamSize_str);
 			
 			$orderDate = array();
+			writeLog('-----'.$order_str,'bobopay1');
 			if($order_str)
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 
