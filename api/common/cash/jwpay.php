@@ -10,11 +10,13 @@ function CashOrder($fin_cashlog)
 	// $rand_arr = [6, 7, 8, 9];
 	// $phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999); 
 	$config = $_ENV['PAY_CONFIG']['jwpay'];
+	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
+	$milliseconds = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
 		'outType' => 'IMPS',
 		'merchantId' => $config['mch_id'],
 		'orderid' => $fin_cashlog['osn'],
-		'timestamp' => time(),
+		'timestamp' => $milliseconds,
 		'amount' => $fin_cashlog['real_money'],
 		'accountHolder' => $fin_cashlog['receive_realname'],
 		'accountNumber' => ($fin_cashlog['receive_account']),

@@ -8,11 +8,13 @@ use think\facade\Db;
 function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG']['jwpay'];
+	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
+	$milliseconds = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
 		'merchantId' => $config['mch_id'],
 		'orderId' => $fin_paylog['osn'],
 		'amount' => strval($fin_paylog['money'] * 100),
-		'timestamp' => time(),
+		'timestamp' => $milliseconds,
 		'notifyUrl' => $config['notify_url'],
 	];
 	$pdata['sign'] = paySign($pdata);
