@@ -179,6 +179,7 @@ class UserController extends BaseController
 			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
+			writeLog('teamSize_str'.$teamSize_str,'bobopay1');
 			$teamSizeDate = Db::query($teamSize_str);
 			writeLog('order_str'.$order_str,'bobopay1');
 			$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
