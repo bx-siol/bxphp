@@ -181,14 +181,14 @@ class UserController extends BaseController
 
 			writeLog('444444444444-'.$teamSize_str,'bobopay1');
 			$teamSizeDate = array();
-			if(!$teamSize_str)
+			if($teamSize_str)
 			{
 				writeLog('1-'.$teamSize_str,'bobopay1');
 				$teamSizeDate = Db::query($teamSize_str);
 			}				
 			
 			$orderDate = array();
-			if(!$order_str)
+			if($order_str)
 			{
 				writeLog('2-'.$order_str,'bobopay1');
 				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
