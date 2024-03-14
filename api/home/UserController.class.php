@@ -236,6 +236,7 @@ class UserController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' ")->field('pids')->order("reg_time")->select()->toArray();
+		writeLog('list'.$list,'bobopay1');
 		foreach ($list as &$item) 
 		{
 			$pidsArr = explode(",", $item["pids"]);
