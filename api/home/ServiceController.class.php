@@ -30,8 +30,8 @@ class ServiceController extends BaseController{
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->select();
-		$data = Db::table('ext_service')->where(" type={$params['type']} and  (uid =={$user['pidg1']} or uid =={$user['pidg2']}) ")->select();		
+		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->find();
+		$data = Db::query(" select * from ext_service where  type={$params['type']} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");		
 		jReturn(1,'ok',$data);
 	}
 }
