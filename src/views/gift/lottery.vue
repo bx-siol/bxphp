@@ -99,36 +99,13 @@
         <div class="lotteryNum" style=" width: 43%; margin-left: 28%; margin-top: 1rem;">Activity Rules</div>
         <div class="introduce">
             <p>
-                <img :src="xx" />
-                <span>Invite new users to recharge and get 1 lucky fraw chance</span>
+                <!-- <img :src="xx" /> -->
+                <span>1: New members who join for the first time will get 1 lucky draw opportunity.</span>
             </p>
             <br />
             <p>
-                <img :src="xx" />
-                You can get 1 lucky draw chance when you buy a product
-            </p>
-            <br />
-            <p>
-                <img :src="xx" />
-                How to use the voucher:<br />
-
-                When you get a cash coupon,the amount you get gose directly into your accout
-
-            </p>
-            <br />
-            <p>
-                <img :src="xx" />
-                How to use the coupon:<br />
-
-                After receiving the coupon,you can purchase the corresponding discounted product and enjoy the discount
-            </p>
-            <br />
-            <p>
-                <img :src="xx" />
-                How to use the invitation coupon:<br />
-
-                After obtaining the invitation coupon,invite new members to join and purchase
-                equipment to get extra cash rewards
+                <!-- <img :src="xx" /> -->
+                2: Invite new members to join, and you will receive the corresponding number of draws.
             </p>
         </div>
         <div style="height:15rem;">
@@ -470,15 +447,15 @@ onMounted(() => {
     }
 
     .introduce {
-        height: 18rem;
-        margin-top: 0.5rem;
+        height: 8rem;
+        margin-top: 1rem;
         font-size: 0.70rem;
         color: #64523e;
 
         p {
             display: flex;
             align-items: flex-start;
-            font: 12px/14px "微软雅黑";
+            font: 12px/20px "微软雅黑";
 
             img {
                 width: 0.5rem;

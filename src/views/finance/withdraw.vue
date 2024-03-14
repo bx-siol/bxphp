@@ -108,24 +108,16 @@
                 <div class="noticeList">
 
                     <div class="noticeListItem">
-                        <span>1. Minimum withdrawal amount is Rs {{ min }}. </span>
+                        <span>1: Valid members can apply to withdraw money. There is no limit on the number of withdrawals. The minimum withdrawal amount is Rs {{ min }}. </span>
                     </div>
                     <div class="noticeListItem">
-                        <span>2. You can withdraw once a day. </span>
+                        <span>2: IFSC must be 11 characters, the 5th character is 0. If the bank information is filled in incorrectly, the withdrawal will fail.</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>3. Withdrawal will reach your account within 24-72 </span>
+                        <span>3: Withdrawal fee:{{ tar }} %</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>4. Withdrawal tax {{ tar }}%. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>5. If the withdrawal fails, please reapply or check whether your bank account information is
-                            correct. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>6. IFSC should be 11 characters, and the 5th character should be "0", not "O". If you fill in
-                            incorrect bank information, your withdrawal will fail.</span>
+                        <span>4: Withdrawal time: 1-2 days </span>
                     </div>
                 </div>
             </div>
@@ -477,6 +469,7 @@ onMounted(() => {
     .noticeList {
         .noticeListItem {
             margin-top: 0.75rem;
+            line-height: 20px;
         }
     }
 }

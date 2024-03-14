@@ -54,7 +54,7 @@
             <div class="payway">
                 <div class="title">
                     <!-- <img :src="hexagon" style="width: 13px;  display: inline; margin-right: 0.5rem ;"> -->
-                    <b>Recharge Notice</b>
+                    <b>Note: </b>
                 </div>
 
 
@@ -63,19 +63,14 @@
 
                 <div class="noticeList">
                     <div class="noticeListItem">
-                        <span>1.The Minimun Recharge Amout Is 100RS</span>
+                        <span>1. The minimum deposit amount is 100RS</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>2.Confirm The Recharge Amount And Fill In The UTR Number Correctly</span>
+                        <span>2. Confirm the recharge amount and fill in the UTR number correctly</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>3.Each Recharge Needs To Obtain The Collection Account Again At The Cashier. Please Do Not
-                            Save The Historical Account Recharge</span>
+                        <span>3. Each time you recharge, you need to go to the cashier to obtain the payment account number again. Please do not save the historical account recharge</span>
                     </div>
-                    <div class="noticeListItem">
-                        <span>4.Please Contact Online Customer Service For Recharging</span>
-                    </div>
-
                 </div>
             </div>
 
@@ -423,7 +418,7 @@ onMounted(() => {
 
     .noticeList {
         .noticeListItem {
-
+            line-height: 20px;
             margin-top: 0.75rem;
         }
     }
