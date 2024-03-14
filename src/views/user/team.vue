@@ -259,6 +259,8 @@ const getTeam = () => {
             fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%-(' + lv1.value.people + ')';
             fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%-(' + lv2.value.people + ')';
             fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%-(' + lv3.value.people + ')';
+            teamcount.value = lv1.value.people + lv2.value.people + lv3.value.people;
+
         })
     }, delayTime)
 }
