@@ -194,7 +194,7 @@ class UserController extends BaseController
 						$item["teamSize"] = $v["teamSize"];
 
 				foreach ($orderDate as &$v)
-					if ($v["id"] == $v["uid"])
+					if ($item["id"] == $v["uid"])
 						$item["assets"] = $v['assets'];
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
