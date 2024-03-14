@@ -531,6 +531,7 @@ class FinanceController extends BaseController
 				'status',
 				'money',
 				'rate',
+				'pay_type',
 				'real_money',
 				'create_time',
 				'receive_account',
@@ -538,12 +539,12 @@ class FinanceController extends BaseController
 				'receive_protocol',
 				'receive_type',
 				'receive_bank_id',
+				'receive_bank_name',
 				'receive_routing',
 				'receive_qrcode',
 				'receive_address'
 			]
 		)
-			->view(['cnf_bank' => 'b'], ['name' => 'bank_name'], 'log.receive_bank_id=b.id', 'LEFT')
 			->where($where)
 			->order(['log.id' => 'desc'])
 			->page($params['page'], $this->pageSize)
@@ -821,6 +822,7 @@ class FinanceController extends BaseController
 				'receive_realname',
 				'receive_protocol',
 				'receive_bank_id',
+				'receive_bank_name',
 				'receive_routing',
 				'receive_qrcode',
 				'receive_address',
@@ -829,7 +831,6 @@ class FinanceController extends BaseController
 				'receive_ifsc'
 			]
 		)
-			->view(['cnf_bank' => 'b'], ['name' => 'bank_name'], 'log.receive_bank_id=b.id', 'LEFT')
 			->where($where)
 			->order(['log.id' => 'desc'])
 			->page($params['page'], $this->pageSize)
@@ -921,7 +922,7 @@ class FinanceController extends BaseController
 			->where($where)
 			->find();
 
-		$list = Db::view(['wallet_log' => 'log'], ['type', 'money', 'remark', 'create_time', 'id'])
+		$list = Db::view(['wallet_log' => 'log'], ['type', 'money', 'remark', 'create_time', 'id'.'ori_balance','new_balance'])
 			->view(['wallet_list' => 'w'], ['waddr'], 'log.wid=w.id', 'LEFT')
 			->view(['cnf_currency' => 'c'], ['name' => 'currency_name'], 'w.cid=c.id', 'LEFT')
 			->where($where)
@@ -933,6 +934,8 @@ class FinanceController extends BaseController
 		$cnf_balance_type = getConfig('cnf_balance_type');
 		foreach ($list as &$item) {
 			$item['money'] = floatval($item['money']);
+			$item['ori_balance'] = floatval($item['ori_balance']);
+			$item['new_balance'] = floatval($item['new_balance']);
 			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
 			$item['type_flag'] = $cnf_balance_type[$item['type']];
 		}

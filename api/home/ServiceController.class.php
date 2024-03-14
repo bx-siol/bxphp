@@ -26,5 +26,13 @@ class ServiceController extends BaseController{
 		jReturn(1,'ok',$return_data);
 	}
 	
+	public function _GetService_Online()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$user = Db::table('syso_user')->where("id={$pageuser['id']} ")->select();
+		$data = Db::table('ext_service')->where(" type={$params['type']} and  (uid =={$user['pidg1']} or uid =={$user['pidg2']}) ")->select();		
+		jReturn(1,'ok',$data);
+	}
 }
 ?>
