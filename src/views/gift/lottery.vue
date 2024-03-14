@@ -183,7 +183,7 @@
         configForm.visible = true
         configForm.title = '编辑奖品'
         configForm.isEdit = true,
-        iconList.value.push({ src: imgFlag(item.cover) })
+        iconList.value.push({ src: item.cover })
     }
 
     const save = () => {
@@ -208,6 +208,7 @@
             _alert(res.msg)
             return
         }
+        iconList.value = [];
         configForm.visible = false  //关闭弹层
         pageRef.value.doSearch()
     })
