@@ -29,8 +29,11 @@ function CashOrder($fin_cashlog)
 		return $result;
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash');
-	if ($resultArr['code'] != '100')
+	if ($resultArr['code'] != '100') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
+	}
+
 	$return_data = [
 		'code' => 1,
 		'msg' => $result['msg'],

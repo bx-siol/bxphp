@@ -29,6 +29,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	}
 	$resultArr = $result['output'];
 	if ($resultArr['code'] != '100') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/pay/error');
 		return ['code' => -1, 'msg' => 'Channel is not open'];
 	}
 	$return_data = [

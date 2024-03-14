@@ -33,6 +33,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	}
 	$resultArr = $result['output'];
 	if ($resultArr['status'] != '200') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/pay/error');
 		return ['code' => -1, 'msg' => 'Channel is not open'];
 	}
 	$resultArr['params'] = json_decode($resultArr['params'], true);

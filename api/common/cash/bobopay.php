@@ -29,8 +29,11 @@ function CashOrder($fin_cashlog)
 		return $result;
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash');
-	if ($resultArr['status'] != '1')
+	if ($resultArr['status'] != '1') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'bobopay/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
+	}
+
 	$return_data = [
 		'code' => 1,
 		'msg' => $result['msg'],
