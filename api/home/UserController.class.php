@@ -116,7 +116,7 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
-		writeLog('---------------------------------------------------------','bobopay1');
+		//writeLog('---------------------------------------------------------','bobopay1');
 		$params = $this->params;
 		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
 
@@ -173,16 +173,15 @@ class UserController extends BaseController
 			
 			foreach ($list as &$v) {
 				$referrer_str .= $v["id"] . ",";
-				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from syso_user where pids like '%{$v['id']}%';";
+				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
 				$order_str .= $v["id"] . ",";
 			}
-			writeLog('teamSize_str' . $teamSize_str,'bobopay1');
 			$referrer_str = substr($referrer_str,0, strlen($referrer_str) - 1);
 			$teamSize_str =  substr($teamSize_str,0, strlen($teamSize_str) - 1);
 			$teamSize_str = str_replace(";"," union ", $teamSize_str) . ';';
 			$order_str =substr($order_str,0, strlen($order_str) - 1);
 
-			$referrerData = Db::table('syso_user')->where('first_pay_day>0 and pid in ({$referrer_str})')->find('pid,count(pid) as referrer')->group('pid')->select();
+			$referrerData = Db::table('sys_user')->where('first_pay_day>0 and pid in ({$referrer_str})')->find('pid,count(pid) as referrer')->group('pid')->select();
 			$teamSizeDate = Db::query($teamSize_str);
 			$orderDate = Db::table('pro_order')->where('uid in ({$order_str})')->find('uid,sum(money) as assets')->group('uid')->select();
 
