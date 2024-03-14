@@ -191,12 +191,12 @@ class UserController extends BaseController
 				$item["teamSize"] = 0;
 				$item["assets"] = 0;
 
-				if(count($teamSizeDate))
+				if(count($teamSizeDate) > 0)
 					foreach	($teamSizeDate as &$v)
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($orderDate))
+				if(count($orderDate) > 0)
 					foreach ($orderDate as &$v)
 						if ($item["id"] == $v["uid"])
 							$item["assets"] = $v['assets'];
