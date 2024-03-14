@@ -4,7 +4,7 @@
     <div style="background: ">
       <div class="project_img">
         <!--<img :src="describe" class="describe">-->
-        <van-swipe indicator-color="white">
+        <van-swipe indicator-color="white" :autoplay="3000">
           <van-swipe-item v-if="info.covers == []">
             <img :src="imgFlag(info.icon)" style="width: 100%; max-height: 200px" />
           </van-swipe-item>
@@ -195,7 +195,7 @@ import http from "../../global/network/http";
 // import Product from '../../assets/img/project/product.png';
 import bird from '../../assets/ico/bird.png'
 import leaf from '../../assets/ico/leaf.png'
-
+import lb1 from '../../assets/img/project/lb1.jpg'
 import MyTab from "../../components/Tab.vue";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
@@ -211,7 +211,6 @@ const info = ref({
   covers: []
 })
 
-
 const styles = reactive<any>({});
 const changeColor = (item: any, index: number, info: any) => {
   for (let key in styles) {
@@ -219,7 +218,7 @@ const changeColor = (item: any, index: number, info: any) => {
   }
   styles[index] = {
     border: '1px solid #84973b',
-    background:'#fff',
+    background: '#fff',
     color: '#84973b',
   };
   if (couponId.value == item.id) {
@@ -492,14 +491,16 @@ onMounted(() => {
   }
 
   .project_img {
-    width: 12.75rem;
+    width: 15.75rem;
     height: 12.75rem;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    padding: 0.4rem 4rem;
+    padding: 0.4rem 2rem;
     background: #fff;
     border-radius: 8px;
+    display: flex;
+    align-items: center;
     .describe {
       width: 3rem;
       height: 3rem;
@@ -510,8 +511,13 @@ onMounted(() => {
     }
 
     img {
-      width: 12.75rem;
-      height: 12.75rem;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 
