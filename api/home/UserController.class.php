@@ -234,7 +234,7 @@ class UserController extends BaseController
 	public function _GetTeamHierarchyPeopleNum()
 	{
 		$pageuser = checkLogin();
-		$list = Db::table('syso_user')->where("pids like '%{$pageuser['id']}%' ")->order("reg_time")->select();
+		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' ")->order("reg_time")->select();
 		foreach ($list as &$item) 
 		{
 			$pidsArr = explode(",", $item["pids"]);
