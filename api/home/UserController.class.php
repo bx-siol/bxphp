@@ -36,7 +36,7 @@ class UserController extends BaseController
 		}
 		$investment = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->sum('money');
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
-		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and status=9")->sum('money');
+		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');
 
 		$now_day = date('Ymd');
 
@@ -68,8 +68,6 @@ class UserController extends BaseController
 		foreach ($service_arr as &$sv) {
 			$sv['type_flag'] = $cnf_service_type[$sv['type']];
 		}
-
-
 
 		if ($pageuser['id'] == '242285') {
 			$wallet =  ['balance' => '35000.00'];
@@ -197,7 +195,18 @@ class UserController extends BaseController
 		}
 		jReturn(1, 'ok', $return_data);
 	}
-
+	//我的团队--层级人数
+	public function _GetTeamHierarchyPeopleNum()
+	{
+		$pageuser = checkLogin();
+		$list = Db::table('syso_user')->where("pids like '%{$pageuser['id']}%' ")->order("reg_time")->select();
+		foreach ($list as &$item) 
+		{
+			$pidsArr = explode(",", $item["pids"]);
+			$item["level"] = array_search($pageuser['id'], $pidsArr);
+		}
+		jReturn(1, 'ok', $list);
+	}
 
 	//收益中心
 	public function _profit()
