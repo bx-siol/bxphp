@@ -40,7 +40,7 @@ class ServiceController extends BaseController
 		$data = Db::query(" select * from ext_service where  {$where} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");	
 	
 			$coupon = Db::view(['coupon_log' => 'log'], ['id,cid,status,uid,num,used,effective_time,discount,money,type'])
-			->view(['coupon_list' => 'list'], ['gids'], 'log.cid=list.id', 'LEFT')
+			->view(['coupon_list' => 'list'], 'gids', 'log.cid=list.id', 'LEFT')
 			->where("id=1")
 			->find();
 
