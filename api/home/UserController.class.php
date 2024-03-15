@@ -199,6 +199,7 @@ class UserController extends BaseController
 				$amount_str = str_replace(";"," union ", $amount_str) . ';';
 				$amountDate = Db::query($teamSize_str);
 			}
+			writeLog("amount_str".json_encode($amount_str),"bobopay1");
 			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
 			$amount_ids = "";
