@@ -226,7 +226,7 @@ class UserController extends BaseController
 					}
 				}
 				if($amount_ids)
-					$amount_ids =substr($amount_ids,1, strlen($amount_ids) - 2);
+					$amount_ids = substr($amount_ids,1, strlen($amount_ids) - 2);
 			}
 			writeLog("dic".json_encode($dic),"bobopay1");
 			writeLog("amount_ids".$amount_ids,"bobopay1");
