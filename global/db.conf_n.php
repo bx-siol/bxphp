@@ -130,8 +130,8 @@ $_ENV['PAY_CONFIG']['nicepay'] = [
 ];
 
 $_ENV['PAY_CONFIG']['bobopay'] = [
-	'mch_id' => 'TEST100',
-	'mch_key' => 'DRNnGuqGrY',
+	'mch_id' => 'Z0013',
+	'mch_key' => 'OJv20h68V1',
 
 	'pay_url' => 'https://api.bobopay.in/api/payin',
 	'dpay_url' => 'https://api.bobopay.in/api/payout',
