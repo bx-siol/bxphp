@@ -111,7 +111,7 @@
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
                                   <span>
-                                    ₹{{ cutOutNum((item.rate / 100) * item.price * item.days * item.num, 2) }}
+                                    ₹{{ cutOutNum(item.rate* item.price * item.total_days * item.num / 100 , 2) }}
                                   </span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
@@ -188,7 +188,7 @@
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
                                   <span>
-                                    ₹{{ cutOutNum((item.rate / 100) * item.price * item.days * item.num, 2) }}
+                                    ₹{{ cutOutNum(item.rate  * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">

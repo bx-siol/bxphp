@@ -7,7 +7,7 @@
         <van-swipe-item v-if="info.covers == []">
           <img :src="imgFlag(info.icon)" style="max-height: 200px" />
         </van-swipe-item>
-        <van-swipe-item v-for="item in info.covers">
+        <van-swipe-item v-else v-for="item in info.covers">
           <img :src="imgFlag(item)" style="max-height: 200px" />
         </van-swipe-item>
       </van-swipe>

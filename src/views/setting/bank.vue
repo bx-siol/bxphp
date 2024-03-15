@@ -239,13 +239,13 @@ onMounted(() => {
                 dataForm.account = res.data.bank.account
                 dataForm.realname = res.data.bank.realname
                 dataForm.ifsc = res.data.bank.ifsc
-                dataForm.phone = res.data.user.account
                 for (let i in res.data.bank_arr) {
                     if (res.data.bank_arr[i].id == res.data.bank.bank_id) {
                         bankIdx.value = i * 1
                     }
                 }
             }
+            dataForm.phone = res.data.user.account
             cbank.value = res.data.user.cbank
             bankArr.value = res.data.bank_arr
             for (let i in res.data.bank_arr) {
