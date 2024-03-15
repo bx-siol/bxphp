@@ -89,7 +89,7 @@
                 </div>
             </div>
 
-            <div class="withdrawalNotes" style="margin-top: 2rem;">
+            <div class="withdrawalNotes" style="margin-top: 2rem;" v-if="false">
                 <div class="notice">
                     <!-- <img :src="hexagon"> -->
                     <span class="noticeText">Withdrawal Notes</span>
@@ -440,7 +440,7 @@ onMounted(() => {
 }
 
 .withdrawalNotes {
-    margin-top: 1.25rem;
+    margin-top: 2rem;
     padding-bottom: 1.25rem;
 
     .notice {

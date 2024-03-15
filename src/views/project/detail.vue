@@ -3,12 +3,12 @@
     <Nav leftText=''></Nav>
     <div class="project_img">
       <!--<img :src="describe" class="describe">-->
-      <van-swipe indicator-color="white">
+      <van-swipe indicator-color="white" :autoplay="3000">
         <van-swipe-item v-if="info.covers == []">
-          <img :src="imgFlag(info.icon)" style="width: 100%; max-height: 200px" />
+          <img :src="imgFlag(info.icon)" style="max-height: 200px" />
         </van-swipe-item>
         <van-swipe-item v-for="item in info.covers">
-          <img :src="imgFlag(item)" style="width: 100%; max-height: 200px" />
+          <img :src="imgFlag(item)" style="max-height: 200px" />
         </van-swipe-item>
       </van-swipe>
     </div>
@@ -240,7 +240,9 @@ import { useRoute, useRouter } from "vue-router";
 import md5 from "md5";
 import { _alert, lang, cutOutNum } from "../../global/common";
 import http from "../../global/network/http";
-import Product from '../../assets/img/project/product.png';
+import Descriptions from '../../assets/img/project/Descriptions.png';
+import chocolate from '../../assets/img/project/chocolate.png';
+
 import bird from '../../assets/ico/bird.png'
 
 import MyTab from "../../components/Tab.vue";
@@ -500,26 +502,31 @@ onMounted(() => {
   }
 
   .project_img {
-    // width: 12.75rem;
+    width: 12.75rem;
     height: 12.75rem;
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    background-color: #eee;
-    padding: 0.2rem 5rem;
+    padding: 0.4rem 1rem;
+    background: #fff;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 
-    .describe {
-      width: 3rem;
-      height: 3rem;
-      position: absolute;
-      top: 0;
-      right: 0;
-      z-index: 1;
+    :deep(.van-swipe__track) {
+      display: flex;
+      // justify-content: center;
     }
 
     img {
-      width: 12.75rem;
-      height: 12.75rem;
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
     }
   }
 

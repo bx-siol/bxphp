@@ -83,6 +83,7 @@
         <van-tab :title="t('进行中')">
           <MyListBase :url="pageUrlOnGoing" ref="pageRefOnGoing" @success="onPageSuccesso">
             <template #default="{ list }">
+              <span class="total">{{ t('总计') }}: {{ cutOutNum(t_investment) }}RS</span>
               <div class="basicProjects">
                 <!-- <div class="index_cer_title" style="color: #fff">OnGoing</div> -->
                 <div class="projectList">
@@ -100,14 +101,12 @@
 
                               <div class="detailLeft">
                                 <div class="unitprice">
-                                  <span>{{ t('小时收益') }}</span>
-                                  <span>₹{{ cutOutNum(((item.rate / 100) *
-                                    item.price * item.num) / 24, 2) }}</span>
+                                  <span>{{ t('价格') }}</span>
+                                  <span>₹{{ cutOutNum(item.price) }}</span>
                                 </div>
                                 <div class="dailyearnings">
-                                  <span>{{ t('每日收入') }}</span>
-                                  <span>₹{{ cutOutNum((item.rate / 100) *
-                                    item.price * item.num, 2) }}</span>
+                                  <span>{{ t('周期') }}</span>
+                                  <span>{{ item.total_days }}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
@@ -157,7 +156,7 @@
         <van-tab :title="t('结束')" v-show="false">
           <MyListBase :url="pageUrlFinish" ref="pageRefFinish" @success="onPageSuccessf">
             <template #default="{ list }">
-              <div class="basicProjects">
+              <div class="basicProjects" style="margin-top: 1rem;">
                 <!-- <div class="index_cer_title" style="color: #fff">Finish</div> -->
                 <div class="projectList">
                   <div v-for="(item, index) in tableDataf.list" :key="index">
@@ -179,14 +178,12 @@
 
                               <div class="detailLeft">
                                 <div class="unitprice">
-                                  <span>{{ t('小时收益') }}</span>
-                                  <span>₹{{ cutOutNum(((item.rate / 100) *
-                                    item.price * item.num) / 24, 2) }}</span>
+                                  <span>{{ t('价格') }}</span>
+                                  <span>₹{{ cutOutNum(item.price) }}</span>
                                 </div>
                                 <div class="dailyearnings">
-                                  <span>{{ t('每日收入') }}</span>
-                                  <span>₹{{ cutOutNum((item.rate / 100) *
-                                    item.price * item.num, 2) }}</span>
+                                  <span>{{ t('周期') }}</span>
+                                  <span>{{ item.days }}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
@@ -332,10 +329,17 @@ const onPageSuccess = (res: any) => {
   loadingShow.value = false;
   basicProjectsd.value.list = res.data
 };
+const t_investment = ref(0.0);
+
 const onPageSuccesso = (res: any) => {
   tableDatao.value = res.data;
   loadingShow.value = false;
   basicProjectsd.value.list = res.data
+  var price = 0;
+  for (var i = 0; i < tableDatao.value.list.length; i++) {
+    price += tableDatao.value.list[i].price - 0
+  }
+  t_investment.value = price;
 };
 const onPageSuccessf = (res: any) => {
   tableDataf.value = res.data;
@@ -479,6 +483,17 @@ onMounted(() => {
     border-color: #00a8a9;
     border-radius: 3px;
     overflow: hidden;
+  }
+
+  .total {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    top: 3.6rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding-bottom: 1rem;
+    color: #64523e;
   }
 
   :deep(.van-tab) {
@@ -715,7 +730,7 @@ onMounted(() => {
   }
 
   .basicProjects {
-    margin-top: 1rem;
+    margin-top: 3rem;
 
     .basicProjectsSplit {
       display: flex;

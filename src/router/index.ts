@@ -97,7 +97,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/purchase',
         name: 'Purchase',
         meta: {
-            title: 'Prizes',
+            title: 'My product',
             needLogin: true
         },
         component: () => import('../views/purchase/index.vue')

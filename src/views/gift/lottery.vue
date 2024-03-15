@@ -115,7 +115,7 @@
     <van-popup v-model:show="showLotteryPop" style="border-radius: 12px;">
         <div class="LotteryPop" @click="receiveGift">
             <img :src="result" />
-            <div class="content">{{ tipstr }}</div>
+            <div class="content" v-if="false">{{ tipstr }}</div>
         </div>
     </van-popup>
 </template>
