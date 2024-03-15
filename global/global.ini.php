@@ -6,7 +6,7 @@ date_default_timezone_set("Asia/Kolkata");
 if (!defined('APP_DEBUG'))
 	define('APP_DEBUG', false);
 if (!defined('ROOT_PATH'))
-	define('ROOT_PATH', dirname(__FILE__) . '/../');
+	define('ROOT_PATH', __DIR__ . '/../');
 if (!defined('APP_PATH'))
 	define('APP_PATH', ROOT_PATH . 'api/');
 define('GLOBAL_PATH', ROOT_PATH . 'global/');

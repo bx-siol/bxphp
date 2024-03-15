@@ -137,7 +137,7 @@ class BaseController extends CommonCtl
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$wallet_data = [
-				'balance' => $wallet['balance'] + $order['money']
+				'balance' => $wallet['balance'] + $pdata['amount']
 			];
 			if ($wallet_data['balance'] < 0) {
 				throw new \Exception('fail3');
@@ -155,7 +155,7 @@ class BaseController extends CommonCtl
 				'ori_balance' => $wallet['balance'],
 				'new_balance' => $wallet_data['balance'],
 				'fkey' => $order['osn'],
-				'remark' => 'Recharge'
+				'remark' => 'Recharge:' + $pdata['amount']
 			], 1);
 			//writeLog("payAct:6" . $paytype . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $paytype . '/notify/pay');
 			if (!$result) {
