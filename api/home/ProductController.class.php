@@ -164,7 +164,7 @@ class ProductController extends BaseController
 		->leftJoin('coupon_list list','log.cid=list.id')
 		->where($cp_where)
 		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
-		->select()->toArray();
+		->select();
 
 		writeLog("coupon_logs". json_encode($coupon_logs),'bobopay1');
 		$coupon_arr = [];
