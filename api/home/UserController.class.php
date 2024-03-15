@@ -117,6 +117,7 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
+		writeLog("--------------------------------------------------------------","bobopay1");
 		$params = $this->params;
 		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
 
@@ -172,7 +173,6 @@ class UserController extends BaseController
 				->select()->toArray();
 
 			
-			writeLog("list".json_encode($list),"bobopay1");
 			foreach ($list as &$k) {
 				$referrer_str .= $k["id"] . ",";
 				$teamSize_str .= "select {$k['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k['id']}%';";
@@ -201,7 +201,7 @@ class UserController extends BaseController
 				$amount_str = str_replace(";"," union ", $amount_str) . ';';
 				$amountDate = Db::query($amount_str);
 			}
-
+			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
 			$amount_ids = ",";
 			if(count($referrerData) > 0)
@@ -228,10 +228,12 @@ class UserController extends BaseController
 				if($amount_ids)
 					$amount_ids = substr($amount_ids,1, strlen($amount_ids) - 2);
 			}
+			writeLog("dic".json_encode($dic),"bobopay1");
+			writeLog("amount_ids".$amount_ids,"bobopay1");
 
 			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')->group('uid')->select();
-
 			writeLog("amountData".json_encode($amountData),"bobopay1");
+
 
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
