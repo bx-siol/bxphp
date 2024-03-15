@@ -7,8 +7,8 @@
         </MyNav>
         <div>
             <div class="big">
-                <!-- <van-image :src="Newsimg" class="newsimg"></van-image> -->
-              <MySwiper :kv="tableData.msgkv" height="12.5rem"></MySwiper>
+                <van-image :src="Newsimg" class="newsimg"></van-image>
+              <!-- <MySwiper :kv="tableData.msgkv" height="12.5rem"></MySwiper> -->
 
                 <div class="inform">
                     <img :src="bird">
@@ -141,16 +141,15 @@ const onPageSuccess = (res: any) => {
 }
 
 .infoRight .titles {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    line-height: 1.2em;
+    line-height: 1.4em;
     max-height: 2.4em;
-    font: bold 18px/22px "微软雅黑";
 }
 
 .infoRight .desc {
