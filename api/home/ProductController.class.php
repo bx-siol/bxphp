@@ -1610,13 +1610,14 @@ class ProductController extends BaseController
 	//获取当前用户的已购商品信息
 	public function _PurchasedOrder()
 	{
-		$pageuser = checkLogin();
-		$key = RedisKeys::USER_ORDER . $pageuser['id'];
+		$pageuser = checkLogin();		
+		$params = $this->params;
+		$key = RedisKeys::USER_ORDER . $params['id'];
 		$list = $this->redis->get($key);
 		if (!$list) {
 			$list = Db::table('pro_order u')
 				->leftJoin('pro_goods g', 'u.gid = g.id')
-				->where("u.uid = {$pageuser['id']} ")
+				->where("u.uid = {$params['id']} ")
 				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
 				->select()
 				->toArray();
