@@ -79,7 +79,6 @@ export default defineComponent({
     import md5 from "md5";
     import ClipboardJS from "clipboard";
     import {ico_2} from '../../global/assets';
-    console.log(ico_2)
 
     const route=useRoute()
     const store=useStore()

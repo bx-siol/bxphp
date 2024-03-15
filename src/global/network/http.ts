@@ -44,7 +44,6 @@ const http = (config: AxiosRequestConfig): AxiosPromise => {
     instance.interceptors.response.use(res => {
         let data = res.data as any
         if (data.code == -98) {
-            // console.log(data.msg)
             doLogout()
         }
         return res.data

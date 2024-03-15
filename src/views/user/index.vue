@@ -219,7 +219,6 @@ const onService = () => {
 }
 
 const onServiceSelect = (ev: any) => {
-    // console.log(ev)
     let url = ''
     if (ev.type == 1) {
         url = 'https://t.me/' + ev.account

@@ -117,7 +117,6 @@ const getProjectDetail = (item: any) => {
 }
 
 const onChange = (index: number) => {
-  console.log(index);
   if (!info.finished.value) {
     init()
   }

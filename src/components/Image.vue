@@ -28,12 +28,6 @@
     })
 
     const imgSrc=ref('')
-/*    import(props.src).then(res=>{
-        let str=res.default
-        imgSrc.value='src'+str.slice(4)
-        console.log(imgSrc.value)
-    })*/
-
 
     interface BoxStyle{
         width?:string,

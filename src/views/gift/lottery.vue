@@ -211,7 +211,6 @@ const startCallback = (val: any) => {
             val.target.parentNode.parentNode.parentNode.className += " box_rolling ";
             tipstr.value = res.data.giftprizelog.prize_name
             result.value = imgFlag(res.data.giftprizelog.prize_cover)
-            console.log(result.value, '中奖图片');
 
             showLotteryPop.value = true
 

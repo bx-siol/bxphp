@@ -98,7 +98,6 @@ const router = useRouter()
 const loadingShow = ref(true)
 const pageRef = ref()
 const route = useRoute()
-console.log(route.params)
 
 let pageUrl = ref('c=Coupon&a=list&type=' + route.params.type + '&status=1')
 const tableData = ref<any>({})

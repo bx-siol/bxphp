@@ -174,7 +174,6 @@ const onSubmit = () => {
     for (let i in ptypeArr.value) {
         if (ptypeArr.value[i].id == checked.value) {
             ptype = ptypeArr.value[i];
-            console.log(ptype.type);
             break
         }
     }

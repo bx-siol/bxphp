@@ -38,7 +38,6 @@
                 if(!isWx()){
                     return
                 }
-                console.log(props.shareData)
                 if(props.shareData.link&&props.shareData.link.length>0){
                     link.value=props.shareData.link
                 }
@@ -56,7 +55,6 @@
                         link: link.value,
                         imgUrl: icon.value,
                         success: function () {
-                            // console.log('设置成功')
                         }
                     })
 
@@ -66,7 +64,6 @@
                         link: link.value,
                         imgUrl: icon.value,
                         success: function () {
-                            // console.log('设置成功')
                         }
                     })
                 });

@@ -106,7 +106,6 @@ let isRequest = false
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
-console.log(route.query.icode);
 
 const onClickLeft = () => {
     history.back()

@@ -43,7 +43,6 @@ const { t } = useI18n();
 const newscountc = ref('')
 const store = useStore()
 const router = useRouter()
-// console.log(newscount.newscount)
 
 // window.addEventListener('setItemEvent', function (e) {
 //     // 这里的info是我存入localstorage的key值
