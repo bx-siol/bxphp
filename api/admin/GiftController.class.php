@@ -588,7 +588,7 @@ class GiftController extends BaseController
 			}
 		}*/
 		if ($params['type'] == 1) {
-			$params['gids'] = [];
+			//$params['gids'] = [];
 			$params['money'] = 0;
 			if ($params['discount'] <= 0) {
 				ReturnToJson(-1, '折扣比例不正确');
