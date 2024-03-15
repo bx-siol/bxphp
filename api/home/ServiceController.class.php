@@ -43,7 +43,7 @@ class ServiceController extends BaseController
 			->leftJoin('coupon_list list','log.cid = list.id')
 			->where("id=1")
 			->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
-			->lock(true)->find();
+			->find();
 
 			writeLog("coupon". json_encode($coupon),"bobopay1");
 		ReturnToJson(1,'ok',$data);
