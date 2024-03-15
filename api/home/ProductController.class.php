@@ -174,7 +174,7 @@ class ProductController extends BaseController
 					continue;
 				}
 				$gids = json_decode($cp['gids'], true);
-				writeLog("cp['gids']",'bobopay1');
+				writeLog("cp['gids']".$cp['gids'],'bobopay1');
 				if(count($gids) == 0){
 					continue;
 				}					
