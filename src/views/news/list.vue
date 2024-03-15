@@ -7,7 +7,9 @@
         </MyNav>
         <div>
             <div class="big">
-                <van-image :src="Newsimg" class="newsimg"></van-image>
+                <!-- <van-image :src="Newsimg" class="newsimg"></van-image> -->
+              <MySwiper :kv="tableData.msgkv" height="12.5rem"></MySwiper>
+
                 <div class="inform">
                     <img :src="bird">
                     <p class="title">News</p>
@@ -44,22 +46,21 @@ import MyTab from "../../components/Tab.vue";
 import MyListBase from '../../components/ListBase.vue';
 import MyLoading from '../../components/Loading.vue';
 import bird from '../../assets/ico/bird.png'
+import MySwiper from '../../components/Swiper.vue'
 import Newsimg from '../../assets/img/Newsimg.png'
+
 
 import rewards from '../../assets/img/home/home-banner-3-1.png'
 
 export default defineComponent({
     name: "news",
     components: {
-        MyNav, MyListBase, MyLoading,
+        MyNav, MyListBase, MyLoading,MySwiper,
         [Image.name]: Image,
     }
 })
 </script>
 <script lang="ts" setup>
-import {
-    img_2
-} from '../../global/assets';
 import { getSrcUrl, goRoute } from "../../global/common";
 
 const onLink = (to: any) => {
@@ -74,9 +75,7 @@ const pageRef = ref()
 const pageUrl = ref('c=News&a=list&s_cid=50')
 const loadingShow = ref(false)
 
-const tableData = ref({
-
-})
+const tableData = ref({})
 
 const onPageSuccess = (res: any) => {
     tableData.value = res.data
