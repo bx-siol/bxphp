@@ -32,7 +32,7 @@ class ServiceController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$where = "";
+		$where = " 1=1 ";
 		if($params["type"] != 0)
 			$where .= " type={$params['type']} ";
 
