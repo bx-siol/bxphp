@@ -169,8 +169,10 @@ class UserController extends BaseController
 				->where($where)
 				->order(['log.reg_time' => 'desc'])
 				->page($params['page'], $this->pageSize)
-				->select()->toArray();
+				->select();
 
+			
+			writeLog("list".json_encode($list),"bobopay1");
 			foreach ($list as &$v) {
 				$referrer_str .= $v["id"] . ",";
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
@@ -204,11 +206,11 @@ class UserController extends BaseController
 			$amount_ids = "";
 			if(count($referrerData) > 0)
 			{
-				foreach($amountDate as $it)
+				foreach($amountDate as $it=>&$v)
 				{
-					$tmparray = explode($it['id'],$amount_ids);
+					$tmparray = explode($it[$v]['id'],$amount_ids);
 					if (count($tmparray) == 0) {
-						$amount_ids .= $it['id'];
+						$amount_ids .= $it[$v]['id'];
 					}
 
 					if(isset($dic["{$it['pid']}"]))
