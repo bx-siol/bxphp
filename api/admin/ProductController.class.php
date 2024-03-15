@@ -692,8 +692,8 @@ class ProductController extends BaseController
 				Db::table('pro_reward')->insertGetId($pro_reward2);
 
 				//上级分佣 
-				$puser = Db::table('sys_user')->where("id={$item['uid']}")->find();
-				$puser = Db::table('sys_user')->where("id={$puser['pid']}")->find();
+				$user = Db::table('sys_user')->where("id={$item['uid']}")->find();
+				$puser = Db::table('sys_user')->where("id={$user['pid']}")->find();
 				//返佣
 
 				if ($puser['stop_commission']) { //暂停佣金
@@ -741,12 +741,14 @@ class ProductController extends BaseController
 							'create_day' => $now_day
 						];
 						Db::table('pro_reward')->insertGetId($pro_reward2);
+						$this->redis->rmall(RedisKeys::USER_WALLET . $puser['id']);
 					}
 				}
 			}
 
 
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $item['uid']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');

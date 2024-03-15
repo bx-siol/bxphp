@@ -142,6 +142,7 @@ class GiftController extends BaseController
 			}
 			
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();			
 			ReturnToJson(-1, '系统繁忙请稍后再试');
@@ -254,6 +255,7 @@ class GiftController extends BaseController
 			}
 
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
