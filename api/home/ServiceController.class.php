@@ -41,7 +41,7 @@ class ServiceController extends BaseController
 	
 			$coupon = Db::view(['coupon_log' => 'log'], ['*'])
 			->view(['coupon_list' => 'list'], ['gids'=>'listgids'], 'log.cid=list.id', 'LEFT')
-			->where("id=1")
+			->where("log.id=1")
 			->find();
 
 
