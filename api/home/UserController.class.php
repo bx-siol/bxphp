@@ -225,8 +225,10 @@ class UserController extends BaseController
 						$dic["{$it['pid']}"] = array($it['id']);
 					}
 				}
-				if($amount_ids)
-					$amount_ids =substr($amount_ids,1, strlen($amount_ids) - 2);
+				if($amount_ids){
+					$amount_ids = "";
+					$amount_ids = substr($amount_ids,1, strlen($amount_ids) - 2);
+				}					
 			}
 			writeLog("dic".json_encode($dic),"bobopay1");
 			writeLog("amount_ids".$amount_ids,"bobopay1");
