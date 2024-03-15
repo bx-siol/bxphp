@@ -1333,8 +1333,7 @@ class ProductController extends BaseController
 			$key .= "{$params['status']}";
 			$where .= ' and log.status=' . $params['status'];
 		}
-
-		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_order_{$params['page']}";
+		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_{$params['page']}";
 		$list = $this->redis->get($key);
 		if ($list != false)
 			ReturnToJson(1, 'ok1', $list);
@@ -1597,9 +1596,9 @@ class ProductController extends BaseController
 					Db::table('pro_reward')->insertGetId($pro_reward2);
 				}
 			}
+			$return_data['USER_WALLET'] = $this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
+			$return_data['USER_ORDER'] = $this->redis->rmall(RedisKeys::USER_ORDER . $pageuser['id']);
 			Db::commit();
-			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
-			$this->redis->rmall(RedisKeys::USER_ORDER . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => $e]);
