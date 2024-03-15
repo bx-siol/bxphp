@@ -177,6 +177,7 @@ class ProductController extends BaseController
 				}
 				$gids = json_decode($cp['gids'], true);
 				if (in_array($itemid, $gids)) {
+					writeLog("1",'bobopay1');
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
 					$cp['money'] = floatval($cp['money']);
@@ -187,6 +188,9 @@ class ProductController extends BaseController
 					if (count($coupon_arr) >= 5) {
 						break;
 					}
+				}else{
+					writeLog("2",'bobopay1');
+
 				}
 			}
 		}
