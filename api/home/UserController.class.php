@@ -197,9 +197,8 @@ class UserController extends BaseController
 			{
 				$amount_str =substr($amount_str,0, strlen($amount_str) - 1);
 				$amount_str = str_replace(";"," union ", $amount_str) . ';';
-				$amountDate = Db::query($teamSize_str);
+				$amountDate = Db::query($amount_str);
 			}
-			writeLog("amount_str".$amount_str,"bobopay1");
 			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
 			$amount_ids = "";
@@ -220,7 +219,6 @@ class UserController extends BaseController
 					}
 					else
 					{
-						array_push($dic, $it["pid"]);
 						$dic["{$it['pid']}"] = array($it['id']);
 					}
 				}
