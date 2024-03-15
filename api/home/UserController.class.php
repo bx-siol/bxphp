@@ -174,7 +174,7 @@ class UserController extends BaseController
 			foreach ($list as &$v) {
 				$referrer_str .= $v["id"] . ",";
 				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
-				$amount_str .= "select {$v['id']} as pid,id from sys_user where pids like '%{&v['id']}%';";
+				$amount_str .= "select {$v['id']} as pid,id from sys_user where pids like '%{$v['id']}%';";
 			}
 
 			$referrerData = array();
