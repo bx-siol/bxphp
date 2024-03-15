@@ -280,10 +280,7 @@ class ProductController extends BaseController
 					//ReturnToJson(-1,'项目金额不能小于已投资金额');
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
-				$db_data['id'] = $item_id;				
-				$rediskey_goods = RedisKeys::Goods . $item['gsn'];
-				$this->redis->del($rediskey_goods);
-
+				$db_data['id'] = $item_id;
 			} else {
 				$db_data['create_time'] = NOW_TIME;
 				$db_data['gsn'] = getRsn();
