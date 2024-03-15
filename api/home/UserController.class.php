@@ -20,6 +20,7 @@ class UserController extends BaseController
 		}
 		// $user['group'] = getGroups($user['gid']);
 
+		//1充值钱包  2余额钱包 3余额宝
 		$wallet = getWallet($pageuser['id'], 1);
 		$wallet2 = getWallet($pageuser['id'], 2);
 		$wallet3 = getWallet($pageuser['id'], 3);
