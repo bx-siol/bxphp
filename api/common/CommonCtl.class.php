@@ -17,8 +17,6 @@ class CommonCtl
 		$this->params = $this->param();
 	}
 
-
-
 	public function _index()
 	{
 		echo 'bindex';
@@ -39,31 +37,22 @@ class CommonCtl
 				ReturnToJson(-1, '密码过于简单，请更换再试');
 			}
 		}
-		//校验验证码
-		if ($account != 'avxttest9999999999' && !$vcode) {
-			ReturnToJson(-1, '请填写图形验证码');
-		}
-		if ($account == 'avxttest9999999999' && md5('123456.') == $password) {
-			$account = '1234567890';
-		} else {
-			if ($account != 'AVXtest9999999999') {
-				$mem_key = '';
-				$session_id = $params['sid'];
-				if (!$session_id) {
-					ReturnToJson(-1, '缺少验证参数');
-				}
-				$mem_key = 'vcode_' . $session_id;
-				$code = $this->redis->get($mem_key);
-				if (!$code) {
-					ReturnToJson(-1, '验证码已过期');
-				}
-				$this->redis->rm($mem_key);
-				if ($vcode != $code) {
-					ReturnToJson(-1, '图形验证码不正确');
-				}
-			}
-		}
+		//校验验证码 
 
+		$mem_key = '';
+		$session_id = $params['sid'];
+		if (!$session_id) {
+			ReturnToJson(-1, '缺少验证参数');
+		}
+		$mem_key = 'vcode_' . $session_id;
+		$code = $this->redis->get($mem_key);
+		if (!$code) {
+			ReturnToJson(-1, '验证码已过期');
+		}
+		$this->redis->rm($mem_key);
+		if ($vcode != $code) {
+			ReturnToJson(-1, '图形验证码不正确');
+		}
 
 		$user = '';
 		try {

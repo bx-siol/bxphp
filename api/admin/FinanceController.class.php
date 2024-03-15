@@ -1301,7 +1301,6 @@ class FinanceController extends BaseController
 			ReturnToJson(-1, '二级密码不正确');
 		}
 		$return_data = [];
-		$uid = Db::table('wallet_list')->whereRaw('id=:id', ['id' => $params['id']])->field('uid')->find();
 		Db::startTrans();
 		try {
 			$item = Db::table('wallet_list')->whereRaw('id=:id', ['id' => $params['id']])->lock(true)->find();
@@ -1362,7 +1361,9 @@ class FinanceController extends BaseController
 				throw new \Exception('流水日志写入失败');
 			}
 			Db::commit();
-			$this->redis->rmall(RedisKeys::USER_WALLET . "{$uid}");
+			$this->redis->rm(RedisKeys::USER_WALLET . "{$item['uid']}_1");
+			$this->redis->rm(RedisKeys::USER_WALLET . "{$item['uid']}_2");
+			$this->redis->rmall(RedisKeys::USER_WALLET . "{$item['uid']}");
 			$return_data['balance'] = $db_item['balance'];
 			$return_data['fz_balance'] = isset($db_item['fz_balance']) ? $db_item['fz_balance'] : $item['fz_balance'];
 		} catch (\Exception $e) {
