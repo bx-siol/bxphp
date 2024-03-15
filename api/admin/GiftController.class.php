@@ -606,15 +606,15 @@ class GiftController extends BaseController
 			ReturnToJson(-1, '请上传券图片');
 		}
 
-		$cnf_coupon_type = getConfig('cnf_coupon_type');
-		if (!array_key_exists($params['type'], $cnf_coupon_type)) {
-			ReturnToJson(-1, '未知类型');
-		}
+		// $cnf_coupon_type = getConfig('cnf_coupon_type');
+		// if (!array_key_exists($params['type'], $cnf_coupon_type)) {
+		// 	ReturnToJson(-1, '未知类型');
+		// }
 
-		$cnf_coupon_status = getConfig('cnf_coupon_status');
-		if (!array_key_exists($params['status'], $cnf_coupon_status)) {
-			ReturnToJson(-1, '未知状态');
-		}
+		// $cnf_coupon_status = getConfig('cnf_coupon_status');
+		// if (!array_key_exists($params['status'], $cnf_coupon_status)) {
+		// 	ReturnToJson(-1, '未知状态');
+		// }
 
 		$goods_arr = rows2arr(Db::table('pro_goods')
 			->where("status<99")
