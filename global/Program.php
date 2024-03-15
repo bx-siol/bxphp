@@ -10,7 +10,7 @@ if (!defined('ROOT_PATH'))
 if (!defined('APP_PATH'))
 	define('APP_PATH', ROOT_PATH . 'api/');
 define('GLOBAL_PATH', ROOT_PATH . 'global/');
-define('LIB_PATH', GLOBAL_PATH . 'library/');
+define('LIB_PATH', GLOBAL_PATH . 'lib/');
 
 // define('PAY_BACKURL_o', '47.242.112.159');
 
@@ -46,35 +46,34 @@ if (file_exists(ROOT_PATH . 'nestlexm')) {
 	define('PAY_BACKURL', 'www.indianestle.com');
 	define('REQUEST_SCHEME', 'https');
 	define('HTTP_HOST', 'www.indianestle.com');
-	require_once GLOBAL_PATH . 'db.conf_n.php';
+	require_once GLOBAL_PATH . 'db_n.php';
 } else if (file_exists(ROOT_PATH . 'syngentaxm')) {
 	define('PAY_BACKURL', 'www.syngentainr.com');
 	define('REQUEST_SCHEME', 'https');
 	define('HTTP_HOST', 'www.syngentainr.com');
-	require_once GLOBAL_PATH . 'db.conf_s.php';
+	require_once GLOBAL_PATH . 'db_s.php';
 } else {//测试服
 	define('PAY_BACKURL', '38.55.214.59:741');
 	define('REQUEST_SCHEME', 'http');
 	define('HTTP_HOST', '38.55.214.59:741');
-	require_once GLOBAL_PATH . 'db.conf.php';
+	require_once GLOBAL_PATH . 'db.php';
 }
 
 Db::setConfig($_ENV['DB']);
 
 //基本类库
 require_once LIB_PATH . 'MyRedis.class.php';
-require_once GLOBAL_PATH . 'const/RedisKeys.php';
 require_once LIB_PATH . 'Image.class.php';
 require_once LIB_PATH . 'UploadFile.class.php';
 require_once LIB_PATH . 'QRcode.class.php';
 
-
+require_once GLOBAL_PATH . 'const/RedisKeys.php';
 //公共方法
-require_once GLOBAL_PATH . 'global.func.php';
-require_once GLOBAL_PATH . 'common.func.php';
-require_once GLOBAL_PATH . 'user.func.php';
+require_once GLOBAL_PATH . 'Programfunc.php';
+require_once GLOBAL_PATH . 'commonfunc.php';
+require_once GLOBAL_PATH . 'userfunc.php';
 
 //项目配置
 if (!PHP_CLI) {
-	require_once GLOBAL_PATH . 'route.ini.php';
+	require_once GLOBAL_PATH . 'routeini.php';
 }

@@ -73,7 +73,7 @@ class TransController extends BaseController{
 		//'msg'=>'短信发送失败'
 		// $homePath=ROOT_PATH.'home/controller/';
 		// $file_arr=[
-		// 	GLOBAL_PATH.'global.func.php',
+		// 	GLOBAL_PATH.'Programfunc.php',
 		// 	GLOBAL_PATH.'email.func.php',
 		// 	$homePath.'BaseController.class.php',
 		// 	$homePath.'FinanceController.class.php',

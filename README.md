@@ -13,7 +13,7 @@
 
 3、初始化数据库，在站点根目录下有数据库sql文件
 
-4、配置数据库使用的账号密码 /bx/global/db.conf.php
+4、配置数据库使用的账号密码 /bx/global/db.php
 
 5、修改数据表内的域名配置，sys_config 表中的域名，相应的域名可以绑定host
 

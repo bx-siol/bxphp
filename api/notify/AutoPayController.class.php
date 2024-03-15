@@ -3,9 +3,8 @@
 
 use think\facade\Db;
 
-class WowpayController extends BaseController
+class AutoPayController extends BaseController
 {
-
 	public function __construct()
 	{
 		parent::__construct();
@@ -15,7 +14,6 @@ class WowpayController extends BaseController
 	{
 		echo 'notify';
 	}
-
 
 	public function _payAuto()
 	{

@@ -614,6 +614,39 @@ class FinanceController extends BaseController
 		ReturnToJson(1, '成功', $item);
 	}
 
+
+	public function _bank_check_onlie()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$type = intval($params['type']);//	1到账  2未到账
+		$item_id = $params['osn'];
+		if (!$item_id) {
+			ReturnToJson(-1, '缺少订单参数', $params['osn']);
+		}
+		$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
+		if (!$item)
+			ReturnToJson(-1, '订单不存在');
+
+		if ($type == 1) { //到账 
+			if (!$item)
+				ReturnToJson(-1, '订单不存在');
+			$token = getParam('token');
+			$url = REQUEST_SCHEME . '://' . HTTP_HOST . "/api/Notify/autopay/payAuto?osn={$item['osn']}&token={$token}";  //88864d4f65e54066
+			$R = $this->curl_post($url, []);
+			if ($R == 'success') {
+				$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
+			}
+		} else { //失败 
+			Db::table('fin_paylog')->where('osn', $item_id)->update(['status' => 3]);
+			$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
+		}
+		ReturnToJson(1, '成功', $item);
+	}
+
+
+
+
 	protected function curl_post($url, $data)
 	{
 		$curl = curl_init();
