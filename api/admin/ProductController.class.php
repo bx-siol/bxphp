@@ -716,7 +716,7 @@ class ProductController extends BaseController
 						$result2 = walletLog([
 							'wid' => $wallet2['id'],
 							'uid' => $wallet2['uid'],
-							'type' => 10,
+							'type' => 8,
 							'money' => $item['price2'],
 							'ori_balance' => $wallet2['balance'],
 							'new_balance' => $wallet_data2['balance'],
