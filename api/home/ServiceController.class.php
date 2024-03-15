@@ -42,7 +42,8 @@ class ServiceController extends BaseController
 		$coupon = Db::table('coupon_log log')
 			->leftJoin('coupon_list list','log.cid = list.id')
 			->where("id=1")
-			->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
+			->field("log.id as id,log.cid as cid,list.gids as gids,log.status as status,log.uid as uid,log.num as num,
+				log.used as used,log.effective_time as effective_time,log.discount as discount,log.money as money,log.type as type")
 			->find();
 
 			writeLog("coupon". json_encode($coupon),"bobopay1");
