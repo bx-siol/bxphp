@@ -237,6 +237,7 @@ class UserController extends BaseController
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
+				$item["amount"] = 0;
 				$item["assets"] = 0;
 
 				if(count($referrerData) > 0)
@@ -256,7 +257,7 @@ class UserController extends BaseController
 							foreach ($amountData as $k) 
 							{
 								if(in_array($key['uid'], $k))								
-									$item["assets"] = $k["money"];								
+									$item["amount"] = $k["money"];								
 							}
 						}
 					}
