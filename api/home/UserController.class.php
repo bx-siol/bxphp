@@ -172,7 +172,7 @@ class UserController extends BaseController
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
 
-			
+			writeLog("list".json_encode($list),"bobopay1");
 			foreach ($list as &$k) {
 				$referrer_str .= $k["id"] . ",";
 				$teamSize_str .= "select {$k['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k['id']}%';";
@@ -249,18 +249,18 @@ class UserController extends BaseController
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($amountData) > 0)
-				{
-					foreach ($dic as $key => $value)
-					{
-						if($item["id"] == $key){
-							foreach ($amountData as $k) 
-							{					
+				// if(count($amountData) > 0)
+				// {
+				// 	foreach ($dic as $key => $value)
+				// 	{
+				// 		if($item["id"] == $key){
+				// 			foreach ($amountData as $k) 
+				// 			{					
 									
-							}
-						}
-					}
-				}					
+				// 			}
+				// 		}
+				// 	}
+				// }
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
