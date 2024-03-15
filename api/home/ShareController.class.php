@@ -72,7 +72,7 @@ class ShareController extends BaseController
 		$width = $image->getImageWidth();
 		$height = $image->getImageHeight();
 		//首先进行一个图片绘画
-		$newImg = new Imagick(ROOT_PATH . $user['headimgurl']);
+		$newImg = new Imagick();//ROOT_PATH . $user['headimgurl']
 		$percent = 0.28;
 		$qwidth = $width * $percent;
 		$qheight = $width * $percent;
