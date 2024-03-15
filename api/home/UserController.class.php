@@ -250,12 +250,15 @@ class UserController extends BaseController
 							$item["teamSize"] = $v["teamSize"];
 
 				if(count($amountData) > 0){
-					if(in_array($item["id"],$dic)){
-						writeLog($item["id"].'-----1',"bobopay1");
-					}
-					else
+					foreach ($dic as &$k1 =>$v1)
 					{
-						writeLog($item["id"].'-----2',"bobopay1");
+						if($item["id"] == $k1){
+							writeLog($item["id"].'-----1'. json_encode($v1),"bobopay1");
+						}
+						else
+						{
+							writeLog($item["id"].'-----2',"bobopay1");
+						}
 					}
 				}
 					
