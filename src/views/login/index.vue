@@ -16,7 +16,7 @@
                 <p @click="onLink({ name: 'Register' })"> {{ t('注册') }}</p>
             </div>
             <van-cell-group>
-                <van-field v-model="dataForm.account" :left-icon="lock1" :placeholder="t('请填写账号')"></van-field>
+                <van-field v-model="dataForm.account" :left-icon="lock1" :placeholder="t('请填写账号')" maxlength="10"></van-field>
                 <van-field v-model="dataForm.password" :type="showPassword ? 'text' : 'password'" :left-icon="lock2"
                     :placeholder="t('请填写登录密码')">
                     <template #right-icon>
