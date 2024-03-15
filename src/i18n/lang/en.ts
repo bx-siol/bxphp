@@ -372,6 +372,7 @@ export default {
     数量限制: 'Restricted quantity',
     无限制: 'Unlimited',
     抽奖: 'Raffle',
+    幸运抽奖: 'Lucky draw',
     福利: 'welfare',
     请输入提现人名字: 'Please enter the name of the withdrawal person',
     请输入账号: 'Please enter the account number',

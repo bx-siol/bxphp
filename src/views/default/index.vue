@@ -4,7 +4,7 @@
     <div class="index_wrap">
       <div class="index_top">
         <div class="headbox">
-          <van-image :src="nestie" style="width: 2.2rem; height: 2.2rem;" class="logs"></van-image>
+          <van-image :src="syngenta" style="width: 2.2rem; height: 2.2rem;" class="logs"></van-image>
           <div style="position: relative;right: 3rem;">
             <P>{{ user.account }}</P>
             <P>ID: {{ user.id }}</P>
@@ -73,18 +73,25 @@
 
             <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;">
               <a class="divs" href="javascript:;" style="width: 32%;">
-                <van-image :src="m5" ></van-image>
+                <van-image :src="m5"></van-image>
               </a>
               <a class="divs" href="javascript:;" style="width: 32%;">
-                <van-image :src="m6" ></van-image>
+                <van-image :src="m6"></van-image>
               </a>
               <a class="divs" href="javascript:;" style="width: 32%;" @click="onLink({ name: 'Share' })">
-                <van-image :src="m7" ></van-image>
+                <van-image :src="m7"></van-image>
               </a>
               <!-- <a class="divs" href="javascript:;" @click="appdload">
                   <van-image :src="m8"></van-image>
                 </a> -->
             </div>
+            <div class="u-flex">
+              <div @click="onLink({ name: 'Ext_task', params: { id: item.id } })"
+                style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index">
+                <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
+              </div>
+            </div>
+
             <div class="mynotice">
               <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" height="1.375rem"></MyNoticeBar>
             </div>
@@ -186,7 +193,7 @@ import horn2 from '../../assets/img/home/horn2.png'
 import bulletin from "../../assets/img/home/bulletin.png";
 import NoMsg from "../../assets/img/home/nomsg.png";
 import Msg from "../../assets/img/home/msg.png";
-import nestie from '../../assets/img/home/nestie.jpg'
+import syngenta from '../../assets/img/home/syngenta.jpg'
 import illustration from '../../assets/img/login/illustration.png';
 // import DialogBg1 from '../../assets/img/120lq.jpg';
 // import DialogBg120 from '../../assets/img/120.png';

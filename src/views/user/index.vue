@@ -6,7 +6,7 @@
                 <div class="home_top">
                     <div class="home_basic_info">
                         <div class="headico" @click="onAvatarChose">
-                            <van-image :src="imgFlag(user.headimgurl)" width="4.125rem" height="4.125rem"></van-image>
+                            <van-image :src="imgFlag(syngenta)" width="4.125rem" height="4.125rem"></van-image>
                         </div>
                         <div class="info" :style="{ color: '#000' }" @click="onLink({ name: 'Setting_uinfo' })">
                             <div class="vip" v-if="flase"><span class="vip_level">{{ 10 }}</span></div>
@@ -140,6 +140,8 @@ import myproduct from '../../assets/img/user/myproduct.png';
 import bankaccount from '../../assets/img/user/bankaccount.png';
 import financialrecords from '../../assets/img/user/financialrecords.png';
 import missioncenter from '../../assets/img/user/missioncenter.png';
+import syngenta from '../../assets/img/home/syngenta.jpg'
+
 import invitationlink from '../../assets/img/user/invitationlink.png';
 import myteam from '../../assets/img/user/myteam.png';
 import bonus from '../../assets/img/user/bonus.png';

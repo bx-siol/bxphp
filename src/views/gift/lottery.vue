@@ -372,7 +372,7 @@ onMounted(() => {
 }
 
 .shake {
-    animation: shake-animation 0.1s infinite alternate;
+    animation: shake-animation 0.15s infinite alternate;
 }
 
 @keyframes shake-animation {
@@ -380,17 +380,22 @@ onMounted(() => {
         transform: rotate(0.5deg);
     }
 
-    25% {
+    20% {
         transform: rotate(-0.5deg);
     }
 
-    50% {
+    40% {
         transform: rotate(0.5deg);
     }
 
+    60% {
+        transform: rotate(-0.5deg);
+    }
+    80% {
+        transform: rotate(0.5deg);
+    }
     100% {
         transform: rotate(-0.5deg);
     }
-
 }
 </style>

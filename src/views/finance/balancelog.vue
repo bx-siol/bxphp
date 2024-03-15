@@ -49,7 +49,7 @@
                                                 <span v-if="item.type == 10">{{ t('红包') }}</span>
                                                 <span v-else-if="item.type == 1">{{ t('投资') }}</span>
                                                 <span v-else-if="item.type == 6">{{ t('投资收益') }}</span>
-                                                <span v-else-if="item.type == 9">{{ t('抽奖') }}</span>
+                                                <span v-else-if="item.type == 9">{{ t('幸运抽奖') }}</span>
                                                 <span v-else-if="item.type == 14">{{ t('兑换券') }}</span>
                                                 <span v-else-if="item.type == 8">{{ t('佣金') }}</span>
                                                 <span v-else-if="item.type == 21">{{ t('充值') }}</span>

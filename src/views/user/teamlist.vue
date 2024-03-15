@@ -1,17 +1,20 @@
 <template>
     <MyNav leftText=''></MyNav>
     <div class="teamlist">
-        <div style="height: 2rem; width: 100%; margin-top: 0.1rem;text-align:center;font-size:1rem;font-weight:bold;color:#64523e ;">
-            <div style="width:40%;float:left;">Product name</div>
-            <div style="width:20%;float:left">money</div>
-            <div style="width:40%;float:left">Remaining days</div>
+        <div class="list_top">
+            <div style="width:30%;;">Product name</div>
+            <div style="width:20%;">money</div>
+            <div style="width:20%;">Remaining days</div>
         </div>
-        <div style="height: 20rem; width: 100%;overflow-y:auto;">
-            <div v-for="(item, index) in GoodsList" :key="index"
-                style="width: 100%; text-align: center; color: #002544;height:2rem; font-size:12px;">
-                <div style="width:40%;float:left">{{ item.goods_name }}</div>
-                <div style="width:26%;float:left;">{{ item.price }} RS</div>
-                <div style="width:20%;float:left">{{ item.days }}</div>
+        <div class="list_bottom">
+            <div v-for="(item, index) in GoodsList" :key="index" class="listfor">
+
+                <div style="width:30%;">{{ item.goods_name }}</div>
+                <div style="width:26%;;">{{ item.price }} RS</div>
+                <div style="width:20%;" v-if="item.total_days < item.days">{{ item.total_days }}</div>
+                <div style="width:20%;" v-else>Finished</div>
+
+
             </div>
         </div>
     </div>
@@ -20,13 +23,13 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
+
 import MyNav from "../../components/Nav.vue";
-import MyLoading from "../../components/Loading.vue";
 
 export default defineComponent({
     components: {
         MyNav,
-        MyLoading,
+
     },
 });
 </script>
@@ -47,10 +50,15 @@ import {
 import http from "../../global/network/http";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+
+
 const route = useRoute()
 
 const GoodsList = ref([]);
 
+const imgFlag = (src: string) => {
+    return getSrcUrl(src, 0)
+}
 
 onMounted(() => {
     var delayTime = Math.floor(Math.random() * 1000);
@@ -65,28 +73,42 @@ onMounted(() => {
     })
 
 });
+
+
 </script>
 
 <style lang="scss" scoped>
 .teamlist {
-    padding: 1rem;
-}
+    padding: 1rem 0.6rem;
 
+    .list_top {
+        height: 2rem;
+        width: 100%;
+        margin-top: 0.1rem;
+        text-align: center;
+        font-size: 0.75rem;
+        font-weight: bold;
+        color: #64523e;
+        display: flex;
+        justify-content: space-between;
+        align-items: center
+    }
 
-:deep(.van-nav-bar) {
-    background-color: transparent;
-    
-}
-:deep(.van-nav-bar__left) {
-    .alter {
-        color: #84973b !important;
+    .list_bottom {
+
+        width: 100%;
+        overflow-y: auto;
+
+        .listfor {
+            width: 100%;
+            text-align: center;
+            color: #002544;
+            height: 4rem;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     }
 }
-
-:deep(.van-nav-bar__title) {
-    .alter {
-        color: #84973b !important;
-    }
-}
-
 </style>

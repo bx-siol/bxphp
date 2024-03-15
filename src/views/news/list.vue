@@ -106,6 +106,7 @@ const onPageSuccess = (res: any) => {
     margin: 1rem 0;
     font-weight: bold;
     color: #fff;
+    font-size: 18px;
 }
 .news_wrap{
     padding-bottom: 4rem;
@@ -120,7 +121,7 @@ const onPageSuccess = (res: any) => {
 }
 
 .infoRight .titles {
-    font-size: 1rem;
+    font-size: 1.025rem;
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -144,6 +145,6 @@ const onPageSuccess = (res: any) => {
 }
 
 .infoRight .time {
-    font-size: 0.625rem;
+    font-size: 0.75rem;
 }
 </style>

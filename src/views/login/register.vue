@@ -10,7 +10,7 @@
             </div>
             <van-cell-group>
                 <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30"
-                    :placeholder="t('请输入手机号')"></van-field>
+                maxlength="10"  :placeholder="t('请输入手机号')"></van-field>
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" style="padding: 0.3rem 0.6rem;">
                     <template #left-icon>
                         <van-image :src="lock" style="width: 1.5rem;height: 1.5rem;margin-top: 0.4rem;" />
@@ -190,11 +190,12 @@ const onRegister = () => {
             getVcode()  //更新图形验证码
             return
         }
+        router.push({ name: 'Login' })
         _alert({
             icon: 'success',
             message: res.msg,
             onClose: () => {
-                router.push({ name: 'Login' })
+
             }
         })
         })
@@ -241,6 +242,9 @@ onMounted(() => {
 
 .register {
     padding: 0 1rem;
+    background: url("../../assets//img//login/back.png") no-repeat 0 0;
+    background-size: 100% 8rem;
+    background-color: #84973b;
 
     :deep(.van-nav-bar) {
         background-color: transparent;
