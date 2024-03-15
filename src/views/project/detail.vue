@@ -291,30 +291,8 @@ let isRequest = false
 const money = ref(info.value.invest_min)
 const loadingShow = ref(false);
 
-const disabledCouponsc = {
-  id: -2,
-  available: 11,
-  condition: t('折扣券'),
-  reason: '',
-  value: 0,
-  name: t('折扣券'),
-  startAt: 1489104000,
-  endAt: 1514592000,
-  valueDesc: '0',
-  unitDesc: '%',
-};
-const coupon = {
-  id: -1,
-  available: 1,
-  condition: t('折扣券'),
-  reason: '',
-  value: 0,
-  name: t('折扣券'),
-  startAt: 1489104000,
-  endAt: 1514592000,
-  valueDesc: '0',
-  unitDesc: '%',
-};
+const disabledCouponsc = {};
+const coupon = {};
 const disabledCoupons = ref([disabledCouponsc]);
 const coupons = ref([coupon]);
 const showList = ref(false);
@@ -430,36 +408,21 @@ const init = () => {
         info.value.status = 10;
       }
       console.log(info.value.djs <= info.value.djss);
-      // console.log(info.value.djss);
       detailData.value.name = res.data.info.name
       detailData.value.price = res.data.info.price
-      detailData.value.dailyIncome = res.data.info.price * (res.data.info.rate / 100)
-      detailData.value.totalRevenue = res.data.info.price * (res.data.info.rate / 100) * res.data.info.days
+      detailData.value.dailyIncome = res.data.info.price * res.data.info.rate / 100
+      detailData.value.totalRevenue = res.data.info.price * res.data.info.rate * res.data.info.days / 100
       detailData.value.content = res.data.info.content
       detailData.value.tags = [
         res.data.info.days + ' Days',
         'Daily interest rate ' + res.data.info.rate + '%',
-        'Return rate ' + cutOutNum(((res.data.info.price * (res.data.info.rate / 100) * res.data.info.days) / res.data.info.price) * 100, 1) + '%',
-        //'Limit ' + res.data.info.invest_limit + ' copy'
+        'Return rate ' + cutOutNum(res.data.info.price * res.data.info.rate * res.data.info.days / res.data.info.price, 1) + '%',
       ]
       wallet1.value = res.data.wallet1
       wallet2.value = res.data.wallet2
       wallet3.value = res.data.wallet3
 
       coupons.value = [];
-
-      coupons.value.push({
-        id: -1,
-        available: 1,
-        condition: t('折扣券'),
-        reason: '',
-        value: 0,
-        name: t('折扣券'),
-        startAt: 1489104000,
-        endAt: 1514592000,
-        valueDesc: '0',
-        unitDesc: '%',
-      });
 
       for (let index = 0; index < res.data.coupon_arr.length; index++) {
         const element = res.data.coupon_arr[index];
