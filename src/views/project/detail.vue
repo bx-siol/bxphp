@@ -2,7 +2,6 @@
   <div class="project_detail">
     <Nav leftText=''></Nav>
     <div class="project_img">
-      <!--<img :src="describe" class="describe">-->
       <van-swipe indicator-color="white" :autoplay="3000">
         <van-swipe-item v-if="info.covers == []">
           <img :src="imgFlag(info.icon)" style="max-height: 200px" />
@@ -12,7 +11,6 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-
     <div style="padding: 1rem;">
       <div class="title">
         <div>{{ info.name }}</div>
@@ -240,7 +238,7 @@ import { useRoute, useRouter } from "vue-router";
 import md5 from "md5";
 import { _alert, lang, cutOutNum } from "../../global/common";
 import http from "../../global/network/http";
-import Descriptions from '../../assets/img/project/Descriptions.png';
+import sold_out from '../../assets/img/project/sold_out.png';
 import chocolate from '../../assets/img/project/chocolate.png';
 
 import bird from '../../assets/ico/bird.png'
@@ -545,11 +543,6 @@ onMounted(() => {
     left: 50%;
     transform: translateX(-50%);
     padding: 0.4rem 1rem;
-    background: #fff;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
 
     :deep(.van-swipe__track) {
       display: flex;
