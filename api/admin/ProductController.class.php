@@ -301,7 +301,6 @@ class ProductController extends BaseController
 			'status_flag' => $cnf_product_status[$db_data['status']],
 			'category_name' => $category['name']
 		];
-		$this->redis->rm(RedisKeys::Goods);
 		$this->redis->rmall(RedisKeys::Goods);
 		ReturnToJson(1, '操作成功', $return_data);
 	}
@@ -324,7 +323,6 @@ class ProductController extends BaseController
 		} catch (\Exception $e) {
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		$this->redis->rm(RedisKeys::Goods);
 		$this->redis->rmall(RedisKeys::Goods);
 		ReturnToJson(1, '操作成功');
 	}

@@ -64,7 +64,7 @@ class ProductController extends BaseController
 		if ($params['page'] < 1) {
 			$params['page'] = 1;
 		}
-		$rediskey = RedisKeys::Goods . "_list_{$params['page']}_";
+		$rediskey = RedisKeys::Goods . "list_{$params['page']}_";
 		$params['cid'] = intval($params['cid']);
 
 		$where = "1=1 and log.status>1 and log.status<99";
