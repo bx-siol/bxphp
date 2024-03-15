@@ -65,7 +65,7 @@ class GiftController extends BaseController
 			'52*****614 get 454RS',
 		];
 		foreach ($notice_ext as $nv) {
-			$account =  rand(100, 999);
+			$account = rand(100, 999);
 			$account1 = rand(50, 500);
 			$account2 = rand(100, 999);
 			$notice[] = ['title' => "{$account2}*****{$account} get {$account1}RS"];
@@ -131,21 +131,21 @@ class GiftController extends BaseController
 				$has_limit = true;
 			}
 			/*
-			if(!$has_limit){
-				$check=Db::table('gift_lottery_log')->where("uid={$pageuser['id']} and rid={$item['id']}")->find();
-				if($check){
-					ReturnToJson(-2,'Thank you for your participation');
-				}
-			}*/
+					 if(!$has_limit){
+						 $check=Db::table('gift_lottery_log')->where("uid={$pageuser['id']} and rid={$item['id']}")->find();
+						 if($check){
+							 ReturnToJson(-2,'Thank you for your participation');
+						 }
+					 }*/
 
 			/*
-			$max=intval(($item['to_money']-$item['from_money'])*100);
-			$rand=0;
-			if($max>0){
-				$rand=mt_rand(1,$max);
-			}
-			$money=$item['from_money']+($rand/100);
-			*/
+					 $max=intval(($item['to_money']-$item['from_money'])*100);
+					 $rand=0;
+					 if($max>0){
+						 $rand=mt_rand(1,$max);
+					 }
+					 $money=$item['from_money']+($rand/100);
+					 */
 			$rand = mt_rand(1, 100);
 			$money = 0;
 			if ($rand < 10) {
@@ -155,16 +155,16 @@ class GiftController extends BaseController
 				$from_money = $item['from_money'];
 				$to_money = $item['to_money'];
 				/*
-				if($max_price>=7700){
-					$from_money=40;
-					$to_money=100;
-				}elseif($max_price>=3700){
-					$from_money=30;
-					$to_money=60;
-				}else{
-					$from_money=10;
-					$to_money=30;
-				}*/
+							if($max_price>=7700){
+								$from_money=40;
+								$to_money=100;
+							}elseif($max_price>=3700){
+								$from_money=30;
+								$to_money=60;
+							}else{
+								$from_money=10;
+								$to_money=30;
+							}*/
 				$money = $this->getRandMoney($from_money, $to_money);
 				$money = number_format($money, 2, '.', '');
 			}
@@ -222,6 +222,7 @@ class GiftController extends BaseController
 			}
 			$return_data['money'] = $money;
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
@@ -335,6 +336,7 @@ class GiftController extends BaseController
 			}
 
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');

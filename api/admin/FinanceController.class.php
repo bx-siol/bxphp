@@ -65,6 +65,7 @@ class FinanceController extends BaseController
 			Db::table('fin_cashlog')->where("id={$order['id']}")->update($fin_cashlog);
 			actionLog(['opt_name' => '退出', 'sql_str' => json_encode($log_arr)]);
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $wallet['uid']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '处理sql异常');
@@ -554,7 +555,7 @@ class FinanceController extends BaseController
 				throw new \Exception('系统繁忙请稍后再试');
 			}
 			Db::commit();
-
+			$this->redis->rmall(RedisKeys::USER_WALLET . $order['uid']);
 			//更新首充
 			$user = Db::table('sys_user')->where("id={$order['uid']}")->find();
 			if (!$user['first_pay_day']) {
@@ -1003,6 +1004,7 @@ class FinanceController extends BaseController
 				throw new \Exception('系统繁忙请稍后再试' . $res . '-' . $res2 . '-' . $res3);
 			}
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $order['uid']);
 			$cnf_cashlog_status = getConfig('cnf_cashlog_status');
 			$return_data = [
 				'status' => $fin_cashlog['status'],

@@ -151,6 +151,7 @@ while(true){
 			}
 			
 			Db::commit();
+			 
 		}catch(\Exception $e){
 			Db::rollback();
 		}

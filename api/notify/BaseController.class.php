@@ -168,8 +168,9 @@ class BaseController extends CommonCtl
 				Db::table('sys_user')->where("id={$cuser['id']}")->update(['first_pay_day' => date('Ymd')]);
 			}
 			Db::commit();
-			//writeLog($osn . " is ok", $paytype . '/notify/pay');
+			$this->redis->rmall(RedisKeys::USER_WALLET . $order['uid']);
 
+			//writeLog($osn . " is ok", $paytype . '/notify/pay'); 
 			// if ($order['gplayerId'] != null && $order['gaccount'] != null) {
 			// 	$gurl = 'http://8.218.132.62/index.php/admin/login/doaddscore.html';
 			// 	$this->curl_post($gurl, ['addscore' => $order['money'] * 100, 'username' => $order['gaccount'], 'uid' => $order['gplayerId']]); //添加游戏积分
@@ -375,6 +376,7 @@ class BaseController extends CommonCtl
 			}
 			Db::table('fin_cashlog')->where("id={$order['id']}")->update($fin_cashlog);
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $order['uid']);
 			//file_put_contents($log_file,   "\r\n{$osn} is ok ".json_encode($pdata)."\r\n\r\n", FILE_APPEND);
 		} catch (\Exception $e) {
 			Db::rollback();

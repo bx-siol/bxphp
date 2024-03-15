@@ -66,10 +66,10 @@ class ExtController extends BaseController
 			ReturnToJson(-1, '客服类型不正确');
 		}
 		/*
-		if(!$params['qrcode']){
-			ReturnToJson(-1,'请上传二维码');
-		}
-		*/
+			  if(!$params['qrcode']){
+				  ReturnToJson(-1,'请上传二维码');
+			  }
+			  */
 		$db_data = [
 			'gid' => $pageuser['gid'],
 			'uid' => $pageuser['id'],
@@ -201,7 +201,7 @@ class ExtController extends BaseController
 			'content' => $_POST['content'],
 			'img' => $params['img'],
 			'end_time' => strtotime($params['end_time']),
-			'type' =>  $params['type'],
+			'type' => $params['type'],
 			'all_limit' => $params['all_limit'],
 			'ishow' => $params['ishow'],
 		];
@@ -436,6 +436,7 @@ class ExtController extends BaseController
 				}
 			}
 			Db::commit();
+			$this->redis->rmall(RedisKeys::USER_WALLET . $item['uid']);
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
