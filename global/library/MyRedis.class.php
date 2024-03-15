@@ -114,14 +114,12 @@ class MyRedis
         do {
             // SCAN 命令用于迭代数据库中的数据库键。
             $keys = $this->handler->scan($cursor, $pattern, 100); // 一次扫描100匹，可以根据实际情况调整
-            if (!empty($keys)) {
+            if (!empty($keys))
                 foreach ($keys as $key) {
-                    $this->handler->del($key);
+                    $this->rm($key);
                     $keysDeleted++;
                 }
-            }
-        } while ($cursor !== 0); // 当返回的游标为 0 时，表示迭代已经结束。
-
+        } while ($cursor !== 0); // 当返回的游标为 0 时，表示迭代已经结束。 
         return $keysDeleted; // 返回删除键的数量，方便进行检测
     }
 
@@ -239,9 +237,8 @@ class MyRedis
      */
     public function rm($name)
     {
-        if (method_exists($this->handler, 'del')) {
+        if (method_exists($this->handler, 'del'))
             return $this->handler->del($this->getCacheKey($name));
-        }
         return $this->handler->delete($this->getCacheKey($name));
     }
 
