@@ -15,7 +15,7 @@
                 <p @click="onLink({ name: 'Register' })"> {{ t('注册') }}</p>
             </div>
             <van-cell-group>
-                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30"
+                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30" maxlength="10"
                     :placeholder="t('请输入手机号')"></van-field>
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')">
                     <template #left-icon>
@@ -199,11 +199,12 @@ const onRegister = () => {
                 getVcode()  //更新图形验证码
                 return
             }
+            router.push({ name: 'Login' })
             _alert({
                 icon: 'success',
                 message: res.msg,
                 onClose: () => {
-                    router.push({ name: 'Login' })
+                    
                 }
             })
         })

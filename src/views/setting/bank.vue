@@ -3,16 +3,21 @@
         <Nav></Nav>
         <van-form @submit="onSubmit" :label-width="configForm.labelWidth" :label-align="configForm.labelAlign">
             <van-cell-group>
-                <van-field :formatter="formatter" :label="t('真实姓名')" v-model="dataForm.realname"
-                    :placeholder="t('请输入真实姓名')" />
-                <van-field :label="t('银行名称')" is-link readonly v-model="dataForm.bank_name" :placeholder="t('请选择您的银行名称')"
-                    @click="popShowBank = true" />
-
+                <van-field :formatter="formatter" :label="t('真实姓名')" v-model="dataForm.realname" :placeholder="t('请输入真实姓名')" />
+                <van-field :label="t('银行名称')" is-link readonly v-model="dataForm.bank_name" :placeholder="t('请选择您的银行名称')" @click="popShowBank = true" />
                 <van-field type="number" :label="t('账号')" v-model="dataForm.account" :placeholder="t('请输入您的账号')" />
-
-                <van-field :label="t('ifsc')" show-word-limit maxlength="11" v-model="dataForm.ifsc"
-                    :placeholder="t('请填写IFSC代码')" />
-
+                <van-field :label="t('ifsc')" show-word-limit maxlength="11" v-model="dataForm.ifsc" :placeholder="t('请填写IFSC代码')" />
+                <van-field readonly v-model="dataForm.phone"  :label="t('手机号码')" />
+                <van-field :rules="[{pattern: /^[0-9]+$/,message: 'Only numbers can be entered',trigger: 'onBlur'}]" label="OTP" v-model="dataForm.scode" 
+                    :placeholder="t('请输入OTP')">
+                    <template #button>
+                        <van-button  size="mini"  class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
+                            <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
+                                @finish="onTimerFinish" />
+                            <span v-else>{{ t('发送') }}</span>
+                        </van-button>
+                    </template>
+                </van-field>
             </van-cell-group>
             <div class="streamer"></div>
 
@@ -23,7 +28,7 @@
                 <p>3. Please fill in your payment account information correctly, among which IFSC must
                     be 11 digits, and the fifth digit must be 0</p>
             </div>
-            <div style="padding: 2rem;">
+            <div style="">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
             </div>
         </van-form>
@@ -91,7 +96,9 @@ const dataForm = reactive({
     account: '',
     realname: '',
     ifsc: '',
-    password2: ''
+    password2: '',
+    phone:'',
+    scode:''
 })
 
 const popShowBank = ref(false)
@@ -99,6 +106,41 @@ const bankArr = ref([])
 const banks = ref([])
 const bankIdx = ref(0)
 const cbank = ref(0)
+
+const sendLoading = ref(false)
+const isTimer = ref(false)
+const onTimerFinish = () => {
+    isTimer.value = false
+}
+
+const onSendCode = () => {
+    if (isTimer.value) {
+        return
+    }
+    if (!dataForm.phone) {
+        _alert(t('请输入手机号'))
+        return
+    }
+    sendLoading.value = true
+    var delayTime = Math.floor(Math.random() * 1000);
+    setTimeout((() => {
+        let pdata = { stype: 9, phone: dataForm.phone, email: dataForm.account }
+        let url = 'a=getPhoneCode'
+        http({
+            url: url,
+            data: pdata
+        }).then((res: any) => {
+            setTimeout(() => {
+                sendLoading.value = false
+            }, 1000)
+            if (res.code != 1) {
+                _alert(res.msg)
+                return
+            }
+            isTimer.value = true
+        })
+    }), delayTime)
+}
 
 const onBankConfirm = (name: any, idx: number) => {
     popShowBank.value = true
@@ -132,20 +174,6 @@ const onSubmit = () => {
         _alert('Symbols cannot appear in the ifsc')
         return;
     }
-    // dataForm.realname = dataForm.realname.replace('/', "")
-    // console.log(dataForm.realname)
-    // if (dataForm.realname.indexOf(' ') >= 0) {
-    //     var arr = dataForm.realname.split(' ')
-    //     var str = new RegExp("[`_-~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？+]");
-    //     dataForm.realname = '';
-    //     var reg = /\\+|\~+|\!+|\@+|\#+|¥+|\￥+|\%+|\^+|\&+|\*+|\(+|\)+|\'+|(\")+|\$+|`+|\“+|\”+|\‘+|\’+|\s+/g;
-    //     for (let index = 0; index < arr.length; index++) {
-    //         arr[index] = arr[index].replace(reg, "");
-    //         if (index == 0) dataForm.realname = arr[index]
-    //         else dataForm.realname += " " + arr[index]
-    //     }
-    // }
-    // console.log(dataForm.realname)
 
     if (dataForm.realname.indexOf('/') >= 0) {
         _alert('Symbols cannot appear in the name')
@@ -211,6 +239,7 @@ onMounted(() => {
                 dataForm.account = res.data.bank.account
                 dataForm.realname = res.data.bank.realname
                 dataForm.ifsc = res.data.bank.ifsc
+                dataForm.phone = res.data.user.account
                 for (let i in res.data.bank_arr) {
                     if (res.data.bank_arr[i].id == res.data.bank.bank_id) {
                         bankIdx.value = i * 1
@@ -290,7 +319,7 @@ onMounted(() => {
 
     .myBtn {
         position: absolute;
-        bottom: 18rem;
+        bottom: 8rem;
         left: 50%;
         transform: translateX(-50%);
         width: 80%;
