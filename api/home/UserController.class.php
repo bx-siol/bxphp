@@ -211,7 +211,7 @@ class UserController extends BaseController
 					if (strstr($it['id'], $amount_ids)) {
 						
 					}else{
-						$amount_ids .= $it['id'];
+						$amount_ids .= $it['id'] .',';
 					}
 
 					if(isset($dic["{$it['pid']}"]))
@@ -225,8 +225,8 @@ class UserController extends BaseController
 						$dic["{$it['pid']}"] = array($it['id']);
 					}
 				}
-				// if(empty($amount_ids))
-				// 	$amount_ids =substr($amount_ids,1, strlen($amount_ids) - 1);
+				if($amount_ids)
+					$amount_ids =substr($amount_ids,1, strlen($amount_ids) - 1);
 			}
 			writeLog("dic".json_encode($dic),"bobopay1");
 			writeLog("amount_ids".$amount_ids,"bobopay1");
