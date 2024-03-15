@@ -1625,6 +1625,7 @@ function isAjax()
 	writeLog("isset(HTTP_X_REQUESTED_WITH)".isset($_SERVER['HTTP_X_REQUESTED_WITH']),"bobopay1");
 	writeLog("strtolower(HTTP_X_REQUESTED_WITH)".strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) ,"bobopay1");
 	writeLog("strtolower(REQUEST_METHOD)".strtolower($_SERVER['REQUEST_METHOD']),"bobopay1");
+	writeLog("isAjax".$isAjax,"bobopay1");
 	return $isAjax;
 }
 
