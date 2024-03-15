@@ -76,7 +76,7 @@ class ShareController extends BaseController
 		$percent = 0.28;
 		$qwidth = $width * $percent;
 		$qheight = $width * $percent;
-		$newImg->thumbnailImage($qwidth, $qheight);
+		//$newImg->thumbnailImage($qwidth, $qheight);
 
 		$radius = $qwidth * 0.15;
 		$mask = new Imagick();
