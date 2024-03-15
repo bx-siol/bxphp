@@ -200,14 +200,17 @@ class UserController extends BaseController
 				$amountDate = Db::query($teamSize_str);
 			}
 			writeLog("amountDate".json_encode($amountDate),"bobopay1");
-			$dic = array();
+			$dic = [];
 			$amount_ids = "";
 			if(count($referrerData) > 0)
 			{
 				foreach($amountDate as $it)
 				{
-					if (!strstr($amount_ids, $it["id"]))
-    					$amount_ids .= $it["id"] . ",";
+					if (strpos($amount_ids, $it['id']) !== false) {
+						
+					} else {
+						$amount_ids .= $it['id'];
+					}
 
 					if(isset($dic["{$it['pid']}"]))
 					{
