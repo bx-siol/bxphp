@@ -205,7 +205,7 @@ class UserController extends BaseController
 			{
 				foreach($amountDate as $it)
 				{
-					if (strpos($amount_ids, $it["id"]) == false)
+					if (!strstr($amount_ids, $it["id"]))
     					$amount_ids .= $it["id"] . ",";
 
 					if(isset($dic["{$it['pid']}"]))
