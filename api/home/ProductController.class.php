@@ -926,7 +926,12 @@ class ProductController extends BaseController
 		$coupons_discount = 1; //默认不打折
 		$coupon = [];
 		if ($params['coupon'] != '-1' && $params['coupon']) {
-			$coupon = Db::table('coupon_log')->where("id={$params['coupon']}")->lock(true)->find();
+			$coupon = Db::table('coupon_log log')
+			->leftJoin('coupon_list list','log.cid = list.id')
+			->where("id={$params['coupon']}")
+			->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
+			->lock(true)->find();
+
 			if (!$coupon || $coupon['status'] > 2) {
 				ReturnToJson(-1, 'This discount coupon is not available');
 			}
