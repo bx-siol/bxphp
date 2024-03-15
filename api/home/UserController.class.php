@@ -173,10 +173,10 @@ class UserController extends BaseController
 
 			
 			writeLog("list".json_encode($list),"bobopay1");
-			foreach ($list as &$v) {
-				$referrer_str .= $v["id"] . ",";
-				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
-				$amount_str .= "select {$v['id']} as pid,id from sys_user where pids like '%{$v['id']}%';";
+			foreach ($list as &$k=>$v) {
+				$referrer_str .= $k[$v]["id"] . ",";
+				$teamSize_str .= "select {$k[$v]['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k[$v]['id']}%';";
+				$amount_str .= "select {$k[$v]['id']} as pid,id from sys_user where pids like '%{$k[$v]['id']}%';";
 			}
 
 			$referrerData = array();
