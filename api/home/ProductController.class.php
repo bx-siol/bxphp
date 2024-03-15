@@ -156,8 +156,8 @@ class ProductController extends BaseController
 
 		$coupon_list = rows2arr(Db::table('coupon_list')->where("1=1")->field(['id', 'name', 'cover'])->select()->toArray());
 
-		$cp_where = " uid={$pageuser['id']} and type=1 and status in (1,2) and num > used 
-			and ( effective_time=0 or (effective_time>0 and effective_time>{$now_time})) ";
+		$cp_where = " log.uid={$pageuser['id']} and log.type=1 and log.status in (1,2) and log.num > log.used 
+			and ( log.effective_time=0 or (log.effective_time>0 and log.effective_time>{$now_time})) ";
 		//$coupon_logs = Db::table('coupon_log')->where($cp_where)->field(['id', 'cid', 'money', 'discount', 'num', 'used', 'create_time', 'effective_time'])->select()->toArray();
 
 		$coupon_logs = Db::table('coupon_log log')
@@ -166,6 +166,7 @@ class ProductController extends BaseController
 		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
 		->select()->toArray();
 
+		writeLog("coupon_logs".$coupon_logs,'bobopay1');
 		$coupon_arr = [];
 		$coupon_cids = [];
 		if ($coupon_logs) {
@@ -174,7 +175,6 @@ class ProductController extends BaseController
 					continue;
 				}
 				$gids = json_decode($cp['gids'], true);
-				writeLog("cp['gids']".$cp['gids'],'bobopay1');
 				if (!$gids || in_array($item['id'], $gids)) {
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
