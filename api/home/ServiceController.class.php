@@ -34,7 +34,7 @@ class ServiceController extends BaseController
 		$params = $this->params;
 		$where = " 1=1 ";
 		if($params["type"] != 0)
-			$where .= " type={$params['type']} ";
+			$where .= " and type={$params['type']} ";
 
 		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->find();
 		$data = Db::query(" select * from ext_service where  {$where} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");		
