@@ -169,7 +169,7 @@ class UserController extends BaseController
 				->where($where)
 				->order(['log.reg_time' => 'desc'])
 				->page($params['page'], $this->pageSize)
-				->select();
+				->select()->toArray();
 
 			
 			writeLog("list".json_encode($list),"bobopay1");
