@@ -39,4 +39,3 @@ class ServiceController extends BaseController{
 		ReturnToJson(1,'ok',$data);
 	}
 }
-?>
