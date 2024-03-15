@@ -116,7 +116,10 @@ class MyRedis
             $keys = $this->handler->scan($cursor, $pattern, 100); // 一次扫描100匹，可以根据实际情况调整
             if (!empty($keys))
                 foreach ($keys as $key) {
-                    $this->rm($key);
+                    if (method_exists($this->handler, 'del'))
+                        $this->handler->del($keys);
+                    else
+                        $this->handler->delete($keys);
                     $keysDeleted++;
                 }
         } while ($cursor !== 0); // 当返回的游标为 0 时，表示迭代已经结束。 
