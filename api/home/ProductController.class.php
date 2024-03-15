@@ -166,7 +166,7 @@ class ProductController extends BaseController
 		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
 		->select()->toArray();
 
-		writeLog("coupon_logs".$coupon_logs,'bobopay1');
+		writeLog("coupon_logs". json_encode($coupon_logs),'bobopay1');
 		$coupon_arr = [];
 		$coupon_cids = [];
 		if ($coupon_logs) {
