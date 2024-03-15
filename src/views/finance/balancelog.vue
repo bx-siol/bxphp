@@ -61,7 +61,7 @@
                                                     t('投资收益')
                                                 }}</span></div>
                                                 <div v-else-if="item.type == 9"><span>{{
-                                                    t('抽奖')
+                                                    t('幸运抽奖')
                                                 }}</span></div>
                                                 <div v-else-if="item.type == 14"><span>{{
                                                     t('兑换券')
