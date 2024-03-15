@@ -162,10 +162,10 @@ class ProductController extends BaseController
 		//$coupon_logs = Db::table('coupon_log')->where($cp_where)->field(['id', 'cid', 'money', 'discount', 'num', 'used', 'create_time', 'effective_time'])->select()->toArray();
 
 		$coupon_logs = Db::table('coupon_log log')
-		->leftJoin('coupon_list list','log.cid=list.id')
-		->where($cp_where)
-		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
-		->select();
+			->leftJoin('coupon_list list', 'log.cid=list.id')
+			->where($cp_where)
+			->field(['log.id', 'log.cid', 'list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
+			->select();
 
 		$coupon_arr = [];
 		$coupon_cids = [];
@@ -935,10 +935,10 @@ class ProductController extends BaseController
 		$coupon = [];
 		if ($params['coupon'] != '-1' && $params['coupon']) {
 			$coupon = Db::table('coupon_log log')
-			->leftJoin('coupon_list list','log.cid = list.id')
-			->where("log.id={$params['coupon']}")
-			->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
-			->lock(true)->find();
+				->leftJoin('coupon_list list', 'log.cid = list.id')
+				->where("log.id={$params['coupon']}")
+				->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
+				->lock(true)->find();
 
 			if (!$coupon || $coupon['status'] > 2) {
 				ReturnToJson(-1, 'This discount coupon is not available');
@@ -1320,21 +1320,24 @@ class ProductController extends BaseController
 
 	public function _order()
 	{
-		$pageSizec = 100;
+		$pageSizec = 10;
 		$pageuser = checkLogin();
 		$params = $this->params;
 		$params['page'] = intval($params['page']);
 		if ($params['page'] < 1) {
 			$params['page'] = 1;
 		}
+
+		$where = "log.uid={$pageuser['id']} and log.status<99";
+		if ($params['status']) {
+			$key .= "{$params['status']}";
+			$where .= ' and log.status=' . $params['status'];
+		}
+
 		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_order_{$params['page']}";
 		$list = $this->redis->get($key);
 		if ($list != false)
 			ReturnToJson(1, 'ok1', $list);
-
-		$where = "log.uid={$pageuser['id']} and log.status<99";
-		if ($params['status'])
-			$where .= ' and log.status=' . $params['status'];
 
 		$count_item = Db::table('pro_order log')
 			->leftJoin('pro_goods g', 'log.gid=g.id')
@@ -1610,7 +1613,7 @@ class ProductController extends BaseController
 	//获取当前用户的已购商品信息
 	public function _PurchasedOrder()
 	{
-		$pageuser = checkLogin();		
+		$pageuser = checkLogin();
 		$params = $this->params;
 		$key = RedisKeys::USER_ORDER . $params['id'];
 		$list = $this->redis->get($key);
