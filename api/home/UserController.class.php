@@ -206,9 +206,8 @@ class UserController extends BaseController
 			{
 				foreach($amountDate as $it)
 				{
-					if (strpos($amount_ids, $it['id']) !== false) {
-						
-					} else {
+					$tmparray = explode($it['id'],$amount_ids);
+					if (count($tmparray) == 0) {
 						$amount_ids .= $it['id'];
 					}
 
@@ -220,6 +219,7 @@ class UserController extends BaseController
 					}
 					else
 					{
+						array_push($dic, $it["pid"]);
 						$dic["{$it['pid']}"] = array($it['id']);
 					}
 				}
