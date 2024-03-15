@@ -19,8 +19,7 @@
                     <template #default="{ list }">
                         <ul>
                             <li v-for="item in list" @click="onLink({ name: 'News_info', params: { id: item.id } })">
-                                <van-image :src="imgFlag(item.cover)" width="7rem" height="4rem"
-                                    class="imgs"></van-image>
+                                <van-image :src="imgFlag(item.cover)" width="7rem" height="4rem" class="imgs"></van-image>
                                 <div class="infoRight">
                                     <p class="titles" :style="{ color: '#3d3d3b', }">{{ item.title }}</p>
                                     <p class="desc" v-html="item.ndesc"></p>
@@ -118,9 +117,10 @@ const onPageSuccess = (res: any) => {
 }
 
 .big .title {
-    margin: 1rem 0;
+    margin: 0.8rem 0;
     font-weight: bold;
     color: #64523e;
+    font-size: 20px;
 }
 
 .news_wrap {
@@ -151,6 +151,7 @@ const onPageSuccess = (res: any) => {
     -webkit-line-clamp: 1;
     line-height: 1.2em;
     max-height: 2.4em;
+    font: bold 18px/22px "微软雅黑";
 }
 
 .infoRight .desc {

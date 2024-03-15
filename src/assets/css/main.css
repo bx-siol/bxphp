@@ -1770,7 +1770,7 @@ img {
 }
 
 .newTaskPopup .submitBtn {
-    background: #bd312d;
+    background: #64523e;
     color: #fff;
     border: 0;
     width: 61%;
@@ -1778,6 +1778,7 @@ img {
     display: block;
     font-size: 0.95rem;
     height: 2.5rem;
+    border-radius: 0.5rem;
 }
 
 #app>div>form>div.van-cell-group.van-cell-group--inset>div {

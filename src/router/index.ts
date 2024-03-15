@@ -444,6 +444,15 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('../views/ext/task.vue')
     },
+    {
+        path: '/monthly',
+        name: 'monthly',
+        meta: {
+            title: 'monthly pay',
+             needLogin: false
+        },
+        component: () => import('../views/user/monthlypay.vue')
+    },
 ]
 
 const router = createRouter({
