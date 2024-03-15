@@ -18,7 +18,7 @@
                 <div class="money">
                     <div class="money_body">
                         <div class="flex">
-                            <p>₹{{ wallet2.balance }}</p>
+                            <p>₹{{ wallet.balance }}</p>
                             <div class="imgs"> <img :src="pocketbook">Recharge Wallet</div>
                             <div class="finance1" @click="onLink({ name: 'Finance_withdraw' })">
                                 {{ t('提现') }}
@@ -27,7 +27,7 @@
                     </div>
                     <div class="money_body">
                         <div class="flex">
-                            <p>₹{{ wallet.balance }}</p>
+                            <p>₹{{ wallet2.balance }}</p>
                             <div class="imgs"> <img :src="Balancewallet">Balance Wallet</div>
                             <div class="finance2" @click="onLink({ name: 'Finance_recharge' })">
                                 {{ t('充值') }}
@@ -62,6 +62,7 @@
             </div>
             <div class="home_list">
                 <van-cell-group>
+                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Project' }"></van-cell>
                     <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2"
                         v-if="false"></van-cell>
