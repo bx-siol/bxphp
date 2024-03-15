@@ -199,6 +199,7 @@ class UserController extends BaseController
 				$amount_str = str_replace(";"," union ", $amount_str) . ';';
 				$amountDate = Db::query($teamSize_str);
 			}
+			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
 			$amount_ids = "";
 			if(count($referrerData) > 0)
@@ -222,7 +223,7 @@ class UserController extends BaseController
 				if(empty($amount_ids))
 					$amount_ids =substr($amount_ids,0, strlen($amount_ids) - 1);
 			}
-			writeLog(json_encode($dic),"bobopay1");
+			writeLog("dic".json_encode($dic),"bobopay1");
 
 			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')->group('uid')->select();
 
