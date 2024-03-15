@@ -1604,7 +1604,7 @@ class ProductController extends BaseController
 			$list = Db::table('pro_order u')
 				->leftJoin('pro_goods g', 'u.gid = g.id')
 				->where("u.uid = {$pageuser['id']} ")
-				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name')
+				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
 				->select()
 				->toArray();
 			$this->redis->set($key, $list);
