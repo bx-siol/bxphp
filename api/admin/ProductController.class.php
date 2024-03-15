@@ -281,6 +281,8 @@ class ProductController extends BaseController
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 				$db_data['id'] = $item_id;
+				$rediskey_goods = RedisKeys::Goods . $params['gsn'];
+				$item = $this->redis->rm($rediskey_goods);
 			} else {
 				$db_data['create_time'] = NOW_TIME;
 				$db_data['gsn'] = getRsn();

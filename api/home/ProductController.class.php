@@ -142,6 +142,7 @@ class ProductController extends BaseController
 			$this->redis->set($rediskey_goods, $item, 86400);
 		}
 
+		$itemid = $item["id"];
 
 		if (!$item)
 			ReturnToJson(-1, '不存在相应的记录');
@@ -156,8 +157,15 @@ class ProductController extends BaseController
 
 		$coupon_list = rows2arr(Db::table('coupon_list')->where("1=1")->field(['id', 'name', 'cover'])->select()->toArray());
 
-		$cp_where = " uid={$pageuser['id']} and type=1 and status in (1,2) and num > used and ( effective_time=0 or (effective_time>0 and effective_time>{$now_time})) ";
-		$coupon_logs = Db::table('coupon_log')->where($cp_where)->field(['id', 'cid', 'money', 'discount', 'num', 'used', 'create_time', 'effective_time'])->select()->toArray();
+		$cp_where = " log.uid={$pageuser['id']} and log.type=1 and log.status in (1,2) and log.num > log.used 
+			and ( log.effective_time=0 or (log.effective_time>0 and log.effective_time>{$now_time})) ";
+		//$coupon_logs = Db::table('coupon_log')->where($cp_where)->field(['id', 'cid', 'money', 'discount', 'num', 'used', 'create_time', 'effective_time'])->select()->toArray();
+
+		$coupon_logs = Db::table('coupon_log log')
+		->leftJoin('coupon_list list','log.cid=list.id')
+		->where($cp_where)
+		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
+		->select();
 
 		$coupon_arr = [];
 		$coupon_cids = [];
@@ -167,7 +175,7 @@ class ProductController extends BaseController
 					continue;
 				}
 				$gids = json_decode($cp['gids'], true);
-				if (!$gids || in_array($item['id'], $gids)) {
+				if (in_array($itemid, $gids)) {
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
 					$cp['money'] = floatval($cp['money']);
@@ -926,7 +934,12 @@ class ProductController extends BaseController
 		$coupons_discount = 1; //默认不打折
 		$coupon = [];
 		if ($params['coupon'] != '-1' && $params['coupon']) {
-			$coupon = Db::table('coupon_log')->where("id={$params['coupon']}")->lock(true)->find();
+			$coupon = Db::table('coupon_log log')
+			->leftJoin('coupon_list list','log.cid = list.id')
+			->where("log.id={$params['coupon']}")
+			->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
+			->lock(true)->find();
+
 			if (!$coupon || $coupon['status'] > 2) {
 				ReturnToJson(-1, 'This discount coupon is not available');
 			}
@@ -1604,7 +1617,7 @@ class ProductController extends BaseController
 			$list = Db::table('pro_order u')
 				->leftJoin('pro_goods g', 'u.gid = g.id')
 				->where("u.uid = {$pageuser['id']} ")
-				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name')
+				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
 				->select()
 				->toArray();
 			$this->redis->set($key, $list);

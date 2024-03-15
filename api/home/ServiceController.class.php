@@ -1,8 +1,10 @@
 <?php
 !defined('ROOT_PATH') && exit;
+
 use think\facade\Db;
 
-class ServiceController extends BaseController{
+class ServiceController extends BaseController
+{
 	
 	public function __construct(){
 		parent::__construct();
@@ -30,9 +32,12 @@ class ServiceController extends BaseController{
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
+		$where = " 1=1 ";
+		if($params["type"] != 0)
+			$where .= " and type={$params['type']} ";
+
 		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->find();
-		$data = Db::query(" select * from ext_service where  type={$params['type']} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");		
+		$data = Db::query(" select * from ext_service where  {$where} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");
 		ReturnToJson(1,'ok',$data);
 	}
 }
-?>
