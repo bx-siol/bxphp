@@ -211,7 +211,7 @@ class UserController extends BaseController
 					if (strstr($it['id'], $amount_ids)) {
 						
 					}else{
-						$amount_ids .= $it['id'] .',';
+						$amount_ids .= $it['id'] +',';
 					}
 
 					if(isset($dic["{$it['pid']}"]))
