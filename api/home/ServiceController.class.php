@@ -42,7 +42,6 @@ class ServiceController extends BaseController
 			$coupon = Db::view(['coupon_log' => 'log'], ['d,cid,status,uid,num,used,effective_time,discount,money,type'])
 			->view(['coupon_list' => 'list'], ['gids'], 'log.cid=list.id', 'LEFT')
 			->where("id=1")
-			->order(['log.id' => 'desc'])
 			->find();
 
 
