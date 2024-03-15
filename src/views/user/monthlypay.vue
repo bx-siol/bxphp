@@ -2,7 +2,7 @@
     <div class="monthly">
         <MyNav leftText=''></MyNav>
         <div class="title">
-            <p style="margin-bottom: 0.2rem;">Dear Nestlé-India members:</p>
+            <p style="margin-bottom: 0.65rem;">Dear Nestlé-India members:</p>
             <p>As Nestlé India continues to grow, we have adjusted the monthly salary system. After this revision, there
                 will be no changes in the next three years.</p>
         </div>
@@ -30,8 +30,9 @@ import monthly from '../../assets/img/user/monthlypay.png';
         width: 22rem;
         height: 25rem;
         position: relative;
-            left: 50%;
-            transform: translateX(-50%);
+        left: 50%;
+        transform: translateX(-50%);
+
         img {
             max-width: 100%;
             max-height: 100%;
