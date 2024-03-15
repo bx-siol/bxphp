@@ -62,7 +62,7 @@
             </div>
             <div class="home_list">
                 <van-cell-group>
-                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Project' }"></van-cell>
+                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
                     <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2"
                         v-if="false"></van-cell>
