@@ -142,6 +142,7 @@ class ProductController extends BaseController
 			$this->redis->set($rediskey_goods, $item, 86400);
 		}
 
+		$itemid = $item["id"];
 
 		if (!$item)
 			ReturnToJson(-1, '不存在相应的记录');
@@ -175,7 +176,7 @@ class ProductController extends BaseController
 					continue;
 				}
 				$gids = json_decode($cp['gids'], true);
-				if (in_array($item['id'], $gids)) {
+				if (in_array($itemid, $gids)) {
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
 					$cp['money'] = floatval($cp['money']);
