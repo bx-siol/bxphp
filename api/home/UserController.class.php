@@ -238,7 +238,6 @@ class UserController extends BaseController
 				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
 				$item["amount"] = 0;
-				$item["assets"] = 0;
 
 				if(count($referrerData) > 0)
 					foreach ($referrerData as &$v)
@@ -256,11 +255,7 @@ class UserController extends BaseController
 					{
 						if($item["id"] == $key){
 							foreach ($amountData as $k) 
-							{
-								if(in_array($key['uid'], $k))
-								{
-									$item["amount"] = $k["money"];
-								}						
+							{					
 									
 							}
 						}
