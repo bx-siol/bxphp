@@ -237,7 +237,7 @@ class UserController extends BaseController
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
-				$item["assets"] = 0;
+				$item["amount"] = 0;
 
 				if(count($referrerData) > 0)
 					foreach ($referrerData as &$v)
@@ -249,20 +249,18 @@ class UserController extends BaseController
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($amountData) > 0){
+				if(count($amountData) > 0)
+				{
 					foreach ($dic as $key => $value)
 					{
-						writeLog('$k1'.$key,"bobopay1");
-						// if($item["id"] == $k1){
-						// 	writeLog($item["id"].'-----1'. json_encode($v1),"bobopay1");
-						// }
-						// else
-						// {
-						// 	writeLog($item["id"].'-----2',"bobopay1");
-						// }
+						if($item["id"] == $key){
+							foreach ($amountData as $k) 
+							{					
+									
+							}
+						}
 					}
-				}
-					
+				}					
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
