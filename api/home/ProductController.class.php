@@ -175,10 +175,6 @@ class ProductController extends BaseController
 				}
 				$gids = json_decode($cp['gids'], true);
 				writeLog("cp['gids']".$cp['gids'],'bobopay1');
-				if(count($gids) == 0){
-					continue;
-				}					
-
 				if (!$gids || in_array($item['id'], $gids)) {
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
