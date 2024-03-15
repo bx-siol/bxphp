@@ -1,14 +1,14 @@
 <template>
-    <div :class="['choujiang', { shake: isShaking }]"  style="padding: 0 1rem;">
+    <div class="choujiang" style="padding: 0 1rem;">
         <MyNav>
             <template #left>
                 <div></div>
             </template>
         </MyNav>
-        <LuckyGrid ref="myLucky" width="px" height="0px" :prizes="prizes" :buttons="buttons" :blocks="blocks"
-            :default-config="defaultConfig" class="myLucky" style="width: 0;height: 0;" />
+        <div :class="['tree', { shake: Shaking }]">
+            <img :src="tree">
+        </div>
         <div class="number">
-
             <div class="lotteryclick" @click="startCallback">
                 <p>lottery click</p>
                 <span>
@@ -16,7 +16,7 @@
                     {{ num }} times left
                 </span>
             </div>
-            <div class="lotterypoints" >
+            <div class="lotterypoints" @click="wobble">
                 <p>ponints lottery </p>
                 <span>
                     <img :src="number">
@@ -109,6 +109,7 @@ import lottery1 from '../../assets/img/lottery/lottery1.png'
 import xx from '../../assets/img/lottery/xx.png'
 import test from '../../assets/img/lottery/test.gif'
 import number from '../../assets/img/lottery/number.png'
+import tree from '../../assets/img/lottery/tree.png'
 import Lotteryback from '../../assets/img/lottery/Lotteryback.png'
 
 const store = useStore()
@@ -127,48 +128,22 @@ const tdata = ref({
 const imgLotteryPop = ref(Lotteryback)
 const receiveGift = () => {
     showLotteryPop.value = false
-    myLucky.value.init()
 }
-const myLucky = ref()
-const imgArr = ref('');
-const num = ref(0)
-const redpackArr = ref([])
-const actItem = ref({})
-const showAgain = ref(false)
 
-const buttons = ref<Array<any>>()
-const prizes = ref<Array<any>>([])
-const defaultConfig = ref({
-    accelerationTime: 2000,
-    decelerationTime: 1500,
-})
-const blocks = ref<Array<any>>([
-    {
-        imgs: [
-            {
-                src: '00',
-                width: '100%',
-                height: '100%',
-                rotate: true
-            },
-        ],
-    },
-    { padding: '1px' },
-    { padding: '10px' },
-])
+const num = ref(0)
 
 const tipstr = ref('Thank you')
-const isShaking = ref(false);
 
-const wobble = () => {
-    isShaking.value = true;
-    setTimeout(() => {
-        isShaking.value = false;
-    }, 5000);
-}
+const Shaking = ref(false);
 
+
+let limitation = false;
 const startCallback = () => {
-    myLucky.value.play()
+    if (limitation) {
+        return;
+    }
+    limitation = true;
+    Shaking.value = true;
     const delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
         http({
@@ -176,53 +151,44 @@ const startCallback = () => {
         }).then((res: any) => {
             if (res.code != 1) {
                 _alert(res.msg)
-                myLucky.value.init()
+                limitation = false;
+                Shaking.value = false;
                 return
             }
 
-            myLucky.value.stop()
             num.value = res.data.lottery
             tipstr.value = res.data.giftprizelog.prize_name
 
-            console.log(tipstr.value, '抽奖的结果');
 
             setTimeout(() => {
+                Shaking.value = false;
+
                 showLotteryPop.value = true
+
+                limitation = false;
             }, 1000)
 
-            // setTimeout(() => {
-            //     for (let index = 0; index < tdata.value.prize_arr.length; index++) {
-            //         const pzitem = tdata.value.prize_arr[index];
-            //         if (pzitem.id == res.data.id) {
-            //             myLucky.value.stop(index)
-            //             console.log(index);
-            //         }
-            //     }
-
-            //     setTimeout(() => {
-            //         buttons.value = [
-            //             {
-            //                 x: 1, y: 1,
-            //                 background: "transparent",
-            //                 fonts: [{ text: "Remaining \n" + num.value + " times", top: "20%", fontColor: '#fcfcfccf', fontSize: '14px', lineHeight: '26px', wordWrap: false, }],
-            //             },
-            //         ]
-            //         for (let index = 0; index < tdata.value.prize_arr.length; index++) {
-            //             const pzitem = tdata.value.prize_arr[index];
-            //             if (pzitem.id == res.data.id) {
-            //                 // tipstr.value = pzitem.name
-            //                 imgLotteryPop.value = imgFlag(pzitem.cover)
-            //             }
-            //         }
-            //         showLotteryPop.value = true
-
-            //     }, 2000)
-            // }, 1200)
         })
     }, delayTime)
+    // console.log(limitation,'限制');
 }
-const endCallback = () => {
+
+
+const wobble = () => {
+    if (limitation) {
+        return;
+    }
+    limitation = true;
+
+    Shaking.value = true;
+    setTimeout(() => {
+        Shaking.value = false;
+        showLotteryPop.value = true
+        limitation = false;
+    }, 2000);
+
 }
+
 
 onBeforeMount(() => {
     if (!pageuser) {
@@ -252,108 +218,6 @@ onBeforeMount(() => {
         }
         num.value = res.data.user.lottery
         tdata.value = res.data
-        buttons.value = [
-            {
-                // x: 1, y: 1,
-                // background: "transparent",
-                // fonts: [{ text: "Remaining \n" + num.value + " times", top: "20%", fontColor: '#fcfcfccf', fontSize: '14px', lineHeight: '26px', wordWrap: false, }],
-            },
-        ]
-        prizes.value =
-            [
-                // {
-                //     x: 0, y: 0,
-                //     imgs: [
-                //         {
-                //             src: xx,//左上
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {
-                //     x: 1, y: 0,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[2].cover),//中上
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {
-                //     x: 2, y: 0,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[3].cover),//右上
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {
-                //     x: 2, y: 1,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[4].cover),//右中
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {//5
-                //     x: 2, y: 2,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[5].cover), //右下
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {
-                //     x: 1, y: 2,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[6].cover),//中下
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {
-                //     x: 0, y: 2,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[7].cover),//中下
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-                // {
-                //     x: 0, y: 1,
-                //     imgs: [
-                //         {
-                //             src: imgFlag(tdata.value.prize_arr[8].cover),//中下
-                //             width: "90%",
-                //             top: "1%",
-                //             left: '0%'
-                //         }
-                //     ]
-                // },
-            ]
-        myLucky.value.init()
-        setTimeout(() => {
-            myLucky.value.init()
-        }, 2000)
     })
 })
 
@@ -374,8 +238,8 @@ onMounted(() => {
 </style>
 <style lang="scss" scoped>
 .choujiang {
-    background: #84a80f url(../../assets/img/lottery/back.png)0 0rem;
-    background-size: 100% 48rem;
+    background: #84a80f url(../../assets/img/lottery/back3.png)0 0rem;
+    background-size: 100% 21.1rem;
     background-repeat: no-repeat;
     min-height: 875px;
 
@@ -389,9 +253,23 @@ onMounted(() => {
         }
     }
 
+    .tree {
+        display: flex;
+        justify-content: center;
+        height: 40rem;
+        margin-top: 1.8rem;
+        margin-right: 0.5rem;
+
+        img {
+            width: 17rem;
+            height: 16rem;
+        }
+
+    }
+
     .number {
         position: absolute;
-        top: 23rem;
+        top: 22.5rem;
         left: 50%;
         transform: translateX(-50%);
         display: flex;
@@ -498,10 +376,21 @@ onMounted(() => {
 }
 
 @keyframes shake-animation {
-    0% { transform: rotate(1deg); }
-    25% { transform: rotate(-1deg); }
-    50% { transform: rotate(1deg); }
-    100% { transform: rotate(-1deg); }
+    0% {
+        transform: rotate(0.5deg);
+    }
+
+    25% {
+        transform: rotate(-0.5deg);
+    }
+
+    50% {
+        transform: rotate(0.5deg);
+    }
+
+    100% {
+        transform: rotate(-0.5deg);
+    }
 
 }
 </style>

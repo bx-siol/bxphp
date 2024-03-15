@@ -1,5 +1,5 @@
 <template>
-  <div class="project_detail">
+  <div class="project_detail">+
     <Nav leftText=''></Nav>
     <div style="background: ">
       <div class="project_img">
@@ -94,11 +94,11 @@
         </div>
         <div class="amount">
           <van-grid v-if="info.cid != 1019" :border="false" :column-num="2">
-            <van-grid-item>
+            <van-grid-item style="margin-right: 0.2rem;">
               <span>₹{{ wallet2.balance }}</span>
               <p>{{ t('充值钱包') }}</p>
             </van-grid-item>
-            <van-grid-item>
+            <van-grid-item style="margin-left: 0.2rem;">
               <span>₹{{ wallet1.balance }}</span>
               <p>{{ t('余额钱包') }}</p>
             </van-grid-item>

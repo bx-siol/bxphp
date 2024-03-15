@@ -39,7 +39,8 @@
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
                                     <p>{{ item.first_pay_day_flag }} </p>
-                                    <span class="plus"><van-icon name="arrow" @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
+                                    <span class="plus"><van-icon name="arrow"
+                                            @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
                                 </div>
                             </template>
                         </MyListBase>
@@ -63,7 +64,8 @@
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
                                     <p>{{ item.first_pay_day_flag }}</p>
-                                    <span class="plus"><van-icon name="arrow" @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
+                                    <span class="plus"><van-icon name="arrow"
+                                            @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
                                 </div>
                             </template>
                         </MyListBase>
@@ -87,7 +89,8 @@
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
                                     <p>{{ item.first_pay_day_flag }} </p>
-                                    <span class="plus"><van-icon name="arrow" @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
+                                    <span class="plus"><van-icon name="arrow"
+                                            @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"></van-icon></span>
                                 </div>
                             </template>
                         </MyListBase>
@@ -115,7 +118,7 @@ import { Button, Tab, Tabs, Grid, GridItem, Cell, Field, Icon } from "vant";
 import { type } from 'os';
 export default defineComponent({
     components: {
-        Nav, MyListBase,MyLoading,
+        Nav, MyListBase, MyLoading,
         [Button.name]: Button,
         [Image.name]: Image,
         [Tab.name]: Tab,
@@ -325,7 +328,7 @@ onMounted(() => {
 
 const SwitchMembers = (lv: number, type: number) => {
     loadingShow.value = true
-    
+
     if (type == 0) {
         requesturl1.value = "c=User&a=team&lv=1&type=pay";
         requesturl2.value = "c=User&a=team&lv=2&type=pay";
@@ -342,49 +345,43 @@ const SwitchMembers = (lv: number, type: number) => {
     var levelTabInactiveMember = document.getElementsByClassName('levelTabInactiveMember');
     if (lv == 1) {
         if (type == 0) {
-            InactiveMember[0].style.borderBottom = "2px solid #fff";
+            InactiveMember[0].style.background = "#666";
             InactiveMember[0].style.color = "#fff";
-
-            levelTabInactiveMember[0].style.borderBottom = "none";
-            levelTabInactiveMember[0].style.color = "#424242";
+            levelTabInactiveMember[0].style.background = "#fff";
+            levelTabInactiveMember[0].style.color = "#84973b";
         }
         else {
-            InactiveMember[0].style.borderBottom = "none";
-            InactiveMember[0].style.color = "#424242";
-
-            levelTabInactiveMember[0].style.borderBottom = "2px solid #fff";
+            InactiveMember[0].style.background = "#fff";
+            InactiveMember[0].style.color = "#84973b";
+            levelTabInactiveMember[0].style.background = "#666";
             levelTabInactiveMember[0].style.color = "#fff";
         }
     }
     else if (lv == 2) {
         if (type == 0) {
-            InactiveMember[1].style.borderBottom = "2px solid #fff";
+            InactiveMember[1].style.background = "#666";
             InactiveMember[1].style.color = "#fff";
-
-            levelTabInactiveMember[1].style.borderBottom = "none";
-            levelTabInactiveMember[1].style.color = "#424242";
+            levelTabInactiveMember[1].style.background = "#fff";
+            levelTabInactiveMember[1].style.color = "#84973b";
         }
         else {
-            InactiveMember[1].style.borderBottom = "none";
-            InactiveMember[1].style.color = "#424242";
-
-            levelTabInactiveMember[1].style.borderBottom = "2px solid #fff";
+            InactiveMember[1].style.background = "#fff";
+            InactiveMember[1].style.color = "#84973b";
+            levelTabInactiveMember[1].style.background = "#666";
             levelTabInactiveMember[1].style.color = "#fff";
         }
     }
     else if (lv == 3) {
         if (type == 0) {
-            InactiveMember[2].style.borderBottom = "2px solid #fff";
+            InactiveMember[2].style.background = "#666";
             InactiveMember[2].style.color = "#fff";
-
-            levelTabInactiveMember[2].style.borderBottom = "none";
-            levelTabInactiveMember[2].style.color = "#424242";
+            levelTabInactiveMember[2].style.background = "#fff";
+            levelTabInactiveMember[2].style.color = "#84973b";
         }
         else {
-            InactiveMember[2].style.borderBottom = "none";
-            InactiveMember[2].style.color = "#424242";
-
-            levelTabInactiveMember[2].style.borderBottom = "2px solid #fff";
+            InactiveMember[2].style.background = "#fff";
+            InactiveMember[2].style.color = "#84973b";
+            levelTabInactiveMember[2].style.background = "#666";
             levelTabInactiveMember[2].style.color = "#fff";
         }
     }
@@ -511,14 +508,16 @@ const SwitchMembers = (lv: number, type: number) => {
                     flex-direction: row-reverse;
 
                     .levelTabValidMember {
-                        width: 32%;
+                        width: 42%;
                         height: 2rem;
                         line-height: 2rem;
                         float: left;
                         white-space: nowrap;
                         text-align: center;
-                        color: #424242;
+                        color: #84973b;
                         font-weight: bold;
+                        background: #fff;
+                        border-radius: 1rem;
                     }
 
                     .levelTabInactiveMember {
@@ -528,8 +527,10 @@ const SwitchMembers = (lv: number, type: number) => {
                         float: right;
                         white-space: nowrap;
                         text-align: center;
-                        color: #424242;
+                        color: #84973b;
                         font-weight: bold;
+                        background: #fff;
+                        border-radius: 1rem;
                     }
                 }
             }
@@ -611,4 +612,5 @@ const SwitchMembers = (lv: number, type: number) => {
         color: #64523e;
         font-weight: bold;
     }
-}</style>
+}
+</style>
