@@ -73,19 +73,19 @@ class ShareController extends BaseController
 		$height = $image->getImageHeight();
 		//首先进行一个图片绘画
 		$newImg = new Imagick();//ROOT_PATH . $user['headimgurl']
-		$percent = 0.28;
-		$qwidth = $width * $percent;
-		$qheight = $width * $percent;
+		//$percent = 0.28;
+		//$qwidth = $width * $percent;
+		//$qheight = $width * $percent;
 		//$newImg->thumbnailImage($qwidth, $qheight);
 
-		$radius = $qwidth * 0.15;
-		$mask = new Imagick();
-		$mask->newImage($qwidth, $qheight, new ImagickPixel('transparent'), 'png');
-		$shape = new ImagickDraw();
-		$shape->setFillColor(new ImagickPixel('magenta'));
-		$shape->roundRectangle(0, 0, $qwidth, $qheight, $radius, $radius);
-		$mask->drawImage($shape);
-		$newImg->compositeImage($mask, Imagick::COMPOSITE_DSTIN, 0, 0);
+		// $radius = $qwidth * 0.15;
+		// $mask = new Imagick();
+		// $mask->newImage($qwidth, $qheight, new ImagickPixel('transparent'), 'png');
+		// $shape = new ImagickDraw();
+		// $shape->setFillColor(new ImagickPixel('magenta'));
+		// $shape->roundRectangle(0, 0, $qwidth, $qheight, $radius, $radius);
+		// $mask->drawImage($shape);
+		// $newImg->compositeImage($mask, Imagick::COMPOSITE_DSTIN, 0, 0);
 
 		//$newImg->newImage($width * $xNum + ($xNum - 1) * $xDistance, $height * $yNum + ($yNum - 1) * $yDistance, '#AAAAAA', 'jpg');
 		$image->compositeImage($newImg, Imagick::COMPOSITE_OVER, ($width - $qwidth) / 2, ($height - $qheight) / 2);
