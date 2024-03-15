@@ -234,7 +234,6 @@ class UserController extends BaseController
 			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')->group('uid')->select();
 			writeLog("amountData".json_encode($amountData),"bobopay1");
 
-
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
@@ -250,10 +249,14 @@ class UserController extends BaseController
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($amountData) > 0)
-					foreach ($amountData as &$v)
-						if ($item["id"] == $v["uid"])
-							$item["assets"] = $v['assets'];
+				if(count($amountData) > 0){
+					foreach ($dic as &$k1 => &$v1)
+					{
+						writeLog("$k1[$v1]".$k1[$v1],"bobopay1");
+						//if($item["id"] == $k1[$v1])
+					}
+				}
+					
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
