@@ -1,8 +1,10 @@
 <?php
 !defined('ROOT_PATH') && exit;
+
 use think\facade\Db;
 
-class ServiceController extends BaseController{
+class ServiceController extends BaseController
+{
 	
 	public function __construct(){
 		parent::__construct();
@@ -31,7 +33,7 @@ class ServiceController extends BaseController{
 		$pageuser = checkLogin();
 		$params = $this->params;
 		$where = "";
-		if($params["type"] != 0){
+		if($params["type"] != 0)
 			$where .= " type={$params['type']} ";
 
 		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->find();
