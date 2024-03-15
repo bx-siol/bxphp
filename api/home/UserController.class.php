@@ -252,17 +252,17 @@ class UserController extends BaseController
 				if(count($amountData) > 0){
 					foreach ($dic as $key => $value)
 					{
-						writeLog('$k1'.$key,"bobopay1");
-						// if($item["id"] == $k1){
-						// 	writeLog($item["id"].'-----1'. json_encode($v1),"bobopay1");
-						// }
-						// else
-						// {
-						// 	writeLog($item["id"].'-----2',"bobopay1");
-						// }
+						if($item["id"] == $key){
+							foreach ($value as $k)
+							{
+								if(in_array($key['uid'], $value))
+								{
+									$item["assets"] = $k["money"];
+								}
+							}
+						}
 					}
-				}
-					
+				}					
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
