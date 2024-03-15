@@ -203,13 +203,14 @@ class UserController extends BaseController
 			}
 			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
-			$amount_ids = "";
+			$amount_ids = ",";
 			if(count($referrerData) > 0)
 			{
 				foreach($amountDate as $it)
 				{
-					$tmparray = explode($it['id'],$amount_ids);
-					if (count($tmparray) == 0) {
+					if (strstr($it['id'], $amount_ids)) {
+						
+					}else{
 						$amount_ids .= $it['id'];
 					}
 
@@ -224,8 +225,8 @@ class UserController extends BaseController
 						$dic["{$it['pid']}"] = array($it['id']);
 					}
 				}
-				if(empty($amount_ids))
-					$amount_ids =substr($amount_ids,0, strlen($amount_ids) - 1);
+				// if(empty($amount_ids))
+				// 	$amount_ids =substr($amount_ids,1, strlen($amount_ids) - 1);
 			}
 			writeLog("dic".json_encode($dic),"bobopay1");
 			writeLog("amount_ids".$amount_ids,"bobopay1");
