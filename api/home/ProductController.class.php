@@ -1489,7 +1489,7 @@ class ProductController extends BaseController
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		if ($pro_order['total_days'] >= $item['days'])
 			$pro_order['status'] = 9;
-
+		$return_data = [];
 		Db::startTrans();
 		try {
 			Db::table('pro_order')->where("id={$item['id']}")->update($pro_order);
@@ -1603,9 +1603,7 @@ class ProductController extends BaseController
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => $e]);
 		}
-		$return_data = [
-			'reward' => $reward,
-		];
+		$return_data['reward'] = $reward;
 		ReturnToJson(1, 'Received successfully', $return_data);
 	}
 
