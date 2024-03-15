@@ -126,8 +126,8 @@ class UserController extends BaseController
 		$lv = intval($params['lv']);
 		$mem_key = 'user_team_' . $lv  . $pageuser['id'] . $params['page']  . $params['type'];
 		$params['page'] = intval($params['page']);
-		$return_data = $this->redis->get($mem_key);
-		if (!$return_data) {
+		//$return_data = $this->redis->get($mem_key);
+		//if (!$return_data) {
 			switch ($lv) {
 				case 1:
 					$lvstr =  $pageuser['id'] . ",%'";
@@ -171,10 +171,12 @@ class UserController extends BaseController
 				->page($params['page'], $this->pageSize)
 				->select()->toArray();
 
-			foreach ($list as &$v) {
-				$referrer_str .= $v["id"] . ",";
-				$teamSize_str .= "select {$v['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$v['id']}%';";
-				$order_str .= $v["id"] . ",";
+			
+			writeLog("list".json_encode($list),"bobopay1");
+			foreach ($list as &$k) {
+				$referrer_str .= $k["id"] . ",";
+				$teamSize_str .= "select {$k['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k['id']}%';";
+				$amount_str .= "select {$k['id']} as pid,id from sys_user where pids like '%{$k['id']}%';";
 			}
 
 			$referrerData = array();
@@ -192,12 +194,44 @@ class UserController extends BaseController
 				$teamSizeDate = Db::query($teamSize_str);
 			}				
 			
-			$orderDate = array();
-			if($order_str)
+			$amountDate = array();
+			if($amount_str)
 			{
-				$order_str =substr($order_str,0, strlen($order_str) - 1);
-				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
-			}				
+				$amount_str =substr($amount_str,0, strlen($amount_str) - 1);
+				$amount_str = str_replace(";"," union ", $amount_str) . ';';
+				$amountDate = Db::query($amount_str);
+			}
+			writeLog("amountDate".json_encode($amountDate),"bobopay1");
+			$dic = array();
+			$amount_ids = "";
+			if(count($referrerData) > 0)
+			{
+				foreach($amountDate as $it)
+				{
+					$tmparray = explode($it['id'],$amount_ids);
+					if (count($tmparray) == 0) {
+						$amount_ids .= $it['id'];
+					}
+
+					if(isset($dic["{$it['pid']}"]))
+					{
+						$val = $dic["{$it['pid']}"];
+						array_push($val,$it['id']);
+						$dic["{$it['pid']}"] = $val;
+					}
+					else
+					{
+						$dic["{$it['pid']}"] = array($it['id']);
+					}
+				}
+				if(empty($amount_ids))
+					$amount_ids =substr($amount_ids,0, strlen($amount_ids) - 1);
+			}
+			writeLog("dic".json_encode($dic),"bobopay1");
+			writeLog("amount_ids".$amount_ids,"bobopay1");
+
+			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')->group('uid')->select();
+
 
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
@@ -214,8 +248,8 @@ class UserController extends BaseController
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($orderDate) > 0)
-					foreach ($orderDate as &$v)
+				if(count($amountData) > 0)
+					foreach ($amountData as &$v)
 						if ($item["id"] == $v["uid"])
 							$item["assets"] = $v['assets'];
 
@@ -243,8 +277,8 @@ class UserController extends BaseController
 				'lv' => $lv,
 				'$total_page' => $total_page,
 			];
-			$this->redis->set($mem_key, $return_data, 300);
-		}
+			//$this->redis->set($mem_key, $return_data, 86400);
+		//}
 		ReturnToJson(1, 'ok', $return_data);
 	}
 	//我的团队--层级人数
