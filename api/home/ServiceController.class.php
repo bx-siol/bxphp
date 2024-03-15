@@ -37,16 +37,7 @@ class ServiceController extends BaseController
 			$where .= " and type={$params['type']} ";
 
 		$user = Db::table('sys_user')->where("id={$pageuser['id']} ")->find();
-		$data = Db::query(" select * from ext_service where  {$where} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");	
-	
-		$coupon_logs = Db::table('coupon_log log')
-		->leftJoin('coupon_list list','log.cid=list.id')
-		->where("log.id=1")
-		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
-		->select()->toArray();
-
-
-			writeLog("coupon". json_encode($coupon_logs),"bobopay1");
+		$data = Db::query(" select * from ext_service where  {$where} and (uid={$user['pidg1']} or uid={$user['pidg2']} ) ");
 		ReturnToJson(1,'ok',$data);
 	}
 }
