@@ -1536,7 +1536,9 @@ class ProductController extends BaseController
 			if ($item['is_give'] == '0') {
 				//返佣
 				$up_users = getUpUser($item['uid'], true);
+				writeLog(json_encode($up_users), '收益记录');
 				foreach ($up_users as $uv) {
+					writeLog("{$uv['id']}_{$uv['gid']}_{$uv['stop_commission']}", '收益记录');
 					if ($uv['stop_commission'])   //暂停佣金
 						continue;
 					if ($uv['gid'] < 91)   //代理以及其它管理用户不给佣金
@@ -1544,16 +1546,17 @@ class ProductController extends BaseController
 					$rate = $commission_arr[$uv['agent_level']];
 					if (!$rate || $rate < 0)
 						continue;
-
+					writeLog("{$uv['id']}_{$rate}", '收益记录');
 					//检测该用户是否有购买同等金额以上的设备
 					$uv_order = Db::table('pro_order')->where("uid={$uv['id']} and status=1 and is_give=0")->order(['price' => 'desc'])->find();
-					if ($item['price'] == 3000) {
-						if (!$uv_order || $uv_order['price'] < 2500)
-							continue;
-					} else {
-						if (!$uv_order || $uv_order['price'] < $item['price'])
-							continue;
-					}
+					// if ($item['price'] == 3000) {
+					// 	if (!$uv_order || $uv_order['price'] < 2500)
+					// 		continue;
+					// } else  
+					writeLog("{$uv['id']}_{$uv_order['price']}_{$item['price']}", '收益记录');
+					if (!$uv_order || $uv_order['price'] < $item['price'])
+						continue;
+
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
 					if (!$wallet2)
@@ -1593,7 +1596,8 @@ class ProductController extends BaseController
 						'pdig1' => $uv['pidg1'],
 						'pdig2' => $uv['pidg2'],
 					];
-					Db::table('pro_reward')->insertGetId($pro_reward2);
+					$res = Db::table('pro_reward')->insertGetId($pro_reward2);
+					writeLog("{$uv['id']}_{$res}_done", '收益记录');
 				}
 			}
 			$return_data['USER_WALLET'] = $this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
