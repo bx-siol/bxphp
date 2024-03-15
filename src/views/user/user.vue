@@ -121,7 +121,7 @@
             </el-table-column>
             <el-table-column prop="status_flag" :label="isTrans ? '状态' : 'status_flag'" width="70"></el-table-column>
             <el-table-column prop="icode_status_flag" :label="isTrans ? '邀请码状态' : 'icode_status_flag'" width="100"></el-table-column>
-            <el-table-column :label="isTrans ? '操作' : ''" min-width="300">
+            <el-table-column :label="isTrans ? '操作' : ''" min-width="300" fixed="right">
                 <template #default="scope">
                     <el-popconfirm confirmButtonText='确定' cancelButtonText='取消' icon="el-icon-warning" iconColor="red"
                         title="您确定要进行删除吗？" @confirm="del(scope.$index, scope.row, myScope)" v-if="power.delete">
