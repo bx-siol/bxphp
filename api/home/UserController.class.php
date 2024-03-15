@@ -253,7 +253,7 @@ class UserController extends BaseController
 					foreach ($dic as $key => $value)
 					{
 						if($item["id"] == $key){
-							foreach ($amountData as $k)
+							foreach ($amountData as $k) 
 							{
 								if(in_array($key['uid'], $k))
 								{
