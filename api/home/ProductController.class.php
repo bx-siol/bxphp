@@ -175,7 +175,7 @@ class ProductController extends BaseController
 					continue;
 				}
 				$gids = json_decode($cp['gids'], true);
-				if (!$gids || in_array($item['id'], $gids)) {
+				if (in_array($item['id'], $gids)) {
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
 					$cp['money'] = floatval($cp['money']);
