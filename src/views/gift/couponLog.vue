@@ -28,19 +28,15 @@
         <template #table>
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="account" label="用户账号" min-width="160"></el-table-column>
-            <el-table-column prop="coupon_name" label="券名称" min-width="280"></el-table-column>
-            <el-table-column prop="type_flag" label="券类型" width="160"> </el-table-column>
+            <el-table-column prop="coupon_name" label="券名称" min-width="200"></el-table-column>
             <el-table-column prop="discount" label="券折扣%" width="120"></el-table-column>
 
             <el-table-column prop="money" label="券面值" width="120"></el-table-column>
             <el-table-column prop="num" label="券数量" width="120"></el-table-column>
             <el-table-column prop="used" label="已使用数量" width="120"></el-table-column>
-            <el-table-column prop="goods" label="可用产品" width="140">
-
-            </el-table-column>
             <el-table-column prop="effective_time_flag" label="有效截止日期" width="140"></el-table-column>
             <el-table-column prop="remark" label="备注" width="70"></el-table-column>
-            <el-table-column prop="create_time" label="时间" width="70"></el-table-column>
+            <el-table-column prop="create_time" label="时间" width="180"></el-table-column>
             <!-- <el-table-column label="操作" width="160">
                     <template #default="scope">
                         <el-popconfirm confirmButtonText='确定' cancelButtonText='取消' icon="el-icon-warning" iconColor="red"
