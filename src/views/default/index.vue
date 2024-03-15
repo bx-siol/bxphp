@@ -91,15 +91,9 @@
                 task reward
               </div>
               <div class="malls u-flex u-bet">
-                <div style="width: 32%;">
-                  <van-image :src="rewards"></van-image>
-                </div>
-                <div style="width: 32%;">
-                  <van-image :src="income"></van-image>
-                </div>
-                <div @click="onLink({ name: 'Share' })" style="width: 32%;">
-                  <van-image :src="invite"></van-image>
-                </div>
+                  <div @click="onLink({ name: 'Ext_task',params: { id: item.id } })" style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index" >
+                      <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
+                  </div>              
               </div>
               <div class="column_title2">
                 <img :src="horn2">
@@ -287,15 +281,6 @@ const tdata = ref<any>({
 })
 // let pageUrl = ref('c=Product&a=order')
 
-
-
-
-const totask = (id: number) => {
-  router.push({ name: 'Ext_task', params: { id: id } })
-  // alert(id)
-}
-
-
 const onClickVideo = () => {
   if (tdata.value.video.url) {
     window.open(tdata.value.video.url)
@@ -339,10 +324,6 @@ const t120 = () => {
       });
     })
   }, delayTime)
-
-
-
-
 }
 const t120lq = () => {
   if (t120ok.value != 0) {
@@ -367,11 +348,9 @@ const appshow = ref(true)
 const newscount = ref('')
 const menuKey = ref(0)
 const init = () => {
-
   if (window.location.href.indexOf('csisolar.in') > 0 || window.location.href.indexOf('csisolar.life ') > 0) {
     appshow.value = false;
   }
-
 
   http({
     url: 'c=Ext&a=task'
@@ -379,10 +358,9 @@ const init = () => {
     if (res.code != 1) {
       return
     }
-
     taskdata.value = res.data.list;
-
   })
+
   http({
     url: 'a=index'
   }).then((res: any) => {

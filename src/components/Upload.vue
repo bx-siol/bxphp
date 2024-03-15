@@ -60,6 +60,7 @@
     import {_alert, getSrcUrl} from "../global/common";
     import axios, { AxiosRequestConfig } from "axios";
     import Compressor from "compressorjs";
+    import { getLocalToken } from "../global/user";
     import http from "../global/network/http";
 
     interface UpFile{
@@ -130,7 +131,7 @@
             headers:{
                 'Content-Type':'multipart/form-data',
                 'X-Requested-With':'XMLHttpRequest',
-                'Token':store.state.token
+                'Token': getLocalToken()
             },
             onUploadProgress: (progressEvent) => {//上传进度
                 let num = progressEvent.loaded / progressEvent.total * 100 | 0;  //百分比

@@ -35,6 +35,7 @@
     import axios, {AxiosRequestConfig} from "axios";
     import {useStore} from "vuex";
     import http from "../global/network/http";
+    import { getLocalToken } from "../global/user";
     import {Dialog} from "vant";
     import {doLogout} from "../global/user";
 
@@ -98,7 +99,7 @@
             headers:{
                 'Content-Type':'multipart/form-data',
                 'X-Requested-With':'XMLHttpRequest',
-                'Token':store.state.token
+                'Token':getLocalToken()
             },
             onUploadProgress: (progressEvent) => {//上传进度
                 let num = progressEvent.loaded / progressEvent.total * 100 | 0;  //百分比
