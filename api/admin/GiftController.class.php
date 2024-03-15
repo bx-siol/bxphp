@@ -20,9 +20,51 @@ class GiftController extends BaseController
 		if (intval($params['num']) <= 0) {
 			ReturnToJson(-1, '赠送的次数需要大于0');
 		}
+		Db::startTrans();
 		try {
+
 			$count = Db::table('sys_user')->where('first_pay_day >0')->inc('lottery', intval($params['num']))->update();
+
+			//增加中奖记录
+            $prize_arr = Db::table('gift_prize')->where('probability >0')->order('probability','desc')->select()->toArray();
+            $prize = $prize_arr[0];
+			if(empty($prize))
+			{
+				$prizeEmpty = array();
+				foreach ($prize_arr as $k) {
+					if ($k['type'] == 4)
+						array_push($prizeEmpty, $k);
+				}
+				$prize = $prizeEmpty;
+			}
+			$syso_userList = Db::table('sys_user')->where('first_pay_day >0')->select();
+			foreach ($syso_userList as $item) 
+			{
+				for ($i = 0; $i < intval($params['num']); $i++) 
+				{
+					Db::table('gift_prize_log')->insertGetId([
+						'uid' => $item['id'],
+						'type' => $prize['type'],
+						'money' => 0,
+						'gid' => $prize['gid'],
+						'coupon_id' => $prize['coupon_id'],
+						'prize_name' => $prize['name'],
+						'prize_cover' => $prize['cover'],
+						'remark' => $prize['remark'],
+						'create_time' => NOW_TIME,
+						'create_day' => date('Ymd', NOW_TIME),
+						'create_ip' => '',
+						'split_time' => date('Y-m-d H:i:s', NOW_TIME),
+						'order_money' => 0,
+						'is_user' => 0,
+						'gift_prize_id' => $prize['id'],
+					]);
+				}
+			}
+
+			Db::commit();
 		} catch (\Throwable $th) {
+			Db::rollback();
 			ReturnToJson(-1, '操作失败', $th);
 		}
 		ReturnToJson(1, '操作成功 更新用户数：' . $count);
@@ -38,12 +80,49 @@ class GiftController extends BaseController
 		if ($params['user'] == '' || $params['user'] == null) {
 			ReturnToJson(-1, '用户不能为空');
 		}
+		Db::startTrans();
 		try {
 			$user = Db::table('sys_user')->where(" openid='" . $params['user'] . "'")->find();
 			if (!$user) ReturnToJson(-1, '用户不存在');
 			$update['lottery'] = $user['lottery'] + intval($params['num']);
 			$count = Db::table('sys_user')->where(" id=" . $user['id'])->update($update);
+
+			//增加中奖记录
+            $prize_arr = Db::table('gift_prize')->where('probability >0')->order('probability','desc')->select()->toArray();
+            $prize = $prize_arr[0];
+			if(empty($prize))
+			{
+				$prizeEmpty = array();
+				foreach ($prize_arr as $k) {
+					if ($k['type'] == 4)
+						array_push($prizeEmpty, $k);
+				}
+				$prize = $prizeEmpty;
+			}
+			for ($i = 0; $i < intval($params['num']); $i++) 
+				{
+					Db::table('gift_prize_log')->insertGetId([
+						'uid' => $user['id'],
+						'type' => $prize['type'],
+						'money' => 0,
+						'gid' => $prize['gid'],
+						'coupon_id' => $prize['coupon_id'],
+						'prize_name' => $prize['name'],
+						'prize_cover' => $prize['cover'],
+						'remark' => $prize['remark'],
+						'create_time' => NOW_TIME,
+						'create_day' => date('Ymd', NOW_TIME),
+						'create_ip' => '',
+						'split_time' => date('Y-m-d H:i:s', NOW_TIME),
+						'order_money' => 0,
+						'is_user' => 0,
+						'gift_prize_id' => $prize['id'],
+					]);
+				}
+
+			Db::commit();
 		} catch (\Throwable $th) {
+			Db::rollback();
 			ReturnToJson(-1, '操作失败', $th);
 		}
 		ReturnToJson(1, '操作成功 更新用户数：' . $count);
