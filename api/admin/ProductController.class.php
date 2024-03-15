@@ -302,6 +302,7 @@ class ProductController extends BaseController
 			'category_name' => $category['name']
 		];
 		$this->redis->rm(RedisKeys::Goods);
+		$this->redis->rmall(RedisKeys::Goods);
 		ReturnToJson(1, '操作成功', $return_data);
 	}
 
@@ -324,6 +325,7 @@ class ProductController extends BaseController
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		$this->redis->rm(RedisKeys::Goods);
+		$this->redis->rmall(RedisKeys::Goods);
 		ReturnToJson(1, '操作成功');
 	}
 
