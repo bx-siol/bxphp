@@ -815,7 +815,7 @@ class ProductController extends BaseController
 			$return_data['osn'] = $pro_order['osn'];
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
+			ReturnToJson(-1, '系统繁忙请稍后再试', $e);
 		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
