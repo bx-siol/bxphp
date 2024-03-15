@@ -167,7 +167,6 @@ class ProductController extends BaseController
 		->field(['log.id', 'log.cid','list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
 		->select();
 
-		writeLog("coupon_logs". json_encode($coupon_logs),'bobopay1');
 		$coupon_arr = [];
 		$coupon_cids = [];
 		if ($coupon_logs) {
@@ -177,7 +176,6 @@ class ProductController extends BaseController
 				}
 				$gids = json_decode($cp['gids'], true);
 				if (in_array($itemid, $gids)) {
-					writeLog("1",'bobopay1');
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
 					$cp['cover'] = $coupon_list[$cp['cid']]['cover'];
 					$cp['money'] = floatval($cp['money']);
@@ -188,9 +186,6 @@ class ProductController extends BaseController
 					if (count($coupon_arr) >= 5) {
 						break;
 					}
-				}else{
-					writeLog("2",'bobopay1');
-
 				}
 			}
 		}
@@ -941,7 +936,7 @@ class ProductController extends BaseController
 		if ($params['coupon'] != '-1' && $params['coupon']) {
 			$coupon = Db::table('coupon_log log')
 			->leftJoin('coupon_list list','log.cid = list.id')
-			->where("id={$params['coupon']}")
+			->where("log.id={$params['coupon']}")
 			->field("log.id,log.cid,list.gids,log.status,log.uid,log.num,log.used,log.effective_time,log.discount,log.money,log.type")
 			->lock(true)->find();
 
