@@ -206,11 +206,11 @@ class UserController extends BaseController
 			$amount_ids = "";
 			if(count($referrerData) > 0)
 			{
-				foreach($amountDate as $it=>&$v)
+				foreach($amountDate as $it)
 				{
-					$tmparray = explode($it[$v]['id'],$amount_ids);
+					$tmparray = explode($it['id'],$amount_ids);
 					if (count($tmparray) == 0) {
-						$amount_ids .= $it[$v]['id'];
+						$amount_ids .= $it['id'];
 					}
 
 					if(isset($dic["{$it['pid']}"]))
