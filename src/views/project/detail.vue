@@ -403,13 +403,10 @@ const init = () => {
 
 
       info.value = res.data.info
-      console.log(info.value.djs);
-      console.log(info.value.djss);
 
       if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
         info.value.status = 10;
       }
-      console.log(info.value.djs <= info.value.djss);
       detailData.value.name = res.data.info.name
       detailData.value.price = res.data.info.price
       detailData.value.dailyIncome = res.data.info.price * res.data.info.rate / 100

@@ -149,11 +149,6 @@ type level = {
     account: number | string;
 };
 
-// const service_arr = [
-//     { type: 1, name: 'Telegram', account: 'telegram_account1' },
-//     { type: 2, name: 'WhatsApp', account: 'whatsapp_account1' },
-// ];
-
 const service_arr = ref<any>({})
 const cpageRef = ref();
 const LVv = ref("");
@@ -162,7 +157,6 @@ const pageRef1 = ref();
 const tableData = ref<any>({});
 
 const onPageSuccess = (res: any) => {
-    // console.log(res.all)
     tableData.value = res.all;
     loadingShow.value = false;
     if (cpageRef.value == undefined) {

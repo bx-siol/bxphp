@@ -110,7 +110,6 @@ onMounted(() => {
                     })
                 }
             }
-            // console.log(tdata.notice);
             // if (tdata.notice == undefined) {
             //     http({
             //         url: 'c=Gift&a=lottery'

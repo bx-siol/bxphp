@@ -218,7 +218,6 @@ const selected = ref("0");
 
 
 const selectlist = (name: any) => {
-    console.log(name)
     if (name == "Recharge")
         listurl.value = "c=Finance&a=paylog"
     else if (name == "Withdraw")

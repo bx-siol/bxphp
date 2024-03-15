@@ -161,16 +161,11 @@
         let counts = new Date(state.curYear, state.curMonth + 1, 0).getDate()
         //获取当前第一天是星期几
         let firstWeekDay = new Date(state.curYear, state.curMonth, 1).getDay()
-        //console.log("state--:", state)
-        //console.log("firstweekday:", firstWeekDay)
         for (let i = 1; i <= counts + firstWeekDay; i++) {
             let val = i - firstWeekDay;
-            // if(val>0 && val<counts){
             state.dataCount.push(val)
-            // }
         }
         let res = state.dataCount;
-        //console.log(res)
     }
 
     //获取页面初始化数据
@@ -225,7 +220,6 @@
                 state.curYear++
             }
         }
-        console.log("state.curYear,state.curMont", state.curYear, state.curMonth)
         getDayCounts(state.curYear, state.curMonth)
         getSignTime()
     }
@@ -234,7 +228,6 @@
 
     const isCurrentDate = (date: number) => {
         if (date > 0 && date <= state.dataCount.length) {
-            //console.log("currentYEAR:", currentYEAR)
             if (date == state.curDate && currentYEAR == state.curYear && currentMONTH == state.curMonth) {
                 return true
             }
@@ -253,9 +246,7 @@
         if (date < 10)
             day = "0" + date
         let itemDate = `${curYear.value}${month}${day}`
-        //console.log("itemDate:", itemDate)
-        let res = state.signInList.some(j => j == itemDate) ? true : false
-        //console.log("res:", res)
+        let res = state.signInList.some(j => j == itemDate) ? true : false;
         return res
     }
 
