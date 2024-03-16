@@ -48,7 +48,7 @@
 <script lang="ts">
 
 import { defineComponent } from 'vue';
-import { Button, Form, Field, CellGroup, Image, Icon, Overlay, Popup, Picker } from 'vant';
+import { Button, Form, Field, CellGroup, Image, Icon, Overlay, Popup, Picker,CountDown } from 'vant';
 import Nav from "../../components/Nav.vue";
 import MyLoading from "../../components/Loading.vue";
 
@@ -64,6 +64,7 @@ export default defineComponent({
         [Overlay.name]: Overlay,
         [Popup.name]: Popup,
         [Picker.name]: Picker,
+        [CountDown.name]: CountDown
     }
 })
 </script>
