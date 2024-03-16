@@ -51,7 +51,7 @@ const tdata = ref<any>({
 
 const getNewsInfo = (id: number) => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=News&a=info',
             data: { id: id }
@@ -65,7 +65,7 @@ const getNewsInfo = (id: number) => {
             others.value.next = res.data.next
             document.title = info.value.title
         })
-    }, delayTime)
+    // }, delayTime)
 }
 
 onMounted(() => {

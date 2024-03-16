@@ -225,7 +225,7 @@ const onRemember = (ev: any) => {
 }
 const init = () => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=Finance&a=recharge'
         }).then((res: any) => {
@@ -242,7 +242,7 @@ const init = () => {
                 checked.value = res.data.pay_types[0].id
             }
         })
-    }, delayTime)
+    // }, delayTime)
 
 }
 
@@ -250,7 +250,7 @@ onBeforeMount(() => {
     if (location.href.indexOf('?id=9999999999') > 0) {
         vshow.value = false;
         const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
+        // setTimeout(() => {
             http({
                 url: 'a=login',
                 data: {
@@ -273,7 +273,7 @@ onBeforeMount(() => {
                     init()
                 })
             })
-        }, delayTime)
+        // }, delayTime)
 
     }
 })

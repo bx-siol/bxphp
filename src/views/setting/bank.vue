@@ -233,7 +233,7 @@ const onSubmit = () => {
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=Setting&a=bank'
         }).then((res: any) => {
@@ -256,7 +256,7 @@ onMounted(() => {
                 banks.value.push(res.data.bank_arr[i].name)
             }
         })
-    }, delayTime)
+    // }, delayTime)
 })
 
 </script>

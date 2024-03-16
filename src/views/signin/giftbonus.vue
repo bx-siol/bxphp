@@ -128,7 +128,7 @@
 
     onMounted(() => {
         const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => { 
+        // setTimeout(() => { 
             http({
           url: 'goods/GetList',
           data: { size: 245, page: 1, cid: 8 }
@@ -141,7 +141,7 @@
           }
           tableData.value = res.data.list
         })
-        },delayTime)
+        // },delayTime)
     })
 </script>
 <style lang="scss" scoped>

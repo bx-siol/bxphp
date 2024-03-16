@@ -251,7 +251,7 @@ onMounted(() => {
         appshow.value = false;
     }
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=User&a=index'
         }).then((res: any) => {
@@ -278,7 +278,7 @@ onMounted(() => {
                 }
             }
         })
-    }, delayTime)
+    // }, delayTime)
 })
 
 </script>

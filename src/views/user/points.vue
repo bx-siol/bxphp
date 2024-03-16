@@ -98,7 +98,7 @@ const user = ref({})
 const wallet3 = ref({})
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=User&a=index'
         }).then((res: any) => {
@@ -106,7 +106,7 @@ onMounted(() => {
             wallet3.value = res.data.wallet3
 
         })
-    }, delayTime),
+    // }, delayTime),
 
     setTimeout(() => {
         http({

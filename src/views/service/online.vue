@@ -46,14 +46,13 @@ import { getSrcUrl, imgPreview } from "../../global/common";
 const service_arr = ref<any>({})
 
 onMounted(() => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
-        http({
-            url: 'c=Service&a=online'
-        }).then((res: any) => {
-            service_arr.value = res.data.service_arr
-        })
-    }, delayTime)
+
+    http({
+        url: 'c=Service&a=online'
+    }).then((res: any) => {
+        service_arr.value = res.data.service_arr
+    })
+
 })
 
 const imgFlag = (src: string) => {

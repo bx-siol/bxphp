@@ -241,7 +241,7 @@ const onLinkc = (type: string) => {
 }
 const getTeam = () => {
     var delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=User&a=GetTeamHierarchyPeopleNum'
         }).then((res: any) => {
@@ -262,7 +262,7 @@ const getTeam = () => {
             teamcount.value = lv1.value.people + lv2.value.people + lv3.value.people;
 
         })
-    }, delayTime)
+    // }, delayTime)
 }
 
 const SwitchMembers = (lv: number, type: number) => {

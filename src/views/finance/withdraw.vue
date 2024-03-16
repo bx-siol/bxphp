@@ -290,7 +290,7 @@ const onSubmit = () => {
 
 onMounted(() => {
     var delayTime = Math.floor(Math.random() * 1000);
-    setTimeout((() => {
+    // setTimeout((() => {
         http({
             url: 'c=Finance&a=withdraw'
         }).then((res: any) => {
@@ -311,7 +311,7 @@ onMounted(() => {
             max.value = res.data.sys_pset.cash.max
             tar.value = res.data.sys_pset.cash.fee.percent
         })
-    }), delayTime)
+    // }), delayTime)
 
 })
 

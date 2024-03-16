@@ -75,14 +75,11 @@ const tdata = ref({
 
 
 onMounted(() => {
-  const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
-    http({
-      url: 'c=Share&a=index'
-    }).then((res: any) => {
-      tdata.value = res.data
-    })
-  }, delayTime)
+  http({
+    url: 'c=Share&a=index'
+  }).then((res: any) => {
+    tdata.value = res.data
+  })
 })
 </script>
 <style lang="scss" scoped>

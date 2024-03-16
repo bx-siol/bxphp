@@ -104,7 +104,7 @@ export default defineComponent({
         onMounted(() => {
             if (route.query.osn) {
                 const delayTime = Math.floor(Math.random() * 1000);
-                setTimeout(() => {
+                // setTimeout(() => {
                     http({
                         url: 'c=Finance&a=cashInfo',
                         data: { osn: route.query.osn }
@@ -115,7 +115,7 @@ export default defineComponent({
                         }
                         info.value = res.data.item
                     })
-                }, delayTime)
+                // }, delayTime)
 
             } else {
                 router.push({ name: 'Finance_cash' })

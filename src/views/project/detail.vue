@@ -386,7 +386,7 @@ const onSubmit = () => {
 
 const init = () => {
   const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
+  // setTimeout(() => {
     http({
       url: 'c=Product&a=goods',
       data: { gsn: route.params.pid }
@@ -438,7 +438,7 @@ const init = () => {
       }
 
     })
-  }, delayTime)
+  // }, delayTime)
 
 }
 const forid = (id: number) => {

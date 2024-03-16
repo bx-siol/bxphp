@@ -133,7 +133,7 @@ const t120 = () => {
 
 onMounted(() => {
   const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
+  // setTimeout(() => {
     http({
       url: 'a=GetService'
     }).then((res: any) => {
@@ -152,7 +152,7 @@ onMounted(() => {
         }
       }
     })
-  }, delayTime)
+  // }, delayTime)
 
 })
 

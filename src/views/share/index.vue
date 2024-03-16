@@ -74,7 +74,7 @@ const montage = computed(() => {
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=Share&a=index'
         }).then((res: any) => {
@@ -85,7 +85,7 @@ onMounted(() => {
                 }
             })
         })
-    }, delayTime)
+    // }, delayTime)
 
 })
 

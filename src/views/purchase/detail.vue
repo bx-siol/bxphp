@@ -343,7 +343,7 @@
 
     const init = () => {
         const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
+        // setTimeout(() => {
             http({
                 url: 'goods/H5Goods',
                 data: { gsn: route.params.pid },
@@ -404,7 +404,7 @@
                     })
                 }
             })
-        }, delayTime)
+        // }, delayTime)
     }
 
     onMounted(() => {

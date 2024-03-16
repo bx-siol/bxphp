@@ -240,7 +240,7 @@ onBeforeUnmount(() => {
 
 const getUserInfo = () => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'a=userinfo'
         }).then((res: any) => {
@@ -249,7 +249,7 @@ const getUserInfo = () => {
             // pad_arr.password = res.data.password;
             // pad_arr.password2 = res.data.password2;
         })
-    }, delayTime)
+    // }, delayTime)
 }
 
 onMounted(() => {
