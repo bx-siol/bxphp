@@ -5,52 +5,70 @@
                 <div></div>
             </template>
         </MyNav>
-        <div v-if="false">
-            <div class="content">
+
+        <div class="content">
             <div class="left">
                 <h1>{{ wallet3.balance }}</h1>
                 <img :src="Pointsbi">
             </div>
         </div>
+
+        <div class="exchange">
+            <van-field v-model="amount" class="fieldbox" placeholder="Exchange amount for points (10 Points = 1 Rupee)">
+                <template #button>
+                    <van-button size="small" type="primary" color="#ff880c" @click="exchange"
+                        style="border-radius:8px;padding: 1rem 0.6rem;height: 3rem;">exchange</van-button>
+                </template>
+            </van-field>
+        </div>
         <div class="mall-bottom">
             <span class="part">Points product</span>
             <div class="product">
                 <div v-for="(item, idx) in tableData" class="news">
-                    <img :src="imgFlag(item.icon)">
-                    <h2>{{ item.name }}</h2>
-                    <ul>
-                        <li>
-                            <p>Points redemption</p><span>{{ item.price }}</span>
-                        </li>
-                        <li>
-                            <p>Daily earnings</p><span> {{ cutOutNum((item.rate / 100) * item.price, 2) }} RS</span>
-                        </li>
-                        <li>
-                            <p>Total revenue</p><span style="color:#000;"> {{ cutOutNum(((item.rate / 100) * item.price)
-                                * item.days, 2) }} RS</span>
-                        </li>
-                        <li>
-                            <p>The Time</p><span style="color:#000;">{{ item.days }} Days</span>
-                        </li>
+                    <div class="imgs">
+                        <img :src="imgFlag(item.icon)">
+                    </div>
+                    <div style="padding: 0 0.4rem 0.45rem;">
+                        <h2>{{ item.name }}</h2>
+                        <ul>
+                            <li>
+                                <p>Points redemption</p><span>{{ item.price }}</span>
+                            </li>
+                            <li>
+                                <p>Revenue days</p><span>{{ item.days }} Days</span>
+                            </li>
+                            <li>
+                                <p>Daily earnings</p><span> {{ cutOutNum((item.rate / 100) * item.price, 2) }} RS</span>
+                            </li>
+                            <li>
+                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days, 2) }}
+                                    RS</span>
+                            </li>
 
-                        <li v-if="item.kc > 0">
-                            <p>Stock</p><span style="color:#000;">{{ item.kc }} </span>
-                        </li>
+                            <li v-if="false">
+                                <p>Stock</p><span style="color:#000;">{{ item.kc }} </span>
+                            </li>
 
-                    </ul>
-                    <button @click="getProjectDetail(item)" type="button">Exchange</button>
+                        </ul>
+                        <div class="obtain">
+                            <p>{{ item.price }} points</p>
+                            <button @click="getProjectDetail(item)" type="button">+</button>
+                        </div>
+
+                    </div>
+
                 </div>
 
             </div>
         </div>
-        </div>
+
 
         <MyTab></MyTab>
     </div>
 </template>
 <script lang="ts">
 //import { alert, lang } from "../../global/common";
-import { defineComponent, ref, reactive, onMounted } from 'vue';
+import { defineComponent, ref, reactive, onMounted, computed } from 'vue';
 import { Button, Form, Field, CellGroup } from 'vant';
 import { Icon } from 'vant';
 import { _alert, lang, getSrcUrl, goRoute, cutOutNum } from "../../global/common";
@@ -74,205 +92,201 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import Pointsbi from "../../assets/index/Pointsbi.png";
+import Goldenegg from "../../assets/index/Goldenegg.png";
+
+const router = useRouter()
+
+const amount = ref('');
+const user = ref({})
+const wallet3 = ref({})
+const tableData = ref<any>({})
+
+
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
-const router = useRouter()
-// const tableData = ref<any>({})
-const tableData = ref([
-    {
-        icon: 'path/to/your/icon1.png',
-        title: 'Project A',
-        pointsRedemption: '100 Points',
-        dailyEarnings: '5',
-        rate: 10, // Assume a 10% rate
-        price: 1000, // Assume a price of 1000
-        days: 30, // Total days
-        kc: 50 // Stock
-    },
-    // Add more items as needed...
-])
-const Details = () => {
-    router.push({ path: '/balancelog/1019' })
-}
-const linkback = () => {
-    router.push({ path: '/' })
-}
+
 const getProjectDetail = (item: any) => {
     router.push({ name: 'Project_detail', params: { pid: item.gsn } })
 }
-const user = ref({})
-const wallet3 = ref({})
+
 onMounted(() => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
-        http({
-            url: 'c=User&a=index'
-        }).then((res: any) => {
-            user.value = res.data.user
-            wallet3.value = res.data.wallet3
+    http({
+        url: 'c=User&a=index'
+    }).then((res: any) => {
+        user.value = res.data.user
+        wallet3.value = res.data.wallet3
 
-        })
-    }, delayTime)
+    })
 
-    setTimeout(() => {
-        http({
-            url: 'c=Product&a=list&cid=1019',
-        }).then((res: any) => {
-            if (res.code != 1) {
-                _alert({
-                    type: 'error',
-                    message: res.msg,
-                    onClose: () => {
-                        router.go(-1)
-                    }
-                })
-                return
-            }
-            // tableData.value = res.data.list
-        })
-    }, delayTime)
+    http({
+        url: 'c=Product&a=list&type=pointshop',
+
+    }).then((res: any) => {
+        if (res.code != 1) {
+            _alert({
+                type: 'error',
+                message: res.msg,
+                onClose: () => {
+                    router.go(-1)
+                }
+            })
+            return
+        }
+        tableData.value = res.data.list
+    })
 });
 </script>
-<style scoped>
+<style lang="scss" scoped>
 .PointsMall {
     background: #84973b;
-    height: 100%;
+    min-height: 100%;
     padding: 0 1rem;
-}
 
-.content {
-    height: 8.65rem;
-    margin: 0 auto;
-    padding: 1rem;
-    box-sizing: border-box;
-    border-radius: 10px;
-    background: rgb(255, 247, 225);
-    display: flex;
-    align-items: center;
-}
+    .content {
+        height: 8.65rem;
+        margin: 0 auto;
+        padding: 1rem;
+        box-sizing: border-box;
+        border-radius: 10px;
+        background: #fff7e1;
+        display: flex;
+        align-items: center;
 
-.content .left {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    flex: 1;
-}
+        .left {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex: 1;
+        }
 
-.content img {
-    width: 6.8rem;
-    vertical-align: middle;
-    display: inline-block;
-    border-radius: 8rem;
-}
+        img {
+            width: 6.8rem;
+            vertical-align: middle;
+            display: inline-block;
+            border-radius: 8rem;
+        }
 
-.content h1 {
-    text-align: center;
-    font-size: 2.5rem;
-    margin-top: 0.5rem;
-    color: rgb(255, 136, 12);
-}
+        h1 {
+            text-align: center;
+            font-size: 2.5rem;
+            margin-top: 0.5rem;
+            color: rgb(255, 136, 12);
+        }
+    }
 
-.record {
-    margin-top: 1rem;
-    padding-top: 16px;
-    border-top: 1px solid rgba(255, 255, 255, 0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
+    .exchange {
+        margin-top: 1rem;
 
-.record img {
-    width: 20px;
-}
+        .van-cell {
+            padding: 0;
+            padding-left: 0.5rem;
+            border-radius: 8px;
+        }
 
-.record p {
-    display: inline-block;
-    font: 14px/16px '微软雅黑';
-}
+        :deep(.van-field__control::-webkit-input-placeholder) {
+            // width: 5rem;
+            font-size: 10px;
+        }
+    }
 
-.record button {
-    width: 70px;
-    height: 18px;
-    border-radius: 10px;
-    margin-left: 1.675rem;
-    box-shadow: 0px 3px 3px 0px rgb(0 0 0 / 24%);
-    border: 1px solid #f06404;
-    background: linear-gradient(to top, #ED1A1F, #FFC10E);
-    font: 12px/14px '微软雅黑';
-}
 
-.mall-bottom {
-    bottom: 100px;
-    text-align: center;
-}
+    .mall-bottom {
+        padding-bottom: 4rem;
 
-.mall-bottom .part {
-    display: inline-block;
-    width: 142px;
-    border-left: 3px solid rgb(245, 159, 54);
-    padding-left: 0.4rem;
-    margin: 1rem 0;
-    color: rgb(245, 159, 54);
-    font-weight: bold;
-    display: flex;
-}
+        .part {
+            width: 142px;
+            border-left: 3px solid rgb(245, 159, 54);
+            padding-left: 0.4rem;
+            margin: 1rem 0;
+            color: rgb(245, 159, 54);
+            font-weight: bold;
+            display: flex;
+        }
 
-.mall-bottom .product {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    background: #84973b;
-}
+        .product {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            background: #84973b;
 
-.mall-bottom .news {
-    width: 40%;
-    height: 80%;
-    padding: 12px;
-    margin: 0 auto;
-    margin-bottom: 24px;
-    border-radius: 10px;
-    background-color: #fff;
-    text-align: center;
-}
+            .news {
+                width: 48%;
+                height: 80%;
+                // padding: 10px 6px;
 
-.mall-bottom .news img {
-    width: 96%;
-    margin: 4px auto;
-}
+                margin-bottom: 16px;
+                border-radius: 10px;
+                background-color: #fff;
+                text-align: center;
 
-.mall-bottom .news h2 {
-    font: 18px/30px '微软雅黑';
-    color: #64523e;
-    margin: 10px auto;
-    font-weight: bold;
+                .imgs {
+                    background: #fff7e1;
+                    border-radius: 8px 8px 0 0;
+                    display: flex;
+                    justify-content: center;
 
-}
+                    img {
+                        width: 10rem;
+                        height: 8.8rem;
+                    }
 
-.mall-bottom .news li {
-    text-align: left;
-    font: 12px/18px '微软雅黑';
-    color: #000;
-}
+                }
 
-.mall-bottom .news p {
-    display: inline-block;
-}
+                h2 {
+                    font: 16px/24px '微软雅黑';
+                    color: #002544;
+                    margin: 4px 0;
+                    font-weight: bold;
+                    text-align: left;
+                }
 
-.mall-bottom .news span {
-    float: right;
-    font: 12px/18px '微软雅黑';
-    color: rgb(242, 100, 34);
-}
+                li {
+                    text-align: left;
+                    font: 0.675rem/16px '微软雅黑';
+                    color: #000;
+                    display: flex;
+                    justify-content: space-between;
 
-.mall-bottom button {
-    width: 92%;
-    height: 30px;
-    font: bold 16px/24px '微软雅黑';
-    border-radius: 20px;
-    color: #fff;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
-    border: none;
-    margin-top: 16px;
+                    p {
+                        display: inline-block;
+                        color: #aaa;
+                    }
+
+                    span {
+                        font: bold 0.625rem/16px '微软雅黑';
+                        color: #84973b;
+                    }
+                }
+
+                .obtain {
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    margin-top: 0.2rem;
+
+                    p {
+                        color: #002544;
+                        font-size: 16px;
+                        font-weight: bold;
+                    }
+
+                    button {
+                        width: 20%;
+                        height: 30px;
+                        font-size: 26px;
+                        border-radius: 4px;
+                        color: #fff;
+                        background: #84973b;
+                        border: none;
+                    }
+                }
+
+            }
+
+        }
+
+    }
+
 }
 </style>

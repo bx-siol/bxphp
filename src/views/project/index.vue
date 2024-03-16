@@ -6,7 +6,7 @@
       </template>
     </Nav>
     <div class="projectWrapper">
-      <Projects /> 
+      <Projects />
 
       <!-- <van-tabs v-model:active="active" class="projectTab">
         <van-tab name="0" title="PRODUCT">
@@ -80,6 +80,12 @@ onMounted(() => {
   background: #84973b;
   width: 100%;
   overflow-x: hidden;
+
+  :deep(.van-nav-bar__title) {
+    .alter {
+      font-size: 18px;
+    }
+  }
 
   .projectWrapper {
     padding: 0 1.02rem;

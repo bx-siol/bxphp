@@ -31,7 +31,7 @@
             <span v-if="info.cid == 1019"> Points</span>
             <span style="white-space: nowrap;color: #002544;" v-else>{{ t('小时收益') }}</span>
           </div>
-          <div class="dailyincome">
+          <div class="dailyincome" v-if="false">
             <span class="bold">₹{{ cutOutNum(detailData?.dailyIncome, 2) }}</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('日收益') }} </span>
           </div>
@@ -40,14 +40,14 @@
             <span style="white-space: nowrap;color: #002544;">{{ t('总收益') }} </span>
           </div>
 
-          <div class="totalrevenue" v-if="false">
+          <div class="totalrevenue">
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
               100, 1) }}%</span>
-            <span>{{ t('利润回报') }} </span>
+            <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
-          <div class="dailyincome" v-if="false">
+          <div class="dailyincome">
             <span class="bold">{{ info.days }} Day</span>
-            <span>{{ t('投资周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;">{{ t('投资周期') }} </span>
           </div>
           <div class="dailyincome" v-if="false">
             <span class="bold">VIP{{ 1 }} </span>
@@ -502,6 +502,7 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+
     .describe {
       width: 3rem;
       height: 3rem;
@@ -548,7 +549,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: space-around;
-    font-size: 0.8rem;
+    font-size: 0.685rem;
     position: relative;
     padding: 0.5rem 0;
     color: #4d4d4d;
@@ -565,7 +566,7 @@ onMounted(() => {
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      padding: 0.8rem;
+      padding: 0.8rem 0.2rem;
 
       & span:nth-child(1) {
         // display: inline-block;
