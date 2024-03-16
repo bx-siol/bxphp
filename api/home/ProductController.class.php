@@ -37,6 +37,7 @@ class ProductController extends BaseController
 			updateWalletBalanceAndLog($pageuser['id'], -$point, 3, 1019, 'transforms');
 			updateWalletBalanceAndLog($pageuser['id'], $point / 10, 2, 1019, 'transforms');
 			Db::commit();
+			$msg = "Operation successful";
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
