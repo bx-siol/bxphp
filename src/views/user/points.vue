@@ -14,7 +14,7 @@
         </div>
 
         <div class="exchange">
-            <van-field v-model="dataForm.points" class="fieldbox"
+            <van-field type="digit" v-model="dataForm.points" class="fieldbox"
                 placeholder="Exchange amount for points (10 Points = 1 Rupee)">
                 <template #button>
                     <van-button size="small" type="primary" color="#ff880c" @click="exchangePoints"
@@ -73,7 +73,7 @@
 import { defineComponent, ref, reactive, onMounted, computed } from 'vue';
 import { Button, Form, Field, CellGroup } from 'vant';
 import { Icon } from 'vant';
-import { _alert, lang, getSrcUrl, goRoute, cutOutNum } from "../../global/common";
+import { _alert, lang, _showloading, _clearloading, getSrcUrl, goRoute, cutOutNum } from "../../global/common";
 import MyNav from "../../components/Nav.vue";
 import MyTab from "../../components/Tab.vue";
 import http from "../../global/network/http";
@@ -115,41 +115,48 @@ const getProjectDetail = (item: any) => {
 
 
 const dataForm = reactive({
-    points: ''
+    points: 0
 })
 
 
 const exchangePoints = () => {
-
+    if (dataForm.points < 10 || dataForm.points % 10 !== 0) {
+        _alert("Points must be greater than 10 and divisible by 10");
+        return;
+    }
+    _showloading();//开始加载动画
     http({
         url: 'c=Product&a=transforms',
         data: {
             mp: dataForm.points,
         }
     }).then((res: any) => {
-        if (res.code != 1) {
-            _alert(res.msg)
-            return
-        };
-        _alert(res.msg)
-
+        setTimeout(() => {
+            _clearloading();
+            setTimeout(() => {
+                if (res.code != 1) {
+                    _alert(res.msg)
+                    return
+                };
+                _alert(res.msg, loadPoint());
+            }, 500);
+        }, 1000);
     })
 };
 
-
-
-onMounted(() => {
+const loadPoint = () => {
     http({
         url: 'c=User&a=index'
     }).then((res: any) => {
         user.value = res.data.user
         wallet3.value = res.data.wallet3
-
     })
+}
 
+const init = () => {
+    loadPoint();
     http({
         url: 'c=Product&a=list&type=pointshop',
-
     }).then((res: any) => {
         if (res.code != 1) {
             _alert({
@@ -163,6 +170,9 @@ onMounted(() => {
         }
         tableData.value = res.data.list
     })
+}
+onMounted(() => {
+    init();
 });
 </script>
 <style lang="scss" scoped>
