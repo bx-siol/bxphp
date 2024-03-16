@@ -1,9 +1,42 @@
 import store from '../store'
 import router from "../router";
 import { Toast, Dialog, ImagePreview } from "vant";
-
+import http from "../global/network/http";
 import Config from "./interface/config";
 import ClipboardJS from "clipboard";
+
+export const _httpByLoading = (url: string, data: any,
+    callback?: (res: any, toast: { clear: () => void, setMessage: (message: string) => void }) => void,
+    errortime: number = 3000) => {
+    // 显示加载toast
+    const toast = Toast.loading({
+        message: "LOADING...",
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 3000,
+        className: 'toastBox',
+        overlay: true,
+    });
+    // 执行http请求
+    http({ url: url, data: data }).then((res: any) => {
+        // 设置延迟，模拟加载时间
+        setTimeout(() => {
+            // 调用callback，并提供一个对象，使调用者能够控制Toast
+            // 包括清除和更新消息的方法
+            callback?.(res, {
+                clear: () => toast.clear(),
+                setMessage: (message: string) => {
+                    // 更新Toast消息的建议方法
+                    toast.message = message;
+                }
+            });
+            // 设置额外延迟来清除Toast
+            setTimeout(() => {
+                toast.clear();
+            }, errortime);
+        }, 1000);
+    });
+}
 
 export const _alert = (options: any, callback: any = null, type: number = 0) => {
 
@@ -20,6 +53,7 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 className: 'toastBox',
                 message: message,
                 forbidClick: true,
+                overlay: true,
                 loadingType: 'spinner',
                 onClose: () => {
                     if (callback != null) callback()
@@ -32,6 +66,7 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 className: 'toastBox',
                 message: message,
                 forbidClick: true,
+                overlay: true,
                 loadingType: 'spinner',
                 onClose: () => {
                     if (callback != null) callback()
@@ -44,6 +79,7 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 className: 'toastBox',
                 message: message,
                 forbidClick: true,
+                overlay: true,
                 loadingType: 'spinner',
                 onClose: () => {
                     if (callback != null) callback()
@@ -69,33 +105,23 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
     }
 }
 
-// export const _alert = (options: any) => {
-//     if (typeof (options) == 'string') {
-//         options = lang(options)
-//         Toast({
-//             message: options,
-//             className: 'toastBox',
-//             duration: 3500,
-//         })
-//     } else {
-//         let def = {
-//             message: 'System Upgrade',
-//             // icon:'info-o',
-//             overlay: true,
-//             overlayStyle: { background: 'rgba(0,0,0,0.4)' },
-//             className: 'toastBox',
-//             duration: 3000,
-//             closeOnClick: true,
-//             closeOnClickOverlay: true,
-//             transition: 'slide-enter',
-//             onOpened: () => { },
-//             onClose: () => { }
-//         }
-//         let opt = Object.assign(def, options)
-//         opt.message = lang(opt.message)
-//         Toast(opt);
-//     }
-// }
+export const _clearloading = (callback: any = null) => {
+    Toast.clear();
+    if (callback != null) callback()
+}
+export const _showloading = (callback: any = null) => {
+    Toast.loading({
+        duration: 0,
+        overlay: true,
+        className: 'toastBox',
+        message: "LOADING...",
+        forbidClick: true,
+        loadingType: 'spinner',
+        onClose: () => {
+            if (callback != null) callback()
+        }
+    });
+}
 
 export const showImg = (src: string) => {
     Dialog.alert({
@@ -143,12 +169,21 @@ export const getZero = (data: any) => {
 }
 
 //获取资源全路径
-export const getSrcUrl = (path: string, img: number): string => {
+// export const getSrcUrl = (path: string): string => {
+//     if (!path) {
+//         return ''
+//     }
+//     path = path.replace(/^\/|\/$/g, '');
+//     let url = store.state.config.img_url + '/' + path
+//     return url
+// }
+export const getSrcUrl = (path: string, img: number = 0): string => {
     if (!path) {
         return ''
     }
     path = path.replace(/^\/|\/$/g, '');
     let url = location.origin + '/' + path
+
     return url
 }
 
