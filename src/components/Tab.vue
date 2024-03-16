@@ -28,8 +28,8 @@ import { ref, defineProps, watch, onMounted } from "vue";
 import { useStore } from "vuex";
 import home from "../assets/tab/ft11.png";
 import homeactive from "../assets/tab/ft11-on.png";
-import prizes from "../assets/tab/ft33.png";
-import prizesactive from "../assets/tab/ft33-on.png";
+import prizes from "../assets/tab/prizes.png";
+import prizesactive from "../assets/tab/prizesactive.png";
 import project from "../assets/tab/ft22.png";
 import projectactive from "../assets/tab/ft22-on.png";
 
@@ -109,10 +109,10 @@ const tabs: Tab[] = [
         path: '/project'
     },
     {
-        text: t('福利'),
+        text: t('积分'),
         icon: prizes,
         iconOn: prizesactive,
-        path: '/gift/lottery/a3d044b074d37a89'
+        path: '/points'
     },
     // {
     //     text: t('利润'),

@@ -1,22 +1,15 @@
 <template>
     <div class="PointsMall">
-        <!-- <MyNav leftText='' style="background-color:rgb(255, 99, 22);"></MyNav> -->
-        <div class="mall-top">
-            <div class="return">
-                <van-icon @click="linkback()" style="color:#fff;margin-left: 1rem;" name="arrow-left" />
-                <p>Points Mall</p>
-            </div>
-        </div>
-        <div class="content">
+        <MyNav leftText=''>
+            <template #left>
+                <div></div>
+            </template>
+        </MyNav>
+        <div v-if="false">
+            <div class="content">
             <div class="left">
-                <img :src="imgFlag(user.headimgurl)">
-                <span>{{ user.account }}</span>
-            </div>
-            <h1>{{ wallet3.balance }}</h1>
-            <div class="record">
-                <img src="../../assets/rs.png">
-                <p>Points redemption record</p>
-                <button type="reset" @click="Details">Details</button>
+                <h1>{{ wallet3.balance }}</h1>
+                <img :src="Pointsbi">
             </div>
         </div>
         <div class="mall-bottom">
@@ -33,8 +26,8 @@
                             <p>Daily earnings</p><span> {{ cutOutNum((item.rate / 100) * item.price, 2) }} RS</span>
                         </li>
                         <li>
-                            <p>Total revenue</p><span style="color:#000;"> {{ cutOutNum(((item.rate / 100) * item.price) *
-                                item.days, 2) }} RS</span>
+                            <p>Total revenue</p><span style="color:#000;"> {{ cutOutNum(((item.rate / 100) * item.price)
+                                * item.days, 2) }} RS</span>
                         </li>
                         <li>
                             <p>The Time</p><span style="color:#000;">{{ item.days }} Days</span>
@@ -50,6 +43,8 @@
 
             </div>
         </div>
+        </div>
+
         <MyTab></MyTab>
     </div>
 </template>
@@ -78,13 +73,25 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
-import rs from "../../assets/rs.png";  //   ../../assets/pointsbg.png
+import Pointsbi from "../../assets/index/Pointsbi.png";
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
 const router = useRouter()
-const tableData = ref<any>({})
-
+// const tableData = ref<any>({})
+const tableData = ref([
+    {
+        icon: 'path/to/your/icon1.png',
+        title: 'Project A',
+        pointsRedemption: '100 Points',
+        dailyEarnings: '5',
+        rate: 10, // Assume a 10% rate
+        price: 1000, // Assume a price of 1000
+        days: 30, // Total days
+        kc: 50 // Stock
+    },
+    // Add more items as needed...
+])
 const Details = () => {
     router.push({ path: '/balancelog/1019' })
 }
@@ -122,71 +129,48 @@ onMounted(() => {
                 })
                 return
             }
-            tableData.value = res.data.list
+            // tableData.value = res.data.list
         })
     }, delayTime)
 });
 </script>
 <style scoped>
-.mall-top {
-    /* background-image: url('../../assets/pointsbg.png'); */
-    background-color: #64523e;
-    height: 22vh;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    color: #fff;
-    font-weight: bold;
-
-}
-
-.return {
-    padding-top: 18px;
-    display: flex;
-}
-
-.return span {
-    margin-left: 8px;
-    vertical-align: top;
-}
-
-.return p {
-    margin: 0 auto;
+.PointsMall {
+    background: #84973b;
+    height: 100%;
+    padding: 0 1rem;
 }
 
 .content {
-    height: 180px;
-    width: 90%;
+    height: 8.65rem;
     margin: 0 auto;
-    padding: 5px;
+    padding: 1rem;
     box-sizing: border-box;
-    box-shadow: 0px 0px 22px 4px rgb(0 0 0 / 60%);
     border-radius: 10px;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
-    position: relative;
-    top: -7.6em;
-    color: #fff;
+    background: rgb(255, 247, 225);
+    display: flex;
+    align-items: center;
+}
+
+.content .left {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
 }
 
 .content img {
-    width: 36px;
-    margin-right: 10px;
+    width: 6.8rem;
     vertical-align: middle;
     display: inline-block;
     border-radius: 8rem;
 }
 
-.content .left {
-    margin: 10px 0 0 8px;
-}
-
-.content span {
-    font: bold 14px/36px'微软雅黑';
-}
-
 .content h1 {
     text-align: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     margin-top: 0.5rem;
+    color: rgb(255, 136, 12);
 }
 
 .record {
@@ -219,26 +203,26 @@ onMounted(() => {
 }
 
 .mall-bottom {
-    position: relative;
     bottom: 100px;
     text-align: center;
-    padding: 16px;
 }
 
 .mall-bottom .part {
     display: inline-block;
     width: 142px;
-    border-bottom: 3px solid #64523e;
-    padding-bottom: 3px;
-    margin-bottom: 15px;
-    color: #64523e;
+    border-left: 3px solid rgb(245, 159, 54);
+    padding-left: 0.4rem;
+    margin: 1rem 0;
+    color: rgb(245, 159, 54);
     font-weight: bold;
+    display: flex;
 }
 
 .mall-bottom .product {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    background: #84973b;
 }
 
 .mall-bottom .news {
@@ -249,7 +233,6 @@ onMounted(() => {
     margin-bottom: 24px;
     border-radius: 10px;
     background-color: #fff;
-    box-shadow: 0px 0px 12px 2px rgb(225, 225, 225);
     text-align: center;
 }
 

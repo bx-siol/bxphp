@@ -8,13 +8,10 @@
         </div>
         <div class="list_bottom">
             <div v-for="(item, index) in GoodsList" :key="index" class="listfor">
-
                 <div style="width:30%;">{{ item.goods_name }}</div>
                 <div style="width:26%;;">{{ item.price }} RS</div>
                 <div style="width:20%;" v-if="item.total_days < item.days">{{ item.total_days }}</div>
                 <div style="width:20%;" v-else>Finished</div>
-
-
             </div>
         </div>
     </div>

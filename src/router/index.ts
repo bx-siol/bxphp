@@ -88,7 +88,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/project',
         name: 'Project',
         meta: {
-            title: 'Project',
+            title: 'syngenta',
             needLogin: false
         },
         component: () => import('../views/project/index.vue')

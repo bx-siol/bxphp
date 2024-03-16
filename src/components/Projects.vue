@@ -1,6 +1,6 @@
 <template>
   <div class="Projects">
-    <van-tabs v-model:active="active" swipe-threshold="3">
+    <van-tabs v-model:active="active" swipe-threshold="2" animated>
       <div v-for="(itemc, indexc) in newsdata">
         <van-tab :key="indexc" :title="itemc.name"
           v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name && itemc.id != 1019) > -1">
@@ -199,27 +199,31 @@ onMounted(() => {
     }
 
     .van-tab__text {
-      border: none !important;
-      background-color: transparent !important;
-      color: #b3b3b3 !important;
+      color: #fff !important;
+      background: #666 !important;
+      border: 1px solid #666 !important;
       padding: 0.3rem 0.4rem;
       white-space: nowrap;
-      width: 6rem;
+      width: 6.85rem;
       border-radius: 1rem;
       text-align: center;
+      font-weight: bold;
+      overflow: hidden;   
     }
   }
 
   :deep(.van-tab--active) {
     .van-tab__text {
-      border: none !important;
-      background-color: transparent !important;
-      color: #fff !important;
+      color: #84973b !important;
+      background: #fff !important;
+      border: 1px solid #fff !important;
       padding: 0.3rem 0.4rem;
       white-space: nowrap;
-      width: 6rem;
+      width: 6.85rem;
       border-radius: 1rem;
       text-align: center;
+      font-weight: bold;
+      overflow: hidden;
     }
   }
 
@@ -230,6 +234,7 @@ onMounted(() => {
 
   :deep(.van-tabs__nav--line) {
     padding-top: 0.425rem;
+    background: #84973b;
   }
 
 
@@ -250,7 +255,7 @@ onMounted(() => {
         flex-direction: column;
         align-items: center;
         position: relative;
-
+        width: 100%;
         .basicItemLeft {
           width: 8rem;
           height: 6rem;
@@ -330,6 +335,7 @@ onMounted(() => {
               justify-content: center;
               align-items: flex-start;
               flex-direction: column;
+
               &>div {
                 margin-bottom: 0.3125rem;
                 width: 100%;

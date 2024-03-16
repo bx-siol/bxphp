@@ -85,7 +85,7 @@
                   <van-image :src="m8"></van-image>
                 </a> -->
             </div>
-            <div class="u-flex">
+            <div class="u-flex" v-if="false">
               <div @click="onLink({ name: 'Ext_task', params: { id: item.id } })"
                 style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index">
                 <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>

@@ -1,6 +1,6 @@
 <template>
   <div class="Projects">
-    <van-tabs v-model:active="active" type="card" :border="false" background="" title-active-color="#fff"
+    <van-tabs v-model:active="active" type="card" :border="false" animated title-active-color="#fff"
       title-inactive-color="#fff">
       <div>
         <van-tab :key="alltab" :title="t('全部')" v-if="false">
@@ -90,7 +90,7 @@
                   <div v-for="(item, index) in tableDatao.list" :key="index">
                     <div class="back">
                       <div class="projectItem">
-                        <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;flex-direction: column;">
+                        <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;">
                           <div class="head">
                             <img :src="imgFlag(item.icon)" class="productImg" />
                             <div class="addRs" v-if="false">₹{{ cutOutNum(item.price) }}</div>
@@ -128,22 +128,22 @@
 
                             </div>
                           </div>
-                          <div class="receive">
-                            <template v-if="item.status == 1">
-                              <template v-if="item.receive == 1">
-                                <van-button @click="onReceive(item)" round size="mini" class="receiveBtn" style=""
-                                  type="success">GET</van-button>
-                              </template>
-                              <template v-else>
-                                <van-button @click="onReceiveNo(item)" round size="mini" class="receiveBtnNo" style=""
-                                  type="success">{{ t('明天领取') }}</van-button>
-                              </template>
+                        </div>
+                        <div class="receive">
+                          <template v-if="item.status == 1">
+                            <template v-if="item.receive == 1">
+                              <van-button @click="onReceive(item)" round size="mini" class="receiveBtn" style=""
+                                type="success">GET</van-button>
                             </template>
                             <template v-else>
-                              <van-button round size="mini" class="receiveto" style="" type="successNo">{{ t('结束')
-                              }}</van-button>
+                              <van-button @click="onReceiveNo(item)" round size="mini" class="receiveBtnNo" style=""
+                                type="success">{{ t('明天领取') }}</van-button>
                             </template>
-                          </div>
+                          </template>
+                          <template v-else>
+                            <van-button round size="mini" class="receiveto" style="" type="successNo">{{ t('结束')
+                            }}</van-button>
+                          </template>
                         </div>
                       </div>
                     </div>
@@ -164,8 +164,8 @@
                     <div class="back">
 
                       <div class="projectItem">
-                        <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;flex-direction: column;">
-                          <div class="head">
+                        <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;">
+                          <div class="head"> 
                             <img :src="imgFlag(item.icon)" class="productImg" />
                             <div class="addRs" v-if="false">₹{{ cutOutNum(item.price) }}</div>
                           </div>
@@ -202,22 +202,22 @@
 
                             </div>
                           </div>
-                          <div class="receive">
-                            <template v-if="item.status == 1">
-                              <template v-if="item.receive == 1">
-                                <van-button @click="onReceive(item)" round size="mini" class="receiveBtn" style=""
-                                  type="success">GET</van-button>
-                              </template>
-                              <template v-else>
-                                <van-button @click="onReceiveNo(item)" round size="mini" class="receiveBtnNo" style=""
-                                  type="success">{{ t('明天领取') }}</van-button>
-                              </template>
+                        </div>
+                        <div class="receive">
+                          <template v-if="item.status == 1">
+                            <template v-if="item.receive == 1">
+                              <van-button @click="onReceive(item)" round size="mini" class="receiveBtn" style=""
+                                type="success">GET</van-button>
                             </template>
                             <template v-else>
-                              <van-button round size="mini" class="receiveto" style="" type="successNo">{{ t('结束')
-                              }}</van-button>
+                              <van-button @click="onReceiveNo(item)" round size="mini" class="receiveBtnNo" style=""
+                                type="success">{{ t('明天领取') }}</van-button>
                             </template>
-                          </div>
+                          </template>
+                          <template v-else>
+                            <van-button round size="mini" class="receiveto" style="" type="successNo">{{ t('结束')
+                            }}</van-button>
+                          </template>
                         </div>
 
                       </div>
@@ -457,7 +457,7 @@ onMounted(() => {
 .Projects /deep/.van-tabs__nav--card {
   border: none !important;
   background: none;
-  width: 80%;
+  width: 100%;
 }
 
 .Projects /deep/.van-tab--card {
@@ -468,18 +468,21 @@ onMounted(() => {
   background-color: transparent !important;
 }
 
+.Projects /deep/.van-tabs {
+  top: -1px;
+}
+
 .Projects /deep/.van-tabs__wrap {
   display: flex !important;
   justify-content: center;
   padding: 0.8rem 0 0.2rem;
   background-color: #84973b;
 }
-
-
 </style>
 <style lang="scss" scoped>
 .Projects {
-
+  padding: 0 1rem;
+  background: #84973b;
   color: #000;
 
   .van-tabs__nav--card {
@@ -506,41 +509,41 @@ onMounted(() => {
     }
 
     .van-tab__text {
-      border: none !important;
-      background-color: transparent !important;
-      color: #b3b3b3 !important;
+      color: #fff !important;
+      background: #666 !important;
+      border: 1px solid #666 !important;
       padding: 0.3rem 0.4rem;
       width: 6rem;
       border-radius: 1rem;
       text-align: center;
       white-space: nowrap;
-
+      font-weight: bold;
     }
   }
 
   :deep(.van-tab--active) {
     .van-tab__text {
-      border: none !important;
-      background-color: transparent !important;
-      color: #fff !important;
+      color: #84973b !important;
+      background: #fff !important;
+      border: 1px solid #fff !important;
       padding: 0.3rem 0.4rem;
       width: 6rem;
       border-radius: 1rem;
       text-align: center;
       white-space: nowrap;
-
+      font-weight: bold;
     }
   }
 
 
   .projectList {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 15px;
+    display: flex;
+    flex-direction: column;
 
     .back {
       border-radius: 1rem;
       margin-bottom: 1rem;
+
       // width: 10.258rem;
       .title {
         padding: 0.6rem 1.2rem;
@@ -565,7 +568,7 @@ onMounted(() => {
       .projectItem {
         background: #fff;
         border-radius: 8px;
-        padding:0.5rem 0.3rem;
+        padding: 0.5rem 1rem;
         display: flex;
         justify-content: space-around;
         align-items: center;
@@ -575,9 +578,10 @@ onMounted(() => {
           display: flex;
           align-items: center;
           justify-content: space-between;
-          width: 8rem;
-          height: 6rem;
-          margin: 0.675rem auto 0.875rem;
+          width: 6rem;
+          height: 5rem;
+          margin: 0 0.4rem 0.4rem 0;
+
           .productImg {
             max-width: 100%;
             max-height: 100%;
@@ -608,7 +612,7 @@ onMounted(() => {
 
         .info {
           color: #333;
-          padding: 0 10px;
+          width: 68%;
         }
       }
 
@@ -631,7 +635,7 @@ onMounted(() => {
 
         &>div {
           display: flex;
-          justify-content: flex-start;
+          justify-content: space-between;
           flex-direction: row;
           text-align: center;
           line-height: 15px;
@@ -686,44 +690,45 @@ onMounted(() => {
   }
 
   .receive {
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     color: #fff;
 
     .receiveBtn {
-      width: 8rem;
+      width: 100%;
       height: 1.2rem;
-      border-radius: 6px;
+      border-radius: 8px;
       margin-top: 0.2rem;
       padding: 0.875rem 0;
       background: #84973b;
       border: none;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: bold;
     }
 
     .receiveBtnNo {
-      width: 8rem;
+      width: 100%;
       height: 1.2rem;
-      border-radius: 6px;
+      border-radius: 8px;
       margin-top: 0.2rem;
       padding: 0.875rem 0;
       background: rgb(77, 77, 77);
       border: none;
-      font-size: 0.6rem;
+      font-size: 0.85rem;
       font-weight: bold;
     }
 
     .receiveto {
-      width: 8rem;
+      width: 100%;
       height: 1.2rem;
-      border-radius: 6px;
+      border-radius: 8px;
       margin-top: 0.2rem;
       padding: 0.875rem 0;
       background: rgb(77, 77, 77);
       border: none;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
       font-weight: bold;
     }
   }

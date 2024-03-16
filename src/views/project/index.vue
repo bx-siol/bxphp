@@ -6,15 +6,16 @@
       </template>
     </Nav>
     <div class="projectWrapper">
+      <Projects /> 
 
-      <van-tabs v-model:active="active" class="projectTab">
+      <!-- <van-tabs v-model:active="active" class="projectTab">
         <van-tab name="0" title="PRODUCT">
-          <Projects />
+          <Projects /> 
         </van-tab>
         <van-tab name="1" title="RECEIVE">
           <Purchase />
         </van-tab>
-      </van-tabs>
+      </van-tabs> -->
     </div>
 
   </div>
@@ -81,7 +82,7 @@ onMounted(() => {
   overflow-x: hidden;
 
   .projectWrapper {
-    padding: 0 1rem;
+    padding: 0 1.02rem;
     box-sizing: border-box;
     padding-bottom: 1.75rem;
 
