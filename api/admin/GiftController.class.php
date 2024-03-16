@@ -30,7 +30,7 @@ class GiftController extends BaseController
 
 			$randomNumber = mt_rand(0, count($prize_arr) -1);
             $prize = $prize_arr[$randomNumber];
-			writeLog('$prize' . $prize,'bobopay1');
+			writeLog('$prize' . json_encode($prize),'bobopay1');
 			ReturnToJson(1, '操作成功 更新用户数：' . $count);
 			if(empty($prize))
 			{
