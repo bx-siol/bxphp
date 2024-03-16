@@ -34,7 +34,7 @@
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.level }}</p>
                                     <p>{{ item.reg_time }}</p>
-                                    <p>{{ item.amount }}RS
+                                    <p>{{ item.assets }}RS
                                         <span class="plus">
                                             <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
                                         </span>
@@ -60,7 +60,7 @@
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.level }}</p>
                                     <p>{{ item.reg_time }}</p>
-                                    <p>{{ item.amount }}RS
+                                    <p>{{ item.assets }}RS
                                         <span class="plus">
                                             <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
                                         </span>
@@ -86,7 +86,7 @@
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.level }}</p>
                                     <p>{{ item.reg_time }}</p>
-                                    <p>{{ item.amount }}RS
+                                    <p>{{ item.assets }}RS
                                         <span class="plus">
                                             <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
                                         </span>
