@@ -41,7 +41,8 @@
                           </div>
                           <div class="totalrevenue">
                             <span>Total revenue</span>
-                            <span style="color:#64503e">₹{{ cutOutNum(item.rate / 100 * item.price * item.days) }}</span>
+                            <span style="color:#64503e">₹{{ cutOutNum(item.rate / 100 * item.price * item.days)
+                              }}</span>
                           </div>
                           <div v-if="item.is_xskc == 1" class="totalrevenue">
                             <span>Current inventory</span>
@@ -140,27 +141,26 @@ const getProjectDetail = (item: any) => {
 onMounted(() => {
   //自己封装的接口请求方法 aiox
   const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
-    http({
-      //url 就是请求的地址
-      url: 'c=Product&a=list',
-    }).then((res: any) => {
-      if (res.code != 1) {
-        _alert({
-          type: 'error',
-          message: res.msg,
-          onClose: () => {
-            router.go(-1)
-          }
-        })
-        return
-      }
-
-      newsdata.value = res.data.category_arr;
-      tableData.value = res.data.list
-      loadingShow.value = false
-    })
-  }, delayTime)
+  // setTimeout(() => {
+  http({
+    //url 就是请求的地址
+    url: 'c=Product&a=list',
+  }).then((res: any) => {
+    if (res.code != 1) {
+      _alert({
+        type: 'error',
+        message: res.msg,
+        onClose: () => {
+          router.go(-1)
+        }
+      })
+      return
+    }
+    newsdata.value = res.data.category_arr;
+    tableData.value = res.data.list
+    loadingShow.value = false
+  })
+  // }, delayTime)
 
 })
 </script>

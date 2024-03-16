@@ -216,17 +216,14 @@ const router = useRouter();
 const init = () => { };
 
 onMounted(() => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
-        http({
-            url: 'c=Service&a=GetService_Online&type=0',
-            data: {
-                type: 0
-            }
-        }).then((res: any) => {
-            service_arr.value = res.data.list
-        })
-    }, delayTime)
+    // const delayTime = Math.floor(Math.random() * 1000);
+    // setTimeout(() => {
+    http({
+        url: 'c=Service&a=GetService_Online&type=0'
+    }).then((res: any) => {
+        service_arr.value = res.data.list
+    })
+    // }, delayTime) 
 });
 </script>
 

@@ -22,10 +22,10 @@
                     <td>
                       <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
                         v-if="item.money != 0">{{
-                          item.money }} RS</div>
+        item.money }} RS</div>
                       <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
                         v-if="item.money == 0">{{ 100 -
-                          item.discount }}%</div>
+        item.discount }}%</div>
                       <p class="Exchange" @click="usefun(item)">{{ t('待使用') }}</p>
                     </td>
                   </tr>
@@ -112,23 +112,23 @@ const usefun = (item: any) => {
     location.href = location.origin + '/#/project?t=project'
   } else {
     // 'http://47.243.82.107:8288/api/?c=Coupon&a=exchange'
-    const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
-      http({
-        url: 'c=Coupon&a=exchange',
-        data: { id: item.id }
-      }).then((res: any) => {
-        if (res.code != 1) {
-          _alert(res.msg)
-          return
-        }
-        _alert({
-          type: 'success',
-          message: res.msg,
-          onClose: () => { }
-        })
+    // const delayTime = Math.floor(Math.random() * 1000);
+    // setTimeout(() => {
+    http({
+      url: 'c=Coupon&a=exchange',
+      data: { id: item.id }
+    }).then((res: any) => {
+      if (res.code != 1) {
+        _alert(res.msg)
+        return
+      }
+      _alert({
+        type: 'success',
+        message: res.msg,
+        onClose: () => { }
       })
-    }, delayTime)
+    })
+    // }, delayTime)
 
   }
   // alert(item);
@@ -140,7 +140,7 @@ const getProjectDetail = (item: any) => {
 
 
 </script>
- 
+
 <style lang="scss" scoped>
 .Projects {
   .detail {
@@ -322,7 +322,7 @@ const getProjectDetail = (item: any) => {
   }
 }
 </style>
-<style  scoped>
+<style scoped>
 .remark /deep/ .van-cell--clickable:active {
   background: #0000;
 }
