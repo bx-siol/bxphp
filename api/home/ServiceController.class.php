@@ -38,10 +38,12 @@ class ServiceController extends BaseController
 		if ($params["type"] != 0)
 			$where .= " and type={$params['type']} ";
 		$data = Db::table('ext_service')->where(" {$where} and (uid={$pageuser['pidg1']} or uid={$pageuser['pidg2']} ) ")
-			->field(['account', 'name', 'type', 'qrcode', 'remark'])->select();
+			->field(['account', 'name', 'type', 'qrcode', 'remark'])->select()->toArray();
+
 		if ($data == null || !$data) {
 			$data = Db::table('ext_service')->where(" {$where} and uid=1 ")
-				->field(['account', 'name', 'type', 'qrcode', 'remark'])->select();
+				->field(['account', 'name', 'type', 'qrcode', 'remark'])->select()->toArray();
+
 		}
 		$list = ['list' => $data];
 		ReturnToJson(1, 'ok', $list);
