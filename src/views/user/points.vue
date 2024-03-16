@@ -69,15 +69,15 @@
     </div>
 </template>
 <script lang="ts">
-//import { alert, lang } from "../../global/common";
 import { defineComponent, ref, reactive, onMounted, computed } from 'vue';
 import { Button, Form, Field, CellGroup } from 'vant';
 import { Icon } from 'vant';
-import { _alert, lang, _showloading, _clearloading, getSrcUrl, goRoute, cutOutNum } from "../../global/common";
+import { _alert, _httpByLoading, lang, _showloading, _clearloading, getSrcUrl, goRoute, cutOutNum } from "../../global/common";
 import MyNav from "../../components/Nav.vue";
 import MyTab from "../../components/Tab.vue";
 import http from "../../global/network/http";
 import { useRouter } from "vue-router";
+import Pointsbi from "../../assets/index/Pointsbi.png";
 export default defineComponent({
     components: {
         MyNav,
@@ -89,59 +89,35 @@ export default defineComponent({
 
     },
 })
-
 </script>
-
 <script lang="ts" setup>
-import Pointsbi from "../../assets/index/Pointsbi.png";
-import Goldenegg from "../../assets/index/Goldenegg.png";
-
 const router = useRouter()
-
-const amount = ref('');
 const user = ref({})
 const wallet3 = ref({})
 const tableData = ref<any>({})
-
-
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
-
 const getProjectDetail = (item: any) => {
     router.push({ name: 'Project_detail', params: { pid: item.gsn } })
 }
 
-
-
 const dataForm = reactive({
     points: 0
 })
-
-
 const exchangePoints = () => {
     if (dataForm.points < 10 || dataForm.points % 10 !== 0) {
         _alert("Points must be greater than 10 and divisible by 10");
         return;
     }
-    _showloading();//开始加载动画
-    http({
-        url: 'c=Product&a=transforms',
-        data: {
-            mp: dataForm.points,
-        }
-    }).then((res: any) => {
-        setTimeout(() => {
-            _clearloading();
-            setTimeout(() => {
-                if (res.code != 1) {
-                    _alert(res.msg)
-                    return
-                };
-                _alert(res.msg, loadPoint());
-            }, 500);
-        }, 1000);
-    })
+    _httpByLoading('c=Product&a=transforms', { mp: dataForm.points }, (res: any, toast) => {
+        if (res.code != 1) {
+            toast.setMessage(res.msg);
+            return;
+        };
+        toast.setMessage(res.msg);
+        loadPoint();
+    });
 };
 
 const loadPoint = () => {

@@ -1,9 +1,42 @@
 import store from '../store'
 import router from "../router";
 import { Toast, Dialog, ImagePreview } from "vant";
-
+import http from "../global/network/http";
 import Config from "./interface/config";
 import ClipboardJS from "clipboard";
+
+export const _httpByLoading = (url: string, data: any,
+    callback?: (res: any, toast: { clear: () => void, setMessage: (message: string) => void }) => void,
+    errortime: number = 3000) => {
+    // 显示加载toast
+    const toast = Toast.loading({
+        message: "LOADING...",
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 3000,
+        className: 'toastBox',
+        overlay: true,
+    });
+    // 执行http请求
+    http({ url: url, data: data }).then((res: any) => {
+        // 设置延迟，模拟加载时间
+        setTimeout(() => {
+            // 调用callback，并提供一个对象，使调用者能够控制Toast
+            // 包括清除和更新消息的方法
+            callback?.(res, {
+                clear: () => toast.clear(),
+                setMessage: (message: string) => {
+                    // 更新Toast消息的建议方法
+                    toast.message = message;
+                }
+            });
+            // 设置额外延迟来清除Toast
+            setTimeout(() => {
+                toast.clear();
+            }, errortime);
+        }, 1000);
+    });
+}
 
 export const _alert = (options: any, callback: any = null, type: number = 0) => {
 
