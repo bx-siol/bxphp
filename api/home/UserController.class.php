@@ -239,9 +239,8 @@ class UserController extends BaseController
 					foreach ($amountData as $te) 
 					{
 						if(isset($dicx[$key]))
-						{
-							
-						writeLog("value".$value .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
+						{							
+							writeLog("value". json_encode($value) .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
 							if(in_array($te["uid"], $value)){
 								$val = floatval($dicx[$key]);
 								$val += floatval($te["money"]);
