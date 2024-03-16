@@ -17,7 +17,7 @@
                         <van-button size="mini" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
                             <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
                                 @finish="onTimerFinish" />
-                            <span v-else>{{ t('发送') }}</span>
+                            <span v-else style="color:#c69c6d ;">{{ t('发送') }}</span>
                         </van-button>
                     </template>
                 </van-field>
