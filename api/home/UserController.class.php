@@ -234,6 +234,21 @@ class UserController extends BaseController
 			->group('uid')->having("sum(money) > 0")->select();
 			writeLog("amountData".json_encode($amountData),"bobopay1");
 
+			$dicx = array();
+			foreach ($dic as $key => $value)
+			{
+				writeLog("key".$key,"bobopay1");
+				if($item["id"] == $key){
+					foreach ($amountData as $te) 
+					{
+						if(in_array($te["uid"], $value))
+						{
+							$item["amount"] = $te["money"];
+						}
+					}
+				}
+			}
+
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
@@ -251,19 +266,7 @@ class UserController extends BaseController
 
 				if(count($amountData) > 0)
 				{
-					foreach ($dic as $key => $value)
-					{
-						writeLog("key".$key,"bobopay1");
-						if($item["id"] == $key){
-							foreach ($amountData as $te) 
-							{
-								if(in_array($te["uid"], $value))
-								{
-									$item["amount"] = $te["money"];
-								}
-							}
-						}
-					}
+					
 				}
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
