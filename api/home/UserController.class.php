@@ -195,7 +195,7 @@ class UserController extends BaseController
 			if($order_str)
 			{
 				$order_str =substr($order_str,0, strlen($order_str) - 1);
-				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
+				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(w1_money+w2_money) as assets')->group('uid')->select();
 			}
 
 			// $amountDate = array();
