@@ -7,7 +7,11 @@
         </MyNav>
         <div>
             <div class="big">
-                <van-image :src="Newsimg" class="newsimg"></van-image>
+                <van-swipe indicator-color="white" :autoplay="3000">
+                    <van-swipe-item v-for="item in covers">
+                        <img :src="imgFlag(item)" style="max-height: 200px;border-radius:6px;" />
+                    </van-swipe-item>
+                </van-swipe>
                 <div class="inform">
                     <img :src="bird">
                     <p class="title">News</p>
@@ -19,8 +23,7 @@
                     <template #default="{ list }">
                         <ul>
                             <li v-for="item in list" @click="onLink({ name: 'News_info', params: { id: item.id } })">
-                                <van-image :src="imgFlag(item.cover)" width="7rem" height="4rem"
-                                    class="imgs"></van-image>
+                                <van-image :src="imgFlag(item.cover)" width="7rem" height="4rem" class="imgs"></van-image>
                                 <div class="infoRight">
                                     <p class="titles" :style="{ color: '#3d3d3b', }">{{ item.title }}</p>
                                     <p class="desc" v-html="item.ndesc"></p>
@@ -39,28 +42,31 @@
 </template>
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { Image } from "vant";
+import { Image, Swipe, SwipeItem, } from "vant";
 import MyNav from "../../components/Nav.vue";
 import MyTab from "../../components/Tab.vue";
 import MyListBase from '../../components/ListBase.vue';
 import MyLoading from '../../components/Loading.vue';
 import bird from '../../assets/ico/bird.png'
+import MySwiper from '../../components/Swiper.vue'
 import Newsimg from '../../assets/img/Newsimg.png'
-
 import rewards from '../../assets/img/home/home-banner-3-1.png'
+import lbt1 from '../../assets/index/lbt1.jpg'
+import lbt2 from '../../assets/index/lbt2.jpg'
+import lbt3 from '../../assets/index/lbt3.jpg'
+import lbt4 from '../../assets/index/lbt4.jpg'
 
 export default defineComponent({
     name: "news",
     components: {
-        MyNav, MyListBase, MyLoading,
+        MyNav, MyListBase, MyLoading, MySwiper,
         [Image.name]: Image,
+        [Swipe.name]: Swipe,
+        [SwipeItem.name]: SwipeItem,
     }
 })
 </script>
 <script lang="ts" setup>
-import {
-    img_2
-} from '../../global/assets';
 import { getSrcUrl, goRoute } from "../../global/common";
 
 const onLink = (to: any) => {
@@ -70,14 +76,13 @@ const onLink = (to: any) => {
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
+const covers = ref([lbt1, lbt2, lbt3, lbt4])
 
 const pageRef = ref()
 const pageUrl = ref('c=News&a=list&s_cid=50')
 const loadingShow = ref(false)
 
-const tableData = ref({
-
-})
+const tableData = ref({})
 
 const onPageSuccess = (res: any) => {
     tableData.value = res.data
@@ -118,9 +123,10 @@ const onPageSuccess = (res: any) => {
 }
 
 .big .title {
-    margin: 1rem 0;
+    margin: 0.8rem 0;
     font-weight: bold;
     color: #64523e;
+    font-size: 20px;
 }
 
 .news_wrap {
@@ -142,14 +148,14 @@ const onPageSuccess = (res: any) => {
 }
 
 .infoRight .titles {
-    font-size: 1rem;
+    font-size: 1.05rem;
     font-weight: bold;
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 1;
-    line-height: 1.2em;
+    line-height: 1.4em;
     max-height: 2.4em;
 }
 

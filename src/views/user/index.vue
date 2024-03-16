@@ -11,7 +11,7 @@
                             <!-- <P style="color: #ff9900;">points: {{ wallet3.balance }}</P> -->
                         </div>
                         <div class="headico" @click="onAvatarChose">
-                            <van-image :src="imgFlag(user.headimgurl)" width="4.125rem" height="4.125rem"></van-image>
+                            <van-image :src="imgFlag(nestie)" width="4.125rem" height="4.125rem"></van-image>
                         </div>
                     </div>
                 </div>
@@ -137,6 +137,7 @@ import Balancewallet from "../../assets/img/user/Balancewallet.png";
 import coupon from "../../assets/img/user/coupon.png";
 import coupon2 from "../../assets/img/user/coupon2.png";
 import Service from "../../assets/img/user/Service.png";
+import nestie from '../../assets/img/home/nestie.jpg'
 
 import pay_pwd from "../../assets/img/user/pay_pwd.png";
 import { ico_106, img_telegram, img_whatsapp } from '../../global/assets';

@@ -71,7 +71,7 @@
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Purchase' })">
                   <van-image :src="m6"></van-image>
                 </a>
-                <a class="divs" href="javascript:;">
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'monthly' })">
                   <van-image :src="m7"></van-image>
                 </a>
                 <a class="divs" href="javascript:;" style="justify-content: flex-start;" @click="appdload">
