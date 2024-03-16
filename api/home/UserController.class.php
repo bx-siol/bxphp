@@ -230,7 +230,8 @@ class UserController extends BaseController
 			writeLog("dic".json_encode($dic),"bobopay1");
 			writeLog("amount_ids".$amount_ids,"bobopay1");
 
-			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')->group('uid')->select();
+			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')
+			->group('uid')->having("sum(money) > 0")->select();
 			writeLog("amountData".json_encode($amountData),"bobopay1");
 
 			foreach ($list as &$item) {
