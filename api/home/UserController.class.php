@@ -246,6 +246,8 @@ class UserController extends BaseController
 							$item["amount"] = $te["money"];
 						}
 					}
+				}else{
+					writeLog("value","bobopay1");
 				}
 			}
 
