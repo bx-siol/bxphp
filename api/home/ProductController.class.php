@@ -24,7 +24,7 @@ class ProductController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		$msg = "";
-		$point = floatval($params['m']);
+		$point = floatval($params['mp']);
 		if ($point <= 0)
 			ReturnToJson(-1, "Please enter the number of points");
 		if ($point <= 10)
