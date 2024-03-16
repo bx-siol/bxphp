@@ -242,9 +242,11 @@ class UserController extends BaseController
 					{
 						if(isset($dicx[$key]))
 						{
-							$val = $dicx[$key];
-							$val += $te["money"];
-							$dicx[$key] = $val;
+							if(in_array($te["uid"], $value)){
+								$val = $dicx[$key];
+								$val += $te["money"];
+								$dicx[$key] = $val;
+							}
 						}
 						else
 						{
