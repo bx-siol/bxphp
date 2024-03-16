@@ -56,9 +56,8 @@ class ProductController extends BaseController
 	}
 	public function _list()
 	{
-
 		$cpageSize = 200;
-		$pageuser = checkLogin();
+		checkLogin();
 		$params = $this->params;
 		$params['page'] = intval($params['page']);
 		if ($params['page'] < 1) {
@@ -66,18 +65,21 @@ class ProductController extends BaseController
 		}
 		$rediskey = RedisKeys::Goods . "list_{$params['page']}_";
 		$params['cid'] = intval($params['cid']);
-		$where = "1=1 and log.status>1 and log.status<99";
-		if ($params['type'] == "pointshop") {
-			$where .= " and log.pointshop ==1";
-			$rediskey .= "pointshop";
-		} else if ($params['cid']) {
-			$where .= " and log.cid={$params['cid']}";
-			$rediskey .= $params['cid'];
-		}
+		$where = " log.status>1 and log.status<99 ";
+
 		if (intval($params['ishot']) == 1) {
-			$where .= " and log.is_hot=1";
+			$where .= " and log.is_hot=1 ";
 			$rediskey .= 'is_hot';
 		}
+
+		if ($params['type'] == "pointshop") {
+			$where .= " and log.pointshop = 1 ";
+			$rediskey .= "pointshop";
+		} else if ($params['cid']) {
+			$where .= " and log.cid={$params['cid']} ";
+			$rediskey .= $params['cid'];
+		}
+
 		$count_item = $this->redis->get($rediskey . 'count');
 		if (!$count_item) {
 			$count_item = Db::table('pro_goods log')
@@ -111,6 +113,7 @@ class ProductController extends BaseController
 		}
 		$total_page = ceil($count_item['cnt'] / $cpageSize);
 		$return_data = [
+			'wher' => $where,
 			'list' => $list,
 			'count' => intval($count_item['cnt']),
 			'page' => $params['page'] + 1,
@@ -118,8 +121,6 @@ class ProductController extends BaseController
 			'limit' => $cpageSize,
 			'category_arr' => $category_arr,
 		];
-		if ($params['page'] < 2) {
-		}
 		ReturnToJson(1, 'ok', $return_data);
 	}
 
