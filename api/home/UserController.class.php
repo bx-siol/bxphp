@@ -226,10 +226,8 @@ class UserController extends BaseController
 				if($amount_ids)
 					$amount_ids = substr($amount_ids,1, strlen($amount_ids) - 2);
 			}
-			writeLog("dic".json_encode($dic),"bobopay1");
 			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')
 			->group('uid')->having("sum(money) > 0")->select();
-			writeLog("amountData".json_encode($amountData),"bobopay1");
 
 			$dicx = array();
 			if(count($dic) > 0){
@@ -237,14 +235,11 @@ class UserController extends BaseController
 				{				
 					foreach ($amountData as $te) 
 					{
-						writeLog("array_key_exists". json_encode($dicx) .'array_key_exists'.array_key_exists($key, $dicx) ,"bobopay1");
-						if(!array_key_exists($key, $dicx))
-						{
-							$dicx[$key] = 0;
-						}
+						if(!array_key_exists($key, $dicx))						
+							$dicx[$key] = 0;						
 
-						writeLog("value". json_encode($value) .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
-						if(in_array($te["uid"], $value)){
+						if(in_array($te["uid"], $value))
+						{
 							$val = floatval($dicx[$key]);
 							$val += floatval($te["money"]);
 							$dicx[$key] = $val;
@@ -270,9 +265,10 @@ class UserController extends BaseController
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($amountData) > 0)
+				if(count($dic) > 0)
 				{
-					
+					if(array_key_exists($item['id'], $dicx))
+						$item['amount'] = $dicx[$item['id']];
 				}
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
