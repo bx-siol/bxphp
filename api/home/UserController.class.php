@@ -126,8 +126,8 @@ class UserController extends BaseController
 		$lv = intval($params['lv']);
 		$mem_key = 'user_team_' . $lv . $pageuser['id'] . $params['page'] . $params['type'];
 		$params['page'] = intval($params['page']);
-		$return_data = $this->redis->get($mem_key);
-		if (!$return_data) {
+		//$return_data = $this->redis->get($mem_key);
+		//if (!$return_data) {
 			switch ($lv) {
 				case 1:
 					$lvstr = $pageuser['id'] . ",%'";
@@ -283,8 +283,8 @@ class UserController extends BaseController
 				'lv' => $lv,
 				'$total_page' => $total_page,
 			];
-			$this->redis->set($mem_key, $return_data, 60);//boos 要求实时 为了不改代码先做60秒缓存
-		}
+			//$this->redis->set($mem_key, $return_data, 60);//boos 要求实时 为了不改代码先做60秒缓存
+		//}
 		ReturnToJson(1, 'ok', $return_data);
 	}
 	//我的团队--层级人数

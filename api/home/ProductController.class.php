@@ -1616,9 +1616,9 @@ class ProductController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$key = RedisKeys::USER_ORDER . $params['id'];
-		$list = $this->redis->get($key);
-		if (!$list) {
+		//$key = RedisKeys::USER_ORDER . $params['id'];
+		//$list = $this->redis->get($key);
+		//if (!$list) {
 			$list = Db::table('pro_order u')
 				->leftJoin('pro_goods g', 'u.gid = g.id')
 				->leftJoin('sys_user k', 'u.uid = k.id')
@@ -1626,8 +1626,8 @@ class ProductController extends BaseController
 				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
 				->select()
 				->toArray();
-			$this->redis->set($key, $list);
-		}
+			//$this->redis->set($key, $list);
+		//}
 		$this->redis->close();
 		ReturnToJson(1, 'ok', $list);
 	}
