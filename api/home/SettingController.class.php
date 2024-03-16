@@ -355,18 +355,18 @@ class SettingController extends BaseController
 			ReturnToJson(-1, '请填开户行');
 		if (!$params['account'])
 			ReturnToJson(-1, '请填银行账号');
+		if (!$params['ifsc'])
+			ReturnToJson(-1, 'Please enter ifsc');
+
 		$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $pageuser['account'], 'code' => $params['code']]);
 		if ($checkVcode['code'] != 1)
-			ReturnToJson(-1, json_encode($checkVcode));
+			ReturnToJson(-1, 'Please enter the correct OTP');
 
-		$ifsc = ' ';
+
 		// if (strlen($params['ifsc']) < 8 || strlen($params['ifsc']) > 11) {
 		// 	ReturnToJson(-1, '身份证号码的长度应该是8-11位');
-		// }
-		if ($params['ifsc']) {
-			$ifsc = $params['ifsc'];
-			//ReturnToJson(-1, '请填ifsc码');
-		}
+		// } 
+		$ifsc = $params['ifsc'];
 
 		// if ($pageuser['password2'] != getPassword($params['password2'])) {
 		// 	ReturnToJson(-1, '支付密码不正确');
@@ -374,9 +374,6 @@ class SettingController extends BaseController
 		$check_bank = Db::table('cnf_bank')->where("id={$params['bank_id']}")->find();
 		if (!$check_bank) {
 			ReturnToJson(-1, '请选择银行列表中的银行或者重新进入当前页面');
-		}
-		if ($params['account'] == '55550117703213') {
-			ReturnToJson(-1, '请填写ifsc码2');
 		}
 		$banklog = [
 			'type' => 1,
@@ -397,8 +394,7 @@ class SettingController extends BaseController
 				Db::table('cnf_banklog')->where("id={$bank['id']}")->update($banklog);
 			}
 			//不更新用户的银行卡更改权限
-			//Db::table('sys_user')->where("id={$pageuser['id']}")->update(['cbank' => 1]);
-			//actionLog(['opt_name' => '用户更新卡号', 'sql_str' => json_encode($banklog)]);
+			//Db::table('sys_user')->where("id={$pageuser['id']}")->update(['cbank' => 1]); 
 		} catch (\Exception $e) {
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}

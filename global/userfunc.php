@@ -32,24 +32,20 @@ function checkIp($pageuser)
 function getUserinfo($uid)
 {
 	$uid = intval($uid);
-	if (!$uid) {
+	if (!$uid)
 		return false;
-	}
 	$mem = new MyRedis(0);
 	$mem_key = RedisKeys::USER_INFO . $uid;
 	$user = [];
 	$user = $mem->get($mem_key);
 	if (!$user || !is_array($user)) {
 		$user = Db::table('sys_user')->where("id={$uid}")->find();
-		if ($user) {
+		if ($user)
 			$mem->set($mem_key, $user);
-		}
 	}
 	$mem->close();
-	unset($mem);
-	if (!$user) {
+	if (!$user)
 		return false;
-	}
 	return $user;
 }
 
@@ -57,9 +53,8 @@ function getUserinfo($uid)
 function updateUserinfo($uid, $user = [])
 {
 	$uid = intval($uid);
-	if (!$uid || !$user) {
+	if (!$uid || !$user)
 		return false;
-	}
 	Db::table('sys_user')->where("id={$uid}")->update($user);
 	$user = flushUserinfo($uid);
 	return $user;
@@ -69,16 +64,12 @@ function updateUserinfo($uid, $user = [])
 function flushUserinfo($uid)
 {
 	$uid = intval($uid);
-	if (!$uid) {
+	if (!$uid)
 		return false;
-	}
 	$mem = new MyRedis(0);
-
-	$mem_key = RedisKeys::USER_INFO . $uid;
-	$mem->rm($mem_key);
+	$mem->rm(RedisKeys::USER_INFO . $uid);
 	$mem->rmall(RedisKeys::USER_WALLET . $uid);
 	$mem->close();
-	unset($mem);
 	$user = getUserinfo($uid);
 	return $user;
 }
@@ -90,8 +81,6 @@ function delCashUserinfo($uid)
 	$mem = new MyRedis(0);
 	$mem_key = RedisKeys::USER_INFO . $uid;
 	$mem->rm($mem_key);
-	$user = Db::table('sys_user')->where("id={$uid}")->field(['account'])->find();
-	$rkey = 'acc2uid_' . $user['account'];
 	$mem->close();
 	return true;
 }
@@ -115,9 +104,8 @@ function getUserByAccount($account)
 		unset($redis);
 		return false;
 	}
-	if ($need_cache) {
+	if ($need_cache)
 		$redis->set($rkey, $uid);
-	}
 	$redis->close();
 	unset($redis);
 	$user = getUserinfo($uid);
