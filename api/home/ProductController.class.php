@@ -66,21 +66,18 @@ class ProductController extends BaseController
 		}
 		$rediskey = RedisKeys::Goods . "list_{$params['page']}_";
 		$params['cid'] = intval($params['cid']);
-
 		$where = "1=1 and log.status>1 and log.status<99";
-		if ($params['cid']) {
-			$where .= " and log.cid={$params['cid']}";
-			$rediskey .= $params['cid'];
-		} else {
+		if ($params['type'] == "pointshop") {
 			$where .= " and log.pointshop !=1";
 			$rediskey .= "pointshop";
+		} else if ($params['cid']) {
+			$where .= " and log.cid={$params['cid']}";
+			$rediskey .= $params['cid'];
 		}
-
 		if (intval($params['ishot']) == 1) {
 			$where .= " and log.is_hot=1";
 			$rediskey .= 'is_hot';
 		}
-
 		$count_item = $this->redis->get($rediskey . 'count');
 		if (!$count_item) {
 			$count_item = Db::table('pro_goods log')
@@ -90,7 +87,6 @@ class ProductController extends BaseController
 				->find();
 			$this->redis->set($rediskey . 'count', $count_item);
 		}
-
 		$list = $this->redis->get($rediskey);
 		if (!$list) {
 			$list = Db::view(['pro_goods' => 'log'], ['*'])
@@ -99,7 +95,6 @@ class ProductController extends BaseController
 				->order(['log.sort' => 'desc'])
 				->page($params['page'], $cpageSize)
 				->select()->toArray();
-
 			foreach ($list as &$item) {
 				$this->goodsItem($item);
 				if ($item['covers']) {
@@ -109,7 +104,6 @@ class ProductController extends BaseController
 			}
 			$this->redis->set($rediskey, $list);
 		}
-
 		$category_arr = $this->redis->get(RedisKeys::Goods . "category");
 		if (!$category_arr) {
 			$category_arr = Db::table('pro_category')->where("pid=0 and status=2")->order(['sort' => 'desc', 'id' => 'asc'])->select()->toArray();
@@ -1105,7 +1099,7 @@ class ProductController extends BaseController
 			} else if (count($prizeArr) == 1)
 				$prize = $prizeArr[0];
 
-			if (empty($prize)) {
+			if (empty ($prize)) {
 				//查询除概率大于0的奖品
 				foreach ($prize_arr as $item)
 					$total += $item['probability'] * 100;
@@ -1119,7 +1113,7 @@ class ProductController extends BaseController
 					}
 				}
 			}
-			if (empty($prize))
+			if (empty ($prize))
 				$prize = $prizeEmpty;
 
 			Db::table('gift_prize_log')->insertGetId([
@@ -1158,13 +1152,13 @@ class ProductController extends BaseController
 			} else if (count($sjprizeArr) == 1)
 				$prizeInfo = $sjprizeArr[0];
 
-			if (empty($prizeInfo)) {
+			if (empty ($prizeInfo)) {
 				usort($prize_arr, function (array $a, array $b) {
 					return $a['probability'] < $b['probability'];
 				});
 				$prizeInfo = $prize_arr[0];
 			}
-			if (empty($prizeInfo))
+			if (empty ($prizeInfo))
 				$prizeInfo = $prizeEmpty;
 
 			for ($i = 1; $i <= $item['sjcjcs']; $i++) {
@@ -1272,7 +1266,7 @@ class ProductController extends BaseController
 		// 确定今天日期，用于每天重置奖励
 		$today = date("Y-m-d");
 		// 如果没有推荐人，不进行操作
-		if (empty($user['pid']))
+		if (empty ($user['pid']))
 			return;
 		$pid = $user['pid'];
 		// 当天推荐人数，使用Redis记录，可以快速读写，同时方便每天重置
@@ -1619,13 +1613,13 @@ class ProductController extends BaseController
 		//$key = RedisKeys::USER_ORDER . $params['id'];
 		//$list = $this->redis->get($key);
 		//if (!$list) {
-			$list = Db::table('pro_order u')
+		$list = Db::table('pro_order u')
 			->leftJoin('pro_goods g', 'u.gid = g.id')
 			->where("u.uid = {$params['id']} ")
 			->field('u.days, u.price, u.num, (w1_money+w2_money) as money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
 			->select()
 			->toArray();
-			//$this->redis->set($key, $list);
+		//$this->redis->set($key, $list);
 		//}
 		$this->redis->close();
 		ReturnToJson(1, 'ok', $list);
