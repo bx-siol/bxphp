@@ -14,9 +14,10 @@
         </div>
 
         <div class="exchange">
-            <van-field v-model="amount" class="fieldbox" placeholder="Exchange amount for points (10 Points = 1 Rupee)">
+            <van-field v-model="dataForm.points" class="fieldbox"
+                placeholder="Exchange amount for points (10 Points = 1 Rupee)">
                 <template #button>
-                    <van-button size="small" type="primary" color="#ff880c" @click="exchange"
+                    <van-button size="small" type="primary" color="#ff880c" @click="exchangePoints"
                         style="border-radius:8px;padding: 1rem 0.6rem;height: 3rem;">exchange</van-button>
                 </template>
             </van-field>
@@ -109,6 +110,32 @@ const imgFlag = (src: string) => {
 const getProjectDetail = (item: any) => {
     router.push({ name: 'Project_detail', params: { pid: item.gsn } })
 }
+
+
+
+const dataForm = reactive({
+    points: ''
+})
+
+
+const exchangePoints = () => {
+    
+    http({
+        url: 'c=Product&a=transforms?m='+dataForm.points,
+        // data: {
+        //     m: dataForm.points,
+        // }
+    }).then((res: any) => {
+        if (res.code != 1) {
+            _alert(res.msg)
+            return
+        };
+        _alert(res.msg)
+
+    })
+};
+
+
 
 onMounted(() => {
     http({
