@@ -237,10 +237,10 @@ class UserController extends BaseController
 			$dicx = array();
 			foreach ($dic as $key => $value)
 			{
-				writeLog("key".$key,"bobopay1");
 				if($item["id"] == $key){
 					foreach ($amountData as $te) 
 					{
+						writeLog("value".$value .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
 						if(in_array($te["uid"], $value))
 						{
 							$item["amount"] = $te["money"];
