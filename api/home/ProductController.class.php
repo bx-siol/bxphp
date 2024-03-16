@@ -68,7 +68,7 @@ class ProductController extends BaseController
 		$params['cid'] = intval($params['cid']);
 		$where = "1=1 and log.status>1 and log.status<99";
 		if ($params['type'] == "pointshop") {
-			$where .= " and log.pointshop !=1";
+			$where .= " and log.pointshop ==1";
 			$rediskey .= "pointshop";
 		} else if ($params['cid']) {
 			$where .= " and log.cid={$params['cid']}";
