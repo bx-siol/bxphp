@@ -117,9 +117,8 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
-		writeLog("--------------------------------------------------------------","bobopay1");
 		$params = $this->params;
-		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
+		$pageuser = checkLogin();
 
 		if (!$params['lv']) {
 			ReturnToJson(1, 'System error');
@@ -127,8 +126,8 @@ class UserController extends BaseController
 		$lv = intval($params['lv']);
 		$mem_key = 'user_team_' . $lv  . $pageuser['id'] . $params['page']  . $params['type'];
 		$params['page'] = intval($params['page']);
-		//$return_data = $this->redis->get($mem_key);
-		//if (!$return_data) {
+		$return_data = $this->redis->get($mem_key);
+		if (!$return_data) {
 			switch ($lv) {
 				case 1:
 					$lvstr =  $pageuser['id'] . ",%'";
@@ -200,7 +199,6 @@ class UserController extends BaseController
 				$amount_str = str_replace(";"," union ", $amount_str) . ';';
 				$amountDate = Db::query($amount_str);
 			}
-			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
 			$amount_ids = ",";
 			if(count($referrerData) > 0)
@@ -227,11 +225,27 @@ class UserController extends BaseController
 				if($amount_ids)
 					$amount_ids = substr($amount_ids,1, strlen($amount_ids) - 2);
 			}
-			writeLog("dic".json_encode($dic),"bobopay1");
-			writeLog("amount_ids".$amount_ids,"bobopay1");
+			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')
+			->group('uid')->having("sum(money) > 0")->select();
 
-			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')->group('uid')->select();
-			writeLog("amountData".json_encode($amountData),"bobopay1");
+			$dicx = array();
+			if(count($dic) > 0){
+				foreach ($dic as $key => $value)
+				{				
+					foreach ($amountData as $te) 
+					{
+						if(!array_key_exists($key, $dicx))						
+							$dicx[$key] = 0;						
+
+						if(in_array($te["uid"], $value))
+						{
+							$val = floatval($dicx[$key]);
+							$val += floatval($te["money"]);
+							$dicx[$key] = $val;
+						}
+					}				
+				}
+			}
 
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
@@ -248,27 +262,16 @@ class UserController extends BaseController
 						if($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if(count($amountData) > 0)
+				if(count($dic) > 0)
 				{
-					foreach ($dic as $key => $value)
-					{
-						if($item["id"] == $key){
-							foreach ($amountData as $te) 
-							{
-								if(in_array($te["uid"], $value))
-								{
-									$item["amount"] = $te["money"];
-								}
-							}
-						}
-					}
+					if(array_key_exists($item['id'], $dicx))
+						$item['amount'] = $dicx[$item['id']];
 				}
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C': 'D') ;
 				$item['first_pay_day_flag'] = $item['first_pay_day']  > 0 ? 'yes' : 'no' ;
 			}
-
 
 			$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time = " . strtotime("today");
 			$today = Db::table('sys_user log')->where($where1)->count();
@@ -288,8 +291,8 @@ class UserController extends BaseController
 				'lv' => $lv,
 				'$total_page' => $total_page,
 			];
-			//$this->redis->set($mem_key, $return_data, 86400);
-		//}
+			$this->redis->set($mem_key, $return_data, 86400);
+		}
 		ReturnToJson(1, 'ok', $return_data);
 	}
 	//我的团队--层级人数

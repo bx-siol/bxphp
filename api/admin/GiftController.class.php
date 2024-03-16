@@ -26,8 +26,9 @@ class GiftController extends BaseController
 			$count = Db::table('sys_user')->where('first_pay_day >0')->inc('lottery', intval($params['num']))->update();
 
 			//增加中奖记录
-            $prize_arr = Db::table('gift_prize')->where('probability >0')->order('probability','desc')->select()->toArray();
-            $prize = $prize_arr[0];
+            $prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
+			$randomNumber = mt_rand(0, count($prize_arr) -1);
+            $prize = $prize_arr[$randomNumber];
 			if(empty($prize))
 			{
 				$prizeEmpty = array();
@@ -88,8 +89,9 @@ class GiftController extends BaseController
 			$count = Db::table('sys_user')->where(" id=" . $user['id'])->update($update);
 
 			//增加中奖记录
-            $prize_arr = Db::table('gift_prize')->where('probability >0')->order('probability','desc')->select()->toArray();
-            $prize = $prize_arr[0];
+            $prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
+			$randomNumber = mt_rand(0, count($prize_arr) -1);
+            $prize = $prize_arr[$randomNumber];
 			if(empty($prize))
 			{
 				$prizeEmpty = array();
