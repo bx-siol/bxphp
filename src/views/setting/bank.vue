@@ -3,15 +3,18 @@
         <Nav></Nav>
         <van-form @submit="onSubmit" :label-width="configForm.labelWidth" :label-align="configForm.labelAlign">
             <van-cell-group>
-                <van-field :formatter="formatter" :label="t('真实姓名')" v-model="dataForm.realname" :placeholder="t('请输入真实姓名')" />
-                <van-field :label="t('银行名称')" is-link readonly v-model="dataForm.bank_name" :placeholder="t('请选择您的银行名称')" @click="popShowBank = true" />
+                <van-field :formatter="formatter" :label="t('真实姓名')" v-model="dataForm.realname"
+                    :placeholder="t('请输入真实姓名')" />
+                <van-field :label="t('银行名称')" is-link readonly v-model="dataForm.bank_name"
+                    :placeholder="t('请选择您的银行名称')" @click="popShowBank = true" />
                 <van-field type="number" :label="t('账号')" v-model="dataForm.account" :placeholder="t('请输入您的账号')" />
-                <van-field :label="t('ifsc')" show-word-limit maxlength="11" v-model="dataForm.ifsc" :placeholder="t('请填写IFSC代码')" />
-                <van-field readonly v-model="dataForm.phone"  :label="t('手机号码')" />
-                <van-field :rules="[{pattern: /^[0-9]+$/,message: 'Only numbers can be entered',trigger: 'onBlur'}]" label="OTP" v-model="dataForm.scode" 
-                    :placeholder="t('请输入OTP')">
+                <van-field :label="t('ifsc')" show-word-limit maxlength="11" v-model="dataForm.ifsc"
+                    :placeholder="t('请填写IFSC代码')" />
+                <van-field readonly v-model="dataForm.phone" :label="t('手机号码')" />
+                <van-field :rules="[{ pattern: /^[0-9]+$/, message: 'Only numbers can be entered', trigger: 'onBlur' }]"
+                    label="OTP" v-model="dataForm.scode" :placeholder="t('请输入OTP')">
                     <template #button>
-                        <van-button  size="mini"  class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
+                        <van-button size="mini" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
                             <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
                                 @finish="onTimerFinish" />
                             <span v-else>{{ t('发送') }}</span>
@@ -35,8 +38,8 @@
     </div>
 
     <van-popup v-model:show="popShowBank" position="bottom">
-        <van-picker :title="t('银行名称')" :default-index="bankIdx" :cancel-button-text="t('取消')" :confirm-button-text="t('确定')"
-            @cancel="popShowBank = false" @confirm="onBankConfirm" :columns="banks"
+        <van-picker :title="t('银行名称')" :default-index="bankIdx" :cancel-button-text="t('取消')"
+            :confirm-button-text="t('确定')" @cancel="popShowBank = false" @confirm="onBankConfirm" :columns="banks"
             :columns-field-names="{ text: 'name' }" />
     </van-popup>
     <MyLoading :show="loadingShow" :title="loadtitle"></MyLoading>
@@ -97,8 +100,8 @@ const dataForm = reactive({
     realname: '',
     ifsc: '',
     password2: '',
-    phone:'',
-    scode:''
+    phone: '',
+    scode: ''
 })
 
 const popShowBank = ref(false)
@@ -185,10 +188,10 @@ const onSubmit = () => {
         return;
     }
 
-    if (cbank.value != 1) {
-        _alert('You are not authorized to perform this operation, please contact your superior manager')
-        return;
-    }
+    // if (cbank.value != 1) {
+    //     _alert('You are not authorized to perform this operation, please contact your superior manager')
+    //     return;
+    // }
 
     if (isRequest) {
         return
@@ -205,6 +208,7 @@ const onSubmit = () => {
                 bank_id: dataForm.bank_id,
                 account: dataForm.account,
                 realname: dataForm.realname,
+                code: dataForm.scode,
                 ifsc: dataForm.ifsc,
                 password2: md5(dataForm.password2)
             }
