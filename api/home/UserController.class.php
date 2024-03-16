@@ -228,8 +228,6 @@ class UserController extends BaseController
 					$amount_ids = substr($amount_ids,1, strlen($amount_ids) - 2);
 			}
 			writeLog("dic".json_encode($dic),"bobopay1");
-			writeLog("amount_ids".$amount_ids,"bobopay1");
-
 			$amountData = Db::table("pro_order")->where("uid in ({$amount_ids})")->field('uid,sum(money) as money')
 			->group('uid')->having("sum(money) > 0")->select();
 			writeLog("amountData".json_encode($amountData),"bobopay1");
@@ -243,8 +241,8 @@ class UserController extends BaseController
 						if(isset($dicx[$key]))
 						{
 							if(in_array($te["uid"], $value)){
-								$val = $dicx[$key];
-								$val += $te["money"];
+								$val = floatval($dicx[$key]);
+								$val += floatval($te["money"]);
 								$dicx[$key] = $val;
 							}
 						}
