@@ -253,6 +253,7 @@ class UserController extends BaseController
 				{
 					foreach ($dic as $key => $value)
 					{
+						writeLog("key".$key,"bobopay1");
 						if($item["id"] == $key){
 							foreach ($amountData as $te) 
 							{
