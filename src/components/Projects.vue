@@ -1,6 +1,6 @@
 <template>
   <div class="Projects">
-    <van-tabs v-model:active="active">
+    <van-tabs v-model:active="active" swipe-threshold="2" animated>
       <div v-for="(itemc, indexc) in newsdata">
         <van-tab :key="indexc" :title="itemc.name"
           v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name && itemc.id != 1019) > -1">
@@ -42,9 +42,9 @@
                           <div class="totalrevenue">
                             <span>Total revenue</span>
                             <span style="color:#64503e">₹{{ cutOutNum(item.rate / 100 * item.price * item.days)
-                              }}</span>
+                            }}</span>
                           </div>
-                          <div v-if="item.is_xskc == 1" class="totalrevenue">
+                          <div v-if="false" class="totalrevenue">
                             <span>Current inventory</span>
                             <span style="color:#64503e">{{ item.status == 9 ? 0 : item.kc }} </span>
                           </div>
@@ -220,7 +220,8 @@ onMounted(() => {
 
 
   .basicProjects {
-    margin-top: 1rem;
+    // margin-top: 1rem;
+    margin: 1rem 0.6rem 0;
 
     .basicProjectsList {
       .basicItem {
@@ -230,7 +231,7 @@ onMounted(() => {
         display: flex;
         flex-direction: column;
         position: relative;
-        box-shadow: 0px 0px 12px 2px rgb(225, 225, 225);
+        box-shadow: 0px 0px 12px 2px rgb(235, 235, 235);
         padding: 0.4rem 0.8rem 0.8rem;
 
         .basicItemLeft {

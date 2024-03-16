@@ -418,15 +418,6 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/gift/redpack.vue')
     },
     {
-        path: '/joinus',
-        name: 'Joinus',
-        meta: {
-            title: 'Joinus',
-             needLogin: false
-        },
-        component: () => import('../views/joinus/index.vue')
-    },
-    {
         path: '/service',
         name: 'Service',
         meta: {

@@ -50,9 +50,6 @@ export default defineComponent({
 <script lang="ts" setup>
 
 
-import { getSrcUrl, imgPreview } from "../../global/common";
-import { onMounted, ref } from "vue";
-
 let isRequest = false
 const active = ref('0')
 
@@ -84,7 +81,7 @@ onMounted(() => {
   overflow-x: hidden;
 
   .projectWrapper {
-    padding: 0 1rem;
+    padding: 0 0.4rem;
     box-sizing: border-box;
     padding-bottom: 1.75rem;
 

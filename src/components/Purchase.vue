@@ -1,7 +1,7 @@
 <template>
   <div class="Projects">
     <van-tabs v-model:active="active" type="card" :border="false" background="" title-active-color="#fff"
-      title-inactive-color="#fff">
+      title-inactive-color="#fff" animated>
       <div>
         <van-tab :key="alltab" :title="t('全部')" v-if="false">
           <MyListBase :url="pageUrlAll" ref="pageRefAll" @success="onPageSuccess">
@@ -111,7 +111,7 @@
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
                                   <span>
-                                    ₹{{ cutOutNum(item.rate* item.price * item.total_days * item.num / 100 , 2) }}
+                                    ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
@@ -188,7 +188,7 @@
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
                                   <span>
-                                    ₹{{ cutOutNum(item.rate  * item.price * item.total_days * item.num / 100, 2) }}
+                                    ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
@@ -470,7 +470,11 @@ onMounted(() => {
 }
 
 .Projects /deep/.van-tabs__content {
-  padding: 0 1rem;
+  padding: 0 0.4rem;
+}
+
+.Projects /deep/.van-swipe__track {
+  justify-content: center
 }
 </style>
 <style lang="scss" scoped>
@@ -489,7 +493,7 @@ onMounted(() => {
     position: absolute;
     width: 100%;
     text-align: center;
-    top: 3.6rem;
+    top: -2.2rem;
     left: 50%;
     transform: translateX(-50%);
     padding-bottom: 1rem;
@@ -545,7 +549,8 @@ onMounted(() => {
     .back {
       border-radius: 1rem;
       margin-bottom: 1rem;
-      box-shadow: 0px 0px 12px 2px rgb(225, 225, 225);
+      margin: 0 0.6rem 1rem;
+      box-shadow: 0px 0px 12px 2px rgb(235, 225, 235);
       // width: 10.258rem;
 
       .title {
