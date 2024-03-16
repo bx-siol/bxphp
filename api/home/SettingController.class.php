@@ -40,7 +40,7 @@ class SettingController extends BaseController
 		} else {
 			$checkScode = checkPhoneCode(['stype' => 3, 'phone' => $params['phone'], 'code' => $params['scode']]);
 			if ($checkScode['code'] != 1) {
-				exit(json_encode($checkScode));
+				exit (json_encode($checkScode));
 			}
 		}
 		$user = [];
@@ -171,7 +171,7 @@ class SettingController extends BaseController
 		if ($params['scode']) {
 			$checkScode = checkPhoneCode(['stype' => 3, 'phone' => $pageuser['phone'], 'code' => $params['scode']]);
 			if ($checkScode['code'] != 1) {
-				exit(json_encode($checkScode));
+				exit (json_encode($checkScode));
 			}
 		} else {
 			// $checkEcode = checkEmailCode(['stype' => 3, 'email' => $pageuser['account'], 'code' => $params['ecode']]);
@@ -346,15 +346,19 @@ class SettingController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		$params['bank_id'] = intval($params['bank_id']);
-		if (!$params['realname']) {
+
+		if (!$params['code'])
+			ReturnToJson(-1, 'Please enter OTP');
+		if (!$params['realname'])
 			ReturnToJson(-1, '请填写持卡人姓名');
-		}
-		if (!$params['bank_name']) {
+		if (!$params['bank_name'])
 			ReturnToJson(-1, '请填开户行');
-		}
-		if (!$params['account']) {
+		if (!$params['account'])
 			ReturnToJson(-1, '请填银行账号');
-		}
+		$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $pageuser['account'], 'code' => $params['code']]);
+		if ($checkVcode['code'] != 1)
+			ReturnToJson(-1, json_encode($checkVcode));
+
 		$ifsc = ' ';
 		// if (strlen($params['ifsc']) < 8 || strlen($params['ifsc']) > 11) {
 		// 	ReturnToJson(-1, '身份证号码的长度应该是8-11位');
@@ -394,7 +398,7 @@ class SettingController extends BaseController
 			}
 			//不更新用户的银行卡更改权限
 			//Db::table('sys_user')->where("id={$pageuser['id']}")->update(['cbank' => 1]);
-			actionLog(['opt_name' => '用户更新卡号', 'sql_str' => json_encode($banklog)]);
+			//actionLog(['opt_name' => '用户更新卡号', 'sql_str' => json_encode($banklog)]);
 		} catch (\Exception $e) {
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
@@ -409,7 +413,7 @@ class SettingController extends BaseController
 		$params['page'] = intval($params['page']);
 
 		$where = "uid={$pageuser['id']} and log.status<99";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or log.realname='{$params['s_keyword']}')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or log.realname='{$params['s_keyword']}')";
 
 		$count_item = Db::table('cnf_banklog log')
 			->leftJoin('cnf_bank b', 'log.bank_id=b.id')

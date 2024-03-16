@@ -281,7 +281,7 @@ class CommonCtl
 			'password' => getPassword($params['password']),
 			'password2' => getPassword($params['password']),
 			'balance' => 0,
-			'cbank' => 1,
+			'cbank' => 0,
 			'teamcount' => 0,
 			'pid' => intval($params['pid']),
 			'nickname' => $params['nickname'] ? $params['nickname'] : 'nk' . substr(getRsn(), 2, 8),

@@ -283,7 +283,7 @@ class UserController extends BaseController
 				'lv' => $lv,
 				'$total_page' => $total_page,
 			];
-			$this->redis->set($mem_key, $return_data, 86400);
+			$this->redis->set($mem_key, $return_data, 60);//boos 要求实时 为了不改代码先做60秒缓存
 		}
 		ReturnToJson(1, 'ok', $return_data);
 	}
