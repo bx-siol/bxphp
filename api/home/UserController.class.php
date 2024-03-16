@@ -235,29 +235,26 @@ class UserController extends BaseController
 			writeLog("amountData".json_encode($amountData),"bobopay1");
 
 			$dicx = array();
-			foreach ($dic as $key => $value)
-			{				
-				foreach ($amountData as $te) 
-				{
-					if(isset($dicx[$key]))
+			if(count($dic) > 0){
+				foreach ($dic as $key => $value)
+				{				
+					foreach ($amountData as $te) 
 					{
-						$val = $dicx[$key];
-						$val += $te["money"];
-						$dic[$key] = $val;
-					}
-					else
-					{
-						$dic[$key] = 0;
-					}
-
-
-					writeLog("value".$value .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
-					if(in_array($te["uid"], $value))
-					{
-						$item["amount"] = $te["money"];
-					}
-				}				
+						if(isset($dicx[$key]))
+						{
+							$val = $dicx[$key];
+							$val += $te["money"];
+							$dicx[$key] = $val;
+						}
+						else
+						{
+							$dicx[$key] = 0;
+						}
+					}				
+				}
 			}
+			
+			writeLog("dicx".json_encode($dicx),"bobopay1");
 
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
