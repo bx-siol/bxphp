@@ -69,7 +69,7 @@ class CommonCtl
 
 			if ($password != $user['password']) {
 				$login_status = 2;
-				ReturnToJson(-1, '账号或密码错误1 ' . 'in:' . $dcx . '|sys:' . $password . '|db:' . $user['password'] . '|db:' . $user['account']);
+				ReturnToJson(-1, '账号或密码错误');
 			} else {
 				if ($user['status'] != 2) {
 					ReturnToJson(-1, '该账号被禁止登录');
