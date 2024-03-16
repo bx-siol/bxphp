@@ -52,7 +52,7 @@ onMounted(() => {
 }
 
 .sendCodeBtn .van-count-down {
-    color: #0098a2 !important;
+    color: #c69c6d !important;
 }
 
 .navRightBtn {
