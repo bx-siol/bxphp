@@ -1620,12 +1620,11 @@ class ProductController extends BaseController
 		//$list = $this->redis->get($key);
 		//if (!$list) {
 			$list = Db::table('pro_order u')
-				->leftJoin('pro_goods g', 'u.gid = g.id')
-				->leftJoin('sys_user k', 'u.uid = k.id')
-				->where("k.pids like '%{$params['id']}%' ")
-				->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
-				->select()
-				->toArray();
+			->leftJoin('pro_goods g', 'u.gid = g.id')
+			->where("u.uid = {$params['id']} ")
+			->field('u.days, u.price, u.num, u.money, u.rate, u.create_time, u.total_days,g.name as goods_name,g.icon')
+			->select()
+			->toArray();
 			//$this->redis->set($key, $list);
 		//}
 		$this->redis->close();

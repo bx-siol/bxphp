@@ -174,7 +174,8 @@ class UserController extends BaseController
 			foreach ($list as &$k) {
 				$referrer_str .= $k["id"] . ",";
 				$teamSize_str .= "select {$k['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k['id']}%';";
-				$amount_str .= "select {$k['id']} as pid,id from sys_user where pids like '%{$k['id']}%';";
+				//$amount_str .= "select {$k['id']} as pid,id from sys_user where pids like '%{$k['id']}%';";下三级金额
+				$order_str .= $k["id"] . ",";
 			}
 
 			$referrerData = array();
@@ -190,60 +191,68 @@ class UserController extends BaseController
 				$teamSizeDate = Db::query($teamSize_str);
 			}
 
-			$amountDate = array();
-			if ($amount_str) {
-				$amount_str = substr($amount_str, 0, strlen($amount_str) - 1);
-				$amount_str = str_replace(";", " union ", $amount_str) . ';';
-				$amountDate = Db::query($amount_str);
+			$orderDate = array();
+			if($order_str)
+			{
+				$order_str =substr($order_str,0, strlen($order_str) - 1);
+				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(money) as assets')->group('uid')->select();
 			}
-			$dic = array();
-			$amount_ids = ",";
-			if (count($referrerData) > 0) {
-				foreach ($amountDate as $it) {
-					if (strstr($it['id'], $amount_ids)) {
 
-					} else {
-						$amount_ids .= $it['id'] . ',';
-					}
+			// $amountDate = array();
+			// if ($amount_str) {
+			// 	$amount_str = substr($amount_str, 0, strlen($amount_str) - 1);
+			// 	$amount_str = str_replace(";", " union ", $amount_str) . ';';
+			// 	$amountDate = Db::query($amount_str);
+			// }
+			// $dic = array();
+			// $amount_ids = ",";
+			// if (count($referrerData) > 0) {
+			// 	foreach ($amountDate as $it) {
+			// 		if (strstr($it['id'], $amount_ids)) {
 
-					if (isset ($dic["{$it['pid']}"])) {
-						$val = $dic["{$it['pid']}"];
-						array_push($val, $it['id']);
-						$dic["{$it['pid']}"] = $val;
-					} else {
-						$dic["{$it['pid']}"] = array($it['id']);
-					}
-				}
-				if ($amount_ids)
-					$amount_ids = substr($amount_ids, 1, strlen($amount_ids) - 2);
-			}
-			$amountData = Db::table("pro_order")
-				->whereIn('uid', $amount_ids)
-				->field('uid,sum(money) as money')
-				->group('uid')
-				->having("sum(money) > 0")
-				->select();
+			// 		} else {
+			// 			$amount_ids .= $it['id'] . ',';
+			// 		}
 
-			$dicx = array();
-			if (count($dic) > 0) {
-				foreach ($dic as $key => $value) {
-					foreach ($amountData as $te) {
-						if (!array_key_exists($key, $dicx))
-							$dicx[$key] = 0;
+			// 		if (isset ($dic["{$it['pid']}"])) {
+			// 			$val = $dic["{$it['pid']}"];
+			// 			array_push($val, $it['id']);
+			// 			$dic["{$it['pid']}"] = $val;
+			// 		} else {
+			// 			$dic["{$it['pid']}"] = array($it['id']);
+			// 		}
+			// 	}
+			// 	if ($amount_ids)
+			// 		$amount_ids = substr($amount_ids, 1, strlen($amount_ids) - 2);
+			// }
+			// $amountData = Db::table("pro_order")
+			// 	->whereIn('uid', $amount_ids)
+			// 	->field('uid,sum(money) as money')
+			// 	->group('uid')
+			// 	->having("sum(money) > 0")
+			// 	->select();
 
-						if (in_array($te["uid"], $value)) {
-							$val = floatval($dicx[$key]);
-							$val += floatval($te["money"]);
-							$dicx[$key] = $val;
-						}
-					}
-				}
-			}
+			// $dicx = array();
+			// if (count($dic) > 0) {
+			// 	foreach ($dic as $key => $value) {
+			// 		foreach ($amountData as $te) {
+			// 			if (!array_key_exists($key, $dicx))
+			// 				$dicx[$key] = 0;
+
+			// 			if (in_array($te["uid"], $value)) {
+			// 				$val = floatval($dicx[$key]);
+			// 				$val += floatval($te["money"]);
+			// 				$dicx[$key] = $val;
+			// 			}
+			// 		}
+			// 	}
+			// }
 
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
 				$item["teamSize"] = 0;
 				$item["amount"] = 0;
+				$item["assets"] = 0;
 
 				if (count($referrerData) > 0)
 					foreach ($referrerData as &$v)
@@ -255,10 +264,15 @@ class UserController extends BaseController
 						if ($item["id"] == $v['id'])
 							$item["teamSize"] = $v["teamSize"];
 
-				if (count($dic) > 0) {
-					if (array_key_exists($item['id'], $dicx))
-						$item['amount'] = $dicx[$item['id']];
-				}
+				// if (count($dic) > 0) {
+				// 	if (array_key_exists($item['id'], $dicx))
+				// 		$item['amount'] = $dicx[$item['id']];
+				// }
+
+				if(count($orderDate) > 0)
+				foreach ($orderDate as &$v)
+					if ($item["id"] == $v["uid"])
+						$item["assets"] = $v['assets'];
 
 				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C' : 'D');
