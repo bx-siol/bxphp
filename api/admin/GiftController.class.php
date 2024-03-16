@@ -26,11 +26,12 @@ class GiftController extends BaseController
 			$count = Db::table('sys_user')->where('first_pay_day >0')->inc('lottery', intval($params['num']))->update();
 
 			//增加中奖记录
-            $prize_arr = Db::table('gift_prize')->where('probability >0')->order('probability','desc')->find();
+            $prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
+
+			$randomNumber = mt_rand(0, count($prize_arr) -1);
+            $prize = $prize_arr[$randomNumber];
 			writeLog('$prize_arr' . json_encode($prize_arr),'bobopay1');
-			
 			ReturnToJson(1, '操作成功 更新用户数：' . $count);
-            $prize = $prize_arr[0];
 			if(empty($prize))
 			{
 				$prizeEmpty = array();
