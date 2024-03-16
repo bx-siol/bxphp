@@ -238,6 +238,7 @@ class UserController extends BaseController
 				{				
 					foreach ($amountData as $te) 
 					{
+						writeLog("isset". $dicx[$key] .'isset1'.isset($dicx[$key]) ,"bobopay1");
 						if(isset($dicx[$key]))
 						{							
 							writeLog("value". json_encode($value) .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
