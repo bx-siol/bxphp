@@ -43,6 +43,7 @@ class ServiceController extends BaseController
 			$data = Db::table('ext_service')->where(" {$where} and uid=1 ")
 				->field(['account', 'name', 'type', 'qrcode', 'remark'])->find();
 		}
-		ReturnToJson(1, 'ok', $data);
+		$list = ['list' => $data];
+		ReturnToJson(1, 'ok', $list);
 	}
 }
