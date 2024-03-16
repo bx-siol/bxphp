@@ -42,7 +42,8 @@
                                 <p>Daily earnings</p><span> {{ cutOutNum((item.rate / 100) * item.price, 2) }} RS</span>
                             </li>
                             <li>
-                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days, 2) }}
+                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days, 2)
+                                    }}
                                     RS</span>
                             </li>
 
@@ -119,12 +120,12 @@ const dataForm = reactive({
 
 
 const exchangePoints = () => {
-    
+
     http({
-        url: 'c=Product&a=transforms?m='+dataForm.points,
-        // data: {
-        //     m: dataForm.points,
-        // }
+        url: 'c=Product&a=transforms',
+        data: {
+            mp: dataForm.points,
+        }
     }).then((res: any) => {
         if (res.code != 1) {
             _alert(res.msg)
