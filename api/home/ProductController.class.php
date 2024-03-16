@@ -27,7 +27,7 @@ class ProductController extends BaseController
 		$point = floatval($params['mp']);
 		if ($point <= 0)
 			ReturnToJson(-1, "Please enter the number of points");
-		if ($point <= 10)
+		if ($point < 10)
 			ReturnToJson(-1, "Too few input points");
 		$wallet3 = Db::table('wallet_list')->where('uid', $pageuser['id'])->where("cid", 3)->find();
 		if ($point > $wallet3['balance'])
