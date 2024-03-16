@@ -27,6 +27,9 @@ class GiftController extends BaseController
 
 			//增加中奖记录
             $prize_arr = Db::table('gift_prize')->where('probability >0')->order('probability','desc')->select()->toArray();
+			writeLog('$prize_arr' . json_encode($prize_arr),'bobopay1');
+			
+			ReturnToJson(1, '操作成功 更新用户数：' . $count);
             $prize = $prize_arr[0];
 			if(empty($prize))
 			{
