@@ -85,8 +85,7 @@ onMounted(() => {
 
   :deep(.van-nav-bar__title) {
     .alter {
-      color: #fff !important;
-      font-weight: bold;
+      font-size: 18px;
     }
   }
 

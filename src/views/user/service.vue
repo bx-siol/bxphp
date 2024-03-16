@@ -230,7 +230,7 @@ onMounted(() => {
                 type: 0
             }
         }).then((res: any) => {
-            service_arr.value = res.data
+            service_arr.value = res.data.list
         })
     }, delayTime)
 });
