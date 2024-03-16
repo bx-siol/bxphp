@@ -200,7 +200,6 @@ class UserController extends BaseController
 				$amount_str = str_replace(";"," union ", $amount_str) . ';';
 				$amountDate = Db::query($amount_str);
 			}
-			writeLog("amountDate".json_encode($amountDate),"bobopay1");
 			$dic = array();
 			$amount_ids = ",";
 			if(count($referrerData) > 0)
@@ -239,18 +238,16 @@ class UserController extends BaseController
 					foreach ($amountData as $te) 
 					{
 						writeLog("array_key_exists". json_encode($dicx) .'array_key_exists'.array_key_exists($key, $dicx) ,"bobopay1");
-						if( array_key_exists($key, $dicx))
-						{							
-							writeLog("value". json_encode($value) .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
-							if(in_array($te["uid"], $value)){
-								$val = floatval($dicx[$key]);
-								$val += floatval($te["money"]);
-								$dicx[$key] = $val;
-							}
-						}
-						else
+						if(!array_key_exists($key, $dicx))
 						{
 							$dicx[$key] = 0;
+						}
+
+						writeLog("value". json_encode($value) .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
+						if(in_array($te["uid"], $value)){
+							$val = floatval($dicx[$key]);
+							$val += floatval($te["money"]);
+							$dicx[$key] = $val;
 						}
 					}				
 				}
