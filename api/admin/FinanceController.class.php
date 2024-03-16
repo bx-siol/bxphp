@@ -1330,9 +1330,9 @@ class FinanceController extends BaseController
 		if (!$params['id']) {
 			ReturnToJson(-1, '缺少参数');
 		}
-		if (getPassword($params['password2']) != $pageuser['password2']) {
-			ReturnToJson(-1, '二级密码不正确');
-		}
+		// if (getPassword($params['password2']) != $pageuser['password2']) {
+		// 	ReturnToJson(-1, '二级密码不正确');
+		// }
 		$return_data = [];
 		Db::startTrans();
 		try {
