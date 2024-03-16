@@ -236,19 +236,27 @@ class UserController extends BaseController
 
 			$dicx = array();
 			foreach ($dic as $key => $value)
-			{
-				if($item["id"] == $key){
-					foreach ($amountData as $te) 
+			{				
+				foreach ($amountData as $te) 
+				{
+					if(isset($dicx[$key]))
 					{
-						writeLog("value".$value .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
-						if(in_array($te["uid"], $value))
-						{
-							$item["amount"] = $te["money"];
-						}
+						$val = $dicx[$key];
+						$val += $te["money"];
+						$dic[$key] = $val;
 					}
-				}else{
-					writeLog("value","bobopay1");
-				}
+					else
+					{
+						$dic[$key] = 0;
+					}
+
+
+					writeLog("value".$value .'uid' .$te["uid"] . '存在' . in_array($te["uid"], $value),"bobopay1");
+					if(in_array($te["uid"], $value))
+					{
+						$item["amount"] = $te["money"];
+					}
+				}				
 			}
 
 			foreach ($list as &$item) {
