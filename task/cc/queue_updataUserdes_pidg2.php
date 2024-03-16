@@ -23,11 +23,11 @@ while (true) {
 		try {
 		  
             if (!$user['pidg1']||$user['pidg1']==0) {
-                $pidg1 = updataUsercpid_gid81($user['id'] );
+                $pidg1 = updataUserPidGid($user['id'] );
 		    } 
 			// //更新用户的二级代理
 		    if (!$user['pidg2']||$user['pidg2']==0) {
-		  	    $pidg2 = updataUsercpid_gid81($user['id'] );
+		  	    $pidg2 = updataUserPidGid($user['id'] );
 		    }
             
 			Db::commit();

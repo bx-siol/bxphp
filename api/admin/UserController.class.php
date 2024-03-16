@@ -134,8 +134,8 @@ class UserController extends BaseController
 		if ($params['status'] != 0)
 			$where .= " and log.status={$params['status']}";
 
-		$where .= empty($params['s_gid']) ? '' : " and log.gid={$params['s_gid']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.id='{$params['s_keyword']}'  
+		$where .= empty ($params['s_gid']) ? '' : " and log.gid={$params['s_gid']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.id='{$params['s_keyword']}'  
 		or log.phone='{$params['s_keyword']}' 
 		or log.account like '%{$params['s_keyword']}%' 
 		or log.realname like '%{$params['s_keyword']}%' 
@@ -143,7 +143,7 @@ class UserController extends BaseController
 		or log.nickname like '%{$params['s_keyword']}%')";
 		//$where.=empty($params['s_keyword2'])?'':" and pu.account='{$params['s_keyword2']}'";
 
-		if (isset($params['s_has_pay']) && $params['s_has_pay'] != 'all') {
+		if (isset ($params['s_has_pay']) && $params['s_has_pay'] != 'all') {
 			if ($params['s_has_pay']) {
 				$where .= " and log.first_pay_day>0";
 			} else {
@@ -357,14 +357,12 @@ class UserController extends BaseController
 				do {
 					$data['id'] = mt_rand(100000, 999999);
 					$res = Db::table('sys_user')->insertGetId($data);
-					if ($res) {
+					if ($res)
 						break;
-					}
 				} while (true);
-
-				createWallet($res); //创建钱包
-
+				createWallet($res); //创建钱包 
 				$data['id'] = $res;
+				updataUserPidGid($res);
 			}
 		} catch (\Exception $e) {
 			ReturnToJson(-1, '系统繁忙请稍后再试', ['msgc' => $e->getMessage()]);
@@ -383,16 +381,16 @@ class UserController extends BaseController
 		// if (isset($data['is_google'])) {
 		// 	$return_data['is_google_flag'] = $yse_or_no[$data['is_google']];
 		// }
-		if (isset($data['status'])) {
+		if (isset ($data['status'])) {
 			$return_data['status_flag'] = $account_status[$data['status']];
 		}
-		if (isset($data['usn'])) {
+		if (isset ($data['usn'])) {
 			$return_data['usn'] = $data['usn'];
 		}
-		if (isset($data['stop_commission'])) {
+		if (isset ($data['stop_commission'])) {
 			$return_data['stop_commission_flag'] = $yse_or_no[$data['stop_commission']];
 		}
-		if (isset($data['icode_status'])) {
+		if (isset ($data['icode_status'])) {
 			$return_data['icode_status_flag'] = $data['icode_status'] == 0 ? '正常' : '禁用';
 		}
 
@@ -595,7 +593,7 @@ class UserController extends BaseController
 		try {
 			$deft = explode(',', $params['deft']);
 			foreach ($deft as $key => $value) {
-				updataUsercpid_gid81($value);
+				updataUserPidGid($value);
 			}
 			Db::commit();
 		} catch (\Exception $e) {
@@ -675,8 +673,8 @@ class UserController extends BaseController
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.uid in({$uid_str})";
 		}
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (u.account='{$params['s_keyword']}' or log.realname='{$params['s_keyword']}')";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (u.account='{$params['s_keyword']}' or log.realname='{$params['s_keyword']}')";
 
 		$count_item = Db::table('sys_user_rauth log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
@@ -769,7 +767,7 @@ class UserController extends BaseController
 
 		$where = "log.status<99";
 		//$where.=empty($params['s_status'])?'':" and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
 
 		$count_item = Db::table('sys_group log')
 			//->leftJoin('sys_user u','log.uid=u.id')
@@ -899,7 +897,7 @@ class UserController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty($params['s_keyword']) ? '' : " and (u.account='{$params['s_keyword']}' or log.title like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (u.account='{$params['s_keyword']}' or log.title like '%{$params['s_keyword']}%')";
 
 		$count_item = Db::table('msg_list log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
@@ -1071,7 +1069,7 @@ class UserController extends BaseController
 			}
 		}
 
-		if (isset($params['s_xiaofei'])) {
+		if (isset ($params['s_xiaofei'])) {
 			if ($params['s_xiaofei'] == 1) {
 				$where .= " and log.total_invest2>0";
 			} else {
@@ -1085,7 +1083,7 @@ class UserController extends BaseController
 			$where .= " and log.reg_time between {$start_time} and {$end_time}";
 		}
 
-		$where .= empty($params['s_keyword']) ? '' : " and (log.account like '%{$params['s_keyword']}%' or log.nickname like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.account like '%{$params['s_keyword']}%' or log.nickname like '%{$params['s_keyword']}%')";
 
 		$params['s_money_from'] = floatval($params['s_money_from']);
 		$params['s_money_to'] = floatval($params['s_money_to']);
@@ -1234,7 +1232,7 @@ class UserController extends BaseController
 			$where .= " and log.id in({$uid_str})";
 		}
 
-		$where .= empty($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or log.nickname like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or log.nickname like '%{$params['s_keyword']}%')";
 		$where .= " and log.gid in (71,81)";
 
 		$count_item = Db::table('sys_user log')

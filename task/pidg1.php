@@ -19,7 +19,7 @@ while (true) {
     foreach ($list as $user) {
         Db::startTrans();
         try {
-            $pidg2 = updataUsercpid_gid81($user['id']);
+            $pidg2 = updataUserPidGid($user['id']);
             if ($pidg2 == 0) {
                 Db::table('sys_user')->where('id=' . $user['id'])->update(['pidg2' => -2, 'pidg1' => -2]);
                 $pidg2 = -2;

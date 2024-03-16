@@ -114,8 +114,8 @@ UPDATE sys_user SET pidg1=0,pidg2=0;
 UPDATE pro_reward SET pidg1=0,pidg2=0;
 */
 
-//更新用户的代理id-81
-function updataUsercpid_gid81($uid)
+//更新用户的代理id 
+function updataUserPidGid($uid)
 {
 	$uid = intval($uid); //当前用户id
 	$sql = "WITH RECURSIVE cte AS (SELECT id, pid, gid FROM sys_user WHERE id = {$uid}
@@ -408,7 +408,7 @@ function list2tree($list, $pk = 'id', $pid = 'pid', $child = 'children', $root =
 			if ($root == $parentId) {
 				$tree[] = &$list[$key];
 			} else {
-				if (isset($refer[$parentId])) {
+				if (isset ($refer[$parentId])) {
 					$parent = &$refer[$parentId];
 					$list[$key]['pname'] = $refer[$parentId]['name'];
 					$parent[$child][] = &$list[$key];
@@ -514,7 +514,7 @@ function loadLang($ltype = null)
 			return [];
 		}
 	}
-	return require_once($file);
+	return require_once ($file);
 }
 
 //翻译
@@ -524,7 +524,7 @@ function lang($str)
 		$_ENV['lang'] = loadLang();
 	}
 	$str2 = trim($_ENV['lang'][$str]);
-	return !empty($str2) ? $str2 : $str;
+	return !empty ($str2) ? $str2 : $str;
 }
 
 function lang2($str, $ltype = 'en-us')
@@ -533,7 +533,7 @@ function lang2($str, $ltype = 'en-us')
 		$_ENV['lang2'] = loadLang($ltype);
 	}
 	$str2 = trim($_ENV['lang2'][$str]);
-	return !empty($str2) ? $str2 : $str;
+	return !empty ($str2) ? $str2 : $str;
 }
 
 //#####################短信验证码相关开始#####################
@@ -852,7 +852,7 @@ function getPassword($pwd, $is_ori = false)
 //获取参数
 function getParam($paramName = '')
 {
-	if (!empty($paramName)) {
+	if (!empty ($paramName)) {
 		$paramValue = filterParam($_REQUEST[$paramName]);
 		return $paramValue;
 	}
@@ -898,15 +898,15 @@ function getClientIp($type = 0)
 	static $ip = NULL;
 	if ($ip !== NULL)
 		return $ip[$type];
-	if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	if (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 		$arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
 		$pos = array_search('unknown', $arr);
 		if (false !== $pos)
 			unset($arr[$pos]);
 		$ip = trim($arr[0]);
-	} elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
+	} elseif (isset ($_SERVER['HTTP_CLIENT_IP'])) {
 		$ip = $_SERVER['HTTP_CLIENT_IP'];
-	} elseif (isset($_SERVER['REMOTE_ADDR'])) {
+	} elseif (isset ($_SERVER['REMOTE_ADDR'])) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 	// IP地址合法验证
@@ -965,7 +965,7 @@ function output($str)
 function doExit($str)
 {
 	if (APP_DEBUG) {
-		exit($str);
+		exit ($str);
 	}
 	exit;
 }
@@ -1012,7 +1012,7 @@ function setupSize($fileSize)
 {
 	$size = sprintf("%u", $fileSize);
 	if ($size == 0) {
-		return("0 Bytes");
+		return ("0 Bytes");
 	}
 	$sizename = ["Bytes", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB"];
 	return round($size / pow(1024, ($i = floor(log($size, 1024)))), 2) . $sizename[$i];
@@ -1228,8 +1228,8 @@ function formSubmit($url, $data, $notice = '')
 	}
 	$html .= '</form>';
 	$html .= '<script>document.forms["submitForm"].submit();</script>';
-	$html .= empty($notice) ? 'Submit...' : $notice;
-	exit($html);
+	$html .= empty ($notice) ? 'Submit...' : $notice;
+	exit ($html);
 }
 
 //smarty模板渲染
@@ -1238,7 +1238,7 @@ function display($tpl, $data = array(), $return = false)
 	$template_dir = APP_PATH . '/view/' . strtolower(MODULE_NAME) . '/';
 	$path = $template_dir . $tpl;
 	if (!file_exists($path)) {
-		exit(lang('不存在模板'));
+		exit (lang('不存在模板'));
 	}
 	$smarty = new Smarty();
 	$smarty->template_dir = $template_dir;
@@ -1380,12 +1380,12 @@ function curl_post2($url, $data = [], $timeout = 30, $header = [])
 function getDirFileList($path, &$filename, $recursive = false, $ext = false, $baseurl = true)
 {
 	if (!$path) {
-		die('请传入目录路径');
+		die ('请传入目录路径');
 	}
 	$path = trim($path, '/');
 	$resource = opendir($path);
 	if (!$resource) {
-		die('传入的目录不正确');
+		die ('传入的目录不正确');
 	}
 	//遍历目录
 	while ($rows = readdir($resource)) {
@@ -1398,7 +1398,7 @@ function getDirFileList($path, &$filename, $recursive = false, $ext = false, $ba
 				if ($ext) {
 					//必须为数组
 					if (!is_array($ext)) {
-						die('后缀名请以数组方式传入');
+						die ('后缀名请以数组方式传入');
 					}
 					//转换小写
 					foreach ($ext as &$v) {
@@ -1575,7 +1575,7 @@ function isPhone($tel, $type = 'sj')
 		'tel' => '/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',
 		'400' => '/^400(-\d{3,4}){2}$/'
 	];
-	if ($type && isset($regxArr[$type])) {
+	if ($type && isset ($regxArr[$type])) {
 		return preg_match($regxArr[$type], $tel) ? true : false;
 	}
 	foreach ($regxArr as $regx) {
@@ -1621,22 +1621,22 @@ function isMoney($val)
 //判断是否是ajax请求 同时满足是ajax和post请求才算是ajax，异步统一使用post提交数据
 function isAjax()
 {
-	$isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && strtolower($_SERVER['REQUEST_METHOD']) == 'post';
+	$isAjax = isset ($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && strtolower($_SERVER['REQUEST_METHOD']) == 'post';
 	return $isAjax;
 }
 
 //是否是移动端请求
 function isMobileReq()
 {
-	$_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
+	$_SERVER['ALL_HTTP'] = isset ($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
 	$mobile_browser = '0';
 	if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', strtolower($_SERVER['HTTP_USER_AGENT'])))
 		$mobile_browser++;
-	if ((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false))
+	if ((isset ($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false))
 		$mobile_browser++;
-	if (isset($_SERVER['HTTP_X_WAP_PROFILE']))
+	if (isset ($_SERVER['HTTP_X_WAP_PROFILE']))
 		$mobile_browser++;
-	if (isset($_SERVER['HTTP_PROFILE']))
+	if (isset ($_SERVER['HTTP_PROFILE']))
 		$mobile_browser++;
 	$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 	$mobile_agents = [
@@ -1836,5 +1836,5 @@ function getAge($birthTime, $needArr = false)
 	if ($needArr) {
 		return ['y' => $y, 'm' => $m, 'd' => $d];
 	}
-	return($y == 0 ? '' : $y . '岁') . ($m == 0 ? '' : $m . '月') . ($d == 0 ? '' : $d . '天');
+	return ($y == 0 ? '' : $y . '岁') . ($m == 0 ? '' : $m . '月') . ($d == 0 ? '' : $d . '天');
 }
