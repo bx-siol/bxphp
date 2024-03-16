@@ -11,7 +11,7 @@
             <div v-for="(item, index) in GoodsList" :key="index" class="listfor">
                 <div style="width:18%;display: flex;justify-content: center"><img :src="imgFlag(item.icon)" style="width:3rem;"></div>
                 <div style="width:30%;">{{ item.goods_name }}</div>
-                <div style="width:26%;;">{{ item.price }} RS</div>
+                <div style="width:26%;;">{{ item.money }} RS</div>
                 <div style="width:20%;" v-if="item.total_days < item.days">Available</div>
                 <div style="width:20%;" v-else>Completed</div>
 
