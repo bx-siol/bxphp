@@ -117,9 +117,8 @@ class UserController extends BaseController
 	//团队 
 	public function _team()
 	{
-		writeLog("--------------------------------------------------------------","bobopay1");
 		$params = $this->params;
-		$pageuser = checkLogin(); // Db::table('sys_user')->where("openid='" . $params['id'] . "'")->find();
+		$pageuser = checkLogin();
 
 		if (!$params['lv']) {
 			ReturnToJson(1, 'System error');
@@ -127,8 +126,8 @@ class UserController extends BaseController
 		$lv = intval($params['lv']);
 		$mem_key = 'user_team_' . $lv  . $pageuser['id'] . $params['page']  . $params['type'];
 		$params['page'] = intval($params['page']);
-		//$return_data = $this->redis->get($mem_key);
-		//if (!$return_data) {
+		$return_data = $this->redis->get($mem_key);
+		if (!$return_data) {
 			switch ($lv) {
 				case 1:
 					$lvstr =  $pageuser['id'] . ",%'";
@@ -247,8 +246,6 @@ class UserController extends BaseController
 					}				
 				}
 			}
-			
-			writeLog("dicx".json_encode($dicx),"bobopay1");
 
 			foreach ($list as &$item) {
 				$item["referrer"] = 0;
@@ -276,7 +273,6 @@ class UserController extends BaseController
 				$item['first_pay_day_flag'] = $item['first_pay_day']  > 0 ? 'yes' : 'no' ;
 			}
 
-
 			$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time = " . strtotime("today");
 			$today = Db::table('sys_user log')->where($where1)->count();
 			$total_page = ceil($count_item['cnt'] / $this->pageSize);
@@ -295,8 +291,8 @@ class UserController extends BaseController
 				'lv' => $lv,
 				'$total_page' => $total_page,
 			];
-			//$this->redis->set($mem_key, $return_data, 86400);
-		//}
+			$this->redis->set($mem_key, $return_data, 86400);
+		}
 		ReturnToJson(1, 'ok', $return_data);
 	}
 	//我的团队--层级人数
