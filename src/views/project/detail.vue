@@ -17,18 +17,18 @@
         <div class="title">
           <div>{{ info.name }}</div>
           <div class="index_cer_title n_p_name">
-            <span class="bold" v-if="info.cid == 1019">{{ cutOutNum(detailData?.price, 2) }} </span>
+            <span class="bold" v-if="info.pointshop == 1">{{ cutOutNum(detailData?.price, 2) }} </span>
             <span class="bold" v-else>₹ {{ cutOutNum(detailData?.price, 2) }}</span>
-            <!-- <span v-if="info.cid == 1019"> Points</span>
+            <!-- <span v-if="info.pointshop == 1"> Points</span>
                 <span v-else> {{ t('价格') }}</span> -->
           </div>
           <!-- <div class="title_right">Investment Cycle: {{ info.days }} Day</div> -->
         </div>
         <div class="detail">
           <div class="dailyincome">
-            <span class="bold" v-if="info.cid == 1019">{{ cutOutNum(detailData?.dailyIncome / 24, 2) }} </span>
+            <span class="bold" v-if="info.pointshop == 1">{{ cutOutNum(detailData?.dailyIncome / 24, 2) }} </span>
             <span class="bold" v-else>₹{{ cutOutNum(detailData?.dailyIncome / 24, 2) }}</span>
-            <span v-if="info.cid == 1019"> Points</span>
+            <span v-if="info.pointshop == 1"> Points</span>
             <span style="white-space: nowrap;color: #002544;" v-else>{{ t('小时收益') }}</span>
           </div>
           <div class="dailyincome" v-if="false">
@@ -42,7 +42,7 @@
 
           <div class="totalrevenue">
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-              100, 1) }}%</span>
+          100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
           <div class="dailyincome">
@@ -58,7 +58,7 @@
       <div class="invest_wrap" v-if="info.status != 2 && info.status != 10">
         <div class="cont">
           <van-cell-group>
-            <van-cell v-if="info.cid != 1019" :title="t('价格')"
+            <van-cell v-if="info.pointshop == 0" :title="t('价格')"
               style="padding-bottom: 0;margin: 0;background: transparent;">
               <template #value v-if="couponId === -1">
                 <span style="color: #fff;font-weight: bold;">₹{{ info.price }}</span>
@@ -93,7 +93,7 @@
           </van-cell-group>
         </div>
         <div class="amount">
-          <van-grid v-if="info.cid != 1019" :border="false" :column-num="2">
+          <van-grid v-if="info.pointshop == 0" :border="false" :column-num="2">
             <van-grid-item style="margin-right: 0.2rem;">
               <span>₹{{ wallet2.balance }}</span>
               <p>{{ t('充值钱包') }}</p>
@@ -103,7 +103,7 @@
               <p>{{ t('余额钱包') }}</p>
             </van-grid-item>
           </van-grid>
-          <van-grid v-if="info.cid == 1019" :border="false" :column-num="1">
+          <van-grid v-if="info.pointshop == 1" :border="false" :column-num="1">
             <van-grid-item>
               <span>{{ wallet3.balance }} </span>
               <p>You Points</p>
@@ -126,13 +126,13 @@
     </div>
 
     <div class="touziBtns">
-      <div v-if="info.cid != 1019">
+      <div v-if="info.pointshop == 0">
         <div v-if="couponId === -1" class="Actual">Actual amount <span style="color: #f00;">₹{{
           info.price }}</span></div>
         <div v-else class="Actual">Discount amount<span style="color: #f00; margin-left: 0.4rem;">₹{{
           info.prices }}</span></div>
       </div>
-      <div v-if="info.cid == 1019">
+      <div v-if="info.pointshop == 1">
         <div class="Actual" style="margin-top: 0.4rem;">
           Wealth Value<span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
         </div>
@@ -379,10 +379,9 @@ const init = () => {
         return
       }
 
-
+      // console.log("1");
       info.value = res.data.info
-      console.log(info.value.djs);
-      console.log(info.value.djss);
+      // console.log(info.value);
 
       if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
         info.value.status = 10;
