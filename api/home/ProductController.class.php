@@ -17,43 +17,33 @@ class ProductController extends BaseController
 		$return_data = ['category_arr' => $category_arr];
 		ReturnToJson(1, 'ok', $return_data);
 	}
-	public function _list1()
+
+	//积分转换  积分换余额
+	public function _transforms()
 	{
-		$intime = time(); //
-		$cpageSize = 200;
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$where = "1=1 and log.status>1 and log.status<99";
-		if ($params['cid']) {
-			$where .= " and log.cid={$params['cid']}";
+		$msg = "";
+		$point = floatval($params['m']);
+		if ($point <= 0)
+			ReturnToJson(-1, "Please enter the number of points");
+		if ($point <= 10)
+			ReturnToJson(-1, "Too few input points");
+		$wallet3 = Db::table('wallet_list')->where('uid', $pageuser['id'])->where("cid", 3)->find();
+		if ($point > $wallet3['balance'])
+			ReturnToJson(-1, "Your points are not enough");
+		Db::startTrans();
+		try {
+			updateWalletBalanceAndLog($pageuser['id'], -$point, 3, 1019, 'transforms');
+			updateWalletBalanceAndLog($pageuser['id'], $point / 10, 2, 1019, 'transforms');
+			Db::commit();
+		} catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-
-		if (intval($params['ishot']) == 1) {
-			$where .= " and log.is_hot=1";
-		}
-
-		//mysql -hbxmysqldbrd.rwlb.rds.aliyuncs.com:3306 -P3306 -ubx -pQWE123!@#
-
-		$list1time = Db::query('select count(1) from sys_user'); //
-		//Db::query('select * from think_user where status=1');
-		$category_arr = 177; //;Db::table('pro_category')->count();
-		$c1time = time(); //
-
-		$return_data = [
-			'list' => 1,
-			'count' => 0,
-			'page' => $params['page'] + 1,
-			'finished' => false,
-			'limit' => $cpageSize,
-			'category_arr' => $category_arr,
-			'time' => [
-				$intime,
-				$list1time,
-				$c1time,
-			]
-		];
-		ReturnToJson(1, 'ok', $return_data);
+		ReturnToJson(1, $msg);
 	}
+
 	public function _list()
 	{
 		$cpageSize = 200;
