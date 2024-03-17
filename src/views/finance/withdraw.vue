@@ -250,12 +250,12 @@ const onSubmit = () => {
 
     if (dataForm.money < min.value) {
         isRequest = false
-        _alert(ptype.name + ' Minimum withdrawal amount is ' + min.value)
+        _alert(' Minimum withdrawal amount is ' + min.value)
         return
     }
     if (dataForm.money > max.value) {
         isRequest = false
-        _alert(ptype.name + ' Maximum withdrawal amount is ' + max.value)
+        _alert(' Maximum withdrawal amount is ' + max.value)
         return
     }
 
