@@ -243,7 +243,7 @@ function updateWalletBalanceAndLog($id, $money, $cid, $type, $remark)
 		'remark' => $remark
 	]);
 	if (!$result) {
-		throw new \Exception('流水记录写入失败');
+		throw new \Exception('Failed to write journal records.');
 	}
 }
 

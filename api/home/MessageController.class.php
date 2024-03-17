@@ -55,7 +55,7 @@ class MessageController extends BaseController{
 		//->view(['news_category'=>'c'],['name'=>'cat_name'],'log.cid=c.id','LEFT')
 		->where($where)->find();
 		if(!$item){
-			ReturnToJson(-1,'不存在相应的记录');
+			ReturnToJson(-1,'No corresponding record exists.');
 		}
 		$item['create_time']=date('m-d H:i',$item['create_time']);
 		$item['content']=nl2br($item['content']);
@@ -72,27 +72,27 @@ class MessageController extends BaseController{
 		$params=$this->params;
 		
 		if(!$params['content']){
-			ReturnToJson(-1,'请输入内容');
+			ReturnToJson(-1,'Please enter content.');
 		}
 		
 		if(!$params['phone']){
-			ReturnToJson(-1,'请输入手机号');
+			ReturnToJson(-1,'Please enter phone number.');
 		}else{
 			if(!isPhone($params['phone'])){
-				ReturnToJson(-1,'手机号不正确');
+				ReturnToJson(-1,'Mobile phone number is incorrect.');
 			}
 		}
 		
 		if(!$params['email']){
-			ReturnToJson(-1,'请输入邮箱');
+			ReturnToJson(-1,'please input your email.');
 		}else{
 			if(!isEmail($params['email'])){
-				ReturnToJson(-1,'邮箱不正确');
+				ReturnToJson(-1,'Email is incorrect.');
 			}
 		}
 		/*
 		if(!$params['title']){
-			ReturnToJson(-1,'请输入标题');
+			ReturnToJson(-1,'Please enter a title.');
 		}*/
 		$covers=[];
 		if($params['covers']){
@@ -113,12 +113,12 @@ class MessageController extends BaseController{
 		try{
 			Db::table('msg_list')->insertGetId($msg_list);
 		}catch(\Exceptioin $e){
-			ReturnToJson(-1,'系统繁忙请稍后再试');
+			ReturnToJson(-1,'The system is busy, please try again later.');
 		}
 		$return_data=[
 			'msn'=>$msg_list['msn']
 		];
-		ReturnToJson(1,'提交成功',$return_data);
+		ReturnToJson(1,'Submitted successfully.',$return_data);
 	}
 	
 	public function _log_list(){
@@ -127,7 +127,7 @@ class MessageController extends BaseController{
 		$params['page']=intval($params['page']);
 		$mitem=Db::table('msg_list')->where("msn='{$params['msn']}'")->find();
 		if(!$mitem||$mitem['uid']!=$pageuser['id']){
-			ReturnToJson(-1,'不存在相应的记录');
+			ReturnToJson(-1,'No corresponding record exists.');
 		}
 		$where='1=1';
 		//$where.=empty($params['s_cid'])?'':" and log.cid={$params['s_cid']}";
@@ -171,14 +171,14 @@ class MessageController extends BaseController{
 		$pageuser=checkLogin();
 		$params=$this->params;
 		if(!$params['msn']){
-			ReturnToJson(-1,'缺少参数');
+			ReturnToJson(-1,'Missing parameters.');
 		}
 		if(!$params['content']){
-			ReturnToJson(-1,'请填写内容');
+			ReturnToJson(-1,'Please fill in the content.');
 		}
 		$item=Db::table('msg_list')->where("msn='{$params['msn']}'")->find();
 		if(!$item||$item['uid']!=$pageuser['id']){
-			ReturnToJson(-1,'不存在相应的记录');
+			ReturnToJson(-1,'No corresponding record exists.');
 		}
 		$msg_list_log=[
 			'mid'=>$item['id'],
@@ -190,9 +190,9 @@ class MessageController extends BaseController{
 			Db::table('msg_list_log')->insertGetId($msg_list_log);
 			Db::table('msg_list')->where("id={$item['id']}")->update(['is_new'=>1]);
 		}catch(\Exceptioin $e){
-			ReturnToJson(-1,'系统繁忙请稍后再试');
+			ReturnToJson(-1,'The system is busy, please try again later.');
 		}
-		ReturnToJson(1,'提交成功');
+		ReturnToJson(1,'Submitted successfully.');
 	}
 	
 }

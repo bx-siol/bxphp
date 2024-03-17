@@ -40,7 +40,7 @@ class ProductController extends BaseController
 			$msg = "Operation successful";
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 		ReturnToJson(1, $msg);
 	}
@@ -120,7 +120,7 @@ class ProductController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		if (!$params['gsn'])
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		$rediskey_goods = RedisKeys::Goods . $params['gsn'];
 		$item = $this->redis->get($rediskey_goods);
 		if (!$item) {
@@ -131,7 +131,7 @@ class ProductController extends BaseController
 		$itemid = $item["id"];
 
 		if (!$item)
-			ReturnToJson(-1, '不存在相应的记录');
+			ReturnToJson(-1, 'No corresponding record exists.');
 
 		$this->goodsItem($item);
 		$wallet1 = getWallet($pageuser['id'], 1);
@@ -226,19 +226,19 @@ class ProductController extends BaseController
 			$pageuser = Db::table('sys_user')->where("id='{$pageuser['id']}'")->find();
 			$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 			if (!$item) {
-				ReturnToJson(-1, '不存在相应的产品');
+				ReturnToJson(-1, 'No corresponding product exists.');
 			} else {
 				if ($item['djs'] != 0 && $item['djs'] < time()) {
 					ReturnToJson(-1, 'The final purchase deadline for the current product has expired');
 				}
 				if ($item['status'] != 3) {
 					if ($item['status'] == 9) {
-						//ReturnToJson(-1,'该成品已没有可投资额度');
+						//ReturnToJson(-1,'There is no investment limit for this finished product.');
 						ReturnToJson(-1, 'The product has been sold out');
 					} elseif ($item['status'] == 2) {
 						ReturnToJson(-1, 'Unable to activate during pre-sale');
 					} else {
-						ReturnToJson(-1, '该产品已下线');
+						ReturnToJson(-1, 'This product has been offline.');
 					}
 				}
 				$money = $quantity * $item['price'];
@@ -342,7 +342,7 @@ class ProductController extends BaseController
 					'remark' => 'Buy:' . $pro_order['osn']
 				]);
 				if (!$result3) {
-					throw new \Exception('流水记录写入失败');
+					throw new \Exception('Failed to write journal records.');
 				}
 				$res = Db::table('pro_order')->insertGetId($pro_order);
 			} else {
@@ -393,7 +393,7 @@ class ProductController extends BaseController
 				$wallet1 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=1')->lock(true)->find(); //积分 //充值钱包
 				$wallet2 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=2')->lock(true)->find(); //积分 //余额钱包
 				if (!$wallet1 || !$wallet2) {
-					throw new \Exception('钱包获取异常');
+					throw new \Exception('Wallet acquisition exception.');
 				}
 				//检测当前用户是否是首次购买
 				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
@@ -404,7 +404,7 @@ class ProductController extends BaseController
 					$w2_money = 0;
 					if (floatval($wallet1['balance']) < $discount_total) {
 						Db::rollback();
-						ReturnToJson(-1, '您的余额不足');
+						ReturnToJson(-1, 'Your balance is insufficient.');
 					}
 				} else {
 					//首次购买，保留余额钱包
@@ -414,11 +414,11 @@ class ProductController extends BaseController
 								$w1_money = $discount_total;
 							} else {
 								Db::rollback();
-								ReturnToJson(-1, '您的余额不足');
+								ReturnToJson(-1, 'Your balance is insufficient.');
 							}
 						} else {
 							Db::rollback();
-							ReturnToJson(-1, '您的余额不足');
+							ReturnToJson(-1, 'Your balance is insufficient.');
 						}
 					} else {
 						if ($wallet2['balance'] > 0) { //余额钱包有余额
@@ -443,11 +443,11 @@ class ProductController extends BaseController
 
 				if ($wallet1['balance'] < $w1_money) {
 					Db::rollback();
-					ReturnToJson(-1, '您的余额不足');
+					ReturnToJson(-1, 'Your balance is insufficient.');
 				}
 				if ($wallet2['balance'] < $w2_money) {
 					Db::rollback();
-					ReturnToJson(-1, '您的余额不足');
+					ReturnToJson(-1, 'Your balance is insufficient.');
 				}
 
 
@@ -496,7 +496,7 @@ class ProductController extends BaseController
 						'remark' => 'Buy:' . $pro_order['osn']
 					]);
 					if (!$result2) {
-						throw new \Exception('流水记录写入失败');
+						throw new \Exception('Failed to write journal records.');
 					}
 				}
 				if ($w1_money > 0) {
@@ -517,7 +517,7 @@ class ProductController extends BaseController
 						'remark' => 'Buy:' . $pro_order['osn']
 					]);
 					if (!$result1) {
-						throw new \Exception('流水记录写入失败');
+						throw new \Exception('Failed to write journal records.');
 					}
 				}
 
@@ -573,7 +573,7 @@ class ProductController extends BaseController
 								'remark' => 'Buy:' . $pro_order['osn']
 							]);
 							if (!$result3) {
-								throw new \Exception('流水记录写入失败');
+								throw new \Exception('Failed to write journal records.');
 							}
 						}
 					}
@@ -735,7 +735,7 @@ class ProductController extends BaseController
 						'remark' => 'Buy:' . $pro_order['osn']
 					]);
 					if (!$result3) {
-						throw new \Exception('流水记录写入失败');
+						throw new \Exception('Failed to write journal records.');
 					}
 				}
 				if ($item['selfbg'] > 0) {
@@ -757,7 +757,7 @@ class ProductController extends BaseController
 						'remark' => 'Buy:' . $pro_order['osn']
 					]);
 					if (!$result2) {
-						throw new \Exception('流水记录写入失败');
+						throw new \Exception('Failed to write journal records.');
 					}
 				}
 			}
@@ -766,7 +766,7 @@ class ProductController extends BaseController
 			$return_data['osn1'] = $sjcq;
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
+			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e)]);
 		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
@@ -790,7 +790,7 @@ class ProductController extends BaseController
 			if (!$item) {
 				$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 				if (!$item)
-					ReturnToJson(-1, '不存在相应的产品');
+					ReturnToJson(-1, 'No corresponding product exists.');
 				$this->redis->set('pro_goods_' . $params['gsn'], $item, 60 * 60);
 			}
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
@@ -809,7 +809,7 @@ class ProductController extends BaseController
 			$return_data['osn'] = $pro_order['osn'];
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => json_encode($e)]);
+			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e)]);
 		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
@@ -969,7 +969,7 @@ class ProductController extends BaseController
 		$wallet1 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=1')->lock(true)->find();   //充值钱包
 		$wallet2 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=2')->lock(true)->find();   //余额钱包
 		if (!$wallet1 || !$wallet2) {
-			throw new \Exception('钱包获取异常');
+			throw new \Exception('Wallet acquisition exception.');
 		}
 
 		//只允许使用充值钱包
@@ -977,7 +977,7 @@ class ProductController extends BaseController
 			$w1_money = $discount_total;
 			$w2_money = 0;
 			if (floatval($wallet1['balance']) < $discount_total) {
-				ReturnToJson(-1, '您的余额不足');
+				ReturnToJson(-1, 'Wallet acquisition exception.');
 			}
 		} else {
 			//首次购买，保留余额钱包
@@ -986,10 +986,10 @@ class ProductController extends BaseController
 					if ($wallet1['balance'] >= $discount_total) {
 						$w1_money = $discount_total;
 					} else {
-						ReturnToJson(-1, '您的余额不足');
+						ReturnToJson(-1, 'Your balance is insufficient.');
 					}
 				} else {
-					ReturnToJson(-1, '您的余额不足');
+					ReturnToJson(-1, 'Your balance is insufficient.');
 				}
 			} else {
 				if ($wallet2['balance'] > 0) { //余额钱包有余额
@@ -1012,10 +1012,10 @@ class ProductController extends BaseController
 		$pro_order['w2_money'] = $w2_money;
 		Db::table('pro_order')->insertGetId($pro_order);
 		if ($wallet1['balance'] < $w1_money) {
-			ReturnToJson(-1, '您的余额不足');
+			ReturnToJson(-1, 'Your balance is insufficient.');
 		}
 		if ($wallet2['balance'] < $w2_money) {
-			ReturnToJson(-1, '您的余额不足');
+			ReturnToJson(-1, 'Your balance is insufficient.');
 		}
 
 		//更新券使用
@@ -1420,7 +1420,7 @@ class ProductController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		if (!$params['osn'])
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
 		$project = getPset('project');
@@ -1436,7 +1436,7 @@ class ProductController extends BaseController
 		}
 		$item = Db::table('pro_order')->where("osn='{$params['osn']}'")->lock(true)->find();
 		if ($item['uid'] != $pageuser['id'])
-			ReturnToJson(-1, '不存在相应的订单');
+			ReturnToJson(-1, 'No corresponding order exists.');
 		if ($item['status'] != 1)
 			ReturnToJson(-1, 'Currently unavailable');
 		if ($item['reward_day']) {
@@ -1472,7 +1472,7 @@ class ProductController extends BaseController
 		}
 
 		if ($pro_order == [])
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		if ($pro_order['total_days'] >= $item['days'])
 			$pro_order['status'] = 9;
 		$return_data = [];
@@ -1481,7 +1481,7 @@ class ProductController extends BaseController
 			Db::table('pro_order')->where("id={$item['id']}")->update($pro_order);
 			$wallet = getWallet($item['uid'], 2);
 			if (!$wallet)
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$wallet_data = [
@@ -1499,7 +1499,7 @@ class ProductController extends BaseController
 				'remark' => 'Profit:' . $item['osn']
 			]);
 			if (!$result)
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 
 			//写入收益记录
 			$pro_reward = [
@@ -1546,7 +1546,7 @@ class ProductController extends BaseController
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
 					if (!$wallet2)
-						throw new \Exception('钱包获取异常');
+						throw new \Exception('Wallet acquisition exception.');
 					$wallet2 = Db::table('wallet_list')->where("id={$wallet2['id']}")->lock(true)->find();
 					$wallet_data2 = [
 						'balance' => $wallet2['balance'] + $rebate
@@ -1565,7 +1565,7 @@ class ProductController extends BaseController
 						'remark' => 'Commission:' . $item['osn']
 					]);
 					if (!$result2)
-						throw new \Exception('流水记录写入失败');
+						throw new \Exception('Failed to write journal records.');
 					//写入收益记录
 					$pro_reward2 = [
 						'uid' => $uv['id'],
@@ -1591,7 +1591,7 @@ class ProductController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试', ['e' => $e]);
+			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => $e]);
 		}
 		$return_data['reward'] = $reward;
 		ReturnToJson(1, 'Received successfully', $return_data);

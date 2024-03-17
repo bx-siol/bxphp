@@ -156,7 +156,7 @@ class DefaultController extends BaseController
 		$pageuser = checkLogin();
 		$wallet = getWallet($pageuser['id'], 2);
 		if (!$wallet) {
-			throw new \Exception('钱包获取异常');
+			throw new \Exception('Wallet acquisition exception.');
 		}
 		$user = Db::table('sys_user')->where("id={$pageuser['id']}")->lock(true)->find();
 		if (intval($user['gift']) != 0) {
@@ -182,7 +182,7 @@ class DefaultController extends BaseController
 			'remark' => 'Give away'
 		]);
 		if (!$result) {
-			throw new \Exception('流水记录写入失败');
+			throw new \Exception('Failed to write journal records.');
 		}
 		ReturnToJson(1, 'ok');
 	}

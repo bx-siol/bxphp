@@ -42,10 +42,10 @@ function addCouponLog($uid, $couponId, $num = 1, $remark = '')
 	try {
 		$item = Db::table('coupon_list')->where("id={$couponId}")->lock(true)->find();
 		if (!$item || $item['status'] >= 99) {
-			throw new \Exception('不存在相应的代金券');
+			throw new \Exception('There is no corresponding voucher.');
 		}
 		if ($item['stock_num'] < $num) {
-			throw new \Exception('库存不足');
+			throw new \Exception('Inventory shortage.');
 		}
 		$db_item = [
 			'stock_num' => $item['stock_num'] - $num,

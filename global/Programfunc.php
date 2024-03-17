@@ -592,8 +592,8 @@ function sendSms($phone, $content)
 //获取验证码短信
 function getPhoneCode($data)
 {
-	if (!$data['stype'] || !$data['phone'])
-		return ['code' => '-1', 'msg' => '缺少验证参数'];
+	if (!$data['stype'] || !$data['phone']) 
+		return ['code' => '-1', 'msg' => 'Missing validation parameters.'];	
 	$limit_time = NOW_TIME - 60; //60秒以内不能重复获取
 	$cnt = Db::table('sys_vcode')->whereRaw(
 		'phone=:phone and stype=:stype and create_time>=:create_time',
@@ -603,8 +603,8 @@ function getPhoneCode($data)
 			'create_time' => $limit_time
 		]
 	)->count();
-	if ($cnt > 0)
-		return ['code' => '-1', 'msg' => '获取验证码过于频繁，请稍后再试'];
+	if ($cnt > 0) 
+		return ['code' => '-1', 'msg' => 'Verification codes are obtained too frequently, please try again later.'];
 	$sys_sms = getConfig('sys_sms');
 	$code = rand(123456, 999999);
 	$content = "Your OTP is {$code}";
@@ -628,25 +628,25 @@ function getPhoneCode($data)
 	];
 	$res = Db::table('sys_vcode')->insert($sys_vcode);
 	if (!$res)
-		return ['code' => '-1', 'msg' => '系统繁忙请稍后再试'];
-	return ['code' => '1', 'msg' => '发送成功'];
+		return ['code' => '-1', 'msg' => 'The system is busy, please try again later.'];
+	return ['code' => '1', 'msg' => 'Sent successfully.'];
 }
 
 //校验验证码
 function checkPhoneCode($data)
 {
 	if (!$data['stype'] || !$data['code'] || !$data['phone']) {
-		return ['code' => '-1', 'msg' => '缺少验证参数'];
+		return ['code' => '-1', 'msg' => 'Missing validation parameters.'];
 	}
 	$key = "WN_CODE" . $data['code'];
 	$redis = new MyRedis();
 	if ($redis->has($key)) {
 		$redis->rm($key);
-		return ['code' => '1', 'msg' => '验证通过'];
+		return ['code' => '1', 'msg' => 'Verification passed.'];
 	}
 	$cnf_global_smscode = getConfig('cnf_global_smscode');
 	if ($data['code'] == $cnf_global_smscode['code']) {
-		return ['code' => '1', 'msg' => '验证通过'];
+		return ['code' => '1', 'msg' => 'Verification passed.'];
 	}
 	$item = Db::table('sys_vcode')->whereRaw(
 		'phone=:phone and stype=:stype',
@@ -656,10 +656,10 @@ function checkPhoneCode($data)
 		]
 	)->order(['id' => 'desc'])->find();
 	if (!$item['id']) {
-		return ['code' => '-1', 'msg' => '该短信验证码不正确'];
+		return ['code' => '-1', 'msg' => 'The SMS verification code is incorrect.'];
 	}
 	if ($item['status'] || $item['verify_num'] > 2) {
-		return ['code' => '-1', 'msg' => '请重新获取短信验证码'];
+		return ['code' => '-1', 'msg' => 'Please obtain the SMS verification code again.'];
 	}
 	//查到验证码且验证使用未达到限制次数
 	$msg = '';
@@ -667,13 +667,13 @@ function checkPhoneCode($data)
 	if ($data['code'] == $item['code']) {
 		//检测验证码有效期
 		if (NOW_TIME - $item['create_time'] > 1800) {
-			$msg = '该短信验证码已失效';
+			$msg = 'The SMS verification code has expired.';
 			$sys_vcode['status'] = 1;
 		} else {
 			$sys_vcode['status'] = 2;
 		}
 	} else {
-		$msg = '该短信验证码不正确';
+		$msg = 'The SMS verification code is incorrect.';
 		if ($sys_vcode['verify_num'] > 2) {
 			$sys_vcode['status'] = 1;
 		}
@@ -681,12 +681,12 @@ function checkPhoneCode($data)
 	$sys_vcode['verify_time'] = NOW_TIME;
 	$res = Db::table('sys_vcode')->where("id={$item['id']}")->save($sys_vcode);
 	if (!$res) {
-		$msg = '该短信验证码不正确';
+		$msg = 'The SMS verification code is incorrect.';
 	}
 	if ($msg) {
 		return ['code' => '-1', 'msg' => $msg];
 	}
-	return ['code' => '1', 'msg' => '验证通过'];
+	return ['code' => '1', 'msg' => 'Verification passed.'];
 }
 //#####################短信验证码相关结束#####################
 
@@ -1213,7 +1213,7 @@ function display($tpl, $data = array(), $return = false)
 	$template_dir = APP_PATH . '/view/' . strtolower(MODULE_NAME) . '/';
 	$path = $template_dir . $tpl;
 	if (!file_exists($path)) {
-		exit (lang('不存在模板'));
+		exit (lang('Template does not exist.'));
 	}
 	$smarty = new Smarty();
 	$smarty->template_dir = $template_dir;
@@ -1355,12 +1355,12 @@ function curl_post2($url, $data = [], $timeout = 30, $header = [])
 function getDirFileList($path, &$filename, $recursive = false, $ext = false, $baseurl = true)
 {
 	if (!$path) {
-		die ('请传入目录路径');
+		die ('Please pass in the directory path.');
 	}
 	$path = trim($path, '/');
 	$resource = opendir($path);
 	if (!$resource) {
-		die ('传入的目录不正确');
+		die ('The directory passed in is incorrect.');
 	}
 	//遍历目录
 	while ($rows = readdir($resource)) {
@@ -1373,7 +1373,7 @@ function getDirFileList($path, &$filename, $recursive = false, $ext = false, $ba
 				if ($ext) {
 					//必须为数组
 					if (!is_array($ext)) {
-						die ('后缀名请以数组方式传入');
+						die ('Please pass in the suffix name in array form.');
 					}
 					//转换小写
 					foreach ($ext as &$v) {

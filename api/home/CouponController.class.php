@@ -95,7 +95,7 @@ class CouponController extends BaseController
 		try {
 			$coupon = Db::table('coupon_log')->where("id={$item_id}")->lock(true)->find();
 			if (!$coupon || $coupon['uid'] != $pageuser['id'] || $coupon['status'] >= 99) {
-				ReturnToJson(-1, '不存在相应的记录');
+				ReturnToJson(-1, 'No corresponding record exists.');
 			}
 			if ($coupon['type'] != 2) {
 				ReturnToJson(-1, 'This discount coupon is not available');
@@ -145,7 +145,7 @@ class CouponController extends BaseController
 
 			$wallet2 = getWallet($pageuser['id'], 2); //余额钱包
 			if (!$wallet2) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet2 = Db::table('wallet_list')->where("id={$wallet2['id']}")->lock(true)->find();
 			$wallet_data2 = [
@@ -170,14 +170,14 @@ class CouponController extends BaseController
 
 
 			if (!$result2) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试', $e->getMessage());
+			ReturnToJson(-1, 'The system is busy, please try again later.', $e->getMessage());
 		}
 		$return_data = [
 			'status' => $coupon_log['status'],

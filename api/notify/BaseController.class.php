@@ -310,8 +310,8 @@ class BaseController extends CommonCtl
 					$fin_cashlog['status'] = 3; //3失败 
 					$wallet = getWallet($order['uid'], 2);
 					if (!$wallet) {
-						//ReturnToJson(-1,'钱包获取异常');
-						return ['code' => -1, 'msg' => '钱包获取异常'];
+						//ReturnToJson(-1,'Wallet acquisition exception.');
+						return ['code' => -1, 'msg' => 'Wallet acquisition exception.'];
 					}
 					$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 					$wallet_data = [
@@ -444,8 +444,8 @@ class BaseController extends CommonCtl
 					$fin_cashlog['status'] = 3; //3失败 
 					$wallet = getWallet($order['uid'], 2);
 					if (!$wallet) {
-						//ReturnToJson(-1,'钱包获取异常');
-						return ['code' => -1, 'msg' => '钱包获取异常'];
+						//ReturnToJson(-1,'Wallet acquisition exception.');
+						return ['code' => -1, 'msg' => 'Wallet acquisition exception.'];
 					}
 					$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 					$wallet_data = [

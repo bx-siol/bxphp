@@ -212,7 +212,7 @@ function checkLogin()
 		return false;
 	}
 	if (isAjax()) {
-		ReturnToJson('-98', '请先登录');
+		ReturnToJson('-98', 'please log in first.');
 	} else {
 		session_start();
 		$_SESSION['backurl'] = REQUEST_SCHEME . '://' . HTTP_HOST . $_SERVER['REQUEST_URI'];
