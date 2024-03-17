@@ -308,7 +308,7 @@ class UserController extends BaseController
 		$params = $this->params;
 		$where = '';
 		if($params['type'] == 0)
-			$where .= " and  first_pay_day > 0 ";`
+			$where .= " and  first_pay_day > 0 ";
 		else if($params['type'] == 1)
 			$where .= " and first_pay_day =0 ";
 
