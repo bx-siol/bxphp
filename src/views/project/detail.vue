@@ -44,15 +44,15 @@
 
           <div class="totalrevenue">
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-          100, 1) }}%</span>
+              100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
-          
+
           <div class="dailyincome">
             <span class="bold">{{ info.days }} Day</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('投资周期') }} </span>
           </div>
-          
+
           <div class="dailyincome" v-if="false">
             <span class="bold">VIP{{ 1 }} </span>
             <span>{{ t('购买等级') }} </span>
@@ -137,8 +137,9 @@
           info.prices }}</span></div>
       </div>
       <div v-if="info.pointshop == 1">
-        <div class="Actual" style="margin-top: 0.4rem;">
-          Wealth Value<span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
+        <div class="Actuals" style="margin-top: 0.4rem;">
+          <img :src="Pointsbi">
+          <span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
         </div>
       </div>
 
@@ -202,6 +203,7 @@ import http from "../../global/network/http";
 import bird from '../../assets/ico/bird.png'
 import leaf from '../../assets/ico/leaf.png'
 import lb1 from '../../assets/img/project/lb1.jpg'
+import Pointsbi from "../../assets/index/Pointsbi.png";
 import MyTab from "../../components/Tab.vue";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
@@ -373,74 +375,74 @@ const onSubmit = () => {
 const init = () => {
   const delayTime = Math.floor(Math.random() * 1000);
   // setTimeout(() => {
-    http({
-      url: 'c=Product&a=goods',
-      data: { gsn: route.params.pid }
-    }).then((res: any) => {
-      if (res.code != 1) {
-        _alert({
-          type: 'error',
-          message: res.msg,
-        })
-        return
-      }
+  http({
+    url: 'c=Product&a=goods',
+    data: { gsn: route.params.pid }
+  }).then((res: any) => {
+    if (res.code != 1) {
+      _alert({
+        type: 'error',
+        message: res.msg,
+      })
+      return
+    }
 
-      // console.log("1");
-      info.value = res.data.info
-      // console.log(info.value);
+    // console.log("1");
+    info.value = res.data.info
+    // console.log(info.value);
 
-      if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
-        info.value.status = 10;
-      }
-      console.log(info.value.djs <= info.value.djss);
-      // console.log(info.value.djss);
-      detailData.value.name = res.data.info.name
-      detailData.value.price = res.data.info.price
-      detailData.value.dailyIncome = res.data.info.price * (res.data.info.rate / 100)
-      detailData.value.totalRevenue = res.data.info.price * (res.data.info.rate / 100) * res.data.info.days
-      detailData.value.content = res.data.info.content
-      detailData.value.tags = [
-        res.data.info.days + ' Days',
-        'Daily interest rate ' + res.data.info.rate + '%',
-        'Return rate ' + cutOutNum(((res.data.info.price * (res.data.info.rate / 100) * res.data.info.days) / res.data.info.price) * 100, 1) + '%',
-        //'Limit ' + res.data.info.invest_limit + ' copy'
-      ]
-      wallet1.value = res.data.wallet1
-      wallet2.value = res.data.wallet2
-      wallet3.value = res.data.wallet3
+    if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
+      info.value.status = 10;
+    }
+    console.log(info.value.djs <= info.value.djss);
+    // console.log(info.value.djss);
+    detailData.value.name = res.data.info.name
+    detailData.value.price = res.data.info.price
+    detailData.value.dailyIncome = res.data.info.price * (res.data.info.rate / 100)
+    detailData.value.totalRevenue = res.data.info.price * (res.data.info.rate / 100) * res.data.info.days
+    detailData.value.content = res.data.info.content
+    detailData.value.tags = [
+      res.data.info.days + ' Days',
+      'Daily interest rate ' + res.data.info.rate + '%',
+      'Return rate ' + cutOutNum(((res.data.info.price * (res.data.info.rate / 100) * res.data.info.days) / res.data.info.price) * 100, 1) + '%',
+      //'Limit ' + res.data.info.invest_limit + ' copy'
+    ]
+    wallet1.value = res.data.wallet1
+    wallet2.value = res.data.wallet2
+    wallet3.value = res.data.wallet3
 
-      coupons.value = [];
+    coupons.value = [];
 
+    coupons.value.push({
+      id: -1,
+      available: 1,
+      condition: t('折扣券'),
+      reason: '',
+      value: 0,
+      name: t('折扣券'),
+      startAt: 1489104000,
+      endAt: 1514592000,
+      valueDesc: '0',
+      unitDesc: '%',
+    });
+
+    for (let index = 0; index < res.data.coupon_arr.length; index++) {
+      const element = res.data.coupon_arr[index];
       coupons.value.push({
-        id: -1,
         available: 1,
         condition: t('折扣券'),
         reason: '',
-        value: 0,
-        name: t('折扣券'),
-        startAt: 1489104000,
-        endAt: 1514592000,
-        valueDesc: '0',
+        value: (100 - element.discount) * 100,
+        name: element.coupon_name,
+        startAt: element.create_time,
+        endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
+        valueDesc: (100 - element.discount).toString(),
         unitDesc: '%',
+        id: element.id
       });
+    }
 
-      for (let index = 0; index < res.data.coupon_arr.length; index++) {
-        const element = res.data.coupon_arr[index];
-        coupons.value.push({
-          available: 1,
-          condition: t('折扣券'),
-          reason: '',
-          value: (100 - element.discount) * 100,
-          name: element.coupon_name,
-          startAt: element.create_time,
-          endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
-          valueDesc: (100 - element.discount).toString(),
-          unitDesc: '%',
-          id: element.id
-        });
-      }
-
-    })
+  })
   // }, delayTime)
 }
 const forid = (id: number) => {
@@ -639,6 +641,15 @@ onMounted(() => {
   .touziBtns .Actual {
     color: #002544;
     margin-left: 1rem;
+  }
+
+  .touziBtns .Actuals {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    img {
+      width: 2rem;
+    }
   }
 
   .touziBtns span {
