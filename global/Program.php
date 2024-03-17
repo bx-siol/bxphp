@@ -42,22 +42,22 @@ require_once ROOT_PATH . 'vendor/autoload.php';
 use think\facade\Db;
 
 //按项目规范参数
-if (file_exists(ROOT_PATH . 'nestlexm')) {
-	define('PAY_BACKURL', 'www.indianestle.com');
-	define('REQUEST_SCHEME', 'https');
-	define('HTTP_HOST', 'www.indianestle.com');
-	require_once GLOBAL_PATH . 'db_n.php';
-} else if (file_exists(ROOT_PATH . 'syngentaxm')) {
-	define('PAY_BACKURL', 'www.syngentainr.com');
-	define('REQUEST_SCHEME', 'https');
-	define('HTTP_HOST', 'www.syngentainr.com');
-	require_once GLOBAL_PATH . 'db_s.php';
-} else {//测试服
-	define('PAY_BACKURL', '38.55.214.59:741');
-	define('REQUEST_SCHEME', 'http');
-	define('HTTP_HOST', '38.55.214.59:741');
-	require_once GLOBAL_PATH . 'db.php';
-}
+// if (file_exists(ROOT_PATH . 'nestlexm')) {
+// 	define('PAY_BACKURL', 'www.indianestle.com');
+// 	define('REQUEST_SCHEME', 'https');
+// 	define('HTTP_HOST', 'www.indianestle.com');
+// 	require_once GLOBAL_PATH . 'db_n.php';
+// } else if (file_exists(ROOT_PATH . 'syngentaxm')) {
+// 	define('PAY_BACKURL', 'www.syngentainr.com');
+// 	define('REQUEST_SCHEME', 'https');
+// 	define('HTTP_HOST', 'www.syngentainr.com');
+// 	require_once GLOBAL_PATH . 'db_s.php';
+// } else {//测试服
+// 	define('PAY_BACKURL', '38.55.214.59:741');
+// 	define('REQUEST_SCHEME', 'http');
+// 	define('HTTP_HOST', '38.55.214.59:741');
+// 	require_once GLOBAL_PATH . 'db.php';
+// }
 
 Db::setConfig($_ENV['DB']);
 
