@@ -1,6 +1,10 @@
 <?php
 //####################相关配置开始###########################
 define('SYS_KEY', 'asfasvcv4856e13asd35a3v1a5dv485adcxx'); //全局签名密钥
+define('PAY_BACKURL', '38.55.214.59:741');
+define('REQUEST_SCHEME', 'http');
+define('HTTP_HOST', '38.55.214.59:741');
+define('SERVER_IP', '38.55.214.59');
 
 $_ENV['PREFIX'] = 'bx'; //项目前/后缀
 
