@@ -108,10 +108,12 @@
                 <div class="noticeList">
 
                     <div class="noticeListItem">
-                        <span>1: Valid members can apply to withdraw money. There is no limit on the number of withdrawals. The minimum withdrawal amount is Rs {{ min }}. </span>
+                        <span>1: Valid members can apply to withdraw money. There is no limit on the number of withdrawals.
+                            The minimum withdrawal amount is Rs {{ min }}. </span>
                     </div>
                     <div class="noticeListItem">
-                        <span>2: IFSC must be 11 characters, the 5th character is 0. If the bank information is filled in incorrectly, the withdrawal will fail.</span>
+                        <span>2: IFSC must be 11 characters, the 5th character is 0. If the bank information is filled in
+                            incorrectly, the withdrawal will fail.</span>
                     </div>
                     <div class="noticeListItem">
                         <span>3: Withdrawal fee:{{ tar }} %</span>
@@ -276,12 +278,8 @@ const onSubmit = () => {
                 _alert(res.msg)
                 return
             }
-            _alert({
-                type: 'success',
-                message: res.msg,
-                onClose: () => {
-                    router.go(-1)
-                }
+            _alert(res.msg, function () {
+                location.reload()
             })
         })
     }, delayTime)
@@ -291,26 +289,22 @@ const onSubmit = () => {
 onMounted(() => {
     var delayTime = Math.floor(Math.random() * 1000);
     // setTimeout((() => {
-        http({
-            url: 'c=Finance&a=withdraw'
-        }).then((res: any) => {
-            if (res.code != 1) {
-                _alert({
-                    type: 'error',
-                    message: res.msg,
-                    onClose: () => {
-                        // router.go(-1)
-                    }
-                })
-                return
-            }
-            ptypeArr.value = res.data.ptms
-            wallet.value = res.data.wallet
-            banklog.value = res.data.banklog
-            min.value = res.data.sys_pset.cash.min
-            max.value = res.data.sys_pset.cash.max
-            tar.value = res.data.sys_pset.cash.fee.percent
-        })
+    http({
+        url: 'c=Finance&a=withdraw'
+    }).then((res: any) => {
+        if (res.code != 1) {
+            _alert(res.msg, function () {
+                router.go(-1)
+            })
+            return
+        }
+        ptypeArr.value = res.data.ptms
+        wallet.value = res.data.wallet
+        banklog.value = res.data.banklog
+        min.value = res.data.sys_pset.cash.min
+        max.value = res.data.sys_pset.cash.max
+        tar.value = res.data.sys_pset.cash.fee.percent
+    })
     // }), delayTime)
 
 })
