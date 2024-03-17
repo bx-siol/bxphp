@@ -46,16 +46,15 @@ function CashOrder($fin_cashlog)
 
 function CashSign($params, $verify = false)
 {
-	// sign	是	string	签名，md5(amount+merchantId+orderId+timestamp+secret)进行MD5加密，32位小写。
 	$config = $_ENV['PAY_CONFIG']['nicepay'];
 	if ($verify) {
 		$signstr = create_sign($params, $config['md5_key']);
 		$sign = strtoupper(md5(trim($signstr)));
-		$outstr = rsa_verify($sign, $params['sign'], $config['ptkey']);
+		$outstr = rsa_verify($sign, $params['sign'], $config['publickey']);
 	} else {
 		$signstr = create_sign($params, $config['md5_key']);
 		$sign = strtoupper(md5(trim($signstr)));
-		$outstr = rsa_sign($sign, $config['skey']);
+		$outstr = rsa_sign($sign, $config['privatekey']);
 	}
 	return $outstr;
 }
@@ -140,7 +139,7 @@ function create_sign($params, $appSecret)
 	$signOriginStr = '';
 	ksort($params);
 	foreach ($params as $key => $value) {
-		if (empty($key) || empty($value) || $key == 'sign' || $key == 'signType' || $key == 'signature') {
+		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'signType' || $key == 'signature') {
 			continue;
 		}
 		$signOriginStr = "$signOriginStr$key=$value&";

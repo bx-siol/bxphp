@@ -1,6 +1,8 @@
 <?php
 //简单路由
 define('CLIENT_IP', getClientIp());
+
+
 $params = getParam();
 $module = strtolower($params['m']);
 if (!$module) {

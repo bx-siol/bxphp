@@ -3,23 +3,19 @@
 use Curl\Curl;
 use think\facade\Db;
 
-
-
 function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG']['nicepay'];
-	//$rand_arr = [6, 7, 8, 9];
-	//$phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999);	 
 	$pdata = [
 		'merId' => $config['mch_id'],
 		'orderId' => $fin_paylog['osn'],
-		'orderAmt' => $fin_paylog['money'],
+		'orderAmt' => number_format($fin_paylog['money'], 2, '.', ''),
 		'desc' => 'desc',
 		'channel' => 'IND0',
-		'ip' => CLIENT_IP,
+		'ip' => SERVER_IP,
 		'notifyUrl' => $config['notifyUrl'],
 		'returnUrl' => $config['returnUrl'],
-		'nonceStr' => $fin_paylog['osn']
+		'nonceStr' => getRsn()
 	];
 	$pdata['sign'] = paySign($pdata);
 	$url = $config['pay_url'];
@@ -27,9 +23,8 @@ function payOrder($fin_paylog, $sub_type = '')
 	$result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
-
 	$resultArr = $result['output'];
-	//writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
+	writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay');
 	if ($resultArr['code'] != '1') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
@@ -50,16 +45,15 @@ function payOrder($fin_paylog, $sub_type = '')
 
 function paySign($params, $verify = false)
 {
-	// sign	是	string	签名，md5(amount+merchantId+orderId+timestamp+secret)进行MD5加密，32位小写。
 	$config = $_ENV['PAY_CONFIG']['nicepay'];
 	if ($verify) {
 		$signstr = create_sign($params, $config['md5_key']);
 		$sign = strtoupper(md5(trim($signstr)));
-		$outstr = rsa_verify($sign, $params['sign'], $config['ptkey']);
+		$outstr = rsa_verify($sign, $params['sign'], $config['publickey']);
 	} else {
 		$signstr = create_sign($params, $config['md5_key']);
 		$sign = strtoupper(md5(trim($signstr)));
-		$outstr = rsa_sign($sign, $config['skey']);
+		$outstr = rsa_sign($sign, $config['privatekey']);
 	}
 	return $outstr;
 }
@@ -69,7 +63,7 @@ function create_sign($params, $appSecret)
 	$signOriginStr = '';
 	ksort($params);
 	foreach ($params as $key => $value) {
-		if (empty($key) || empty($value) || $key == 'sign' || $key == 'signType' || $key == 'signature') {
+		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'signType' || $key == 'signature') {
 			continue;
 		}
 		$signOriginStr = "$signOriginStr$key=$value&";

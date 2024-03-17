@@ -46,16 +46,19 @@ if (file_exists(ROOT_PATH . 'nestlexm')) {
 	define('PAY_BACKURL', 'www.indianestle.com');
 	define('REQUEST_SCHEME', 'https');
 	define('HTTP_HOST', 'www.indianestle.com');
+	define('SERVER_IP', '8.218.103.109');
 	require_once GLOBAL_PATH . 'db_n.php';
 } else if (file_exists(ROOT_PATH . 'syngentaxm')) {
 	define('PAY_BACKURL', 'www.syngentainr.com');
 	define('REQUEST_SCHEME', 'https');
 	define('HTTP_HOST', 'www.syngentainr.com');
+	define('SERVER_IP', '8.210.220.195');
 	require_once GLOBAL_PATH . 'db_s.php';
 } else {//测试服
 	define('PAY_BACKURL', '38.55.214.59:741');
 	define('REQUEST_SCHEME', 'http');
 	define('HTTP_HOST', '38.55.214.59:741');
+	define('SERVER_IP', '38.55.214.59');
 	require_once GLOBAL_PATH . 'db.php';
 }
 
