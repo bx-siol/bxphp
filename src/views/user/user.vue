@@ -78,7 +78,7 @@
             </el-table-column>
 
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
-            <!-- <el-table-column prop="account" :label="isTrans ? '账号' : 'account'" width="130"></el-table-column> -->
+            <el-table-column prop="account" :label="isTrans ? '账号' : 'account'" width="130"></el-table-column>
             <el-table-column prop="bk_account" :label="isTrans ? '银行卡' : 'bank account'" width="130"></el-table-column>
             <!--        <el-table-column prop="usn" :label="isTrans ? '机构编号':''" width="130"></el-table-column>-->
             <el-table-column prop="phone" :label="isTrans ? '手机号' : 'phone'" width="120"></el-table-column>
