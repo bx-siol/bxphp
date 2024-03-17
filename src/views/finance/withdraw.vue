@@ -270,13 +270,13 @@ const onSubmit = () => {
                 return
             }
             _alert(res.msg, function () {
-                loadData()
+                location.reload()
             })
         })
     }, delayTime)
 }
 
-const loadData = () => {
+onMounted(() => {
     http({
         url: 'c=Finance&a=withdraw'
     }).then((res: any) => {
@@ -293,10 +293,6 @@ const loadData = () => {
         max.value = res.data.sys_pset.cash.max
         tar.value = res.data.sys_pset.cash.fee.percent
     })
-}
-
-onMounted(() => {
-    loadData()
 })
 
 </script>
