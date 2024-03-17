@@ -245,7 +245,7 @@ const onSubmit = () => {
     }
     if (dataForm.money > max.value) {
         isRequest = false
-        _alert('Maximum withdrawal amount is ' + max.value)
+        _alert(ptype.name + ' Maximum withdrawal amount is ' + ptype.max)
         return
     }
 
