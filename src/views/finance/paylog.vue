@@ -72,11 +72,13 @@
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">系统单号:</span>
-                <el-input style="width: 180px;" placeholder="系统单号" clearable v-model="params.s_osn" @keyup.enter="doSearch">
+                <el-input style="width: 180px;" placeholder="系统单号" clearable v-model="params.s_osn"
+                    @keyup.enter="doSearch">
                 </el-input>
 
                 <span style="font-size: 14px;margin-left: 10px;">UTR</span>
-                <el-input style="width: 180px;" placeholder="UTR" clearable v-model="params.s_utr" @keyup.enter="doSearch">
+                <el-input style="width: 180px;" placeholder="UTR" clearable v-model="params.s_utr"
+                    @keyup.enter="doSearch">
                 </el-input>
 
                 <el-button type="primary" style="margin-left: 10px;" @click="doSearch">快捷查询</el-button>
@@ -87,7 +89,8 @@
             <template #table="myScope">
                 <el-table-column prop="id" label="ID" width="80"></el-table-column>
                 <el-table-column prop="uid" label="UID" width="100"></el-table-column>
-                <el-table-column prop="osn" :label="isTrans ? 'System Order No.' : '系统单号'" width="180"></el-table-column>
+                <el-table-column prop="osn" :label="isTrans ? 'System Order No.' : '系统单号'"
+                    width="180"></el-table-column>
                 <el-table-column prop="out_osn" :label="isTrans ? 'Channel Order No.' : '通道单号'"
                     width="260"></el-table-column>
                 <el-table-column prop="agent1_account" :label="isTrans ? 'First-level agent' : '一级代理'" width="100">
@@ -106,7 +109,8 @@
                         <template v-else>{{ row.money }}</template>
                     </template>
                 </el-table-column>
-                <el-table-column prop="is_first_flag" :label="isTrans ? 'First pay' : '首次充值'" width="90"></el-table-column>
+                <el-table-column prop="is_first_flag" :label="isTrans ? 'First pay' : '首次充值'"
+                    width="90"></el-table-column>
                 <!-- <el-table-column prop="rate" :label="isTrans ? 'Rate' : '汇率'" width="90" v-if="false">
                     <template #default="{ row }">
                         {{ row.rate > 0 ? row.rate : '/' }}
@@ -177,7 +181,8 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="create_time" :label="isTrans ? 'Order time' : '下单时间'" width="130"></el-table-column>
+                <el-table-column prop="create_time" :label="isTrans ? 'Order time' : '下单时间'"
+                    width="130"></el-table-column>
 
                 <el-table-column prop="pay_time" :label="isTrans ? 'Pay time' : '支付时间'" width="130"></el-table-column>
 
@@ -188,13 +193,15 @@
                 <el-table-column :label="isTrans ? 'Operate' : '操作'" width="260">
                     <template #default="{ row }">
                         <template v-if="power.check">
-                            <el-button size="small" v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9"
+                            <el-button size="small"
+                                v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9"
                                 @click="check($index, row)" type="success">审核</el-button>
                             <span v-else>/</span>
                         </template>
 
                         <template v-if="power.check">
-                            <el-button size="small" v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9"
+                            <el-button size="small"
+                                v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9"
                                 @click="checkbank(1, row)" type="success">到账</el-button>
 
                         </template>
@@ -202,8 +209,23 @@
                             <el-button size="small"
                                 v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9 && row.status != 3"
                                 @click="checkbank(2, row)" type="danger">未到账</el-button>
-
                         </template>
+
+
+                        <template v-if="power.check_onlie">
+                            <el-button size="small"
+                                v-if="row.pay_type != 'offline' && row.status >= 1 && row.status < 9"
+                                @click="checkbank_onlie(1, row)" type="success">到账</el-button>
+                        </template>
+
+                        <template v-if="power.check_onlie">
+                            <el-button size="small"
+                                v-if="row.pay_type != 'offline' && row.status >= 1 && row.status < 9 && row.status != 3"
+                                @click="checkbank_onlie(2, row)" type="danger">未到账</el-button>
+                        </template>
+
+
+
                         <template v-else>/</template>
                     </template>
                 </el-table-column>
@@ -296,6 +318,7 @@ const viewAccountInfo = ref(false)
 //权限控制
 const power = reactive({
     check: checkPower('Finance_paylog_check'),
+    check_onlie: checkPower('Finance_paylog_check_onlie'),
     update: checkPower('Finance_paylog_update')
 })
 
@@ -321,7 +344,7 @@ const check = (idx: number, item: any) => {
 }
 
 
-const checkbank = (idx: number, item: any) => {
+const checkbank = (type: number, item: any) => {
     actItem.value = item
     if (isRequest) {
         return
@@ -330,12 +353,9 @@ const checkbank = (idx: number, item: any) => {
     }
     http({
         url: 'c=Finance&a=bank_check',
-        data: { osn: item.osn, type: idx }
+        data: { osn: item.osn, type: type }
     }).then((res: any) => {
-        console.log(item.status)
         _alert(res.msg)
-        console.log(item.status)
-
         setTimeout(() => {
             isRequest = false
         }, 1000)
@@ -344,6 +364,27 @@ const checkbank = (idx: number, item: any) => {
         }
     })
 }
+const checkbank_onlie = (type: number, item: any) => {
+    actItem.value = item
+    if (isRequest) {
+        return
+    } else {
+        isRequest = true
+    }
+    http({
+        url: 'c=Finance&a=bank_check_onlie',
+        data: { osn: item.osn, type: type }
+    }).then((res: any) => {
+        _alert(res.msg)
+        setTimeout(() => {
+            isRequest = false
+        }, 1000)
+        for (let i in res.data) {
+            actItem.value[i] = res.data[i]
+        }
+    })
+}
+
 
 const ddh = ref()
 
