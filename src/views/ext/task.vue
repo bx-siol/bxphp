@@ -18,12 +18,12 @@
                         }}</span>
 
                     <span v-if="taskshow" @click="onTask"
-                        style="cursor: pointer;text-align: center;padding: 0.5rem;color: #fff;background: #bd312d;border-radius: 0.5rem;margin: 1rem; ">Submit</span>
+                        style="cursor: pointer;text-align: center;padding: 0.5rem;color: #fff;background: #84973b;border-radius: 0.5rem;margin: 1rem; ">Submit</span>
                 </div>
                 <div id="van-tabs-7-0" role="tab" class="van-tab van-tab--line van-tab--active" tabindex="0"
                     aria-selected="true" aria-controls="van-tab-8">
                     <span
-                        style="width: 150px;text-align: center;padding: 0.5rem;color: #fff;background: #bd312d;border-radius: 0.5rem;margin: 1rem;"
+                        style="width: 150px;text-align: center;padding: 0.5rem;color: #fff;background: #84973b;border-radius: 0.5rem;margin: 1rem;"
                         class="van-tab__text van-tab__text--ellipsis">Task Details </span>
                 </div>
                 <div v-html="task.content"></div>

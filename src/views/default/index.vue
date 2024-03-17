@@ -71,7 +71,7 @@
 
             </div>
 
-            <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;">
+            <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;" v-if="false">
               <a class="divs" href="javascript:;" style="width: 32%;">
                 <van-image :src="m5"></van-image>
               </a>
@@ -85,9 +85,9 @@
                   <van-image :src="m8"></van-image>
                 </a> -->
             </div>
-            <div class="u-flex" v-if="false">
+            <div class="u-flex">
               <div @click="onLink({ name: 'Ext_task', params: { id: item.id } })"
-                style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index">
+                style="width: 32%;height: 4rem;margin-top: 8px;" v-for="(item, index) in taskdata" :key="index">
                 <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
               </div>
             </div>
@@ -287,7 +287,17 @@ const goInvite = () => {
   router.push({ path: '/points' })
 
 }
-
+// const onLinkWithCondition = (item,index) => {
+    
+//     if (index === 0 || index === 1) {
+//       router.push({ name: 'Ext_task', params: { id: item.id } });
+//     } 
+  
+//     else if (index === 2) {
+//       router.push({ name: 'team', params: { id: item.id } }); 
+//     }
+//   },
+  
 const doService = () => {
   console.log('doService')
 }
@@ -630,6 +640,7 @@ onMounted(() => {
   padding: 2rem 0 0;
   height: 20rem;
   width: 76%;
+  max-width: 300px;
 
   .dialog_top {
 

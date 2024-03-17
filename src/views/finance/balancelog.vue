@@ -37,7 +37,7 @@
                 </van-tab>
             </van-tabs>
 
-            <van-tabs v-model:active="activeName" line-height="0">
+            <van-tabs v-model:active="activeName" line-height="0" animated>
                 <van-tab style="text-transform: capitalize !important;" :title="t('全部')" name="all">
                     <MyListBase url="c=Finance&a=balancelog" ref="pageRef" @success="onPageSuccess">
                         <template #default="{ list }">
