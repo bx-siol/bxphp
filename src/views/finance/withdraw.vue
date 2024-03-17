@@ -248,14 +248,14 @@ const onSubmit = () => {
         }
     }
 
-    if (dataForm.money < ptype.min) {
+    if (dataForm.money < min.value) {
         isRequest = false
-        _alert(ptype.name + ' Minimum withdrawal amount is ' + ptype.min)
+        _alert(ptype.name + ' Minimum withdrawal amount is ' + min.value)
         return
     }
-    if (dataForm.money > ptype.max) {
+    if (dataForm.money > max.value) {
         isRequest = false
-        _alert(ptype.name + ' Maximum withdrawal amount is ' + ptype.max)
+        _alert(ptype.name + ' Maximum withdrawal amount is ' + max.value)
         return
     }
 
