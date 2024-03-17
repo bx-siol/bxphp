@@ -541,42 +541,29 @@ function lang2($str, $ltype = 'en-us')
 
 function sendSms1($phone, $content)
 {
-	$apiKey = "AGU89z4d";
-	$apiSecret = "vcI6RL9L";
-	$appId = "JkU23ao7";
+	$ck = $_ENV['sms'];
+	$apiKey = $ck["key"];
+	$apiSecret = $ck["secret"];
+	$appId = $ck["appid"];
 	$url = "https://api.onbuka.com/v3/sendSms";
 	$timeStamp = time();
 	$sign = md5($apiKey . $apiSecret . $timeStamp);
-	// $dataArr['appId'] = $appId;
-	// $dataArr['numbers'] = '91' . $phone;
-	// $dataArr['content'] = $content;
-	// $dataArr['senderId'] = '';
-
 	$pdata = [
 		'appId' => $appId,
 		'senderId' => '',
 		'numbers' => '91' . $phone,
 		'content' => $content
 	];
-
-	//$data = json_encode($dataArr);
 	$headers = ['Content-Type' => 'application/json;charset=UTF-8', 'Sign' => "$sign", 'Timestamp' => "$timeStamp", 'Api-Key' => "$apiKey"];
-
 	$result = curl_post2($url, $pdata, 30, $headers);
 	$resultArr = $result['output'];
-	// $file = '/www/wwwroot/bsc.com/global/text1.log';
-	// file_put_contents($file, json_encode($resultArr) . '========' . $content . PHP_EOL, FILE_APPEND);
-	// file_put_contents($file,$resultArr['status'].PHP_EOL,FILE_APPEND);
-	// {"status":0, "array":[[00525611494223,1341559445]], "success":1, "fail":0}
-	if (!$resultArr['status']) {
+	if (!$resultArr['status'])
 		return '0';
-	}
 	return $resultArr['status'];
 }
 
-//AZ4TWC9C    3yF7eOsj
 
-//下发短信-对接实际的接口
+//下发短信-对接实际的接口 -弃用
 function sendSms($phone, $content)
 {
 	$url = 'http://47.241.187.4:20003/sendsms';
@@ -605,9 +592,8 @@ function sendSms($phone, $content)
 //获取验证码短信
 function getPhoneCode($data)
 {
-	if (!$data['stype'] || !$data['phone']) {
+	if (!$data['stype'] || !$data['phone'])
 		return ['code' => '-1', 'msg' => '缺少验证参数'];
-	}
 	$limit_time = NOW_TIME - 60; //60秒以内不能重复获取
 	$cnt = Db::table('sys_vcode')->whereRaw(
 		'phone=:phone and stype=:stype and create_time>=:create_time',
@@ -617,27 +603,17 @@ function getPhoneCode($data)
 			'create_time' => $limit_time
 		]
 	)->count();
-	if ($cnt > 0) {
+	if ($cnt > 0)
 		return ['code' => '-1', 'msg' => '获取验证码过于频繁，请稍后再试'];
-	}
 	$sys_sms = getConfig('sys_sms');
 	$code = rand(123456, 999999);
-	//$content=str_replace('{$code}',$code,$sys_sms['tpl']);
 	$content = "Your OTP is {$code}";
 	$result = [];
-
 	$result = sendSms1($data['phone'], $content);
-	// if ($data['phone'] == '1234567897') {
-
-	// } else {
-	// 	$result = sendSms($data['phone'], $content);
-	// }
 	if ($result != '0') { //短信发送失败
 		return [
 			'code' => '-1',
-			//'msg'=>'短信发送失败',
 			'msg' => 'SMS sending failed: ' . $result
-			//['result'=>$result,'content'=>$content]
 		];
 	}
 	//记录
@@ -651,9 +627,8 @@ function getPhoneCode($data)
 		'scon' => $content
 	];
 	$res = Db::table('sys_vcode')->insert($sys_vcode);
-	if (!$res) {
+	if (!$res)
 		return ['code' => '-1', 'msg' => '系统繁忙请稍后再试'];
-	}
 	return ['code' => '1', 'msg' => '发送成功'];
 }
 
