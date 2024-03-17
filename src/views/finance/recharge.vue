@@ -202,7 +202,7 @@ const onRemember = (ev: any) => {
 }
 const init = () => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
     http({
         url: 'c=Finance&a=recharge'
     }).then((res: any) => {
@@ -219,7 +219,7 @@ const init = () => {
             checked.value = res.data.pay_types[0].id
         }
     })
-}, delayTime)
+// }, delayTime)
 }
 
 onBeforeMount(() => {

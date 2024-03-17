@@ -21,7 +21,7 @@
                 <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
                     <van-tab :title="fy.lv1">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">{{ t('Unrecharge Member') }}
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">{{ t('Invalid Member') }}
                             </div>
                             <div class="levelTabValidMember" @click="SwitchMembers(1, 0)">{{ t('Active Member') }}</div>
                         </div>
@@ -47,7 +47,7 @@
                     </van-tab>
                     <van-tab :title="fy.lv2">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">{{ t('Unrecharge Member') }}
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">{{ t('Invalid Member') }}
                             </div>
                             <div class="levelTabValidMember" @click="SwitchMembers(2, 0)">{{ t('Active Member') }}</div>
                         </div>
@@ -72,7 +72,7 @@
                     </van-tab>
                     <van-tab :title="fy.lv3">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">{{ t('Unrecharge Member') }}
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">{{ t('Invalid Member') }}
                             </div>
                             <div class="levelTabValidMember" @click="SwitchMembers(3, 0)">{{ t('Active Member') }}</div>
                         </div>
@@ -299,7 +299,7 @@ const getusercount = () => {
 }
 const getTeam = () => {
     var delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=User&a=GetTeamHierarchyPeopleNum'
         }).then((res: any) => {
@@ -318,7 +318,7 @@ const getTeam = () => {
             fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%(' + lv2.value.people + ')';
             fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%(' + lv3.value.people + ')';
         })
-    }, delayTime)
+    // }, delayTime)
 }
 
 onMounted(() => {

@@ -240,14 +240,14 @@ onBeforeUnmount(() => {
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'a=userinfo'
         }).then((res: any) => {
             dataForm.account = res.data.account;
             dataForm.phone_flag = res.data.phone;
         })
-    }, delayTime)
+    // }, delayTime)
 })
 </script>
 

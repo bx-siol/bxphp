@@ -131,7 +131,7 @@ const imgFlag = (src: string) => {
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
         http({
             url: 'c=User&a=UserInfo'
         }).then((res: any) => {
@@ -139,7 +139,7 @@ onMounted(() => {
             dataForm.nickname = res.data.nickname
             user.value.headimgurl = res.data.headimgurl
         })
-    }, delayTime)
+    // }, delayTime)
 })
 </script>
 

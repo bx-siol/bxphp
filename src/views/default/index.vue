@@ -287,17 +287,6 @@ const goInvite = () => {
   router.push({ path: '/points' })
 
 }
-// const onLinkWithCondition = (item,index) => {
-    
-//     if (index === 0 || index === 1) {
-//       router.push({ name: 'Ext_task', params: { id: item.id } });
-//     } 
-  
-//     else if (index === 2) {
-//       router.push({ name: 'team', params: { id: item.id } }); 
-//     }
-//   },
-  
 const doService = () => {
   console.log('doService')
 }

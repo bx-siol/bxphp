@@ -87,7 +87,7 @@ const tipShow = ref(false)
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => { 
+    // setTimeout(() => { 
     http({
         url: 'a=index'
     }).then((res: any) => {
@@ -125,6 +125,6 @@ onMounted(() => {
         // }
 
     })
-}, delayTime)
+// }, delayTime)
 })
 </script>

@@ -138,7 +138,7 @@ const getProjectDetail = (item: any) => {
 onMounted(() => {
   //自己封装的接口请求方法 aiox
   const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
+  // setTimeout(() => {
     http({
       //url 就是请求的地址
       url: 'c=Product&a=list',
@@ -158,7 +158,7 @@ onMounted(() => {
       tableData.value = res.data.list
       loadingShow.value = false
     })
-  }, delayTime)
+  // }, delayTime)
 })
 </script>
 <style lang="scss" scoped>

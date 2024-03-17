@@ -87,7 +87,17 @@
                 </div>
                 <div class="noticeList">
                     <div class="noticeListItem">
-                        <span>You invest a minimum of Rs. 500 to initiate withdrawals.</span>
+                        <span>1. Valid members can apply to withdraw money. There is no limit on the number of withdrawals. The minimum withdrawal amount is Rs {{min}}.</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>2. Withdrawal will reach your account within 24-72 .</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>3. Withdrawal tax {{ tar }}%. </span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>4. If the withdrawal fails, please reapply or check whether your bank account information is
+                            correct. </span>
                     </div>
                 </div>
             </div>
@@ -97,25 +107,8 @@
                     <span class="noticeText">Kind tips:</span>
                 </div>
                 <div class="noticeList">
-
                     <div class="noticeListItem">
-                        <span>1. Minimum withdrawal amount is Rs {{ min }}. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>2. You can withdraw once a day. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>3. Withdrawal will reach your account within 24-72 </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>4. Withdrawal tax {{ tar }}%. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>5. If the withdrawal fails, please reapply or check whether your bank account information is
-                            correct. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>6. IFSC should be 11 characters, and the 5th character should be "0", not "O". If you fill in
+                        <span>IFSC should be 11 characters, and the 5th character should be "0", not "O". If you fill in
                             incorrect bank information, your withdrawal will fail.</span>
                     </div>
                 </div>
@@ -245,14 +238,14 @@ const onSubmit = () => {
         }
     }
 
-    if (dataForm.money < ptype.min) {
+    if (dataForm.money < min.value) {
         isRequest = false
-        _alert(ptype.name + ' Minimum withdrawal amount is ' + ptype.min)
+        _alert('Minimum withdrawal amount is ' + min.value)
         return
     }
-    if (dataForm.money > ptype.max) {
+    if (dataForm.money > max.value) {
         isRequest = false
-        _alert(ptype.name + ' Maximum withdrawal amount is ' + ptype.max)
+        _alert('Maximum withdrawal amount is ' + max.value)
         return
     }
 

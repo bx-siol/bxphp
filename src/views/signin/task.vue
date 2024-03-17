@@ -139,7 +139,7 @@
     // 获取页面初始化数据
     const initPageData = () => {
         const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
+        // setTimeout(() => {
             http({
                 url: "ext_inviteTask/pageData",
                 data: {},
@@ -147,7 +147,7 @@
             }).then((res: any) => {
                 pageData.value = res.data
             })
-        }, delayTime)
+        // }, delayTime)
 
     }
 
