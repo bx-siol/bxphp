@@ -132,7 +132,7 @@ const getProjectDetail = (item: any) => {
         flex-direction: column;
         position: relative;
         border-radius: 6px;
-
+        height: 7.8rem;
         .tdbox {
           padding-left: 0.5rem;
           width: 80%;
