@@ -84,15 +84,14 @@ onMounted(() => {
           position: fixed;
           width: 100%;
           height: auto;
-          left: -0.3125rem;
-          padding-left: 0.625rem;
+          left: 50%;
+          transform: translateX(-50%);
           box-sizing: border-box;
-          padding-right: 0.625rem;
-          padding-top: 0.625rem;
-          padding-bottom: 0.625rem;
           z-index: 10;
           background: #fff;
-          padding-top: 1rem;
+          padding: 1rem 0.625rem 0.625rem;
+          max-width: 640px;
+
         }
       }
 

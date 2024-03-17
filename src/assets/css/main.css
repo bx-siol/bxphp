@@ -839,6 +839,7 @@ img {
     height: 2.5rem;
     border-radius: 6px;
     font-weight: bold;
+    max-width: 640px;
 }
 
 /**************home*************/
