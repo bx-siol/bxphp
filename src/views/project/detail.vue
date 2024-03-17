@@ -146,6 +146,8 @@
 
       <van-button v-else-if="info.status == 10" class="touziBtn" @click="onPresale1">Not for sale</van-button>
 
+      <van-button v-else-if="info.pointshop == 1" class="touziBtn" @click="onSubmit">Redeem</van-button>
+
       <van-button v-else class="touziBtn" @click="onSubmit">{{ t('立即加入') }}</van-button>
     </div>
   </div>
@@ -655,6 +657,7 @@ onMounted(() => {
     font-size: 0.9rem;
     border-radius: 2.4rem;
     margin-right: 1rem;
+    font-weight: bold;
   }
 
 }

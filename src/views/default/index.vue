@@ -86,7 +86,7 @@
                 </a> -->
             </div>
             <div class="u-flex">
-              <div @click="onLink({ name: 'Ext_task', params: { id: item.id } })"
+              <div @click="onItem(item,index)"
                 style="width: 32%;height: 4rem;margin-top: 8px;" v-for="(item, index) in taskdata" :key="index">
                 <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
               </div>
@@ -303,14 +303,13 @@ const tdata = ref<any>({
 })
 // let pageUrl = ref('c=Product&a=order')
 
-
-
-
-const totask = (id: number) => {
-  router.push({ name: 'Ext_task', params: { id: id } })
-  // alert(id)
+const  onItem = (item: { id: any; }, index: number) => {
+  if (index < 2) {
+    router.push({ name: 'Ext_task', params: { id: item.id } });
+  } else {
+    router.push({ name: 'Share' });
+  }
 }
-
 
 const onClickVideo = () => {
   if (tdata.value.video.url) {
@@ -420,7 +419,7 @@ const init = () => {
     localStorage.newscount = res.data.newscount;
 
     var str = ',';
-    res.data.newsids.forEach(itemnews => { str += itemnews.id + ','; });
+    res.data.newsids.forEach((itemnews: { id: string; }) => { str += itemnews.id + ','; });
     if (localStorage.newsids == undefined) localStorage.newsids = '';
     if (str != localStorage.newsids) { localStorage.newsids = str; }
     var ckcount = '';
@@ -428,7 +427,7 @@ const init = () => {
       var ac = {};
       var rstr = localStorage.rnewsids.split(',');
       var cstr = ',';
-      rstr.forEach(element => {
+      rstr.forEach((element: string) => {
         if (element) {
           //检查id 是否与服务端一致
           if (localStorage.newsids.indexOf(',' + element + ',') >= 0) {
