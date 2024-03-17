@@ -6,7 +6,7 @@
         <div class="headbox">
           <van-image :src="syngenta" style="width: 2.2rem; height: 2.2rem;" class="logs"></van-image>
           <div style="position: relative;right: 3rem;">
-            <P>{{ user.account }}</P>
+            <P>hello welcome</P>
             <P>ID: {{ user.id }}</P>
           </div>
           <!-- <van-image :src="illustration" style="width: 5rem; height: 1.4rem;left:-2px;"></van-image> -->

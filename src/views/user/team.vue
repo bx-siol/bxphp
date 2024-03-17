@@ -176,12 +176,6 @@ const lists = [
         teamSize: 5,
         assets: 100
     },
-    {
-        account: 'Bob',
-        referrer: 'Eve',
-        teamSize: 4,
-        assets: 200
-    }
 ]
 
 const fy = ref({
@@ -297,28 +291,30 @@ const getusercount = () => {
         teamusercount1.value = res.data.count1;
     })
 }
+const switchs = ref(1)
 const getTeam = () => {
-    var delayTime = Math.floor(Math.random() * 1000);
-    // setTimeout(() => {
-        http({
-            url: 'c=User&a=GetTeamHierarchyPeopleNum'
-        }).then((res: any) => {
-            for (var it of res.data.list) {
-                if (it.level == "1") {
-                    lv1.value.people += 1;
-                } else if (it.level == "2") {
-                    lv2.value.people += 1;
-                } else if (it.level == "3") {
-                    lv3.value.people += 1;
-                }
-            }
 
-            var fylStr = res.data.fy;
-            fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%(' + lv1.value.people + ')';
-            fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%(' + lv2.value.people + ')';
-            fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%(' + lv3.value.people + ')';
-        })
-    // }, delayTime)
+    lv1.value.people = 0;
+    lv2.value.people = 0;
+    lv3.value.people = 0;
+
+    http({
+        url: 'c=User&a=GetTeamHierarchyPeopleNum&type=' + switchs.value
+    }).then((res: any) => {
+        for (var it of res.data.list) {
+            if (it.level == "1") {
+                lv1.value.people += 1;
+            } else if (it.level == "2") {
+                lv2.value.people += 1;
+            } else if (it.level == "3") {
+                lv3.value.people += 1;
+            }
+        }
+        var fylStr = res.data.fy;
+        fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%(' + lv1.value.people + ')';
+        fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%(' + lv2.value.people + ')';
+        fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%(' + lv3.value.people + ')';
+    })
 }
 
 onMounted(() => {
@@ -334,59 +330,26 @@ const SwitchMembers = (lv: number, type: number) => {
         requesturl2.value = "c=User&a=team&lv=2&type=pay";
         requesturl3.value = "c=User&a=team&lv=3&type=pay";
         cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=pay");
+        switchs.value = 1;
     }
     else {
         requesturl1.value = "c=User&a=team&lv=1&type=unpay";
         requesturl2.value = "c=User&a=team&lv=2&type=unpay";
         requesturl3.value = "c=User&a=team&lv=3&type=unpay";
         cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=unpay");
-    }
-    var InactiveMember = document.getElementsByClassName('levelTabValidMember');
-    var levelTabInactiveMember = document.getElementsByClassName('levelTabInactiveMember');
-    if (lv == 1) {
-        if (type == 0) {
-            InactiveMember[0].style.background = "#666";
-            InactiveMember[0].style.color = "#fff";
-            levelTabInactiveMember[0].style.background = "#fff";
-            levelTabInactiveMember[0].style.color = "#84973b";
-        }
-        else {
-            InactiveMember[0].style.background = "#fff";
-            InactiveMember[0].style.color = "#84973b";
-            levelTabInactiveMember[0].style.background = "#666";
-            levelTabInactiveMember[0].style.color = "#fff";
-        }
-    }
-    else if (lv == 2) {
-        if (type == 0) {
-            InactiveMember[1].style.background = "#666";
-            InactiveMember[1].style.color = "#fff";
-            levelTabInactiveMember[1].style.background = "#fff";
-            levelTabInactiveMember[1].style.color = "#84973b";
-        }
-        else {
-            InactiveMember[1].style.background = "#fff";
-            InactiveMember[1].style.color = "#84973b";
-            levelTabInactiveMember[1].style.background = "#666";
-            levelTabInactiveMember[1].style.color = "#fff";
-        }
-    }
-    else if (lv == 3) {
-        if (type == 0) {
-            InactiveMember[2].style.background = "#666";
-            InactiveMember[2].style.color = "#fff";
-            levelTabInactiveMember[2].style.background = "#fff";
-            levelTabInactiveMember[2].style.color = "#84973b";
-        }
-        else {
-            InactiveMember[2].style.background = "#fff";
-            InactiveMember[2].style.color = "#84973b";
-            levelTabInactiveMember[2].style.background = "#666";
-            levelTabInactiveMember[2].style.color = "#fff";
-        }
+        switchs.value = 0;
     }
 
+    var inactiveMembers = document.getElementsByClassName('levelTabValidMember');
+    var levelTabInactiveMembers = document.getElementsByClassName('levelTabInactiveMember');
+
+    inactiveMembers[lv - 1].style.background = type === 0 ? "#666" : "#fff";
+    inactiveMembers[lv - 1].style.color = type === 0 ? "#fff" : "#84973b";
+    levelTabInactiveMembers[lv - 1].style.background = type === 0 ? "#fff" : "#666";
+    levelTabInactiveMembers[lv - 1].style.color = type === 0 ? "#84973b" : "#fff";
+    getTeam()
 }
+
 
 </script>
 <style>
