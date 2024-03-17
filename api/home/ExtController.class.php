@@ -102,7 +102,7 @@ class ExtController extends BaseController
 		// 		];
 		// 		Db::table('ext_tasklog')->where("id={$tasklog['id']}")->update($ext_tasklog);
 		// 	} catch (\Exception $e) {
-		// 		ReturnToJson(-1, '系统繁忙请稍后再试');
+		// 		ReturnToJson(-1, 'The system is busy, please try again later.');
 		// 	}
 		// 	ReturnToJson(1, 'Submitted successfully');
 		// } else {
@@ -177,7 +177,7 @@ class ExtController extends BaseController
 		try {
 			Db::table('ext_tasklog')->insert($ext_tasklog);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 		ReturnToJson(1, 'Submitted successfully');
 	}
@@ -195,7 +195,7 @@ class ExtController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				ReturnToJson(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, 'Start date or end date selection is incorrect.');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}

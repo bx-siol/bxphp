@@ -64,7 +64,7 @@ function checkPower($nkey = '')
 	$user = checkLogin();
 	$result = hasPower($user, $nkey);
 	if (!$result) {
-		ReturnToJson(-99, '抱歉没有权限');
+		ReturnToJson(-99, 'Sorry no permission.');
 	}
 	return $user;
 }

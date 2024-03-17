@@ -70,32 +70,32 @@ class WalletController extends BaseController
 		$account = $params['account'];
 		$quantity = floatval($params['quantity']);
 		if (!$currency) {
-			ReturnToJson(-1, '请选择币种');
+			ReturnToJson(-1, 'Please select currency.');
 		}
 		if (!$account) {
-			ReturnToJson(-1, '请填写接收方账号或ID');
+			ReturnToJson(-1, 'Please fill in the recipient account or ID.');
 		}
 		if ($quantity < 0.01) {
-			ReturnToJson(-1, '转账数量不正确');
+			ReturnToJson(-1, 'The transfer amount is incorrect.');
 		}
 		$wallet = getPset('wallet');
 		if ($quantity < $wallet['transfer']['min']) {
-			ReturnToJson(-1, '最小转账数量为 ' . $wallet['transfer']['min']);
+			ReturnToJson(-1, 'The minimum transfer amount is. ' . $wallet['transfer']['min']);
 		}
 		if ($quantity > $wallet['transfer']['max']) {
-			ReturnToJson(-1, '最大转账数量为 ' . $wallet['transfer']['max']);
+			ReturnToJson(-1, 'The maximum transfer amount is. ' . $wallet['transfer']['max']);
 		}
 		if (getPassword($params['password2']) != $pageuser['password2']) {
-			ReturnToJson(-1, '二级密码不正确');
+			ReturnToJson(-1, 'The secondary password is incorrect.');
 		}
 		$currency_item = Db::table('cnf_currency')->where("id={$currency}")->find();
 		if (!$currency_item) {
-			ReturnToJson(-1, '不存在相应的币种');
+			ReturnToJson(-1, 'The corresponding currency does not exist.');
 		}
 
 		$myOrder = Db::table('nft_order')->where("uid={$pageuser['id']} and is_experience=0")->find();
 		if (!$myOrder) {
-			ReturnToJson(-1, '未购买过卡片无法转账');
+			ReturnToJson(-1, 'Cannot transfer money if you have not purchased a card.');
 		}
 
 		//检测对方账号
@@ -108,12 +108,12 @@ class WalletController extends BaseController
 			$to_user = Db::table('sys_user')->field(['id', 'account', 'nickname'])->whereRaw("account=:acc", ['acc' => $account])->find();
 		}
 		if (!$to_user) {
-			ReturnToJson(-1, '请填写正确的账号或ID');
+			ReturnToJson(-1, 'Please fill in the correct account number or ID.');
 		}
 
 		$toOrder = Db::table('nft_order')->where("uid={$to_user['id']} and is_experience=0")->find();
 		if (!$toOrder) {
-			ReturnToJson(-1, '接收方未购买过卡片无法转账');
+			ReturnToJson(-1, 'The recipient has not purchased a card and cannot transfer money..');
 		}
 
 		Db::startTrans();
@@ -121,14 +121,14 @@ class WalletController extends BaseController
 			//###自己###
 			$wallet = getWallet($pageuser['id'], $currency_item['id']);
 			if (!$wallet) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$wallet_data = [
 				'balance' => $wallet['balance'] - $quantity
 			];
 			if ($wallet_data['balance'] < 0) {
-				ReturnToJson(-1, '您的余额不足');
+				ReturnToJson(-1, 'Your balance is insufficient.');
 			}
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
@@ -144,13 +144,13 @@ class WalletController extends BaseController
 				'remark' => '转出-' . $to_user['nickname']
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 
 			//###对方###
 			$wallet2 = getWallet($to_user['id'], $currency_item['id']);
 			if (!$wallet2) {
-				throw new \Exception('对方钱包获取异常');
+				throw new \Exception("Abnormal acquisition of the other party's wallet.");
 			}
 			$wallet2 = Db::table('wallet_list')->where("id={$wallet2['id']}")->lock(true)->find();
 			$wallet_data2 = [
@@ -170,15 +170,15 @@ class WalletController extends BaseController
 				'remark' => '转入-' . $pageuser['nickname']
 			]);
 			if (!$result2) {
-				throw new \Exception('流水记录写入失败2');
+				throw new \Exception('Failed to write journal record 2.');
 			}
 
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '转账成功');
+		ReturnToJson(1, 'Transfer successful.');
 	}
 
 	//钱包详情
@@ -189,7 +189,7 @@ class WalletController extends BaseController
 		$params['page'] = intval($params['page']);
 		$params['s_type'] = intval($params['s_type']);
 		if (!$params['waddr']) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 
 		$where = "log.uid={$pageuser['id']} and w.waddr='{$params['waddr']}'";
@@ -197,7 +197,7 @@ class WalletController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				ReturnToJson(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, 'Start date or end date selected incorrectly.');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -258,15 +258,15 @@ class WalletController extends BaseController
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$params = $this->params;
 		if (!$params['ye']) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$yeb = $params['ye'];
 		// if ($yeb < 500) {
-		// 	ReturnToJson(-1, '缺少参数');
+		// 	ReturnToJson(-1, 'Missing parameters.');
 		// }
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
@@ -292,7 +292,7 @@ class WalletController extends BaseController
 			$wallet3 = Db::table('wallet_list')->where($wwere)->lock(true)->find();
 		}
 		if (!$wallet3) {
-			throw new \Exception('钱包获取异常'); //. $fid . '|==|' . var_export($pageuser) . var_export($wallet3)
+			throw new \Exception('Wallet acquisition exception.'); //. $fid . '|==|' . var_export($pageuser) . var_export($wallet3)
 		}
 		$time = date("Ymd", time());
 		Db::startTrans();
@@ -300,7 +300,7 @@ class WalletController extends BaseController
 
 			$wallet = getWallet($pageuser['id'], 2);
 			if (!$wallet) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			if ($wallet['balance'] < $yeb) {
@@ -322,7 +322,7 @@ class WalletController extends BaseController
 				'remark' => 'RS:-' . $yeb
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 
 			$wallet3_data = [
@@ -346,7 +346,7 @@ class WalletController extends BaseController
 				'remark' => 'RS:+' . $yeb
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
@@ -354,7 +354,7 @@ class WalletController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 			//ReturnToJson(-1, var_export($e));
 		}
 		ReturnToJson(1, 'successfully');
@@ -366,15 +366,15 @@ class WalletController extends BaseController
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$params = $this->params;
 		if (!$params['ye']) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$yeb = $params['ye'];
 		// if ($yeb < 500) {
-		// 	ReturnToJson(-1, '缺少参数');
+		// 	ReturnToJson(-1, 'Missing parameters.');
 		// }
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
@@ -400,7 +400,7 @@ class WalletController extends BaseController
 			$wallet3 = Db::table('wallet_list')->where($wwere)->lock(true)->find();
 		}
 		if (!$wallet3) {
-			throw new \Exception('钱包获取异常'); //. $fid . '|==|' . var_export($pageuser) . var_export($wallet3)
+			throw new \Exception('Wallet acquisition exception.'); //. $fid . '|==|' . var_export($pageuser) . var_export($wallet3)
 		}
 
 		Db::startTrans();
@@ -408,7 +408,7 @@ class WalletController extends BaseController
 
 			$wallet = getWallet($pageuser['id'], 2);
 			if (!$wallet) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			if ($wallet3['balance'] < $yeb) {
@@ -430,7 +430,7 @@ class WalletController extends BaseController
 				'remark' => 'RS:-' . $yeb
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 
 			$wallet3_data = [
@@ -450,7 +450,7 @@ class WalletController extends BaseController
 				'remark' => 'RS:+' . $yeb
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet3['id']}")->update($wallet_data);
@@ -458,7 +458,7 @@ class WalletController extends BaseController
 			Db::commit();
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 			//ReturnToJson(-1, var_export($e));
 		}
 		ReturnToJson(1, 'successfully');
@@ -469,7 +469,7 @@ class WalletController extends BaseController
 	{
 		$pageuser = checkLogin();
 		if (!$pageuser) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		/*
 		1.余额 ok

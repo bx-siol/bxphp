@@ -108,10 +108,10 @@ class NewsController extends BaseController
 		$params = $this->params;
 		$params['problem'] = intval($params['problem']);
 		if (!$params['title']) {
-			ReturnToJson(-1, '请填写标题');
+			ReturnToJson(-1, 'Please fill in the title.');
 		}
 		if (!$params['content']) {
-			ReturnToJson(-1, '请填写内容');
+			ReturnToJson(-1, 'Please fill in the content.');
 		}
 		$db_item = [
 			'uid' => $pageuser['id'],
@@ -124,9 +124,9 @@ class NewsController extends BaseController
 		try {
 			Db::table('news_feedback')->insertGetId($db_item);
 		} catch (\Exceptioin $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '提交成功');
+		ReturnToJson(1, 'Submitted successfully.');
 	}
 
 	public function _feedbackList()
@@ -241,7 +241,7 @@ class NewsController extends BaseController
 			->view(['news_category' => 'c'], ['name' => 'cat_name'], 'log.cid=c.id', 'LEFT')
 			->where($where)->find();
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应的记录');
+			ReturnToJson(-1, 'No corresponding record exists.');
 		}
 		$item['publish_time'] = date('m-d H:i', $item['publish_time']);
 		$pre = Db::table('news_article')->whereRaw("id<{$item['id']}")->field(['id', 'title'])->order(['id' => 'desc'])->limit(1)->find();

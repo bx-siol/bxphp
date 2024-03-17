@@ -159,10 +159,10 @@ class FinanceController extends BaseController
 					'pay_url' => $resultArr['pay_url'],
 					'fin_ptype' => $paydb['gametype'],
 				];
-				ReturnToJson(1, '订单提交成功，即将前往支付', $return_data);
+				ReturnToJson(1, 'The order was submitted successfully and you are about to proceed to payment..', $return_data);
 			}
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 	}
 
@@ -178,7 +178,7 @@ class FinanceController extends BaseController
 		$ptms[] = ['id' => 1, 'name' => 'Canadian Solar Finance Department', 'min' => 120, 'max' => 50000];
 		$ptms[] = ['id' => 2, 'name' => 'Enso Energy Finance Department', 'min' => 7000, 'max' => 315000];
 		if (!$banklog) {
-			ReturnToJson(-2, '请先绑定银行卡');
+			ReturnToJson(-2, 'Please bind your bank card first.');
 		} else {
 			unset($banklog['id']);
 		}
@@ -199,7 +199,7 @@ class FinanceController extends BaseController
 		$params['money'] = floatval($params['money']);
 		$banklog = Db::table('cnf_banklog')->where("uid={$pageuser['id']}")->find();
 		if (!$banklog) {
-			ReturnToJson(-1, '请先绑定银行卡');
+			ReturnToJson(-1, 'Please bind your bank card first.');
 		}
 		Db::startTrans();
 		try {
@@ -211,25 +211,25 @@ class FinanceController extends BaseController
 			$psetCash = $pset['cash'];
 			$money = $params['money'];
 			if ($money < $psetCash['min'] || $money <= 0) {
-				ReturnToJson(-1, '提现额度太小');
+				ReturnToJson(-1, 'Withdrawal amount is too small.');
 			}
 			if ($money > $psetCash['max']) {
-				ReturnToJson(-1, '提现额度太大');
+				ReturnToJson(-1, 'Withdrawal amount is too large.');
 			}
 			if (!$psetCash['time']['weekend']) {
 				$w = date('w');
 				if ($w == 0 || $w == 6) {
-					ReturnToJson(-1, '周末不可提现');
+					ReturnToJson(-1, 'No withdrawals allowed on weekends.');
 				}
 			}
 			$from = date('Y-m-d', NOW_TIME) . ' ' . $psetCash['time']['from'];
 			$to = date('Y-m-d', NOW_TIME) . ' ' . $psetCash['time']['to'];
 			if (NOW_DATE < $from || NOW_DATE > $to) {
-				ReturnToJson(-1, '当前时间不可提现');
+				ReturnToJson(-1, 'Withdrawal is not available at the current time.');
 			}
 			$wallet = getWallet($pageuser['id'], 2);
 			if (!$wallet) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$psetCashFee = $psetCash['fee'];
@@ -239,7 +239,7 @@ class FinanceController extends BaseController
 				$new_balance = floatval($wallet['balance'] - $money);
 				$real_money = $money - $fee;
 				if ($real_money <= 0) {
-					ReturnToJson(-1, '提现额度不足以支付手续费');
+					ReturnToJson(-1, 'The withdrawal amount is not enough to cover the handling fee.');
 				}
 				$minus_money = $money;
 			} elseif ($psetCashFee['mode'] == 2) { //从余额中出
@@ -247,14 +247,14 @@ class FinanceController extends BaseController
 				$real_money = $money;
 				$minus_money = $money + $fee;
 			} else {
-				ReturnToJson(-1, '未知手续费模式');
+				ReturnToJson(-1, 'Unknown fee model.');
 			}
 			if (getPassword($params['password2']) != $pageuser['password2']) {
-				ReturnToJson(-1, '支付密码不正确');
+				ReturnToJson(-1, 'The payment password is incorrect.');
 			}
 			$new_balance = intval($new_balance * 100) / 100;
 			if ($new_balance < 0) {
-				ReturnToJson(-1, '您的余额不足');
+				ReturnToJson(-1, 'Your balance is insufficient.');
 			}
 			$wallet_data = [
 				'balance' => $new_balance
@@ -296,7 +296,7 @@ class FinanceController extends BaseController
 				'remark' => 'Withdraw'
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
@@ -304,10 +304,10 @@ class FinanceController extends BaseController
 				'osn' => $fin_cashlog['osn'],
 				'balance' => $wallet_data['balance']
 			];
-			ReturnToJson(1, '提交成功', $return_data);
+			ReturnToJson(1, 'Submitted successfully.', $return_data);
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 	}
 	/////////////////////////////////////////////////////
@@ -328,7 +328,7 @@ class FinanceController extends BaseController
 		$protocal = intval($this->params['protocal']);
 		$banklog = Db::table('cnf_banklog')->where("uid=0 and status=2 and protocal={$protocal}")->order(['sort' => 'desc'])->find();
 		if (!$banklog) {
-			ReturnToJson(-1, '不存在充币地址');
+			ReturnToJson(-1, 'There is no deposit address.');
 		}
 		ReturnToJson(1, 'ok', $banklog);
 	}
@@ -348,7 +348,7 @@ class FinanceController extends BaseController
 			->where($where)
 			->order(['log.sort' => 'desc', 'log.id' => 'desc'])->find();
 		if (!$banklog) {
-			ReturnToJson(-1, '不存在相应的支付方式');
+			ReturnToJson(-1, 'There is no corresponding payment method.');
 		}
 		ReturnToJson(1, 'ok', $banklog);
 	}
@@ -362,12 +362,12 @@ class FinanceController extends BaseController
 		$params['banklog_id'] = intval($params['banklog_id']);
 		$item = Db::table('cnf_banklog')->where("id={$params['banklog_id']} and uid=0 and status=2")->find();
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应通道');
+			ReturnToJson(-1, 'The corresponding channel does not exist.');
 		}
 
 		// $check_paylog = Db::table('fin_paylog')->where("uid={$pageuser['id']} and pay_status<=2")->find();
 		// if ($check_paylog) {
-		// 	ReturnToJson('-1', '您当前有未完成订单');
+		// 	ReturnToJson('-1', 'You currently have an outstanding order.');
 		// }
 		$fin_paylog = [
 			'receive_type' => $item['type'],
@@ -387,22 +387,22 @@ class FinanceController extends BaseController
 		if ($fin_paylog['money'] > 0) {
 			$balance = getPset('balance');
 			if ($fin_paylog['money'] < $balance['pay']['min']) {
-				ReturnToJson(-1, '充值额度太小');
+				ReturnToJson(-1, 'The recharge amount is too small.');
 			}
 			if ($fin_paylog['money'] > $balance['pay']['max']) {
-				ReturnToJson(-1, '充值额度太大');
+				ReturnToJson(-1, 'The recharge amount is too large.');
 			}
 			$fin_paylog['money'] = $params['money'];
 		}
 		try {
 			Db::table('fin_paylog')->insert($fin_paylog);
 		} catch (\Exception $e) {
-			ReturnToJson('-1', '系统繁忙请稍后再试');
+			ReturnToJson('-1', 'The system is busy, please try again later.');
 		}
 		$return_data = [
 			'osn' => $fin_paylog['osn']
 		];
-		ReturnToJson(1, '提交成功', $return_data);
+		ReturnToJson(1, 'Submitted successfully.', $return_data);
 	}
 
 	public function _payInfo()
@@ -410,7 +410,7 @@ class FinanceController extends BaseController
 		$pageuser = checkLogin();
 		$osn = $this->params['osn'];
 		if (!$osn) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$field_str = 'log.osn,log.money,log.rate,log.real_money,log.status,
 		log.check_remark,log.pay_realname,log.pay_remark,log.pay_banners,log.receive_type,log.pay_type,
@@ -425,7 +425,7 @@ class FinanceController extends BaseController
 			->where("log.osn='{$osn}' and log.uid={$pageuser['id']} and log.status<99")->find();
 
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应的记录');
+			ReturnToJson(-1, 'No corresponding record exists.');
 		}
 		$item['create_time'] = date('m-d H:i:s', $item['create_time']);
 		$item['sub_time'] = date('m-d H:i:s', $item['sub_time']);
@@ -452,25 +452,25 @@ class FinanceController extends BaseController
 		$params = $this->params;
 		$params['money'] = floatval($params['money']);
 		if (!$params['osn']) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 
 		//   if($params['money']<=0){
-		// 	  ReturnToJson(-1,'充值额度不正确');
+		// 	  ReturnToJson(-1,'The recharge amount is incorrect.');
 		//   }
 		//   $balance=getPset('balance');
 		//   if($params['money']<$balance['pay']['min']){
-		// 	  ReturnToJson(-1,'充值额度太小');
+		// 	  ReturnToJson(-1,'The recharge amount is too small.');
 		//   }
 		//   if($params['money']>$balance['pay']['max']){
-		// 	  ReturnToJson(-1,'充值额度太大');
+		// 	  ReturnToJson(-1,'The recharge amount is too large.');
 		//   }
 		//   if(!$params['pay_realname']){
-		// 	  ReturnToJson(-1,'请填写姓名');
+		// 	  ReturnToJson(-1,'Please fill in your name.');
 		//   }
 
 		if (!$params['pay_remark']) {
-			ReturnToJson(-1, '请填写付款备注');
+			ReturnToJson(-1, 'Please fill in payment remarks.');
 		}
 
 		// $pay_banners = ['img' => '1'];
@@ -485,14 +485,14 @@ class FinanceController extends BaseController
 
 		if (!$pay_banners) {
 			$pay_banners = ['img' => '1'];
-			//ReturnToJson(-1, '请上传付款凭证');
+			//ReturnToJson(-1, 'Please upload payment voucher.');
 		}
 		$item = Db::table('fin_paylog')->where("osn='{$params['osn']}' and uid={$pageuser['id']}")->find();
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应的记录');
+			ReturnToJson(-1, 'No corresponding record exists.');
 		} else {
 			if (!in_array($item['status'], [1, 3])) {
-				ReturnToJson(-1, '订单当前状态不可操作');
+				ReturnToJson(-1, 'The current status of the order is inoperable.');
 			}
 		}
 
@@ -511,9 +511,9 @@ class FinanceController extends BaseController
 		try {
 			Db::table('fin_paylog')->where("id={$item['id']}")->update($fin_paylog);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '提交成功');
+		ReturnToJson(1, 'Submitted successfully.');
 	}
 
 	public function _paylog()
@@ -589,7 +589,7 @@ class FinanceController extends BaseController
 		$pageuser = checkLogin();
 		$wallet = getWallet($pageuser['id'], 1);
 		if (!$wallet) {
-			ReturnToJson(-1, '获取钱包异常');
+			ReturnToJson(-1, 'Getting wallet exception.');
 		}
 		$return_data = [
 			'wallet' => $wallet
@@ -642,7 +642,7 @@ class FinanceController extends BaseController
 		//$banklog=Db::table('cnf_banklog')->where("id={$params['banklog_id']} and uid={$pageuser['id']}")->find();
 		$banklog = Db::table('cnf_banklog')->where("uid={$pageuser['id']}")->order(['id' => 'desc'])->find();
 		if (!$banklog) {
-			ReturnToJson(-1, '请先绑定银行卡');
+			ReturnToJson(-1, 'Please bind your bank card first.');
 		}
 		Db::startTrans();
 		try {
@@ -652,25 +652,25 @@ class FinanceController extends BaseController
 
 			$money = $params['money'];
 			if ($money < $psetCash['min'] || $money <= 0) {
-				ReturnToJson(-1, '提现额度太小');
+				ReturnToJson(-1, 'Withdrawal amount is too small.');
 			}
 			if ($money > $psetCash['max']) {
-				ReturnToJson(-1, '提现额度太大');
+				ReturnToJson(-1, 'Withdrawal amount is too large.');
 			}
 			if (!$psetCash['time']['weekend']) {
 				$w = date('w');
 				if ($w == 0 || $w == 6) {
-					ReturnToJson(-1, '周末不可提现');
+					ReturnToJson(-1, 'No withdrawals allowed on weekends.');
 				}
 			}
 			$from = date('Y-m-d', NOW_TIME) . ' ' . $psetCash['time']['from'];
 			$to = date('Y-m-d', NOW_TIME) . ' ' . $psetCash['time']['to'];
 			if (NOW_DATE < $from || NOW_DATE > $to) {
-				ReturnToJson(-1, '当前时间不可提现');
+				ReturnToJson(-1, 'Withdrawal is not available at the current time.');
 			}
 			$wallet = getWallet($pageuser['id'], 1);
 			if (!$wallet) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$psetCashFee = $psetCash['fee'];
@@ -680,7 +680,7 @@ class FinanceController extends BaseController
 				$new_balance = floatval($wallet['balance'] - $money);
 				$real_money = $money - $fee;
 				if ($real_money <= 0) {
-					ReturnToJson(-1, '提现额度不足以支付手续费');
+					ReturnToJson(-1, 'The withdrawal amount is not enough to cover the handling fee.');
 				}
 				$minus_money = $money;
 			} elseif ($psetCashFee['mode'] == 2) { //从余额中出
@@ -688,14 +688,14 @@ class FinanceController extends BaseController
 				$real_money = $money;
 				$minus_money = $money + $fee;
 			} else {
-				ReturnToJson(-1, '未知手续费模式');
+				ReturnToJson(-1, 'Unknown fee model.');
 			}
 			if (getPassword($params['password2']) != $pageuser['password2']) {
-				ReturnToJson(-1, '支付密码不正确');
+				ReturnToJson(-1, 'The payment password is incorrect.');
 			}
 			$new_balance = intval($new_balance * 100) / 100;
 			if ($new_balance < 0) {
-				ReturnToJson(-1, '您的余额不足', $new_balance);
+				ReturnToJson(-1, 'Your balance is insufficient.', $new_balance);
 			}
 			$wallet_data = [
 				'balance' => $new_balance
@@ -714,7 +714,7 @@ class FinanceController extends BaseController
 				'remark' => 'Withdraw'
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 			$fin_cashlog = [
 				'osn' => getRsn(),
@@ -761,10 +761,10 @@ class FinanceController extends BaseController
 				'osn' => $fin_cashlog['osn'],
 				'balance' => $wallet_data['balance']
 			];
-			ReturnToJson(1, '提交成功', $return_data);
+			ReturnToJson(1, 'Submitted successfully.', $return_data);
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 	}
 
@@ -773,7 +773,7 @@ class FinanceController extends BaseController
 		$pageuser = checkLogin();
 		$osn = $this->params['osn'];
 		if (!$osn) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$field_str = 'log.osn,log.money,log.real_money,log.status,log.check_remark,
 		log.receive_type,log.receive_bank_id,log.receive_account,log.receive_realname,log.receive_routing,
@@ -784,7 +784,7 @@ class FinanceController extends BaseController
 			->leftJoin('cnf_bank b', 'log.receive_bank_id=b.id')
 			->where("log.osn='{$osn}' and log.uid={$pageuser['id']} and log.status<99")->find();
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应的记录'); //Db::getLastSql()
+			ReturnToJson(-1, 'No corresponding record exists.'); //Db::getLastSql()
 		}
 		$item['create_time'] = date('m-d H:i:s', $item['create_time']);
 		$cnf_cashlog_status = getConfig('cnf_cashlog_status');
@@ -919,7 +919,7 @@ class FinanceController extends BaseController
 		}
 		if ($start_time > 0 && $end_time > 0) {
 			if ($start_time > $end_time) {
-				ReturnToJson(-1, '日期选择有误');
+				ReturnToJson(-1, 'Wrong date selection.');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
@@ -991,7 +991,7 @@ class FinanceController extends BaseController
 		}
 		if ($start_time > 0 && $end_time > 0) {
 			if ($start_time > $end_time) {
-				ReturnToJson(-1, '日期选择有误');
+				ReturnToJson(-1, 'Wrong date selection.');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}

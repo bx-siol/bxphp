@@ -26,17 +26,17 @@ class SettingController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		if (!$params['phone']) {
-			ReturnToJson(-1, '请填写手机号');
+			ReturnToJson(-1, 'Please fill in your phone number.');
 		} else {
 			if (!isPhone($params['phone'])) {
-				ReturnToJson(-1, '手机号不正确');
+				ReturnToJson(-1, 'Mobile phone number is incorrect.');
 			}
 			if ($params['phone'] == $pageuser['phone']) {
-				ReturnToJson(-1, '手机号没有变化');
+				ReturnToJson(-1, 'Mobile phone number has not changed.');
 			}
 		}
 		if (!$params['scode']) {
-			ReturnToJson(-1, '请填写验证码');
+			ReturnToJson(-1, 'Please fill in the verification code.');
 		} else {
 			$checkScode = checkPhoneCode(['stype' => 3, 'phone' => $params['phone'], 'code' => $params['scode']]);
 			if ($checkScode['code'] != 1) {
@@ -50,9 +50,9 @@ class SettingController extends BaseController
 			];
 			$user = updateUserinfo($pageuser['id'], $sys_user);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '绑定成功');
+		ReturnToJson(1, 'Binding successful.');
 	}
 
 
@@ -62,35 +62,35 @@ class SettingController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		if (!$params['old_pwd']) {
-			ReturnToJson(-1, '请输入原始密码');
+			ReturnToJson(-1, 'Please enter original password.');
 		}
 		if (!$params['new_pwd']) {
-			ReturnToJson(-1, '请输入新密码');
+			ReturnToJson(-1, 'Please enter a new password.');
 		}
 		if (!$params['imgcode']) {
-			ReturnToJson(-1, '请填写图形验证码');
+			ReturnToJson(-1, 'Please fill in the graphic verification code.');
 		}
 		$session_id = $params['sid'];
 		if (!$session_id) {
-			ReturnToJson(-1, '缺少验证参数');
+			ReturnToJson(-1, 'Missing validation parameters.');
 		}
 		$mem_key = 'vcode_' . $session_id;
 		$code = $this->redis->get($mem_key);
 		$this->redis->rm($mem_key);
 		if ($params['imgcode'] != $code) {
-			ReturnToJson(-1, '图形验证码不正确');
+			ReturnToJson(-1, 'The graphic verification code is incorrect.');
 		}
 		$old_pwd = getPassword($params['old_pwd']);
 		$new_pwd = getPassword($params['new_pwd']);
 		$sys_user = [];
 		if ($params['type'] == 1) {
 			if ($pageuser['password'] != $old_pwd) {
-				ReturnToJson(-1, '原始密码不正确');
+				ReturnToJson(-1, 'The original password is incorrect.');
 			}
 			$sys_user['password'] = $new_pwd;
 		} else {
 			if ($pageuser['password2'] != $old_pwd) {
-				ReturnToJson(-1, '原始支付密码不正确');
+				ReturnToJson(-1, 'The original payment password is incorrect.');
 			}
 			$sys_user['password2'] = $new_pwd;
 		}
@@ -98,9 +98,9 @@ class SettingController extends BaseController
 		try {
 			$user = updateUserinfo($pageuser['id'], $sys_user);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '修改成功');
+		ReturnToJson(1, 'Successfully modified.');
 	}
 
 	//#################################################################
@@ -113,13 +113,13 @@ class SettingController extends BaseController
 
 
 		// if (!$params['nickname']) {
-		// 	ReturnToJson(-1, '请填写昵称');
+		// 	ReturnToJson(-1, 'Please fill in nickname.');
 		// }
 		// if (!$params['password2']) {
-		// 	ReturnToJson(-1, '请填写支付密码');
+		// 	ReturnToJson(-1, 'Please fill out the payment password.');
 		// } else {
 		// 	if (getPassword($params['password2']) != $pageuser['password2']) {
-		// 		ReturnToJson(-1, '支付密码不正确');
+		// 		ReturnToJson(-1, 'The payment password is incorrect.');
 		// 	}
 		// }
 		$sys_user = [];
@@ -142,19 +142,19 @@ class SettingController extends BaseController
 			$sys_user['birthday'] = strtotime($params['birthday'] . ' 00:00:01');
 		}
 		if (!$sys_user) {
-			ReturnToJson(1, '操作成功');
+			ReturnToJson(1, 'Successful operation.');
 		}
 		$user = [];
 		try {
 			$user = updateUserinfo($pageuser['id'], $sys_user);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 		$return_data = [
 			'nickname' => $user['nickname'],
 			'headimgurl' => $user['headimgurl']
 		];
-		ReturnToJson(1, '操作成功', $return_data);
+		ReturnToJson(1, 'Successful operation.', $return_data);
 	}
 
 	//修改密码
@@ -163,10 +163,10 @@ class SettingController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		if (!$params['scode'] && !$params['ecode']) {
-			ReturnToJson(-1, '请填写验证码');
+			ReturnToJson(-1, 'Please fill in the verification code.');
 		}
 		if (!$params['password']) {
-			ReturnToJson(-1, '请填写新密码');
+			ReturnToJson(-1, 'Please fill in new password.');
 		}
 		if ($params['scode']) {
 			$checkScode = checkPhoneCode(['stype' => 3, 'phone' => $pageuser['phone'], 'code' => $params['scode']]);
@@ -186,15 +186,15 @@ class SettingController extends BaseController
 		} elseif ($params['type'] == 2) {
 			$sys_user['password2'] = $password;
 		} else {
-			ReturnToJson(-1, '参数错误');
+			ReturnToJson(-1, 'Parameter error.');
 		}
 		$user = [];
 		try {
 			$user = updateUserinfo($pageuser['id'], $sys_user);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '操作成功');
+		ReturnToJson(1, 'Successful operation.');
 	}
 
 	//谷歌认证
@@ -232,17 +232,17 @@ class SettingController extends BaseController
 		// }
 		// $user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		// if (!$params['password']) {
-		// 	ReturnToJson(-1, '请填写支付密码');
+		// 	ReturnToJson(-1, 'Please fill out the payment password.');
 		// }
 		// $password2 = getPassword($params['password']);
 		// if ($user['password2'] != $password2) {
-		// 	ReturnToJson(-1, '支付密码不正确');
+		// 	ReturnToJson(-1, 'The payment password is incorrect.');
 		// }
 		// $sys_user = [
 		// 	'is_google' => $params['is_google']
 		// ];
 		// $user = updateUserinfo($user['id'], $sys_user);
-		ReturnToJson(1, '操作成功');
+		ReturnToJson(1, 'Successful operation.');
 	}
 
 	public function _google_secret()
@@ -257,7 +257,7 @@ class SettingController extends BaseController
 		// 	'google_secret' => $google_secret,
 		// 	'google_qrcode' => $google_qrcode
 		// ];
-		// ReturnToJson(1, '操作成功', $return_data);
+		// ReturnToJson(1, 'Successful operation.', $return_data);
 	}
 
 	//实名认证
@@ -280,17 +280,17 @@ class SettingController extends BaseController
 		$params = $this->params;
 		$params['type'] = intval($params['type']);
 		if (!$params['realname']) {
-			ReturnToJson(-1, '请填写姓名');
+			ReturnToJson(-1, 'Please fill in your name.');
 		}
 		if (!$params['type']) {
-			ReturnToJson(-1, '请选择证件类型');
+			ReturnToJson(-1, 'Please select the document type.');
 		} else {
 			if (!in_array($params['type'], [1, 2, 3, 4])) {
-				ReturnToJson(-1, '未知类型');
+				ReturnToJson(-1, 'unknown type.');
 			}
 		}
 		if (!$params['number']) {
-			ReturnToJson(-1, '请填写证件号');
+			ReturnToJson(-1, 'Please fill in the ID number.');
 		}
 
 		$db_data = [
@@ -306,7 +306,7 @@ class SettingController extends BaseController
 			$auth = $model->where("uid={$pageuser['id']}")->find();
 			if ($auth) {
 				if ($auth['status'] == 3) {
-					//ReturnToJson(-1,'您已完成认证');
+					//ReturnToJson(-1,'You have completed the certification.');
 				}
 				$res = $model->where("uid={$auth['uid']}")->update($db_data);
 			} else {
@@ -314,11 +314,11 @@ class SettingController extends BaseController
 				$res = $model->insert($db_data);
 			}
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 		//更新到个人信息
 		updateUserinfo($pageuser['id'], ['realname' => $params['realname']]);
-		ReturnToJson(1, '提交成功');
+		ReturnToJson(1, 'Submitted successfully.');
 	}
 
 	//收款方式
@@ -350,11 +350,11 @@ class SettingController extends BaseController
 		if (!$params['code'])
 			ReturnToJson(-1, 'Please enter OTP');
 		if (!$params['realname'])
-			ReturnToJson(-1, '请填写持卡人姓名');
+			ReturnToJson(-1, 'Please fill in the cardholder’s name.');
 		if (!$params['bank_name'])
-			ReturnToJson(-1, '请填开户行');
+			ReturnToJson(-1, 'Please fill in the account opening bank.');
 		if (!$params['account'])
-			ReturnToJson(-1, '请填银行账号');
+			ReturnToJson(-1, 'Please enter bank account number.');
 		if (!$params['ifsc'])
 			ReturnToJson(-1, 'Please enter ifsc');
 
@@ -364,16 +364,16 @@ class SettingController extends BaseController
 
 
 		// if (strlen($params['ifsc']) < 8 || strlen($params['ifsc']) > 11) {
-		// 	ReturnToJson(-1, '身份证号码的长度应该是8-11位');
+		// 	ReturnToJson(-1, 'The length of the ID number should be 8-11 digits.');
 		// } 
 		$ifsc = $params['ifsc'];
 
 		// if ($pageuser['password2'] != getPassword($params['password2'])) {
-		// 	ReturnToJson(-1, '支付密码不正确');
+		// 	ReturnToJson(-1, 'The payment password is incorrect.');
 		// }
 		$check_bank = Db::table('cnf_bank')->where("id={$params['bank_id']}")->find();
 		if (!$check_bank) {
-			ReturnToJson(-1, '请选择银行列表中的银行或者重新进入当前页面');
+			ReturnToJson(-1, 'Please select a bank in the bank list or re-enter the current page.');
 		}
 		$banklog = [
 			'type' => 1,
@@ -396,9 +396,9 @@ class SettingController extends BaseController
 			//不更新用户的银行卡更改权限
 			//Db::table('sys_user')->where("id={$pageuser['id']}")->update(['cbank' => 1]); 
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '提交成功');
+		ReturnToJson(1, 'Submitted successfully.');
 	}
 
 	//收款方式
@@ -458,45 +458,45 @@ class SettingController extends BaseController
 		$params['protocal'] = intval($params['protocal']);
 		$cnf_banklog_type = getConfig('cnf_banklog_type');
 		if (!array_key_exists($params['type'], $cnf_banklog_type)) {
-			ReturnToJson(-1, '未知类型');
+			ReturnToJson(-1, 'unknown type.');
 		}
 		if ($params['type'] == 1) {
 			if (!$params['bank_id']) {
-				ReturnToJson(-1, '请选择银行');
+				ReturnToJson(-1, 'Please select a bank.');
 			}
 			if (!$params['province_id'] || !$params['city_id']) {
-				ReturnToJson(-1, '请选择省份/城市');
+				ReturnToJson(-1, 'Please select a province or city.');
 			}
 		} elseif (in_array($params['type'], [2, 3])) {
 			if (!$params['qrcode']) {
-				ReturnToJson(-1, '请上传收款码');
+				ReturnToJson(-1, 'Please upload the payment code.');
 			}
 		} elseif ($params['type'] == 4) { //数字钱包
 			$currency = Db::table('cnf_currency')->where("id={$params['currency_id']}")->find();
 			if (!$currency) {
-				ReturnToJson(-1, '请选择正确的币种');
+				ReturnToJson(-1, 'Please select the correct currency.');
 			}
 			//必要时判断协议
 			//...
 			if (!$params['address']) {
-				ReturnToJson(-1, '请填写钱包地址');
+				ReturnToJson(-1, 'Please fill in the wallet address.');
 			}
 		}
 
 		if ($params['type'] < 4) {
 			if (!$params['realname']) {
-				ReturnToJson(-1, '请填写姓名');
+				ReturnToJson(-1, 'Please fill in your name.');
 			}
 			if (!$params['account']) {
-				ReturnToJson(-1, '请填写账号');
+				ReturnToJson(-1, 'Please fill in the account number.');
 			}
 		}
 
 		if (!$params['password2']) {
-			ReturnToJson(-1, '请填写支付密码');
+			ReturnToJson(-1, 'Please fill out the payment password.');
 		} else {
 			if (getPassword($params['password2']) != $pageuser['password2']) {
-				ReturnToJson(-1, '支付密码不正确');
+				ReturnToJson(-1, 'The payment password is incorrect.');
 			}
 		}
 		$db_item = [
@@ -526,7 +526,7 @@ class SettingController extends BaseController
 			if ($params['id']) {
 				$item = $model->where("id={$params['id']} and uid={$pageuser['id']} and status<99")->find();
 				if (!$item) {
-					ReturnToJson(-1, '不存在相应的记录');
+					ReturnToJson(-1, 'No corresponding record exists.');
 				}
 				$model->where("id={$item['id']}")->update($db_item);
 			} else {
@@ -544,9 +544,9 @@ class SettingController extends BaseController
 				}
 			}
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '操作成功');
+		ReturnToJson(1, 'Successful operation.');
 	}
 
 	public function _banklog_info()
@@ -554,7 +554,7 @@ class SettingController extends BaseController
 		$pageuser = checkLogin();
 		$id = intval($this->params['id']);
 		if (!$id) {
-			ReturnToJson(-1, '缺少参数');
+			ReturnToJson(-1, 'Missing parameters.');
 		}
 		$item = Db::table('cnf_banklog log')
 			->field('log.*,b.name as bank_name,c.name as currency_name')
@@ -562,7 +562,7 @@ class SettingController extends BaseController
 			->leftJoin('cnf_currency c', 'log.currency_id=c.id')
 			->where("log.id={$id} and log.uid={$pageuser['id']} and log.status<99")->find();
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应的记录');
+			ReturnToJson(-1, 'No corresponding record exists.');
 		}
 		$this->parseBanklog($item);
 		ReturnToJson(1, 'ok', $item);
@@ -575,13 +575,13 @@ class SettingController extends BaseController
 		$model = Db::table('cnf_banklog');
 		$item = $model->where("id={$id} and uid={$pageuser['id']} and status<99")->find();
 		if (!$item) {
-			ReturnToJson(-1, '不存在相应的记录');
+			ReturnToJson(-1, 'No corresponding record exists.');
 		}
 		$res = $model->where("id={$item['id']}")->delete();
 		if (!$res) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
-		ReturnToJson(1, '操作成功');
+		ReturnToJson(1, 'Successful operation.');
 	}
 
 	private function parseBanklog(&$item)

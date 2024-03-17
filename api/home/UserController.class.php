@@ -16,7 +16,7 @@ class UserController extends BaseController
 		$pageuser = checkLogin();
 		$user = Db::table('sys_user')->field(['id', 'account', 'phone', 'nickname', 'gid', 'headimgurl', 'reg_time', 'pidg1', 'pidg2', 'teamcount'])->where("id={$pageuser['id']}")->find();
 		if (!$user) {
-			ReturnToJson(-1, '账号异常');
+			ReturnToJson(-1, 'Account abnormality.');
 		}
 		// $user['group'] = getGroups($user['gid']);
 
@@ -332,7 +332,7 @@ class UserController extends BaseController
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
 			if ($start_time > $end_time) {
-				ReturnToJson(-1, '开始/结束日期选择不正确');
+				ReturnToJson(-1, 'Start date or end date selected incorrectly.');
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}

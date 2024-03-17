@@ -84,7 +84,7 @@ class GiftController extends BaseController
 		$params = $this->params;
 		$params['idx'] = intval($this->params['idx']);
 		// if (!$params['rsn']) {
-		// 	ReturnToJson(-1, '缺少参数');
+		// 	ReturnToJson(-1, 'Missing parameters.');
 		// }
 		$rsn = 'a3d044b074d37a89';
 		$return_data = [];
@@ -197,7 +197,7 @@ class GiftController extends BaseController
 				$res = Db::table('gift_lottery_log')->insertGetId($gift_lottery_log);
 				$wallet = getWallet($pageuser['id'], 2);
 				if (!$wallet) {
-					throw new \Exception('钱包获取异常');
+					throw new \Exception('Wallet acquisition exception.');
 				}
 				$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 				$wallet_data = [
@@ -217,7 +217,7 @@ class GiftController extends BaseController
 					'remark' => 'Lottery'
 				]);
 				if (!$result) {
-					throw new \Exception('流水记录写入失败');
+					throw new \Exception('Failed to write journal records.');
 				}
 			}
 			$return_data['money'] = $money;
@@ -225,7 +225,7 @@ class GiftController extends BaseController
 			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 		$all_money = [];
 		$empty_rand = mt_rand(1, 6);
@@ -312,7 +312,7 @@ class GiftController extends BaseController
 
 			$wallet = getWallet($pageuser['id'], 2);
 			if (!$wallet) {
-				throw new \Exception('钱包获取异常');
+				throw new \Exception('Wallet acquisition exception.');
 			}
 			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
 			$wallet_data = [
@@ -332,19 +332,19 @@ class GiftController extends BaseController
 				'remark' => 'Redpack'
 			]);
 			if (!$result) {
-				throw new \Exception('流水记录写入失败');
+				throw new \Exception('Failed to write journal records.');
 			}
 
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
 		$return_data = [
 			'money' => $detail['money'],
 			'dsn' => $detail['dsn']
 		];
-		ReturnToJson(1, '领取成功', $return_data);
+		ReturnToJson(1, 'Received successfully.', $return_data);
 	}
 }
