@@ -123,25 +123,6 @@ const router = useRouter()
 const loadingShow = ref(true)
 const newsdata = ref<any>([])
 const tableData = ref<any>({})
-//   const tableData = ([
-//   {
-//     icon: Product,
-//     status: 9,
-//     djs: 170978720,
-//     dssj: 1709728720,
-//     name: 'Item Name 1',
-//     price: 200,
-//   },
-
-//   {
-//     icon: Product,
-//     status: 1,
-//     djs: 170978720,
-//     dssj: 1709729720,
-//     name: 'Item Name 2',
-//     price: 200,
-//   },
-// ]);
 
 const active = ref('0')
 

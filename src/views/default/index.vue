@@ -133,8 +133,8 @@
     <van-dialog v-model:show="tipShow" style="border-radius: 8px" :showConfirmButton="false" class-name="home_tip_show"
       class="home_tip_shows">
       <div class="dialog_top">
-        <img :src="horn2" style="width: 5rem;position: fixed;left: 1rem;">
-        <img :src="bulletin" style="width: 20rem;margin-bottom: -1px;">
+        <!-- <img :src="horn2" style="width: 5rem;position: fixed;left: 1rem;">
+        <img :src="bulletin" style="width: 20rem;margin-bottom: -1px;"> -->
         <!-- <p>OFFICIAL TIPS</p> -->
         <div @click="tipShow = false" style="position: absolute; top: 1rem; right: 1rem">
           <!-- <van-icon style="color:#64523e;font-size:26px;" name="close" /> -->
@@ -142,11 +142,11 @@
       </div>
       <div class="dialog_content">
         <div class="notice_list">
-          <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; max-height: 14rem; overflow-y: auto"></div>
+          <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; max-height: 10rem; overflow-y: auto"></div>
         </div>
       </div>
       <div class="dialog_confirm_btn" @click="tipShow = false">
-        <span>{{ t('确定') }}</span>
+        <span></span>
       </div>
     </van-dialog>
     <!-- <Service @doService="doService" /> -->
@@ -624,17 +624,32 @@ onMounted(() => {
   }
 }
 
-.home_tip_show {
-  .dialog_top {}
+:deep(.van-popup--center) {
+  background: url(../../assets/img/home/pop-up.png) no-repeat;
+  background-size: 100% 22rem;
+  padding: 2rem 0 0;
+  height: 20rem;
+  width: 76%;
+
+  .dialog_top {
+
+    p {
+      color: #fff;
+      font-weight: bold;
+      position: absolute;
+      font-size: 20px;
+      top: 3rem;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
 
   .dialog_content {
-    padding: 0.825rem 0.425rem;
+    padding: 4rem 1.2rem 1rem;
     box-sizing: border-box;
     font-size: 0.75rem;
-    background-color: #fff;
 
     .notice_list {
-
       .notice_item {
         line-height: 1rem;
         margin-bottom: 1.25rem;
@@ -649,18 +664,19 @@ onMounted(() => {
     justify-content: center;
     align-items: center;
     margin-bottom: 1.25rem;
-    background-color: #fff;
+    position: absolute;
+    bottom: -1.2rem;
 
     span {
       display: inline-block;
       height: 2.25rem;
-      width: 14.0625rem;
+      width: 8rem;
       line-height: 2.25rem;
       text-align: center;
       font-size: 0.875rem;
-      background: #00b37c;
+      // background-color: #222;
       color: #fff;
-      border-radius: 1.3125rem;
+      border-radius: 1rem;
     }
   }
 }

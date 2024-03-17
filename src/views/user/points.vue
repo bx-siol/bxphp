@@ -27,7 +27,7 @@
             <div class="product">
                 <div v-for="(item, idx) in tableData" class="news">
                     <div class="imgs">
-                        <img :src="imgFlag(item.icon)">
+                        <img :src="imgFlag(Goldenegg)">
                     </div>
                     <div style="padding: 0 0.4rem 0.45rem;">
                         <h2>{{ item.name }}</h2>
@@ -42,9 +42,8 @@
                                 <p>Daily earnings</p><span> {{ cutOutNum((item.rate / 100) * item.price, 2) }} RS</span>
                             </li>
                             <li>
-                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days, 2)
-                                    }}
-                                    RS</span>
+                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days,
+                                    2) }}RS</span>
                             </li>
 
                             <li v-if="false">
@@ -53,7 +52,7 @@
 
                         </ul>
                         <div class="obtain">
-                            <p>{{ item.price }} points</p>
+                            <p>{{ item.price }} exchange</p>
                             <button @click="getProjectDetail(item)" type="button">+</button>
                         </div>
 
@@ -78,6 +77,8 @@ import MyTab from "../../components/Tab.vue";
 import http from "../../global/network/http";
 import { useRouter } from "vue-router";
 import Pointsbi from "../../assets/index/Pointsbi.png";
+import Goldenegg from "../../assets/index/Goldenegg.png";
+
 export default defineComponent({
     components: {
         MyNav,
@@ -216,6 +217,9 @@ onMounted(() => {
             color: rgb(245, 159, 54);
             font-weight: bold;
             display: flex;
+            font-size: 18px;
+            align-items: center;
+            height: 1rem;
         }
 
         .product {
@@ -266,11 +270,14 @@ onMounted(() => {
                     p {
                         display: inline-block;
                         color: #aaa;
+                        white-space: nowrap;
+
                     }
 
                     span {
-                        font: bold 0.625rem/16px '微软雅黑';
+                        font: bold 0.675rem/16px '微软雅黑';
                         color: #84973b;
+                        white-space: nowrap;
                     }
                 }
 
@@ -284,6 +291,7 @@ onMounted(() => {
                         color: #002544;
                         font-size: 16px;
                         font-weight: bold;
+                        white-space: nowrap;
                     }
 
                     button {

@@ -25,16 +25,18 @@
           <!-- <div class="title_right">Investment Cycle: {{ info.days }} Day</div> -->
         </div>
         <div class="detail">
-          <div class="dailyincome">
+          <div class="dailyincome" v-if="false">
             <span class="bold" v-if="info.pointshop == 1">{{ cutOutNum(detailData?.dailyIncome / 24, 2) }} </span>
             <span class="bold" v-else>₹{{ cutOutNum(detailData?.dailyIncome / 24, 2) }}</span>
             <span v-if="info.pointshop == 1"> Points</span>
             <span style="white-space: nowrap;color: #002544;" v-else>{{ t('小时收益') }}</span>
           </div>
-          <div class="dailyincome" v-if="false">
+
+          <div class="dailyincome">
             <span class="bold">₹{{ cutOutNum(detailData?.dailyIncome, 2) }}</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('日收益') }} </span>
           </div>
+
           <div class="dailyincome">
             <span class="bold">₹{{ cutOutNum(detailData?.totalRevenue, 2) }}</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('总收益') }} </span>
@@ -45,10 +47,12 @@
           100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
+          
           <div class="dailyincome">
             <span class="bold">{{ info.days }} Day</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('投资周期') }} </span>
           </div>
+          
           <div class="dailyincome" v-if="false">
             <span class="bold">VIP{{ 1 }} </span>
             <span>{{ t('购买等级') }} </span>
