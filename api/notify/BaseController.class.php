@@ -114,7 +114,7 @@ class BaseController extends CommonCtl
 				throw new \Exception('No order');
 			}
 			if ($order['status'] == 9) {
-				exit($pdata['successStr']);
+				exit ($pdata['successStr']);
 			}
 			if (abs($order['money'] - $pdata['amount']) > 0.1) {
 				writeLog($osn . "Money error", $paytype . '/notify/pay');
@@ -155,7 +155,7 @@ class BaseController extends CommonCtl
 				'ori_balance' => $wallet['balance'],
 				'new_balance' => $wallet_data['balance'],
 				'fkey' => $order['osn'],
-				'remark' => 'Recharge:' + $pdata['amount']
+				'remark' => 'Recharge:' . $pdata['amount']
 			], 1);
 			//writeLog("payAct:6" . $paytype . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $paytype . '/notify/pay');
 			if (!$result) {
@@ -170,7 +170,7 @@ class BaseController extends CommonCtl
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $order['uid']);
 
-			//writeLog($osn . " is ok", $paytype . '/notify/pay'); 
+			//writeLog($osn . " is ok", $paytype . '/notify/pay');
 			// if ($order['gplayerId'] != null && $order['gaccount'] != null) {
 			// 	$gurl = 'http://8.218.132.62/index.php/admin/login/doaddscore.html';
 			// 	$this->curl_post($gurl, ['addscore' => $order['money'] * 100, 'username' => $order['gaccount'], 'uid' => $order['gplayerId']]); //添加游戏积分
@@ -241,9 +241,9 @@ class BaseController extends CommonCtl
 			writeLog($osn . "订单异常" . json_encode($e, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $paytype . '/notify/pay');
 			Db::rollback();
 			if ($pdata['failStr']) {
-				exit($pdata['failStr']);
+				exit ($pdata['failStr']);
 			} else {
-				ReturnToJson(-1, 'fail:' . $e->getMessage());
+				ReturnToJson(-1, 'fail1:' . $e->getMessage());
 			}
 		}
 		echo $pdata['successStr'];
@@ -275,7 +275,7 @@ class BaseController extends CommonCtl
 			} elseif ($pay_status == 4) {
 				$needbackcash = true;
 			} else
-				exit($successStr);
+				exit ($successStr);
 		} elseif ($order['pay_status'] == 3) {
 			//exit($failStr);
 		} else {
@@ -390,7 +390,7 @@ class BaseController extends CommonCtl
 	protected function cashAct1($pdata = [])
 	{
 		//###########################################
-		$osn = $osn; //本地单号
+		$osn = $pdata['osn']; //本地单号
 		$out_osn = $pdata['out_osn']; //通道单号
 		$pay_status = $pdata['pay_status']; //代付状态 9或3
 		$pay_msg = $pdata['pay_msg'];
@@ -412,7 +412,7 @@ class BaseController extends CommonCtl
 				$pay_msg .= " | 订单反转 ";
 				$needbackcash = true;
 			} else {
-				exit($successStr . '9');
+				exit ($successStr . '9');
 			}
 		} elseif ($order['pay_status'] == 3) {
 			//exit($failStr);

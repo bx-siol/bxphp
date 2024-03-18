@@ -632,13 +632,17 @@ class FinanceController extends BaseController
 		if ($type == 1) { //到账 
 			if (!$item)
 				ReturnToJson(-1, '订单不存在');
-			$token = getParam('token');
+
+			$token = getParam('Token');
+			if ($token == "") {
+				$token = trim($_SERVER['HTTP_TOKEN']);
+			}
 			$url = REQUEST_SCHEME . '://' . HTTP_HOST . "/api/Notify/aacpay/pay?osn={$item['osn']}&token={$token}";  //88864d4f65e54066
 			$R = $this->curl_post($url, []);
 			if ($R == 'success') {
 				$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
 			} else {
-				ReturnToJson(-1, '失败', $R);
+				ReturnToJson(-1, '失败', ["a" => $token, "b" => $R]);
 			}
 		} else { //失败 
 			Db::table('fin_paylog')->where('osn', $item_id)->update(['status' => 3]);
