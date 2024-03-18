@@ -194,15 +194,16 @@ class FinanceController extends BaseController
 	public function _withdrawAct()
 	{
 		$pageuser = checkLogin();
+
 		$params = $this->params;
 		//$params['banklog_id']=intval($params['banklog_id']);
 		$params['money'] = floatval($params['money']);
+		// if ($pageuser['first_pay_day'] <= 0) {
+		// 	ReturnToJson(-1, 'Recharge required before withdrawal.');
+		// }
 		$banklog = Db::table('cnf_banklog')->where("uid={$pageuser['id']}")->find();
 		if (!$banklog) {
 			ReturnToJson(-1, 'Please bind your bank card first.');
-		}
-		if ($pageuser['first_pay_day'] <= 0) {
-			ReturnToJson(-1, 'Recharge required before withdrawal.');
 		}
 		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->find();
 		if (!$pro_order) {
