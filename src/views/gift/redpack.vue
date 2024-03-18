@@ -107,18 +107,20 @@ label {
 
 .reward {
     width: 92%;
-    height: 18rem;
+    height: 15rem;
     margin: 0 auto;
-    position: relative;
-    top: 33rem;
-    left: 0;
+    position: fixed;
+    bottom: 0%;
+    left: 50%;
+    transform: translateX(-50%);
     font: bold 22px/18px "微软雅黑";
     border-radius: 15px;
     color: white;
     display: flex;
     flex-direction: column;
     background-repeat: no-repeat;
-    background-size: 100%;
+    background-size: 100%; 
+    max-width: 640px;
 
     .exchange {
         margin: 1.5rem auto 0.5rem;

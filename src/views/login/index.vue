@@ -24,7 +24,7 @@
                         <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
                     </template>
                 </van-field>
-                <van-field v-model="dataForm.vcode" :placeholder="t('图形验证码')" @keyup.enter="onLogin">
+                <van-field v-model="dataForm.vcode" :placeholder="t('图形验证码')" @keyup.enter="onLogin" maxlength="4">
                     <template #left-icon>
                         <van-image :src="lock2" style="width: 1.5rem;height: 1.5rem;" />
                     </template>

@@ -17,7 +17,7 @@
             <van-cell-group>
                 <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30" maxlength="10"
                     :placeholder="t('请输入手机号')"></van-field>
-                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')">
+                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" maxlength="6">
                     <template #left-icon>
                         <van-image :src="lock" style="width: 1.5rem;height: 1.5rem;" />
                     </template>
