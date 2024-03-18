@@ -281,12 +281,12 @@ class FinanceController extends BaseController
 			}
 			$where .= " and log.pay_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		if (isset($params['s_is_first']) && $params['s_is_first'] != 'all') {
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		if (isset ($params['s_is_first']) && $params['s_is_first'] != 'all') {
 			$params['s_is_first'] = intval($params['s_is_first']);
 			$where .= " and log.is_first={$params['s_is_first']}";
 		}
-		$where .= empty($params['s_receive_type']) ? '' : " and log.receive_type={$params['s_receive_type']}";
+		$where .= empty ($params['s_receive_type']) ? '' : " and log.receive_type={$params['s_receive_type']}";
 
 
 		if ($params['s_user_account']) {
@@ -310,7 +310,7 @@ class FinanceController extends BaseController
 		}
 
 		if (!$params['s_utr'] && !$params['s_user_account'] && !$params['s_paytype_s'] && !$params['s_osn'] && !$params['s_oldosn']) {
-			$where .= empty($params['s_keyword']) ? '' : " and (log.osn='{$params['s_keyword']}' or log.out_osn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.pay_type='{$params['s_keyword']}' or log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}' or log.pay_realname like '%{$params['s_keyword']}%')";
+			$where .= empty ($params['s_keyword']) ? '' : " and (log.osn='{$params['s_keyword']}' or log.out_osn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.pay_type='{$params['s_keyword']}' or log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}' or log.pay_realname like '%{$params['s_keyword']}%')";
 		}
 
 
@@ -570,9 +570,9 @@ class FinanceController extends BaseController
 				'status' => $fin_paylog['status'],
 				'status_flag' => $cnf_paylog_status[$fin_paylog['status']],
 				'check_remark' => $fin_paylog['check_remark'],
-				'pay_time' => empty($fin_paylog['pay_time']) ? '/' : date('m-d H:i:s', $fin_paylog['pay_time'])
+				'pay_time' => empty ($fin_paylog['pay_time']) ? '/' : date('m-d H:i:s', $fin_paylog['pay_time'])
 			];
-			if (isset($fin_paylog['is_first'])) {
+			if (isset ($fin_paylog['is_first'])) {
 				$yes_or_no = getConfig('yes_or_no');
 				$return_data['is_first'] = $fin_paylog['is_first'];
 				$return_data['is_first_flag'] = $yes_or_no[$fin_paylog['is_first']];
@@ -615,6 +615,7 @@ class FinanceController extends BaseController
 	}
 
 
+	///手动处理充值
 	public function _bank_check_onlie()
 	{
 		$pageuser = checkLogin();
@@ -636,12 +637,14 @@ class FinanceController extends BaseController
 			$R = $this->curl_post($url, []);
 			if ($R == 'success') {
 				$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
+			} else {
+				ReturnToJson(-1, '失败', $R);
 			}
 		} else { //失败 
 			Db::table('fin_paylog')->where('osn', $item_id)->update(['status' => 3]);
 			$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
 		}
-		ReturnToJson(1, '成功', $item);
+		ReturnToJson(1, '成功', [$item, $R]);
 	}
 
 
@@ -776,8 +779,8 @@ class FinanceController extends BaseController
 			$where .= " and log.pay_time between {$start_time2} and {$end_time2}";
 		}
 
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		if (isset($params['s_pay_status']) && $params['s_pay_status'] != 'all') {
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		if (isset ($params['s_pay_status']) && $params['s_pay_status'] != 'all') {
 			$params['s_pay_status'] = intval($params['s_pay_status']);
 			$where .= " and log.pay_status={$params['s_pay_status']}";
 		}
@@ -800,7 +803,7 @@ class FinanceController extends BaseController
 		}
 
 		if (!$params['s_user_account'] && !$params['s_paytype_s'] && !$params['s_osn'] && !$params['s_oldosn']) {
-			$where .= empty($params['s_keyword']) ? '' : " and (log.oldosn='{$params['s_keyword']}' or log.id='{$params['s_keyword']}' or log.osn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.pay_type='{$params['s_keyword']}' or log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}' or log.receive_realname like '%{$params['s_keyword']}%')";
+			$where .= empty ($params['s_keyword']) ? '' : " and (log.oldosn='{$params['s_keyword']}' or log.id='{$params['s_keyword']}' or log.osn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.pay_type='{$params['s_keyword']}' or log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}' or log.receive_realname like '%{$params['s_keyword']}%')";
 		}
 
 
@@ -1045,12 +1048,12 @@ class FinanceController extends BaseController
 				'check_remark' => $fin_cashlog['check_remark'],
 				'check_time' => date('m-d H:i', $fin_cashlog['check_time'])
 			];
-			if (isset($fin_cashlog['pay_status'])) {
+			if (isset ($fin_cashlog['pay_status'])) {
 				$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
 				$return_data['pay_status'] = $fin_cashlog['pay_status'];
 				$return_data['pay_status_flag'] = $cnf_cashlog_pay_status[$fin_cashlog['pay_status']];
 			}
-			if (isset($fin_cashlog['pay_type'])) {
+			if (isset ($fin_cashlog['pay_type'])) {
 				$return_data['pay_type'] = $fin_cashlog['pay_type'];
 			}
 			$this->redis->rmall(RedisKeys::USER_WALLET . "{$uid}");
@@ -1125,12 +1128,12 @@ class FinanceController extends BaseController
 				'check_time' => date('m-d H:i', $fin_cashlog['check_time']),
 				'pay_time' => date('m-d H:i', $fin_cashlog['pay_time']),
 			];
-			if (isset($fin_cashlog['pay_status'])) {
+			if (isset ($fin_cashlog['pay_status'])) {
 				$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
 				$return_data['pay_status'] = $fin_cashlog['pay_status'];
 				$return_data['pay_status_flag'] = $cnf_cashlog_pay_status[$fin_cashlog['pay_status']];
 			}
-			if (isset($fin_cashlog['pay_type'])) {
+			if (isset ($fin_cashlog['pay_type'])) {
 				$return_data['pay_type'] = $fin_cashlog['pay_type'];
 			}
 			echo json_encode(['code' => 1, 'msg' => '操作成功', 'data' => $return_data]);
@@ -1275,9 +1278,9 @@ class FinanceController extends BaseController
 			$where .= " and log.uid in({$uid_str})";
 		}
 
-		$where .= empty($params['uid']) ? '' : " and log.uid={$params['uid']}";
-		$where .= empty($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.waddr='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
+		$where .= empty ($params['uid']) ? '' : " and log.uid={$params['uid']}";
+		$where .= empty ($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.waddr='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
 
 		$count_item = Db::table('wallet_list log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
@@ -1398,7 +1401,7 @@ class FinanceController extends BaseController
 			$this->redis->rm(RedisKeys::USER_WALLET . "{$item['uid']}_2");
 			$this->redis->rmall(RedisKeys::USER_WALLET . "{$item['uid']}");
 			$return_data['balance'] = $db_item['balance'];
-			$return_data['fz_balance'] = isset($db_item['fz_balance']) ? $db_item['fz_balance'] : $item['fz_balance'];
+			$return_data['fz_balance'] = isset ($db_item['fz_balance']) ? $db_item['fz_balance'] : $item['fz_balance'];
 		} catch (\Exception $e) {
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试', $e->getMessage());
@@ -1434,10 +1437,10 @@ class FinanceController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty($params['s_keyword']) ? '' : " and (w.waddr='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.remark like '%{$params['s_keyword']}%')";
-		$where .= empty($params['wid']) ? '' : " and log.wid={$params['wid']}";
-		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
-		$where .= empty($params['s_cid']) ? '' : " and w.cid={$params['s_cid']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (w.waddr='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.remark like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['wid']) ? '' : " and log.wid={$params['wid']}";
+		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty ($params['s_cid']) ? '' : " and w.cid={$params['s_cid']}";
 
 		$count_item = Db::table('wallet_log log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
@@ -1513,8 +1516,8 @@ class FinanceController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
 		if ($params['s_keyword']) {
 			if ($params['s_keyword'] == '平台') {
 				$where .= " and log.uid=0";
@@ -1634,7 +1637,7 @@ class FinanceController extends BaseController
 			'bank_name' => $params['bank_name'],
 			'account' => $params['account'],
 			'realname' => $params['realname'],
-			'sort' => empty($params['sort']) ? 1000 : $params['sort'],
+			'sort' => empty ($params['sort']) ? 1000 : $params['sort'],
 			'type' => $params['type'],
 			'status' => $params['status'],
 			'remark' => $params['remark'],
@@ -1750,8 +1753,8 @@ class FinanceController extends BaseController
 		$params = $this->params;
 		$this->pageSize = 50;
 		$where = "log.status<99";
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
 		$count_item = Db::table('fin_ptype log')
 			->fieldRaw('count(1) as cnt')->where($where)->find();
 		$list = Db::view(['fin_ptype' => 'log'], ['*'])
@@ -1858,8 +1861,8 @@ class FinanceController extends BaseController
 		$this->pageSize = 50;
 		$params = $this->params;
 		$where = "log.status<99";
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
 		$count_item = Db::table('fin_dtype log')
 			->fieldRaw('count(1) as cnt')->where($where)->find();
 		$list = Db::view(['fin_dtype' => 'log'], ['*'])
