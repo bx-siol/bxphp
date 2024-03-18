@@ -6,45 +6,39 @@
         <template #default="{ list }">
 
           <div class="basicProjectsList">
-            <div v-for="(item, index) in list  " :key="index">
+            <div v-for="(item, index) in list" :key="index" class="bottom">
               <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${item.money != 0 ? yhj1 : yhj2})`, 'background-size': '100% 100%', 'padding-bottom': '2rem' }"
+                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${item.money != 0 ? yhj1 : yhj2})`, 'background-size': '100% 100%', }"
                 class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
-                    <td style="padding-left: 0.5rem;width: 80%;line-height: 20px;">
+                    <td style="padding-left: 0.5rem;width: 80%;line-height: 22px;">
                       <div style="font-size: 14px;font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
                       <div style="font-size: 14px;font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-
 
                       <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
                     </td>
                     <td>
                       <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money != 0">{{
-        item.money }} RS</div>
+                        v-if="item.money != 0">{{item.money }} RS</div>
                       <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money == 0">{{ 100 -
-        item.discount }}%</div>
+                        v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                       <p class="Exchange" @click="usefun(item)">{{ t('待使用') }}</p>
                     </td>
                   </tr>
                 </table>
               </div>
-              <div class="remark" v-if="item.remark != ''" style="font-size: 12px; margin-top: -2.1rem;">
+              <div class="remark" v-if="false" style="font-size: 12px; margin-top: -2.1rem;">
                 <van-collapse :border="false" v-model="activeNames">
                   <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
                     <!-- {{ item.remark }} -->
-                    <p> 1. Invite friends to buy any equipment to get an extra 50 Rs</p>
+                    <p>1. Invite friends to buy any equipment to get an extra 50 Rs</p>
                     <p>2. You can only use 1 card each time you invite friends</p>
-                    <p> 3. It can be directly exchanged and recharged to the balance</p>
+                    <p>3. It can be directly exchanged and recharged to the balance</p>
                   </van-collapse-item>
                 </van-collapse>
               </div>
             </div>
-
-
-
 
           </div>
         </template>
@@ -252,9 +246,12 @@ const getProjectDetail = (item: any) => {
           border: 1px solid #fff;
           border-radius: 4px;
           padding: 4px;
-          margin-bottom: -1rem;
+          // margin-bottom: -1rem;
           text-align: center;
         }
+      }
+      .bottom:last-child{
+        margin-bottom: 1rem;
       }
     }
   }

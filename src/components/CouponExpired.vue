@@ -6,13 +6,13 @@
         <template #default="{ list }">
 
           <div class="basicProjectsList">
-            <div v-for="(item, index) in list  " :key="index">
+            <div v-for="(item, index) in list" :key="index" class="bottom">
               <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', 'padding-bottom': '2rem' }"
+                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }"
                 class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
-                    <td style="padding-left: 0.5rem;width: 80%;line-height: 20px;">
+                    <td style="padding-left: 0.5rem;width: 80%;line-height: 22px;">
                       <div style="font-size:14px;font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
                       <div style="font-size:14px;font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
 
@@ -28,7 +28,7 @@
                   </tr>
                 </table>
               </div>
-              <div class="remark" v-if="item.remark != ''" style="font-size: 12px; margin-top: -2.1rem;">
+              <div class="remark" v-if="false" style="font-size: 12px; margin-top: -2.1rem;">
                 <van-collapse :border="false" v-model="activeNames">
                   <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
                     <!-- {{ item.remark }} -->
@@ -222,9 +222,12 @@ const getProjectDetail = (item: any) => {
           border: 1px solid #fff;
           border-radius: 4px;
           padding: 4px;
-          margin-bottom: -1rem;
+          // margin-bottom: -1rem;
           text-align: center;
         }
+      }
+      .bottom:last-child{
+        margin-bottom: 1rem;
       }
     }
   }

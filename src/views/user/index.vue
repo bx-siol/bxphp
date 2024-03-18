@@ -64,12 +64,9 @@
                 <van-cell-group>
                     <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
                     <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
-                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2"
-                        v-if="false"></van-cell>
-                    <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox"
-                        :to="{ name: 'Setting_bank' }"></van-cell>
-                    <van-cell class="financial_records" :title="t('财务记录')" :icon="financialrecords"
-                        :to="{ name: 'Finance_balancelog' }"></van-cell>
+                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2" v-if="false"></van-cell>
+                    <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox" :to="{ name: 'Setting_bank' }"></van-cell>
+                    <van-cell  :title="t('财务记录')" :icon="financialrecords" :to="{ name: 'Finance_balancelog' }"></van-cell>
                     <van-cell :title="t('任务中心')" :icon="missioncenter" :to="{ name: 'task' }" v-if="false"></van-cell>
                     <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
                     <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
