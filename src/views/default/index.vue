@@ -86,9 +86,9 @@
                 </a> -->
             </div>
             <div class="u-flex">
-              <div @click="onItem(item,index)"
-                style="width: 32%;height: 4rem;margin-top: 8px;" v-for="(item, index) in taskdata" :key="index">
-                <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
+              <div @click="onItem(item, index)" style="width: 32%;height: 4rem;margin-top: 8px;"
+                v-for="(item, index) in taskdata" :key="index">
+                <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;border-radius:.5rem"></van-image>
               </div>
             </div>
 
@@ -161,7 +161,7 @@
       <div style="margin-top: -6.05rem; margin-bottom: 3.4rem" class="dialog_confirm_btn" @click="t120lq()">
         <span
           style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
-            t('收到') }}</span>
+      t('收到') }}</span>
       </div>
     </van-dialog>
 
@@ -174,7 +174,7 @@
         @click="t120()">
         <span
           style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
-            t('收到') }}</span>
+      t('收到') }}</span>
       </div>
     </van-dialog>
   </div>
@@ -303,7 +303,7 @@ const tdata = ref<any>({
 })
 // let pageUrl = ref('c=Product&a=order')
 
-const  onItem = (item: { id: any; }, index: number) => {
+const onItem = (item: { id: any; }, index: number) => {
   if (index < 2) {
     router.push({ name: 'Ext_task', params: { id: item.id } });
   } else {
@@ -553,7 +553,7 @@ onMounted(() => {
 })
 </script>
 
- 
+
 
 <style scoped>
 .service {
