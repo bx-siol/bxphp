@@ -522,7 +522,7 @@ class FinanceController extends BaseController
 		$params = $this->params;
 
 		$where = "uid={$pageuser['id']} and log.status<99";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
 
 		$count_item = Db::table('fin_paylog log')
 			->leftJoin('cnf_bank b', 'log.receive_bank_id=b.id')
@@ -643,6 +643,13 @@ class FinanceController extends BaseController
 		$banklog = Db::table('cnf_banklog')->where("uid={$pageuser['id']}")->order(['id' => 'desc'])->find();
 		if (!$banklog) {
 			ReturnToJson(-1, 'Please bind your bank card first.');
+		}
+		if ($pageuser['first_pay_day'] <= 0) {
+			ReturnToJson(-1, 'Recharge required before withdrawal.');
+		}
+		$pro = Db::table('pro_order')->where(['uid' => $pageuser['id'], ['is_give' => 0]])->find();
+		if (!$pro) {
+			ReturnToJson(-1, 'Withdrawal can only be made after purchasing the product.');
 		}
 		Db::startTrans();
 		try {
@@ -809,7 +816,7 @@ class FinanceController extends BaseController
 		$params = $this->params;
 
 		$where = "uid={$pageuser['id']} and log.status<99";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
 
 		$count_item = Db::table('fin_cashlog log')
 			->leftJoin('cnf_bank b', 'log.receive_bank_id=b.id')
@@ -995,7 +1002,7 @@ class FinanceController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		//$where.=empty($params['s_keyword'])?'':" and (log.remark='{$params['s_keyword']}')";
 
 		$count_item = Db::table('pro_reward log')
