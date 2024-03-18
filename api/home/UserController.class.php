@@ -52,6 +52,7 @@ class UserController extends BaseController
 
 		$rebate = Db::table('pro_reward')->where("uid={$pageuser['id']} and type=2")->sum('money');
 		$today_profit = Db::table('pro_reward')->where("uid={$pageuser['id']} and create_day={$now_day}")->sum('money');
+		$teamincome = Db::table('pro_reward a')->leftJoin('sys_user b','a.uid = b.id')->where("b.pids like '%{$pageuser['id']}%'")->sum('money');
 
 		$service_arr = [];
 		$up_users = getUpUser($pageuser['id'], true);
@@ -81,6 +82,7 @@ class UserController extends BaseController
 			$withdraw = 15848731.76;
 			$recharge = 520000.00;
 			$investment = 723000.00;
+			$teamincome = 0;
 		}
 
 		$return_data = [
@@ -95,6 +97,7 @@ class UserController extends BaseController
 			'rebate' => round(floatval($rebate), 2),
 			'tprofit' => round(floatval($today_profit + $jrhb_money), 2),
 			'service_arr' => $service_arr,
+			'teamincome'=>$teamincome,
 			//'pidg1' => $ccth
 		];
 		ReturnToJson(1, 'ok', $return_data);
