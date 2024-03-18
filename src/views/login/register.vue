@@ -181,6 +181,12 @@ const getVcode = () => {
 
 //注册
 const onRegister = () => {
+    var accountRegex = /^\d+$/;
+    if (!accountRegex.test(dataForm.account)) {
+        _alert('The account can only contain numbers and cannot include symbols');
+        return;
+    }
+    
     if (isRequest) {
         return
     }
