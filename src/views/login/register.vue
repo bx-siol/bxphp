@@ -11,7 +11,8 @@
             <van-cell-group>
                 <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30"
                 maxlength="10"  :placeholder="t('请输入手机号')"></van-field>
-                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" style="padding: 0.3rem 0.6rem;">
+
+                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" maxlength="6" style="padding: 0.3rem 0.6rem;">
                     <template #left-icon>
                         <van-image :src="lock" style="width: 1.5rem;height: 1.5rem;margin-top: 0.4rem;" />
                     </template>
@@ -26,6 +27,7 @@
                 </van-field>
 
                 <van-field v-model="dataForm.nickname" :left-icon="useractive" :placeholder="t('请填写昵称')" v-if="false"></van-field>
+                
                 <van-field v-model="dataForm.password_flag" type="password" :left-icon="key"
                     :placeholder="t('请填写登录密码')"></van-field>
 
@@ -173,6 +175,11 @@ const getVcode = () => {
 
 //注册
 const onRegister = () => {
+    var accountRegex = /^\d+$/;
+    if (!accountRegex.test(dataForm.account)) {
+        _alert('The account can only contain numbers and cannot include symbols');
+        return;
+    }
     if (isRequest) {
         return
     }

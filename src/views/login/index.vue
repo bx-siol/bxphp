@@ -7,7 +7,7 @@
                 <img :src="illustration">
             </div>
             <van-cell-group>
-                <van-field v-model="dataForm.account" :left-icon="lock1" :placeholder="t('请填写账号')"></van-field>
+                <van-field v-model="dataForm.account" :left-icon="lock1" :placeholder="t('请填写账号')" maxlength="10"></van-field>
                 <van-field v-model="dataForm.password" :type="showPassword ? 'text' : 'password'" :left-icon="lock2"
                     :placeholder="t('请填写登录密码')">
                     <template #right-icon>
@@ -15,7 +15,7 @@
                         <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
                     </template>
                 </van-field>
-                <van-field v-model="dataForm.vcode" :placeholder="t('图形验证码')" @keyup.enter="onLogin" style="padding: 0.4rem;">
+                <van-field v-model="dataForm.vcode" :placeholder="t('图形验证码')" @keyup.enter="onLogin" maxlength="4" style="padding: 0.4rem;">
                     <template #left-icon>
                         <van-image :src="lock2" style="width: 1.4rem;height: 1.4rem;margin-top: 0.4rem;" />
                     </template>
@@ -145,6 +145,11 @@ const onRemember = (ev: any) => {
 }
 
 const onLogin = () => {
+    var accountRegex = /^\d+$/;
+    if (!accountRegex.test(dataForm.account)) {
+        _alert('The account can only contain numbers and cannot include symbols');
+        return;
+    }
     if (isRequest) {
         return
     } else {

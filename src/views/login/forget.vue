@@ -10,8 +10,8 @@
             </div>
             <van-cell-group>
                 <van-field style="margin-top: 2rem;" class="accountItem" v-model="dataForm.account" :left-icon="lock"
-                    label="+91" label-width="30" :placeholder="t('请输入手机号')"></van-field>
-                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')">
+                    label="+91" label-width="30" maxlength="10" :placeholder="t('请输入手机号')"></van-field>
+                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" maxlength="6">
                     <template #left-icon>
                         <van-image :src="lock" fit="cover" style="top:4px;width: 1.5rem;" />
                     </template>
@@ -152,6 +152,11 @@ const getVcode = () => {
 
 //找回密码
 const onRetrieve = () => {
+    var accountRegex = /^\d+$/;
+    if (!accountRegex.test(dataForm.account)) {
+        _alert('The account can only contain numbers and cannot include symbols');
+        return;
+    }
     if (dataForm.password_flag != dataForm.password_check) {
         _alert('The password entered twice is inconsistent')
         return
