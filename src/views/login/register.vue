@@ -15,8 +15,9 @@
                 <p @click="onLink({ name: 'Register' })"> {{ t('注册') }}</p>
             </div>
             <van-cell-group>
-                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30" maxlength="10"
-                    :placeholder="t('请输入手机号')"></van-field>
+                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30"
+                    maxlength="10" :placeholder="t('请输入手机号')"></van-field>
+
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" maxlength="6">
                     <template #left-icon>
                         <van-image :src="lock" style="width: 1.5rem;height: 1.5rem;" />
@@ -32,6 +33,7 @@
                 </van-field>
 
                 <van-field v-model="dataForm.nickname" :left-icon="useractive" :placeholder="t('请填写昵称')" v-if="false"></van-field>
+                
                 <van-field v-model="dataForm.password_flag" type="password" :left-icon="key"
                     :placeholder="t('请填写登录密码')"></van-field>
 
@@ -134,6 +136,10 @@ const onSendCode = () => {
     if (isTimer.value) {
         return
     }
+    if (!dataForm.account) {
+        _alert(t('请输入手机号'))
+        return
+    }
     sendLoading.value = true
     var delayTime = Math.floor(Math.random() * 1000);
     setTimeout((() => {
@@ -181,13 +187,28 @@ const getVcode = () => {
 
 //注册
 const onRegister = () => {
+    if (isRequest) {
+        return
+    }
+    if (!dataForm.account) {
+        _alert(t('请输入手机号'))
+        return
+    }
     var accountRegex = /^\d+$/;
     if (!accountRegex.test(dataForm.account)) {
         _alert('The account can only contain numbers and cannot include symbols');
         return;
     }
-    
-    if (isRequest) {
+    if (!dataForm.scode) {
+        _alert(t('请填写验证码'))
+        return
+    }
+    if (!dataForm.password_flag) {
+        _alert(t('请填写登录密码'))
+        return
+    }
+    if (!dataForm.icode) {
+        _alert(t('请填写邀请码'))
         return
     }
     isRequest = true
@@ -204,13 +225,8 @@ const onRegister = () => {
                 getVcode()  //更新图形验证码
                 return
             }
-            router.push({ name: 'Login' })
-            _alert({
-                icon: 'success',
-                message: res.msg,
-                onClose: () => {
-                    
-                }
+            _alert(res.msg, function () {
+                router.push({ name: 'Login' })
             })
         })
     }, delayTime)
