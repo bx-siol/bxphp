@@ -204,16 +204,10 @@ class FinanceController extends BaseController
 		if ($pageuser['first_pay_day'] <= 0) {
 			ReturnToJson(-1, 'Recharge required before withdrawal.');
 		}
-
-		$pro = Db::table('pro_order')->where(['uid' => $pageuser['id'], ['is_give' => 0]])->find();
-		if (!$pro) {
-			ReturnToJson(-1, 'Withdrawal can only be made after purchasing the product.');
+		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->find();
+		if (!$pro_order) {
+			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased');
 		}
-
-		// $pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->find();
-		// if (!$pro_order) {
-		// 	ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased');
-		// }
 
 		Db::startTrans();
 		try {
