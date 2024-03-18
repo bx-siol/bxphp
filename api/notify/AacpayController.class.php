@@ -3,7 +3,7 @@
 
 use think\facade\Db;
 
-class AutoPayController extends BaseController
+class AacpayController extends BaseController
 {
 	public function __construct()
 	{
@@ -15,7 +15,7 @@ class AutoPayController extends BaseController
 		echo 'notify';
 	}
 
-	public function _payAuto()
+	public function _pay()
 	{
 		$token = $_POST["token"] ?? $_GET["token"];
 		$user = getUserByToken($token);
