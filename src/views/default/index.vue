@@ -88,7 +88,7 @@
             <div class="u-flex">
               <div @click="onItem(item, index)" style="width: 32%;height: 4rem;margin-top: 8px;"
                 v-for="(item, index) in taskdata" :key="index">
-                <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;border-radius:.5rem"></van-image>
+                <van-image round :src="imgFlag(item.img)" style="height: 4rem;width: 100%;border-radius:.5rem"></van-image>
               </div>
             </div>
 
