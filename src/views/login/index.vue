@@ -145,16 +145,13 @@ const onRemember = (ev: any) => {
 }
 
 const onLogin = () => {
-    var accountRegex = /^\d+$/;
-    if (!accountRegex.test(dataForm.account)) {
-        _alert('The account can only contain numbers and cannot include symbols');
-        return;
-    }
+
     if (isRequest) {
         return
     } else {
         isRequest = true
     }
+    
     loadingShow.value = true;
     const delayTime = Math.floor(Math.random() * 1000);
 

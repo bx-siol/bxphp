@@ -20,7 +20,8 @@
                         <div class="tdboxs" v-if="item.money == 0">{{ t("折扣券") }}</div>
                       </div>
 
-                      <div style="font-size:12px;position:relative;bottom:-6px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
+                      <div style="font-size:12px;position:relative;bottom:-6px;">{{ t("有效期至") }}:{{ item.effective_time }}
+                      </div>
                     </td>
 
                     <td class="tdbox2">
@@ -32,7 +33,7 @@
                     </td>
                   </tr>
                 </table>
-                <div class="remark" v-if="item.remark != ''" style="font-size: 12px; width: 80%;margin-right: 4rem;">
+                <div class="remark" v-if="false" style="font-size: 12px; width: 80%;margin-right: 4rem;">
                   <van-collapse :border="false" v-model="activeNames">
                     <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
                       <!-- {{ item.remark }} -->
@@ -123,17 +124,17 @@ const usefun = (item: any) => {
         url: 'c=Coupon&a=exchange',
         data: { id: item.id }
       }).then((res: any) => {
-      if (res.code != 1) {
-        _alert(res.msg)
-        return
-      }
-      _alert({
-        type: 'success',
-        message: res.msg,
-        onClose: () => { }
+        if (res.code != 1) {
+          _alert(res.msg)
+          return
+        }
+        _alert({
+          type: 'success',
+          message: res.msg,
+          onClose: () => { }
+        })
       })
-      })
-    },delayTime)
+    }, delayTime)
   }
   // alert(item);
 }
@@ -156,13 +157,13 @@ const getProjectDetail = (item: any) => {
         margin-bottom: 1.25rem;
         padding: 0.8rem 1rem 0.8rem 0.2rem;
         box-sizing: border-box;
-        height: auto;
         display: flex;
         align-items: center;
         flex-direction: column;
+        justify-content: center;
         position: relative;
         border-radius: 6px;
-        height: 7.8rem;
+        height: 6.8rem;
         .tdbox {
           padding-left: 0.5rem;
           width: 80%;
@@ -181,6 +182,8 @@ const getProjectDetail = (item: any) => {
         }
 
         .tdbox2 {
+          margin-top: -0.8rem;
+          display: block;
           .tdboxs2 {
             font-size: 16px;
             font-weight: bold;
@@ -190,7 +193,7 @@ const getProjectDetail = (item: any) => {
 
           .small {
             font-size: 12px;
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
             text-align: right;
           }
         }
@@ -219,12 +222,12 @@ const getProjectDetail = (item: any) => {
   color: rgb(245, 247, 253);
   text-align: left;
   flex: 0;
-  width:10rem;
+  width: 10rem;
   white-space: nowrap;
 }
 
 .remark /deep/.van-collapse-item__content {
-  padding:8px !important;
+  padding: 8px !important;
   font-size: 10px;
   background: #0000;
   color: #2d2d2d;
@@ -240,7 +243,7 @@ const getProjectDetail = (item: any) => {
   transform: translatex(-38.5%);
   width: 129%;
   z-index: 2;
-  border-radius:0 0 6px 6px;
+  border-radius: 0 0 6px 6px;
 }
 
 .remark /deep/.van-cell__right-icon {
