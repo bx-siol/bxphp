@@ -692,58 +692,57 @@ class ProductController extends BaseController
 				Db::table('pro_reward')->insertGetId($pro_reward2);
 
 				//上级分佣 
-				$user = Db::table('sys_user')->where("id={$item['uid']}")->find();
-				$puser = Db::table('sys_user')->where("id={$user['pid']}")->find();
+				//$user = Db::table('sys_user')->where("id={$item['uid']}")->find();
+				//$puser = Db::table('sys_user')->where("id={$user['pid']}")->find();
 				//返佣
+				// if ($puser['stop_commission']) { //暂停佣金
 
-				if ($puser['stop_commission']) { //暂停佣金
+				// } else {
+				// 	if ($puser['gid'] < 91) { //代理以及其它管理用户不给佣金
 
-				} else {
-					if ($puser['gid'] < 91) { //代理以及其它管理用户不给佣金
+				// 	} else {
 
-					} else {
-
-						$wallet2 = getWallet($puser['id'], 2);
-						if (!$wallet2) {
-							throw new \Exception('钱包获取异常');
-						}
-						$wallet2 = Db::table('wallet_list')->where("id={$wallet2['id']}")->lock(true)->find();
-						$wallet_data2 = [
-							'balance' => $wallet2['balance'] + $item['price2']
-						];
-						Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
-						//写入流水记录
-						$result2 = walletLog([
-							'wid' => $wallet2['id'],
-							'uid' => $wallet2['uid'],
-							'type' => 8,
-							'money' => $item['price2'],
-							'ori_balance' => $wallet2['balance'],
-							'new_balance' => $wallet_data2['balance'],
-							'fkey' => $item['id'],
-							'remark' => 'Commission:' . $item['osn']
-						]);
-						if (!$result2) {
-							throw new \Exception('流水记录写入失败');
-						}
-						//写入收益记录
-						$pro_reward2 = [
-							'uid' => $puser['id'],
-							'oid' => $item['id'],
-							'osn' => $item['osn'],
-							'type' => 2,
-							'level' => 0,
-							'base_money' => 0,
-							'rate' => 0,
-							'money' => $item['price2'],
-							'remark' => $item['osn'],
-							'create_time' => $now_time,
-							'create_day' => $now_day
-						];
-						Db::table('pro_reward')->insertGetId($pro_reward2);
-						$this->redis->rmall(RedisKeys::USER_WALLET . $puser['id']);
-					}
-				}
+				// 		$wallet2 = getWallet($puser['id'], 2);
+				// 		if (!$wallet2) {
+				// 			throw new \Exception('钱包获取异常');
+				// 		}
+				// 		$wallet2 = Db::table('wallet_list')->where("id={$wallet2['id']}")->lock(true)->find();
+				// 		$wallet_data2 = [
+				// 			'balance' => $wallet2['balance'] + $item['price2']
+				// 		];
+				// 		Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
+				// 		//写入流水记录
+				// 		$result2 = walletLog([
+				// 			'wid' => $wallet2['id'],
+				// 			'uid' => $wallet2['uid'],
+				// 			'type' => 8,
+				// 			'money' => $item['price2'],
+				// 			'ori_balance' => $wallet2['balance'],
+				// 			'new_balance' => $wallet_data2['balance'],
+				// 			'fkey' => $item['id'],
+				// 			'remark' => 'Commission:' . $item['osn']
+				// 		]);
+				// 		if (!$result2) {
+				// 			throw new \Exception('流水记录写入失败');
+				// 		}
+				// 		//写入收益记录
+				// 		$pro_reward2 = [
+				// 			'uid' => $puser['id'],
+				// 			'oid' => $item['id'],
+				// 			'osn' => $item['osn'],
+				// 			'type' => 2,
+				// 			'level' => 0,
+				// 			'base_money' => 0,
+				// 			'rate' => 0,
+				// 			'money' => $item['price2'],
+				// 			'remark' => $item['osn'],
+				// 			'create_time' => $now_time,
+				// 			'create_day' => $now_day
+				// 		];
+				// 		Db::table('pro_reward')->insertGetId($pro_reward2);
+				// 		$this->redis->rmall(RedisKeys::USER_WALLET . $puser['id']);
+				// 	}
+				// }
 			}
 
 
