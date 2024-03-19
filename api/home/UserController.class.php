@@ -54,7 +54,7 @@ class UserController extends BaseController
 		$today_profit = Db::table('pro_reward')->where("uid={$pageuser['id']} and create_day={$now_day}")->sum('money');
 		$zyj = Db::table('pro_reward a')->leftJoin('sys_user b','a.uid = b.id')->where("b.pids like '%{$pageuser['id']}%'")->sum('money');//下级总分佣和总佣金
 		$qysy = Db::table('wallet_log a')->leftJoin('sys_user b','a.uid = b.id')
-		->where("b.pids like '%{$pageuser['id']}%' and item.type != 11 && item.type != 21 && item.type != 1 && item.type != 2 && item.type != 31 && item.type != 33 && item.type != 1019")
+		->where("b.pids like '%{$pageuser['id']}%' and a.type != 11 && a.type != 21 && a.type != 1 && a.type != 2 && a.type != 31 && a.type != 33 && a.type != 1019")
 		->sum('money');
 		$teamincome = floatval($zyj) + floatval($qysy);
 
