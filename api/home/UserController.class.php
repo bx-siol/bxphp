@@ -53,7 +53,8 @@ class UserController extends BaseController
 		$rebate = Db::table('pro_reward')->where("uid={$pageuser['id']} and type=2")->sum('money');
 		$today_profit = Db::table('pro_reward')->where("uid={$pageuser['id']} and create_day={$now_day}")->sum('money');
 		$teamincome = Db::table('wallet_log a')->leftJoin('sys_user b','a.uid = b.id')
-		->where("b.pids like '%{$pageuser['id']}%' and a.type=6")
+		->where("b.pids like '%{$pageuser['id']}%' ")
+		->where("a.type=6")
 		->whereOr("a.typr = 8")
 		->sum('money');//下级总分佣和总佣金
 
