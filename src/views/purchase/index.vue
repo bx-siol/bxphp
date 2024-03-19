@@ -1,10 +1,6 @@
 <template>
   <div class="project" style="height: 100%;overflow-y: auto;">
-    <Nav leftText=''>
-      <template #left>
-        <div></div>
-      </template>
-    </Nav>
+    <MyNav leftText=''></MyNav>
     <div class="projectWrapper">
       <Purchase />
       <!-- <van-tabs v-model:active="active" class="projectTab">
@@ -19,15 +15,15 @@
     <!-- <Service @doService="doService" /> -->
   </div>
   <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
-  <MyTab></MyTab>
+  <!-- <MyTab></MyTab> -->
 </template>
 
 <script lang="ts">
 import { _alert, lang } from "../../global/common";
 import { defineComponent, reactive } from "vue";
 import { Image } from "vant";
-import Nav from "../../components/Nav.vue";
 import MyTab from "../../components/Tab.vue";
+import MyNav from "../../components/Nav.vue";
 import MyListBase from "../../components/ListBase.vue";
 import Service from "../../components/service.vue";
 // import MyLoading from '../../components/Loading.vue';
@@ -38,7 +34,7 @@ import { Button, Tab, Tabs } from "vant";
 
 export default defineComponent({
   components: {
-    Nav, MyTab,
+    MyNav, MyTab,
     MyListBase,
     [Button.name]: Button,
     [Image.name]: Image,

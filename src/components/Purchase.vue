@@ -237,7 +237,7 @@
         <div></div>
       </div> -->
     </van-tabs>
-    <MyTab></MyTab>
+    <!-- <MyTab></MyTab> -->
   </div>
   <MyLoading :show="loadingShow2" :title="loadtitle"></MyLoading>
 </template>
