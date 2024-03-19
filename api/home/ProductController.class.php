@@ -783,8 +783,8 @@ class ProductController extends BaseController
 		if ($quantity < 1 || $quantity > 1000)
 			ReturnToJson(-1, 'Incorrect purchase quantity');
 		$return_data = [];
-		//Db::startTrans();
-		//try {
+		Db::startTrans();
+		try {
 			$item = $this->redis->get('pro_goods_' . $params['gsn']);
 			$money = $quantity * $item['price'];
 			if (!$item) {
@@ -804,13 +804,13 @@ class ProductController extends BaseController
 				$this->invest_date($params, $pageuser, $item, $quantity, $check_num, $pro_order);
 				$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
 			}
-			//Db::commit();
+			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_ORDER . $pageuser['id']);
 			$return_data['osn'] = $pro_order['osn'];
-		//} catch (\Exception $e) {
-			//Db::rollback();
-			//ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e)]);
-		//}
+		} catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e)]);
+		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
 
