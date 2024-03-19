@@ -5,11 +5,11 @@
             <div class="card">
 
                 <div class="item">
-                    <p class="p1"> {{ tableData.paycount }}</p>
+                    <p class="p1"> {{ effective }}</p>
                     <!-- <p class="p1">Unrecharge Member</p> -->
                 </div>
                 <div class="item">
-                    <p class="p1">{{ tableData.unpaycount }}</p>
+                    <p class="p1">{{ invalid }}</p>
                     <!-- <p class="p1">Active Member</p> -->
                 </div>
 
@@ -162,7 +162,8 @@ const pageRef2 = ref()
 
 const cpageRef = ref()
 const lv = ref()
-
+const effective =ref(0)
+const invalid=ref(0)
 const tableData = ref<any>({})
 const pdata = reactive({})
 const atype = ref();
@@ -275,7 +276,7 @@ const onLinkc = (type: string) => {
 
 const getusercount = () => {
     http({
-        url: 'c=User&a=gettodayregusercount',
+        url: 'c=User&a=GetTeamHierarchyPeopleNum&type=0'
     }).then((res: any) => {
         if (res.code != 1) {
             _alert({
@@ -287,8 +288,23 @@ const getusercount = () => {
             })
             return
         }
-        teamusercount.value = res.data.count;
-        teamusercount1.value = res.data.count1;
+        effective.value=res.data.list.length
+    })
+    
+    http({
+        url: 'c=User&a=GetTeamHierarchyPeopleNum&type=1'
+    }).then((res: any) => {
+        if (res.code != 1) {
+            _alert({
+                type: 'error',
+                message: res.msg,
+                onClose: () => {
+
+                }
+            })
+            return
+        }
+        invalid.value=res.data.list.length
     })
 }
 const switchs = ref(0)
@@ -310,6 +326,9 @@ const getTeam = () => {
                 lv3.value.people += 1;
             }
         }
+       
+        console.log(effective.value,'有效成员人数');
+        
         var fylStr = res.data.fy;
         fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%(' + lv1.value.people + ')';
         fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%(' + lv2.value.people + ')';
