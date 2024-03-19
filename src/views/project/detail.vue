@@ -42,7 +42,7 @@
             <span style="white-space: nowrap;color: #002544;">{{ t('总收益') }} </span>
           </div>
 
-          <div class="totalrevenue">
+          <div class="totalrevenue" v-if="info.pointshop != 1">                                                                                                                                                                                                                                                                            
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
               100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>

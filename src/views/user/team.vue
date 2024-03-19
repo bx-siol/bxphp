@@ -5,11 +5,11 @@
             <div class="card">
 
                 <div class="item">
-                    <p class="p1"> {{ tableData.unpaycount }}</p>
+                    <p class="p1"> {{ tableData.paycount }}</p>
                     <!-- <p class="p1">Unrecharge Member</p> -->
                 </div>
                 <div class="item">
-                    <p class="p1">{{ tableData.paycount }}</p>
+                    <p class="p1">{{ tableData.unpaycount }}</p>
                     <!-- <p class="p1">Active Member</p> -->
                 </div>
 
@@ -291,7 +291,7 @@ const getusercount = () => {
         teamusercount1.value = res.data.count1;
     })
 }
-const switchs = ref(1)
+const switchs = ref(0)
 const getTeam = () => {
 
     lv1.value.people = 0;
@@ -330,14 +330,14 @@ const SwitchMembers = (lv: number, type: number) => {
         requesturl2.value = "c=User&a=team&lv=2&type=pay";
         requesturl3.value = "c=User&a=team&lv=3&type=pay";
         cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=pay");
-        switchs.value = 1;
+        switchs.value = 0;
     }
     else {
         requesturl1.value = "c=User&a=team&lv=1&type=unpay";
         requesturl2.value = "c=User&a=team&lv=2&type=unpay";
         requesturl3.value = "c=User&a=team&lv=3&type=unpay";
         cpageRef.value.ValidMember("c=User&a=team&lv=" + lv + "&type=unpay");
-        switchs.value = 0;
+        switchs.value = 1;
     }
 
     var inactiveMembers = document.getElementsByClassName('levelTabValidMember');
