@@ -22,6 +22,7 @@
                 </template>
             </van-field>
         </div>
+
         <div class="mall-bottom">
             <span class="part">Points product</span>
             <div class="product">
@@ -52,8 +53,11 @@
 
                         </ul>
                         <div class="obtain">
-                            <p>{{ item.price }} exchange</p>
-                            <button @click="getProjectDetail(item)" type="button">+</button>
+                            <div style="display: flex;align-items: center">
+                                <img :src="Pointsbi">
+                                <p>{{ item.price }}</p>
+                            </div>
+                            <button @click="getProjectDetail(item)" type="button">Redeem</button>
                         </div>
 
                     </div>
@@ -96,6 +100,7 @@ const router = useRouter()
 const user = ref({})
 const wallet3 = ref({})
 const tableData = ref<any>({})
+
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
@@ -287,6 +292,11 @@ onMounted(() => {
                     justify-content: space-between;
                     margin-top: 0.2rem;
 
+                    img {
+                        width: 1.5rem;
+                        margin-right: 0.3rem;
+                    }
+
                     p {
                         color: #002544;
                         font-size: 16px;
@@ -295,13 +305,14 @@ onMounted(() => {
                     }
 
                     button {
-                        width: 20%;
+                        width: 55%;
                         height: 30px;
-                        font-size: 26px;
+                        font-size: 14px;
                         border-radius: 4px;
                         color: #fff;
                         background: #84973b;
                         border: none;
+                        font-weight: bold;
                     }
                 }
 

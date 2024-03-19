@@ -6,7 +6,7 @@
         <template #default="{ list }">
 
           <div class="basicProjectsList">
-            <div v-for="(item, index) in list  " :key="index">
+            <div v-for="(item, index) in list" :key="index">
               <div :style="{ 'width': '100%', 'background': `url(${hs})`, 'background-size': '100% 100%', }"
                 class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
@@ -30,7 +30,7 @@
                     </td>
                   </tr>
                 </table>
-                <div class="remark" v-if="item.remark != ''" style="font-size: 12px;width: 80%;margin-right: 4rem;">
+                <div class="remark" v-if="false" style="font-size: 12px;width: 80%;margin-right: 4rem;">
                   <van-collapse :border="false" v-model="activeNames">
                     <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
                       <!-- {{ item.remark }} -->
@@ -126,13 +126,13 @@ const getProjectDetail = (item: any) => {
         margin-bottom: 1.25rem;
         padding: 0.8rem 1rem 0.8rem 0.2rem;
         box-sizing: border-box;
-        height: auto;
         display: flex;
         align-items: center;
         flex-direction: column;
+        justify-content: center;
         position: relative;
         border-radius: 6px;
-
+        height: 6.8rem;
         .tdbox {
           padding-left: 0.5rem;
           width: 80%;
@@ -151,6 +151,8 @@ const getProjectDetail = (item: any) => {
         }
 
         .tdbox2 {
+          margin-top: -0.8rem;
+          display: block;
           .tdboxs2 {
             font-size: 16px;
             font-weight: bold;
@@ -158,7 +160,7 @@ const getProjectDetail = (item: any) => {
           }
           .small {
             font-size: 12px;
-            margin: 0.5rem 0;
+            margin: 0.3rem 0;
             text-align: right;
           }
 
