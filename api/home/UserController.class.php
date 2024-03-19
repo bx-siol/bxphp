@@ -55,7 +55,7 @@ class UserController extends BaseController
 		$teamincome = Db::table('wallet_log a')->leftJoin('sys_user b','a.uid = b.id')
 		->where("b.pids like '%{$pageuser['id']}%' ")
 		->where("a.type=6")
-		->whereOr("a.typr = 8")
+		->whereOr("a.type = 8")
 		->sum('money');//下级总分佣和总佣金
 
 		$service_arr = [];
