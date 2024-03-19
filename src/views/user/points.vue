@@ -28,7 +28,7 @@
             <div class="product">
                 <div v-for="(item, idx) in tableData" class="news">
                     <div class="imgs">
-                        <img :src="imgFlag(Goldenegg)">
+                        <img :src="imgFlag(item.icon)">
                     </div>
                     <div style="padding: 0 0.4rem 0.45rem;">
                         <h2>{{ item.name }}</h2>
