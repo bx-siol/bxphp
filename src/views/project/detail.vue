@@ -50,7 +50,8 @@
 
           <div class="dailyincome">
             <span class="bold">{{ info.days }} Day</span>
-            <span style="white-space: nowrap;color: #002544;">{{ t('投资周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;" v-if="info.pointshop == 1">{{ t('收益周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;" v-else>{{ t('投资周期') }} </span>
           </div>
 
           <div class="dailyincome" v-if="false">

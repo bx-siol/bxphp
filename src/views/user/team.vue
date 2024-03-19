@@ -326,8 +326,6 @@ const getTeam = () => {
                 lv3.value.people += 1;
             }
         }
-       
-        console.log(effective.value,'有效成员人数');
         
         var fylStr = res.data.fy;
         fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%(' + lv1.value.people + ')';
