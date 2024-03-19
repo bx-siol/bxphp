@@ -387,6 +387,7 @@ export default {
     联系经理: 'Contact Manager',
     登录失败: 'Login failed',
     投资周期: 'Investment Cycle',
+    收益周期: 'Revenue cycle',
     利润回报: 'Rate Return',
     购买等级: 'Buy Grade',
     领取: 'Receive',

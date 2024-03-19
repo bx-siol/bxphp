@@ -15,9 +15,9 @@
                         <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
                     </template>
                 </van-field>
-                <van-field v-model="dataForm.vcode" :placeholder="t('图形验证码')" @keyup.enter="onLogin" maxlength="4" style="padding: 0.4rem;">
+                <van-field v-model="dataForm.vcode" :placeholder="t('图形验证码')" @keyup.enter="onLogin" maxlength="4" style="padding: 0.3rem 0.3rem 0.3rem 0.68rem;">
                     <template #left-icon>
-                        <van-image :src="lock2" style="width: 1.4rem;height: 1.4rem;margin-top: 0.4rem;" />
+                        <van-image :src="lock2" style="width: 1.5rem;height: 1.5rem;margin-top: 0.4rem;" />
                     </template>
                     <template #right-icon>
                         <van-image class="imgCode" style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"

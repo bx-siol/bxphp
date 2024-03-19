@@ -42,7 +42,7 @@
             <span style="white-space: nowrap;color: #002544;">{{ t('总收益') }} </span>
           </div>
 
-          <div class="totalrevenue">
+          <div class="totalrevenue" v-if="info.pointshop != 1">                                                                                                                                                                                                                                                                            
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
               100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
@@ -50,7 +50,8 @@
 
           <div class="dailyincome">
             <span class="bold">{{ info.days }} Day</span>
-            <span style="white-space: nowrap;color: #002544;">{{ t('投资周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;" v-if="info.pointshop == 1">{{ t('收益周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;" v-else>{{ t('投资周期') }} </span>
           </div>
 
           <div class="dailyincome" v-if="false">
