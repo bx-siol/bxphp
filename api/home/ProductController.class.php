@@ -801,6 +801,9 @@ class ProductController extends BaseController
 				$this->invest_date_gift($pageuser, $item, $quantity, $pro_order);
 			} else {
 				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
+				if($check_num == 0)
+					$pro_order["p3"] = 1;
+				
 				$this->invest_date($params, $pageuser, $item, $quantity, $check_num, $pro_order);
 				$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
 			}
