@@ -1203,30 +1203,12 @@ class ProductController extends BaseController
 				$this->redis->rmall(RedisKeys::USER_ORDER . $puser['id']);
 			}
 			//首次购买送自己
-			if ($item['price1'] > 0)
-			{
+			//if ($item['price1'] > 0)			
 				//updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
-				// 进入审核流程
-				$user['id'] = $pageuser['id'];
-				$user['pid'] = $pageuser['id'];
-				$user['pidg1'] = $pageuser['pidg1'];
-				$user['pidg2'] = $pageuser['pidg2'];
-				$this->auditReward($item['price1'], $user);
-			}
-			
 
 			//首次购买送上级
-			if ($item['price2'] > 0)
-			{
+			//if ($item['price2'] > 0)
 				//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
-				// 进入审核流程
-				$user['id'] = $pageuser['id'];
-				$user['pid'] = $pageuser['pid'];
-				$user['pidg1'] = $pageuser['pidg1'];
-				$user['pidg2'] = $pageuser['pidg2'];
-				$this->auditReward($item['price2'], $user);
-			}
-				
 
 		} else {
 			if ($item['price0'] > 0)//复购送自己
