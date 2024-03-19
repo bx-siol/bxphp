@@ -202,6 +202,7 @@ onMounted(() => {
             padding: 0;
             padding-left: 0.5rem;
             border-radius: 8px;
+            background: #fff7e1;
         }
 
         :deep(.van-field__control::-webkit-input-placeholder) {
@@ -240,7 +241,7 @@ onMounted(() => {
 
                 margin-bottom: 16px;
                 border-radius: 10px;
-                background-color: #fff;
+                background-color: #fff7e1;
                 text-align: center;
 
                 .imgs {
