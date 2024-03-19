@@ -162,10 +162,10 @@ const onSubmit = () => {
         return;
     }
 
-    if (cbank.value != 1) {
-        _alert('You are not authorized to perform this operation, please contact your superior manager')
-        return;
-    }
+    // if (cbank.value != 1) {
+    //     _alert('You are not authorized to perform this operation, please contact your superior manager')
+    //     return;
+    // }
 
     if (isRequest) {
         return
