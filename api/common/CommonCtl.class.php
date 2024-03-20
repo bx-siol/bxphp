@@ -313,28 +313,28 @@ class CommonCtl
 			$wx_user = $_SESSION['wx_user'];
 		}
 
-		if (isWx()) {
-			session_start();
-			$icode = $_SESSION['icode'];
-			if ($icode) {
-				$puser = Db::table('sys_user')->field('id,status')->where("icode='{$icode}'")->find();
-				if ($puser && $puser['status'] == 2) {
-					$user_data['pid'] = $puser['id'];
-				}
-			}
-		}
+		// if (isWx()) {
+		// 	session_start();
+		// 	$icode = $_SESSION['icode'];
+		// 	if ($icode) {
+		// 		$puser = Db::table('sys_user')->field('id,status')->where("icode='{$icode}'")->find();
+		// 		if ($puser && $puser['status'] == 2) {
+		// 			$user_data['pid'] = $puser['id'];
+		// 		}
+		// 	}
+		// }
 
-		if ($wx_user) {
-			$user_data['nickname'] = $wx_user['nickname'];
-			$user_data['openid'] = $wx_user['openid'];
-			$user_data['unionid'] = $wx_user['unionid'];
-			$user_data['headimgurl'] = $wx_user['headimgurl'];
-			$user_data['avatarurl'] = $wx_user['avatarurl'];
-			$user_data['sex'] = $wx_user['sex'];
-			$user_data['country'] = $wx_user['country'];
-			$user_data['province'] = $wx_user['province'];
-			$user_data['city'] = $wx_user['city'];
-		}
+		// if ($wx_user) {
+		// 	$user_data['nickname'] = $wx_user['nickname'];
+		// 	$user_data['openid'] = $wx_user['openid'];
+		// 	$user_data['unionid'] = $wx_user['unionid'];
+		// 	$user_data['headimgurl'] = $wx_user['headimgurl'];
+		// 	$user_data['avatarurl'] = $wx_user['avatarurl'];
+		// 	$user_data['sex'] = $wx_user['sex'];
+		// 	$user_data['country'] = $wx_user['country'];
+		// 	$user_data['province'] = $wx_user['province'];
+		// 	$user_data['city'] = $wx_user['city'];
+		// }
 
 		$res = 0;
 		$count = 0;
