@@ -612,6 +612,7 @@ class ProductController extends BaseController
 	//首购赠送审核
 	public function _order_set1()
 	{
+		writeLog("11111","bobopay1");
 		$pageuser = checkPower();
 		$params = $this->params;
 		$item_id = intval($params['id']);
@@ -619,21 +620,24 @@ class ProductController extends BaseController
 		if (!$item_id) {
 			ReturnToJson(-1, '缺少参数');
 		}
+		writeLog("22222","bobopay1");
 		$this->Uporder_set($item_id, $pageuser, $status);
 		$cnf_product_order_status = getConfig('cnf_product_order_status');
 		$return_data = [
 			'status' => $status,
 			'status_flag' => $cnf_product_order_status[$status]
 		];
+		writeLog("3333","bobopay1");
 		ReturnToJson(1, '操作成功', $return_data);
 	}
 
 	public function Uporder_set($item_id, $pageuser, $status)
 	{
-		//Db::startTrans();
+		writeLog("22222-------------1","bobopay1");
+		Db::startTrans();
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
-		//try {
+		try {
 			$item = Db::table('pro_order')->where("id={$item_id}")->lock(true)->find();
 			if (!$item || $item['status'] > 99) {
 				ReturnToJson(-1, '不存在相应的订单');
@@ -645,12 +649,14 @@ class ProductController extends BaseController
 					ReturnToJson(-1, '不存在相应的订单.');
 				}
 			}
+			writeLog("22222-------------2","bobopay1");
 			$pro_order = [
 				'p1' => $status
 			];
 			Db::table('pro_order')->where("id={$item['id']}")->update($pro_order);
 
 			if ($status == 1) {
+				writeLog("22222-------------3","bobopay1");
 				$wallet2 = getWallet($item['uid'], 2); //余额钱包
 				if (!$wallet2) {
 					throw new \Exception('钱包获取异常');
@@ -672,6 +678,7 @@ class ProductController extends BaseController
 					'fkey' => $item['id'],
 					'remark' => 'First buy:' . $pro_order['osn']
 				]);
+				writeLog("22222-------------4","bobopay1");
 				if (!$result2) {
 					throw new \Exception('流水记录写入失败');
 				}
@@ -691,6 +698,7 @@ class ProductController extends BaseController
 				];
 				Db::table('pro_reward')->insertGetId($pro_reward2);
 
+				writeLog("22222-------------5","bobopay1");
 				//上级分佣 
 				$user = Db::table('sys_user')->where("id={$item['uid']}")->find();
 				$puser = Db::table('sys_user')->where("id={$user['pid']}")->find();
@@ -702,6 +710,7 @@ class ProductController extends BaseController
 
 				 	} else {
 
+						writeLog("22222-------------6","bobopay1");
 						$wallet2 = getWallet($puser['id'], 2);
 						if (!$wallet2) {
 							throw new \Exception('钱包获取异常');
@@ -722,6 +731,7 @@ class ProductController extends BaseController
 							'fkey' => $item['id'],
 							'remark' => 'Commission:' . $item['osn']
 						]);
+						writeLog("22222-------------7","bobopay1");
 						if (!$result2) {
 							throw new \Exception('流水记录写入失败');
 						}
@@ -740,18 +750,21 @@ class ProductController extends BaseController
 							'create_day' => $now_day
 						];
 						Db::table('pro_reward')->insertGetId($pro_reward2);
+						writeLog("22222-------------8","bobopay1");
 						$this->redis->rmall(RedisKeys::USER_WALLET . $puser['id']);
 				 	}
 				 }
 			}
 
 
-			//Db::commit();
+			writeLog("22222-------------9","bobopay1");
+			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $item['uid']);
-		//} catch (\Exception $e) {
-		//	Db::rollback();
-		//	ReturnToJson(-1, '系统繁忙请稍后再试');
-		//}
+		} catch (\Exception $e) {
+			writeLog("22222-------------10","bobopay1");
+			Db::rollback();
+			ReturnToJson(-1, '系统繁忙请稍后再试');
+		}
 		actionLog(['opt_name' => '首购赠送审核', 'sql_str' => Db::getLastSql()]);
 	}
 
