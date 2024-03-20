@@ -347,8 +347,11 @@ class SettingController extends BaseController
 		$params = $this->params;
 		$params['bank_id'] = intval($params['bank_id']);
 
-		if (!$params['code'])
-			ReturnToJson(-1, 'Please enter OTP');
+		$project = getConfig("sys_name");
+		if($project != "Syngenta")
+			if (!$params['code'])
+				ReturnToJson(-1, 'Please enter OTP');
+
 		if (!$params['realname'])
 			ReturnToJson(-1, 'Please fill in the cardholder’s name.');
 		if (!$params['bank_name'])
@@ -357,11 +360,12 @@ class SettingController extends BaseController
 			ReturnToJson(-1, 'Please enter bank account number.');
 		if (!$params['ifsc'])
 			ReturnToJson(-1, 'Please enter ifsc');
-
-		$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $pageuser['account'], 'code' => $params['code']]);
-		if ($checkVcode['code'] != 1)
-			ReturnToJson(-1, $checkVcode['msg'] .'Please enter the correct OTP');
-
+		if($project != "Syngenta")
+		{
+			$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $pageuser['account'], 'code' => $params['code']]);
+			if ($checkVcode['code'] != 1)
+				ReturnToJson(-1, $checkVcode['msg'] .'Please enter the correct OTP');
+		}
 
 		// if (strlen($params['ifsc']) < 8 || strlen($params['ifsc']) > 11) {
 		// 	ReturnToJson(-1, 'The length of the ID number should be 8-11 digits.');
