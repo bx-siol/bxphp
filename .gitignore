@@ -4,6 +4,8 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 node_modules/
+node_modules1/
+node_modules2/
 # Other files and folders
 .settings/
 game/gameapp/build/
