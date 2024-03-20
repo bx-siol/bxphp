@@ -45,20 +45,24 @@ class UserController extends BaseController
 
 		$now_day = date('Ymd');
 
-		//$reward=Db::table('pro_reward')->where("uid={$pageuser['id']} and type=1")->sum('money');
-		$reward = Db::table('pro_reward')->where("uid={$pageuser['id']}")->sum('money');
-		$hb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']}")->sum('money');
+		//$reward = Db::table('pro_reward')->where("uid={$pageuser['id']}")->sum('money');
+		$reward = Db::table('wallet_log')
+		->where("uid={$pageuser['id']} and (type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45)")
+		->sum('money');
 
-		$hb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14)")->sum('money');
+		//$hb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']}")->sum('money');
+		//$hb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14)")->sum('money');
 
-		$jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=45")->sum('money');//积分兑换余额
-		$today_jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=45 and create_day={$now_day}")->sum('money');//今日积分兑换余额
+		//$jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=45")->sum('money');//积分兑换余额
+		//$today_jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=45 and create_day={$now_day}")->sum('money');//今日积分兑换余额
 
-		$jrhb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']} and receive_day={$now_day}")->sum('money');
-		$jrhb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14) and create_day={$now_day}")->sum('money');
+		//$jrhb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']} and receive_day={$now_day}")->sum('money');
+		//$jrhb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14) and create_day={$now_day}")->sum('money');
 
 		$rebate = Db::table('pro_reward')->where("uid={$pageuser['id']} and type=2")->sum('money');
-		$today_profit = Db::table('pro_reward')->where("uid={$pageuser['id']} and create_day={$now_day}")->sum('money');
+		$today_profit = Db::table('wallet_log')
+		->where("uid={$pageuser['id']} and create_day={$now_day} and (type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45)")
+		->sum('money');
 
 		$service_arr = [];
 		$up_users = getUpUser($pageuser['id'], true);
@@ -98,9 +102,11 @@ class UserController extends BaseController
 			'investment' => round(floatval($investment), 2),
 			'recharge' => round(floatval($recharge), 2),
 			'withdraw' => round(floatval($withdraw), 2),
-			'reward' => number_format($reward + $hb_money+$jfdh_money, 2, '.', ''),
+			//'reward' => number_format($reward + $hb_money+$jfdh_money, 2, '.', ''),
+			'reward' => number_format($reward, 2, '.', ''),
 			'rebate' => round(floatval($rebate), 2),
-			'tprofit' => round(floatval($today_profit + $jrhb_money + $today_jfdh_money), 2),
+			//'tprofit' => round(floatval($today_profit + $jrhb_money + $today_jfdh_money), 2),
+			'tprofit' => round(floatval($today_profit), 2),
 			'service_arr' => $service_arr,
 			//'pidg1' => $ccth
 		];
