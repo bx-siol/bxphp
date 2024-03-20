@@ -33,8 +33,7 @@
                 <template #default="scope">
                     <el-button size="small" v-if="power.test" @click="test(scope.$index, scope.row)">测试</el-button>
 
-                    <el-button size="small" v-if="power.balance"
-                        @click="balance(scope.$index, scope.row)">余额</el-button>
+                    <el-button size="small" v-if="power.balance" @click="balance(scope.row)">余额</el-button>
                     <el-popconfirm confirmButtonText='确定' cancelButtonText='取消' icon="el-icon-warning" iconColor="red"
                         title="您确定要进行删除吗？" @confirm="del(scope.$index, scope.row)" v-if="power.delete">
                         <template #reference>
