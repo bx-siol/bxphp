@@ -109,7 +109,7 @@ const getProjectDetail = (item: any) => {
 }
 
 const dataForm = reactive({
-    points: 0
+    points: '' 
 })
 const exchangePoints = () => {
     if (dataForm.points < 10 || dataForm.points % 10 !== 0) {

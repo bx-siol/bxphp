@@ -6,33 +6,56 @@ import Config from "./interface/config";
 import ClipboardJS from "clipboard";
 
 export const _httpByLoading = (url: string, data: any,
-    callback?: (res: any, toast: { clear: () => void, setMessage: (message: string) => void }) => void,
+    callback?: (res: any, toast: { clear: () => void, setMessage: (message: string) => void, showSuccess: (message: string) => void }) => void,
     errortime: number = 3000) => {
     // 显示加载toast
-    const toast = Toast.loading({
+    const loadingToast = Toast.loading({
         message: "LOADING...",
         forbidClick: true,
         loadingType: 'spinner',
-        duration: 3000,
+        duration: 0, // 使加载Toast保持显示状态直到明确关闭
         className: 'toastBox',
         overlay: true,
     });
+
     // 执行http请求
     http({ url: url, data: data }).then((res: any) => {
         // 设置延迟，模拟加载时间
         setTimeout(() => {
             // 调用callback，并提供一个对象，使调用者能够控制Toast
-            // 包括清除和更新消息的方法
+            // 包括清除和更新消息，以及显示成功Toast的方法
             callback?.(res, {
-                clear: () => toast.clear(),
+                clear: () => loadingToast.clear(),
                 setMessage: (message: string) => {
-                    // 更新Toast消息的建议方法
-                    toast.message = message;
+                    loadingToast.message = message;
+                },
+                showSuccess: (message: string) => {
+                    Toast.success({
+                        message: message,
+                        forbidClick: true,
+                        loadingType: 'spinner',
+                        duration: 3000,
+                        className: 'toastBox',
+                        overlay: true,
+                    });
                 }
             });
-            // 设置额外延迟来清除Toast
+
+            if (res.code == 1) {
+                // 显示成功消息
+                Toast.success({
+                    message: res.msg, 
+                    forbidClick: true,
+                    loadingType: 'spinner',
+                    duration: 3000,
+                    className: 'toastBox',
+                    overlay: true,
+                });
+            }
+
+            // 设置额外延迟来清除加载Toast
             setTimeout(() => {
-                toast.clear();
+                loadingToast.clear();
             }, errortime);
         }, 1000);
     });
@@ -41,6 +64,7 @@ export const _httpByLoading = (url: string, data: any,
 export const _alert = (options: any, callback: any = null, type: number = 0) => {
 
     var message = '';
+    var onCloseuse = options.onClose ? options.onClose : null;
     if (typeof (options) == 'string') {
         message = options;
     } else {
@@ -56,7 +80,8 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 overlay: true,
                 loadingType: 'spinner',
                 onClose: () => {
-                    if (callback != null) callback()
+                    if (onCloseuse) onCloseuse();
+                    if (callback) callback();
                 }
             });
             break;
@@ -69,7 +94,8 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 overlay: true,
                 loadingType: 'spinner',
                 onClose: () => {
-                    if (callback != null) callback()
+                    if (onCloseuse) onCloseuse();
+                    if (callback) callback();
                 }
             });
             break;
@@ -82,7 +108,8 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 overlay: true,
                 loadingType: 'spinner',
                 onClose: () => {
-                    if (callback != null) callback()
+                    if (onCloseuse) onCloseuse();
+                    if (callback) callback();
                 }
             });
             break;
@@ -98,7 +125,8 @@ export const _alert = (options: any, callback: any = null, type: number = 0) => 
                 loadingType: 'spinner',
                 duration: 3000,
                 onClose: () => {
-                    if (callback != null) callback()
+                    if (onCloseuse) onCloseuse();
+                    if (callback) callback();
                 }
             });
             break;
