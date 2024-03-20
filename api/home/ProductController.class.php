@@ -786,7 +786,6 @@ class ProductController extends BaseController
 		Db::startTrans();
 		try {
 			$item = $this->redis->get('pro_goods_' . $params['gsn']);
-			$money = $quantity * $item['price'];
 			if (!$item) {
 				$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 				if (!$item)
