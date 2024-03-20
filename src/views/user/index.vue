@@ -27,7 +27,7 @@
                 <div class="money">
                     <div style="display: flex;justify-content: space-between;">
                         <div class="finance1">
-                            Current Balance
+                            {{ t('充值钱包') }}
                         </div>
                         <div class="finance1" style="border-radius: 0 8px 0 8px;">
                             points
@@ -46,7 +46,7 @@
                 <van-grid :border="false" :column-num="2">
                     <van-grid-item>
                         <p>{{ wallet2.balance }}</p>
-                        <span>{{ t('余额') }}</span>
+                        <span>{{ t('钱包余额') }}</span>
                     </van-grid-item>
                     <van-grid-item>
                         <!-- :to="{ name: 'Product_order' }" -->
