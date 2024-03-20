@@ -735,6 +735,7 @@ class ProductController extends BaseController
 						if (!$result2) {
 							throw new \Exception('流水记录写入失败');
 						}
+						writeLog("22222-------------7-----1","bobopay1");
 						//写入收益记录
 						$pro_reward2 = [
 							'uid' => $puser['id'],
