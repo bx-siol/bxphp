@@ -7,7 +7,7 @@
             </div>
             <div class="idbox">
                 <div class="link">{{ tdata.icode }}</div>
-                <div class="link" style="text-transform: none !important;">{{ montage.urls }}</div>
+                <div class="link" style="text-transform: none !important;word-wrap: break-word;">{{ montage.urls }}</div>
                 <van-button class="copyLinkBtn" ref="linkCopyRef">{{ t('共享邀请链接') }}</van-button>
             </div>
 
