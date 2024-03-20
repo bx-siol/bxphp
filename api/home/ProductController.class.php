@@ -35,7 +35,7 @@ class ProductController extends BaseController
 		Db::startTrans();
 		try {
 			updateWalletBalanceAndLog($pageuser['id'], -$point, 3, 1019, 'transforms');
-			updateWalletBalanceAndLog($pageuser['id'], $point / 10, 2, 1019, 'transforms');
+			updateWalletBalanceAndLog($pageuser['id'], $point / 10, 2, 45, 'transforms');
 			Db::commit();
 			$msg = "Operation successful";
 		} catch (\Exception $e) {
@@ -786,14 +786,16 @@ class ProductController extends BaseController
 		Db::startTrans();
 		try {
 			$item = $this->redis->get('pro_goods_' . $params['gsn']);
-			$money = $quantity * $item['price'];
 			if (!$item) {
 				$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 				if (!$item)
 					ReturnToJson(-1, 'No corresponding product exists.');
 				$this->redis->set('pro_goods_' . $params['gsn'], $item, 60 * 60);
 			}
+			$item = $this->redis->get('pro_goods_' . $params['gsn']);
+			$money = $quantity * $item['price'];
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
+			writeLog("money".",pro_order" . json_encode($pro_order),'_invest');
 			// $return_data['err'] = $pro_order['err'];
 			// $return_data['u'] = $pageuser;
 			//判断是否积分商品
