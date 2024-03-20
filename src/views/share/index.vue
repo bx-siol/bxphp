@@ -68,7 +68,7 @@ const tdata = ref({
 
 const montage = computed(() => {
     return {
-        urls: location.origin + '/#/Register?Icode=' + tdata.value.icode,
+        urls: location.origin + 'h5/#/Register?Icode=' + tdata.value.icode,
     };
 });
 

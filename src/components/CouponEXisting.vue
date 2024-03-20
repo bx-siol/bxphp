@@ -103,7 +103,7 @@ const onPageSuccess = (res: any) => {
 
 const usefun = (item: any) => {
   if (item.money == 0) {
-    location.href = location.origin + '/#/project?t=project'
+    location.href = location.origin + '/h5/#/project?t=project'
   } else {
     // 'http://47.243.82.107:8288/api/?c=Coupon&a=exchange'
     // const delayTime = Math.floor(Math.random() * 1000);

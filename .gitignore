@@ -4,6 +4,7 @@ bin-release/
 [Oo]bj/
 [Bb]in/
 node_modules/
+node_modules1/*
 # Other files and folders
 .settings/
 game/gameapp/build/
@@ -47,3 +48,4 @@ new/uploads/qrcode/*
 
 new/vue/Nestle/h5/*
 new/vue/Syngenta/h5/*
+vite.config.ts

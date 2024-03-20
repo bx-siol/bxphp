@@ -448,7 +448,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
     //   history: createWebHistory('/h5/'),
-    history: createWebHashHistory('/'),
+    history: createWebHashHistory('/h5'),
     routes
 })
 

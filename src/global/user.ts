@@ -64,7 +64,7 @@ export const doLogin = (user: userInfoInterface, token: string) => {
  //退出登录
 export const doLogout = () => {
     clearLocalData()
-    location.href = location.origin + "/#/login"
+    location.href = location.origin + "/h5/#/login"
     // router.push({name:'Login'})
 }
 

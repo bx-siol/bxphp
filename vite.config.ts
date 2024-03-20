@@ -7,7 +7,7 @@ import styleImport from 'vite-plugin-style-import'
 // https://vitejs.dev/config/
 export default defineConfig({
 
-    base: '/',
+    base: '/h5',
     build: {
         emptyOutDir: true,
         chunkSizeWarningLimit: 1024,
