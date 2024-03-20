@@ -2,7 +2,7 @@
   <div class="project_detail">+
     <Nav leftText=''></Nav>
     <div style="background: ">
-      <div class="project_img">
+      <div :class="['project_img', { backdrop: info.pointshop == 1 }]">
         <!--<img :src="describe" class="describe">-->
         <van-swipe indicator-color="white" :autoplay="3000">
           <van-swipe-item v-if="info.covers == []">
@@ -529,6 +529,10 @@ onMounted(() => {
       left: 50%;
       transform: translateX(-50%);
     }
+  }
+  
+  .backdrop{
+    background: #fff7e1;
   }
 
   .title {
