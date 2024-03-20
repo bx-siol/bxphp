@@ -270,6 +270,7 @@ const routes: Array<RouteRecordRaw> = [
 
 const router = createRouter({
     history: createWebHistory('/'),
+    //history: createWebHistory('/ht8888'),
     routes
 })
 
