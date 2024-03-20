@@ -97,20 +97,20 @@ const configForm = reactive({
 })
 
 const currentTab = ref('LOGIN');
+const isPassword2 = ref(false)
 
 const handleTab = (tab: string) => {
-    if (tab !== currentTab.value) {
-        currentTab.value = tab;
-        if (tab === 'PAYMENT') {
-            isPassword2.value = true;
-        } else {
-            isPassword2.value = false;
-        }
+    currentTab.value = tab;
+    if (tab == 'PAYMENT') {
+           isPassword2.value = true;
+           dataForm.type = 2;
+    } else {
+           isPassword2.value = false;
+           dataForm.type = 1;
     }
 };
 
 
-const isPassword2 = ref(false)
 const dataForm = reactive({
     account: store.state.user.account,
     phone_flag: store.state.user.phone_flag,
