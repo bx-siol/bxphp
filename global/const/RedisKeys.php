@@ -13,5 +13,6 @@ class RedisKeys
 
     // 商品数据相关 
     const Goods = 'Goods_';
+
 }
 

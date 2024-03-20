@@ -1857,7 +1857,29 @@ class FinanceController extends BaseController
 		ReturnToJson(1, '操作成功');
 	}
 
-
+	public function _ptype_balance()
+	{
+		$pageuser = checkPower();
+		$item_id = intval($this->params['id']);
+		if (!$item_id) {
+			ReturnToJson(-1, '缺少参数');
+		}
+		$model = Db::table('fin_ptype');
+		$item = $model->where("id={$item_id} and status<99")->find();
+		if (!$item) {
+			ReturnToJson(-1, '该记录已删除');
+		}
+		try {
+			$pay_file = APP_PATH . 'common/pay/' . $item['type'] . '.php';
+			require_once $pay_file;
+			$result = balance();
+			$json_str = json_encode($result, JSON_UNESCAPED_UNICODE);
+			echo $json_str;
+			exit;
+		} catch (\Exception $e) {
+			ReturnToJson(-1, '系统繁忙请稍后再试');
+		}
+	}
 	//代付通道
 	public function _dtype()
 	{

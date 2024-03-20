@@ -125,13 +125,18 @@ $_ENV['PAY_CONFIG']['nicepay'] = [
 	//privatekey是自己的
 	'privatekey' => 'qMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDG7s7Jt7B/H8pg7wH1N2X6kc+S86bY7/I5PV4+1AeJeYL0wZUwycgWnExW4FPi7PcfmNQ7VrubhWlJ4zlxyuGlfKSVeBVOrYVA/uqCkZRu8qbg9eWTcseRuQMaGKsltohxEkwTS0iU+bGjsMO+KDod1cvBsAqbAWEpI6qkRhVOmHpzn0k0dpu6diKgMKkS/dt2gbaQIjNiGum5zpB9zHfHcZIn2tESf7wnRe5qcqNlqat2aXg2MlFpBZquyLba8wIDSxdRU/73b8T+72aVCMlZdHRwijGMrnFO1jInad4k3Zx+pEoPf1IecMvtmfIh22tgpZ5waqAbc8j73J1CxZrJAgMBAAECggEAfUKNbrJ9Le6kjdixEOirC9WYMF2/J0Ye7S/ZEhKMFGIwtVDXUfscRDByWRmzeGXhTUH8EMkSJGEi5OVwnFg1MPCE6aDNOddE2qIoo8JrBlk//tKWlftl8jne3CXATmTbEOeGg3eZ4kQ/OGTrO+c0gOjH/dONOgDqXu8YWYvPisaXmma9m/OVhHFnta2VKCv14fRyGHgH+f7Pf7hShw0rWctn+bfQ8KVsMLwITlVQxg3tsFVpq1VJ4UZeOvVT7i5PqnQZ3FYW3Tt7R9pDu4r1CTp3+2jg4BlQq/VLc8pk1rVNia33mLz4cb3jTiBcvLDbodv0mMNnnHt4CsD2T8YSoQKBgQDqr9HZgmXSmnL8JN5q4h8/itvrijU+9F8cPewiklyvrvtF3h/nu4DiUpcHeLMP+EScG6je6o1eLebEVJrY+9M2QxO8+o1ax1onl/ETULV0EWCv8XXIhuTytp3WJVSvML3qxXCtpa9jUfdTPR30o5565oPpIAjH5cfeZdY80BgnpQKBgQDY/8ChxGVrUC8lS9r0Mfqy6WmK+I/o3WgrC0063hNrS5mvYNJIY6xsiKmJJI8Bvp79xY9d2PH6xWX74ErhwhPDAuguDfhcxou0Vcy8XtLAqmiAgU7Fv69Cu93W3viUpkReY84fqnaUl9pg4TKO8yrCuhTdJj850ZM4+VoB/7vdVQKBgQDPIZKC+LXJpQtrQ1cS2rRdrr7fKkJIaAIxuO1arfckD7oyNhPOwQzFs8MckwjnRWW4qijnZfiTcMvF6C4q6EfIEnevSSvNPTlyzIW3WHpuEJBXeTNNYtFa7pZr1NLjNI/KT6xddmhPrp4tVznDG03ahu1RqjZVx5YZ0aO+VKOdCQKBgAOZYlmMh14bS1zkADKyrYTQKEb8zm4/Vd345wQF8O6Dp33oLjSzKoX2UlGLALA3uC1fXHxi/8h4A7QEyVkrPearIqy44JixVlncXnP1Yqt9aBRRkLvo7QA/W3OX6SmWBGZIY3/U9PiL+DxJH+yNDfWC3pu4aa4M0tNMF3kXA8etAoGBANTPabuz9R2QYZOrCd3SGjApKZ3Hx+9wAJR6bw1ajCc12ItOMu4vhxPJnGRAcPnsg7lG3arRznfK0VXCcrf5J1VU6njCbF+kz48/sVoAhlDeKjL/51oGLKW9B+QFQJWOHDAescwbVVkZXSJOfNCDv0ZA0lWgmUcjO4Jwgon/cVtR',
 
-	'query_url' => '',
-	'pay_url' => 'https://g.verynicepay.life/api/pay/query',
-	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay',
+	'payquery_url' => 'https://g.verynicepay.life/api/pay/query',//收款查询
+	'balance_url' => 'https://g.verynicepay.life/api/pay/balance',//余额
+	'makeOrder_url' => 'https://g.verynicepay.life/api/pay/makeOrder',//utr补单
+	'utrquery_url' => 'https://g.verynicepay.life/api/pay/utrquery',//utr查单
+	'repayquery_url' => 'https://g.verynicepay.life/api/pay/repayquery',//代付查询
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/',
-	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash',
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash'
+	'pay_url' => 'https://g.verynicepay.life/api/pay',//收款
+	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay',//代付
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
+	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash',//收款回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash'//代付回调
 ];
 
 $_ENV['PAY_CONFIG']['bobopay'] = [

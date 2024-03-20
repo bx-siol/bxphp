@@ -43,6 +43,39 @@ function payOrder($fin_paylog, $sub_type = '')
 	return $return_data;
 }
 
+//查询余额
+function balance()
+{
+	$config = $_ENV['PAY_CONFIG']['nicepay'];
+	$pdata = [
+		'merId' => $config['mch_id'],
+		'nonceStr' => getRsn()
+	];
+	$pdata['sign'] = paySign($pdata);
+	$url = $config['balance_url'];
+	writeLog('resultArr : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/balance');
+	$result = CurlPost($url, $pdata, 30);
+	if ($result['code'] != 1)
+		return $result;
+	$resultArr = $result['output'];
+	writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/balance');
+	if ($resultArr['code'] != '1') {
+		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/balance/error');
+		return ['code' => -1, 'msg' => $resultArr['msg']];
+	}
+	$return_data = [
+		'code' => 1,
+		'msg' => $resultArr['msg'],
+		'data' => [
+			'merId' => $config['mch_id'],
+			'balance' => $resultArr['data']['balance'],
+			'payout_balance' => $resultArr['data']['payout_balance'],
+		]
+	];
+	return $return_data;
+}
+
+
 function paySign($params, $verify = false)
 {
 	$config = $_ENV['PAY_CONFIG']['nicepay'];

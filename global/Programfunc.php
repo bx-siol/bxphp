@@ -827,6 +827,8 @@ function getPassword($pwd, $is_ori = false)
 //获取参数
 function getParam($paramName = '')
 {
+	if ($paramName == "token")
+		return "";
 	if (!empty ($paramName)) {
 		$paramValue = filterParam($_REQUEST[$paramName]);
 		return $paramValue;

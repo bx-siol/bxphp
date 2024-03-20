@@ -112,9 +112,12 @@ if (!method_exists($ctl_obj, $action))
 
 
 // 自定义错误处理函数
-function handleError($errno, $errstr, $errfile, $errline)
+function handleError($errno, $errstr, $errfile, $errline, $errcontext)
 {
-	$logContent = "[" . date('Y-m-d H:i:s') . "] Error: [Type: $errno] $errstr in $errfile on line $errline\n";
+	$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
+	$logContent .= "[Type: $errno] $errstr in $errfile on line $errline\n";
+	$logContent .= json_encode($errcontext, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+
 	writeLog($logContent, 'syslog/Error/');
 	// 如果需要PHP内置错误处理则返回false
 	// return false;
@@ -124,7 +127,10 @@ function handleError($errno, $errstr, $errfile, $errline)
 // 自定义异常处理函数
 function handleException($exception)
 {
-	$logContent = "[" . date('Y-m-d H:i:s') . "] Exception: [" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
+	$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
+	$logContent .= "[" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
+	$logContent .= json_encode($exception, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+
 	writeLog($logContent, 'syslog/Exception/');
 	// 这里可以添加代码显示用户友好的错误页面或其他错误处理
 	//ReturnToJson(-1, 'fail:Exception');
@@ -134,22 +140,20 @@ function handleException($exception)
 function handleShutdown()
 {
 	$last_error = error_get_last();
-	if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING])) {
-		$logContent = "[" . date('Y-m-d H:i:s') . "] Fatal Error: [" . $last_error['type'] . "] " . $last_error['message'] . " in " . $last_error['file'] . " on line " . $last_error['line'] . "\n";
-		writeLog($logContent, 'syslog/Shutdown/');
-		// 这里可以添加代码显示用户友好的错误页面或其他错误处理
-		//ReturnToJson(-1, 'fail:Shutdown');
-	}
+	$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
+	// $logContent .= "[" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
+	$logContent .= json_encode($last_error, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+	writeLog($logContent, 'syslog/Shutdown/');
+	// if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING])) {
+	// 	// 这里可以添加代码显示用户友好的错误页面或其他错误处理
+	// 	//ReturnToJson(-1, 'fail:Shutdown');
+	// }
 }
 
 // 注册自定义的错误处理函数、异常处理函数和致命错误处理函数
 set_error_handler("handleError");
 set_exception_handler("handleException");
 register_shutdown_function("handleShutdown");
-
-
-
-
 
 call_user_func([$ctl_obj, $action]);
 
