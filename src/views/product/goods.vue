@@ -507,7 +507,7 @@ const edit = (idx: number, item: any) => {
     dataForm.invest_min = item.invest_min
     dataForm.v_invested = item.v_invested
     dataForm.guarantors = item.guarantors
-    dataForm.sort = 1000
+    dataForm.sort = item.sort
     dataForm.yaoqing = item.yaoqing
     dataForm.status = item.status.toString()    
     dataForm.gift = item.gift.toString()    
