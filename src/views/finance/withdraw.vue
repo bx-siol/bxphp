@@ -198,7 +198,7 @@ const password2 = ref<string>('')
 
 const dataForm = reactive({
     password2: '',
-    money: '0'
+    money: ''
 })
 
 const sys_pset = reactive({
