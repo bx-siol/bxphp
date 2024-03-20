@@ -90,32 +90,33 @@
                 </template>
             </el-dialog>
         </template>
+        <template #balance="{ tdata }">
+            <!--弹出层-->
+            <el-dialog :title="configForm.title" v-model="configForm.visiblebalance" :close-on-click-modal="false"
+                :width="configForm.width" @opened="dialogOpened">
+                <el-form :label-width="configForm.labelWidth">
+                    <el-form-item label="商户号">
+                        <el-input v-model="merdata.merId" autocomplete="off" placeholder=""></el-input>
+                    </el-form-item>
+                    <el-form-item label="总余额">
+                        <el-input v-model="merdata.balance" autocomplete="off" placeholder=""></el-input>
+                    </el-form-item>
+                    <el-form-item label="可代付金额">
+                        <el-input v-model="merdata.payout_balance" autocomplete="off" placeholder=""></el-input>
+                    </el-form-item>
 
-
-        <!--弹出层-->
-        <el-dialog :title="configForm.title" v-model="configForm.visiblebalance" :close-on-click-modal="false"
-            :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
-            <el-form :label-width="configForm.labelWidth">
-                <el-form-item label="商户号">
-                    <el-input v-model="merdata.merId" autocomplete="off" placeholder=""></el-input>
-                </el-form-item>
-                <el-form-item label="总余额">
-                    <el-input v-model="merdata.balance" autocomplete="off" placeholder=""></el-input>
-                </el-form-item>
-                <el-form-item label="可代付金额">
-                    <el-input v-model="merdata.payout_balance" autocomplete="off" placeholder=""></el-input>
-                </el-form-item>
-
-            </el-form>
-            <template #footer>
-                <span class="dialog-footer">
-                    <input type="hidden" v-model="dataForm.id" />
-                    <el-button @click="configForm.visiblebalance = false">取消</el-button>
-                </span>
-            </template>
-        </el-dialog>
-
+                </el-form>
+                <template #footer>
+                    <span class="dialog-footer">
+                        <input type="hidden" v-model="dataForm.id" />
+                        <el-button @click="configForm.visiblebalance = false">取消</el-button>
+                    </span>
+                </template>
+            </el-dialog>
+        </template>
     </Page>
+
+
 </template>
 
 <script lang="ts">
@@ -263,19 +264,24 @@ const save = () => {
     })
 }
 const balance = (item: any) => {
+    configForm.visiblebalance = true;
+    configForm.title = item.name + ' 余额, 加载中……'
+
     if (isRequest) {
         return
     } else {
         isRequest = true
     }
-    configForm.visiblebalance = true;
+
     http({
         url: 'c=Finance&a=ptype_balance',
         data: { id: item.id }
     }).then((res: any) => {
         isRequest = false
+        configForm.title = item.name + ' 余额'
         if (res.code != 1) {
-            _alert(res.msg)
+            configForm.title = item.name + ':' + res.msg
+            //_alert(res.msg)
             return
         }
         merdata.merId = res.data.merId;

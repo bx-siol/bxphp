@@ -1,6 +1,7 @@
 <template>
     <div class="conbar">
-        <el-breadcrumb separator="/" style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
+        <el-breadcrumb separator="/"
+            style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
             <slot name="title" :tdata="tableData" :title="compTitle">
                 <el-breadcrumb-item>{{ compTitle }}</el-breadcrumb-item>
             </slot>
@@ -20,19 +21,19 @@
 
                 <template v-if="searchTimeOpt.need">
                     <el-date-picker
-                        :style="{ marginLeft: '10px', width: (searchTimeOpt.type == 'date' ? '150px' : '200px') }" clearable
-                        v-model="sStartTime" :type="searchTimeOpt.type" :default-value="searchTimeOpt.start_default_time"
-                        :placeholder="startPlaceholder">
+                        :style="{ marginLeft: '10px', width: (searchTimeOpt.type == 'date' ? '150px' : '200px') }"
+                        clearable v-model="sStartTime" :type="searchTimeOpt.type"
+                        :default-value="searchTimeOpt.start_default_time" :placeholder="startPlaceholder">
                     </el-date-picker>
                     <el-date-picker
-                        :style="{ marginLeft: '10px', width: (searchTimeOpt.type == 'date' ? '150px' : '200px') }" clearable
-                        v-model="sEndTime" :type="searchTimeOpt.type" :default-value="searchTimeOpt.end_default_time"
-                        :placeholder="endPlaceholder">
+                        :style="{ marginLeft: '10px', width: (searchTimeOpt.type == 'date' ? '150px' : '200px') }"
+                        clearable v-model="sEndTime" :type="searchTimeOpt.type"
+                        :default-value="searchTimeOpt.end_default_time" :placeholder="endPlaceholder">
                     </el-date-picker>
                 </template>
 
-                <el-input style="width: 320px;margin-left: 10px;" placeholder="请输入" clearable v-model="searchForm.s_keyword"
-                    @keyup.enter="onSearch">
+                <el-input style="width: 320px;margin-left: 10px;" placeholder="请输入" clearable
+                    v-model="searchForm.s_keyword" @keyup.enter="onSearch">
                     <template #prepend>关键词<i class="el-icon-search"></i></template>
                 </el-input>
                 <el-button @click="exportToExcel">导出</el-button>
@@ -42,9 +43,11 @@
 
         <!--数据表-->
         <div class="user_skills">
-            <el-table :header-cell-class-name="cellfun" :data="tableData.list" :header-cell-style="{ textAlign: 'center' }"
-                :cell-style="{ textAlign: 'center' }" :row-class-name="rowClass" border ref="multipleTable">
-                <slot name="table" :tdata="tableData" :delItem="delItem" :params="searchForm" :doSearch="onSearch"></slot>
+            <el-table :header-cell-class-name="cellfun" :data="tableData.list"
+                :header-cell-style="{ textAlign: 'center' }" :cell-style="{ textAlign: 'center' }"
+                :row-class-name="rowClass" border ref="multipleTable">
+                <slot name="table" :tdata="tableData" :delItem="delItem" :params="searchForm" :doSearch="onSearch">
+                </slot>
             </el-table>
         </div>
 
@@ -56,15 +59,17 @@
         <!--分页-->
         <div class="conpage">
             <el-pagination background @current-change="handlePage" v-model:currentPage="searchForm.page"
-                v-model:page-size="searchForm.s_sizes" :page-sizes="[10, 20, 50, 70, 100, 200, 300, 400, 500, 1000, 2000]"
-                @size-change="handleSizeChange" :total="tableData.count" :layout="pageLayout">
+                v-model:page-size="searchForm.s_sizes"
+                :page-sizes="[10, 20, 50, 70, 100, 200, 300, 400, 500, 1000, 2000]" @size-change="handleSizeChange"
+                :total="tableData.count" :layout="pageLayout">
             </el-pagination>
         </div>
     </div>
 
     <slot name="layer" :tdata="tableData"></slot>
+    <slot name="balance" :tdata="tableData"></slot>
 </template>
- 
+
 <script lang="ts" setup>
 import { ref, onMounted, useSlots } from 'vue';
 import { ElLoading, ILoadingInstance } from 'element-plus'
