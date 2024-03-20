@@ -35,7 +35,7 @@ class ProductController extends BaseController
 		Db::startTrans();
 		try {
 			updateWalletBalanceAndLog($pageuser['id'], -$point, 3, 1019, 'transforms');
-			updateWalletBalanceAndLog($pageuser['id'], $point / 10, 2, 1019, 'transforms');
+			updateWalletBalanceAndLog($pageuser['id'], $point / 10, 45, 1019, 'transforms');
 			Db::commit();
 			$msg = "Operation successful";
 		} catch (\Exception $e) {

@@ -20,7 +20,11 @@ class UserController extends BaseController
 		}
 		// $user['group'] = getGroups($user['gid']);
 
-		//1充值钱包  2余额钱包 3余额宝
+		//wallet_log type
+		//1=转入,2=转出,3=买入,4=卖出,6=佣金,8=分佣,9=抽奖,10=红包,11=充值,12=冻结,13=解冻,14=购买NFT卡片,21=NFT收益,22=直推收益,23=动态收益,31=充值,
+		//33=退款,42=任务奖励,45=积分兑换余额
+
+		//1充值钱包  2余额钱包 3积分钱包
 		$wallet = getWallet($pageuser['id'], 1);
 		$wallet2 = getWallet($pageuser['id'], 2);
 		$wallet3 = getWallet($pageuser['id'], 3);
@@ -47,14 +51,16 @@ class UserController extends BaseController
 
 		$hb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14)")->sum('money');
 
+		$jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=45")->sum('money');//积分兑换余额
+
 		$jrhb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']} and receive_day={$now_day}")->sum('money');
 		$jrhb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14) and create_day={$now_day}")->sum('money');
 
 		$rebate = Db::table('pro_reward')->where("uid={$pageuser['id']} and type=2")->sum('money');
 		$today_profit = Db::table('pro_reward')->where("uid={$pageuser['id']} and create_day={$now_day}")->sum('money');
 		$teamincome = Db::table('wallet_log a')->leftJoin('sys_user b','a.uid = b.id')
-		->where("b.pids like '%{$pageuser['id']}%' and (a.type=6 or a.type = 8) ")
-		->sum('money');//下级总分佣和总佣金
+		->where("b.pids like '%{$pageuser['id']}%' and a.type = 8")
+		->sum('money');//下级总分佣
 
 		$service_arr = [];
 		$up_users = getUpUser($pageuser['id'], true);
@@ -95,7 +101,7 @@ class UserController extends BaseController
 			'investment' => round(floatval($investment), 2),
 			'recharge' => round(floatval($recharge), 2),
 			'withdraw' => round(floatval($withdraw), 2),
-			'reward' => number_format($reward + $hb_money, 2, '.', ''),
+			'reward' => number_format($reward + $hb_money+$jfdh_money, 2, '.', ''),
 			'rebate' => round(floatval($rebate), 2),
 			'tprofit' => round(floatval($today_profit + $jrhb_money), 2),
 			'service_arr' => $service_arr,
