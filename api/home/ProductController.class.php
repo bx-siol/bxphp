@@ -794,6 +794,7 @@ class ProductController extends BaseController
 				$this->redis->set('pro_goods_' . $params['gsn'], $item, 60 * 60);
 			}
 			$item = $this->redis->get('pro_goods_' . $params['gsn']);
+			$money = $quantity * $item['price'];
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
 			writeLog("money".",pro_order" . json_encode($pro_order),'_invest');
 			// $return_data['err'] = $pro_order['err'];
