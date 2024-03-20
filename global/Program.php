@@ -1,11 +1,10 @@
-
 <?php
 header('content-Type: text/html; charset=utf-8');
 //ini_set('date.timezone','Etc/GMT-6');
 date_default_timezone_set("Asia/Kolkata");
 //date_default_timezone_set("America/Bogota"); 
 if (!defined('APP_DEBUG'))
-	define('APP_DEBUG', false);
+	define('APP_DEBUG', true);
 if (!defined('ROOT_PATH'))
 	define('ROOT_PATH', __DIR__ . '/../');
 if (!defined('APP_PATH'))
@@ -16,7 +15,7 @@ define('LIB_PATH', GLOBAL_PATH . 'lib/');
 define('LOGS_PATH', ROOT_PATH . 'logs/');
 define('NOW_TIME', time());
 define('NOW_DATE', date('Y-m-d H:i:s', NOW_TIME));
-
+define('TIME_YMD', date('Y-m-d'));
 if (APP_DEBUG) {
 	error_reporting(E_ALL & ~E_NOTICE);
 } else {
@@ -59,6 +58,7 @@ require_once GLOBAL_PATH . 'userfunc.php';
 // if (!PHP_CLI) {
 // 	require_once GLOBAL_PATH . 'routeini.php';
 // }
+
 
 //简单路由
 define('CLIENT_IP', getClientIp());
@@ -109,6 +109,47 @@ if (!$ctl_obj)
 
 if (!method_exists($ctl_obj, $action))
 	doExit("no such {$action}");
+
+
+// 自定义错误处理函数
+function handleError($errno, $errstr, $errfile, $errline)
+{
+	$logContent = "[" . date('Y-m-d H:i:s') . "] Error: [Type: $errno] $errstr in $errfile on line $errline\n";
+	writeLog($logContent, 'syslog/Error/');
+	// 如果需要PHP内置错误处理则返回false
+	// return false;
+	//ReturnToJson(-1, 'fail:Error');
+}
+
+// 自定义异常处理函数
+function handleException($exception)
+{
+	$logContent = "[" . date('Y-m-d H:i:s') . "] Exception: [" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
+	writeLog($logContent, 'syslog/Exception/');
+	// 这里可以添加代码显示用户友好的错误页面或其他错误处理
+	//ReturnToJson(-1, 'fail:Exception');
+}
+
+// 致命错误处理
+function handleShutdown()
+{
+	$last_error = error_get_last();
+	if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING])) {
+		$logContent = "[" . date('Y-m-d H:i:s') . "] Fatal Error: [" . $last_error['type'] . "] " . $last_error['message'] . " in " . $last_error['file'] . " on line " . $last_error['line'] . "\n";
+		writeLog($logContent, 'syslog/Shutdown/');
+		// 这里可以添加代码显示用户友好的错误页面或其他错误处理
+		//ReturnToJson(-1, 'fail:Shutdown');
+	}
+}
+
+// 注册自定义的错误处理函数、异常处理函数和致命错误处理函数
+set_error_handler("handleError");
+set_exception_handler("handleException");
+register_shutdown_function("handleShutdown");
+
+
+
+
 
 call_user_func([$ctl_obj, $action]);
 

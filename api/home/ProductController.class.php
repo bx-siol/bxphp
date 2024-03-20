@@ -104,7 +104,7 @@ class ProductController extends BaseController
 		}
 		$total_page = ceil($count_item['cnt'] / $cpageSize);
 		$return_data = [
-			'wher' => $where,
+			// 'wher' => $where,
 			'list' => $list,
 			'count' => intval($count_item['cnt']),
 			'page' => $params['page'] + 1,
