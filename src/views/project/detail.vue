@@ -111,7 +111,7 @@
           <van-grid v-if="info.pointshop == 1" :border="false" :column-num="1">
             <van-grid-item>
               <span>{{ wallet3.balance }} </span>
-              <p>You Points</p>
+              <p>Yous Points</p>
             </van-grid-item>
           </van-grid>
         </div>
