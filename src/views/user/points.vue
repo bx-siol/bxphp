@@ -22,6 +22,7 @@
                 </template>
             </van-field>
         </div>
+
         <div class="mall-bottom">
             <span class="part">Points product</span>
             <div class="product">
@@ -42,9 +43,8 @@
                                 <p>Daily earnings</p><span> {{ cutOutNum((item.rate / 100) * item.price, 2) }} RS</span>
                             </li>
                             <li>
-                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days, 2)
-                                    }}
-                                    RS</span>
+                                <p>Total revenue</p><span> {{ cutOutNum(((item.rate / 100) * item.price) * item.days,
+                                    2) }}RS</span>
                             </li>
 
                             <li v-if="false">
@@ -53,8 +53,11 @@
 
                         </ul>
                         <div class="obtain">
-                            <p>{{ item.price }} points</p>
-                            <button @click="getProjectDetail(item)" type="button">+</button>
+                            <div style="display: flex;align-items: center">
+                                <img :src="Pointsbi">
+                                <p>{{ item.price }}</p>
+                            </div>
+                            <button @click="getProjectDetail(item)" type="button">Redeem</button>
                         </div>
 
                     </div>
@@ -78,6 +81,8 @@ import MyTab from "../../components/Tab.vue";
 import http from "../../global/network/http";
 import { useRouter } from "vue-router";
 import Pointsbi from "../../assets/index/Pointsbi.png";
+import Goldenegg from "../../assets/index/Goldenegg.png";
+
 export default defineComponent({
     components: {
         MyNav,
@@ -95,6 +100,7 @@ const router = useRouter()
 const user = ref({})
 const wallet3 = ref({})
 const tableData = ref<any>({})
+
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
@@ -103,7 +109,7 @@ const getProjectDetail = (item: any) => {
 }
 
 const dataForm = reactive({
-    points: 0
+    points: '' 
 })
 const exchangePoints = () => {
     if (dataForm.points < 10 || dataForm.points % 10 !== 0) {
@@ -196,6 +202,7 @@ onMounted(() => {
             padding: 0;
             padding-left: 0.5rem;
             border-radius: 8px;
+            background: #fff7e1;
         }
 
         :deep(.van-field__control::-webkit-input-placeholder) {
@@ -216,6 +223,9 @@ onMounted(() => {
             color: rgb(245, 159, 54);
             font-weight: bold;
             display: flex;
+            font-size: 18px;
+            align-items: center;
+            height: 1rem;
         }
 
         .product {
@@ -231,7 +241,7 @@ onMounted(() => {
 
                 margin-bottom: 16px;
                 border-radius: 10px;
-                background-color: #fff;
+                background-color: #fff7e1;
                 text-align: center;
 
                 .imgs {
@@ -266,11 +276,14 @@ onMounted(() => {
                     p {
                         display: inline-block;
                         color: #aaa;
+                        white-space: nowrap;
+
                     }
 
                     span {
-                        font: bold 0.625rem/16px '微软雅黑';
+                        font: bold 0.675rem/16px '微软雅黑';
                         color: #84973b;
+                        white-space: nowrap;
                     }
                 }
 
@@ -280,20 +293,27 @@ onMounted(() => {
                     justify-content: space-between;
                     margin-top: 0.2rem;
 
+                    img {
+                        width: 1.5rem;
+                        margin-right: 0.3rem;
+                    }
+
                     p {
                         color: #002544;
                         font-size: 16px;
                         font-weight: bold;
+                        white-space: nowrap;
                     }
 
                     button {
-                        width: 20%;
+                        width: 55%;
                         height: 30px;
-                        font-size: 26px;
+                        font-size: 14px;
                         border-radius: 4px;
                         color: #fff;
                         background: #84973b;
                         border: none;
+                        font-weight: bold;
                     }
                 }
 

@@ -46,13 +46,13 @@
 
     onMounted(()=>{
         const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => { 
+        // setTimeout(() => { 
         http({
             url:'c=Service&a=online'
         }).then((res:any)=>{
             service_arr.value=res.data.service_arr
         })
-    }, delayTime)
+    // }, delayTime)
     })
 
     const imgFlag=(src:string)=>{

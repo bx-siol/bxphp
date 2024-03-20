@@ -58,7 +58,6 @@ const imgFlag = (src: string) => {
 }
 
 onMounted(() => {
-    var delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
         let url = 'c=Product&a=PurchasedOrder&id=' + route.params.id
         http({
@@ -68,7 +67,6 @@ onMounted(() => {
             GoodsList.value = res.data;
         })
     })
-
 });
 
 

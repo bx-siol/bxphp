@@ -2,7 +2,7 @@
   <div class="project_detail">+
     <Nav leftText=''></Nav>
     <div style="background: ">
-      <div class="project_img">
+      <div :class="['project_img', { backdrop: info.pointshop == 1 }]">
         <!--<img :src="describe" class="describe">-->
         <van-swipe indicator-color="white" :autoplay="3000">
           <van-swipe-item v-if="info.covers == []">
@@ -25,30 +25,35 @@
           <!-- <div class="title_right">Investment Cycle: {{ info.days }} Day</div> -->
         </div>
         <div class="detail">
-          <div class="dailyincome">
+          <div class="dailyincome" v-if="false">
             <span class="bold" v-if="info.pointshop == 1">{{ cutOutNum(detailData?.dailyIncome / 24, 2) }} </span>
             <span class="bold" v-else>₹{{ cutOutNum(detailData?.dailyIncome / 24, 2) }}</span>
             <span v-if="info.pointshop == 1"> Points</span>
             <span style="white-space: nowrap;color: #002544;" v-else>{{ t('小时收益') }}</span>
           </div>
-          <div class="dailyincome" v-if="false">
+
+          <div class="dailyincome">
             <span class="bold">₹{{ cutOutNum(detailData?.dailyIncome, 2) }}</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('日收益') }} </span>
           </div>
+
           <div class="dailyincome">
             <span class="bold">₹{{ cutOutNum(detailData?.totalRevenue, 2) }}</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('总收益') }} </span>
           </div>
 
-          <div class="totalrevenue">
+          <div class="totalrevenue" v-if="info.pointshop != 1">                                                                                                                                                                                                                                                                            
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-          100, 1) }}%</span>
+              100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
+
           <div class="dailyincome">
             <span class="bold">{{ info.days }} Day</span>
-            <span style="white-space: nowrap;color: #002544;">{{ t('投资周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;" v-if="info.pointshop == 1">{{ t('收益周期') }} </span>
+            <span style="white-space: nowrap;color: #002544;" v-else>{{ t('投资周期') }} </span>
           </div>
+
           <div class="dailyincome" v-if="false">
             <span class="bold">VIP{{ 1 }} </span>
             <span>{{ t('购买等级') }} </span>
@@ -106,7 +111,7 @@
           <van-grid v-if="info.pointshop == 1" :border="false" :column-num="1">
             <van-grid-item>
               <span>{{ wallet3.balance }} </span>
-              <p>You Points</p>
+              <p>Yous Points</p>
             </van-grid-item>
           </van-grid>
         </div>
@@ -133,14 +138,17 @@
           info.prices }}</span></div>
       </div>
       <div v-if="info.pointshop == 1">
-        <div class="Actual" style="margin-top: 0.4rem;">
-          Wealth Value<span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
+        <div class="Actuals" style="margin-top: 0.4rem;">
+          <img :src="Pointsbi">
+          <span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
         </div>
       </div>
 
       <van-button v-if="info.status == 2" class="touziBtn" @click="onPresale">{{ t('预售') }}</van-button>
 
       <van-button v-else-if="info.status == 10" class="touziBtn" @click="onPresale1">Not for sale</van-button>
+
+      <van-button v-else-if="info.pointshop == 1" class="touziBtn" @click="onSubmit">Redeem</van-button>
 
       <van-button v-else class="touziBtn" @click="onSubmit">{{ t('立即加入') }}</van-button>
     </div>
@@ -196,6 +204,7 @@ import http from "../../global/network/http";
 import bird from '../../assets/ico/bird.png'
 import leaf from '../../assets/ico/leaf.png'
 import lb1 from '../../assets/img/project/lb1.jpg'
+import Pointsbi from "../../assets/index/Pointsbi.png";
 import MyTab from "../../components/Tab.vue";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
@@ -366,76 +375,76 @@ const onSubmit = () => {
 
 const init = () => {
   const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
-    http({
-      url: 'c=Product&a=goods',
-      data: { gsn: route.params.pid }
-    }).then((res: any) => {
-      if (res.code != 1) {
-        _alert({
-          type: 'error',
-          message: res.msg,
-        })
-        return
-      }
+  // setTimeout(() => {
+  http({
+    url: 'c=Product&a=goods',
+    data: { gsn: route.params.pid }
+  }).then((res: any) => {
+    if (res.code != 1) {
+      _alert({
+        type: 'error',
+        message: res.msg,
+      })
+      return
+    }
 
-      // console.log("1");
-      info.value = res.data.info
-      // console.log(info.value);
+    // console.log("1");
+    info.value = res.data.info
+    // console.log(info.value);
 
-      if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
-        info.value.status = 10;
-      }
-      console.log(info.value.djs <= info.value.djss);
-      // console.log(info.value.djss);
-      detailData.value.name = res.data.info.name
-      detailData.value.price = res.data.info.price
-      detailData.value.dailyIncome = res.data.info.price * (res.data.info.rate / 100)
-      detailData.value.totalRevenue = res.data.info.price * (res.data.info.rate / 100) * res.data.info.days
-      detailData.value.content = res.data.info.content
-      detailData.value.tags = [
-        res.data.info.days + ' Days',
-        'Daily interest rate ' + res.data.info.rate + '%',
-        'Return rate ' + cutOutNum(((res.data.info.price * (res.data.info.rate / 100) * res.data.info.days) / res.data.info.price) * 100, 1) + '%',
-        //'Limit ' + res.data.info.invest_limit + ' copy'
-      ]
-      wallet1.value = res.data.wallet1
-      wallet2.value = res.data.wallet2
-      wallet3.value = res.data.wallet3
+    if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
+      info.value.status = 10;
+    }
+    console.log(info.value.djs <= info.value.djss);
+    // console.log(info.value.djss);
+    detailData.value.name = res.data.info.name
+    detailData.value.price = res.data.info.price
+    detailData.value.dailyIncome = res.data.info.price * (res.data.info.rate / 100)
+    detailData.value.totalRevenue = res.data.info.price * (res.data.info.rate / 100) * res.data.info.days
+    detailData.value.content = res.data.info.content
+    detailData.value.tags = [
+      res.data.info.days + ' Days',
+      'Daily interest rate ' + res.data.info.rate + '%',
+      'Return rate ' + cutOutNum(((res.data.info.price * (res.data.info.rate / 100) * res.data.info.days) / res.data.info.price) * 100, 1) + '%',
+      //'Limit ' + res.data.info.invest_limit + ' copy'
+    ]
+    wallet1.value = res.data.wallet1
+    wallet2.value = res.data.wallet2
+    wallet3.value = res.data.wallet3
 
-      coupons.value = [];
+    coupons.value = [];
 
+    coupons.value.push({
+      id: -1,
+      available: 1,
+      condition: t('折扣券'),
+      reason: '',
+      value: 0,
+      name: t('折扣券'),
+      startAt: 1489104000,
+      endAt: 1514592000,
+      valueDesc: '0',
+      unitDesc: '%',
+    });
+
+    for (let index = 0; index < res.data.coupon_arr.length; index++) {
+      const element = res.data.coupon_arr[index];
       coupons.value.push({
-        id: -1,
         available: 1,
         condition: t('折扣券'),
         reason: '',
-        value: 0,
-        name: t('折扣券'),
-        startAt: 1489104000,
-        endAt: 1514592000,
-        valueDesc: '0',
+        value: (100 - element.discount) * 100,
+        name: element.coupon_name,
+        startAt: element.create_time,
+        endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
+        valueDesc: (100 - element.discount).toString(),
         unitDesc: '%',
+        id: element.id
       });
+    }
 
-      for (let index = 0; index < res.data.coupon_arr.length; index++) {
-        const element = res.data.coupon_arr[index];
-        coupons.value.push({
-          available: 1,
-          condition: t('折扣券'),
-          reason: '',
-          value: (100 - element.discount) * 100,
-          name: element.coupon_name,
-          startAt: element.create_time,
-          endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
-          valueDesc: (100 - element.discount).toString(),
-          unitDesc: '%',
-          id: element.id
-        });
-      }
-
-    })
-  }, delayTime)
+  })
+  // }, delayTime)
 }
 const forid = (id: number) => {
   return "forid_" + id;
@@ -520,6 +529,10 @@ onMounted(() => {
       left: 50%;
       transform: translateX(-50%);
     }
+  }
+  
+  .backdrop{
+    background: #fff7e1;
   }
 
   .title {
@@ -635,6 +648,15 @@ onMounted(() => {
     margin-left: 1rem;
   }
 
+  .touziBtns .Actuals {
+    display: flex;
+    align-items: center;
+    margin-left: 1rem;
+    img {
+      width: 2rem;
+    }
+  }
+
   .touziBtns span {
 
     font-weight: bold;
@@ -651,6 +673,7 @@ onMounted(() => {
     font-size: 0.9rem;
     border-radius: 2.4rem;
     margin-right: 1rem;
+    font-weight: bold;
   }
 
 }

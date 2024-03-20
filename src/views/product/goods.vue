@@ -323,7 +323,7 @@ const onSubmit = () => {
 
 const init = () => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
     http({
         url: 'c=Product&a=goods',
         data: { gsn: route.params.gsn }
@@ -342,7 +342,7 @@ const init = () => {
         wallet1.value = res.data.wallet1
         wallet2.value = res.data.wallet2
     })
-    }, delayTime)
+    // }, delayTime)
 }
 
 onMounted(() => {

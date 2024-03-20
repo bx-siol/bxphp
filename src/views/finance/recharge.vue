@@ -172,19 +172,19 @@ const onSubmit = () => {
             _alert(res.msg)
             return
         }
-        _alert({
-            type: 'success',
-            message: res.msg,
-            onClose: () => {
-                if (res.data.pay_url && res.data.fin_ptype == 1) {
-                    location.href = 'https://www.gamedreamer.in/Recharge.html?pay_url=' + res.data.pay_url
-                } else if (res.data.pay_url && res.data.fin_ptype == 0) {
-                    location.href = res.data.pay_url
-                } else {
-                    router.push({ name: 'Finance_payInfo', query: { osn: res.data.osn } })
-                }
-            }
-        })
+        _alert('You have submitted successfully, waiting for payment', function () {
+                // if (res.data.pay_url && res.data.fin_ptype == 1) {
+                //     location.href = "https://www.gamedreamer.in/Recharge.html?pay_url=" +res.data.pay_url;
+                // } else if (res.data.pay_url && res.data.fin_ptype == 0) {
+                //     location.href = res.data.pay_url;
+                // } else {
+                //     router.push({
+                //         name: "Finance_payinfo",
+                //         query: { osn: res.data.osn },
+                //     });
+                // }
+                 location.href = res.data.pay_url;
+            },2);
     })
     }, delayTime)
 }
@@ -202,7 +202,7 @@ const onRemember = (ev: any) => {
 }
 const init = () => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // setTimeout(() => {
     http({
         url: 'c=Finance&a=recharge'
     }).then((res: any) => {
@@ -219,7 +219,7 @@ const init = () => {
             checked.value = res.data.pay_types[0].id
         }
     })
-}, delayTime)
+// }, delayTime)
 }
 
 onBeforeMount(() => {

@@ -237,7 +237,7 @@
         <div></div>
       </div> -->
     </van-tabs>
-    <MyTab></MyTab>
+    <!-- <MyTab></MyTab> -->
   </div>
   <MyLoading :show="loadingShow2" :title="loadtitle"></MyLoading>
 </template>
@@ -690,7 +690,7 @@ onMounted(() => {
   }
 
   .receive {
-    width: 100%;
+    width: 50%;
     display: flex;
     justify-content: center;
     align-items: center;

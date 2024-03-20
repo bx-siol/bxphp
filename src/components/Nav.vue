@@ -1,7 +1,7 @@
 <template>
     <van-nav-bar class="myNavBar" :fixed="fixed" :placeholder="fixed">
         <template #title>
-            <div :style="{ color: foregroundColor,fontWeight: foregroundweight }" class="alter">
+            <div :style="{ color: foregroundColor,fontWeight: foregroundweight, fontSize:foregroundsize }" class="alter">
                 <slot name="title" >{{ topTitle }}</slot>
             </div>
         </template>
@@ -37,7 +37,8 @@ import { useRoute, useRouter } from "vue-router"
 import { ref, reactive } from "vue"
 
 const foregroundColor = ref('#fff')  //前景色
-const foregroundweight = ref('bold') 
+const foregroundweight = ref('bold')
+const foregroundsize = ref('18px')
 const route = useRoute()
 const router = useRouter()
 

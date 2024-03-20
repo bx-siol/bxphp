@@ -222,8 +222,8 @@ const router = useRouter();
 const init = () => { };
 
 onMounted(() => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
+    // const delayTime = Math.floor(Math.random() * 1000);
+    // setTimeout(() => {
         http({
             url: 'c=Service&a=GetService_Online&type=0',
             data: {
@@ -232,7 +232,7 @@ onMounted(() => {
         }).then((res: any) => {
             service_arr.value = res.data.list
         })
-    }, delayTime)
+    // }, delayTime)
 });
 </script>
 

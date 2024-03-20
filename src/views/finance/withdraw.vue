@@ -22,7 +22,8 @@
                             <van-image :src="jb" style="width: 1.5rem;height: 1.5rem;margin:0 0.5rem;" />
                         </template>
                         <template #button>
-                            <van-button size="small" type="primary" color="#fff" style="border-radius:4px;color:#84973b;font-weight: bold;"
+                            <van-button size="small" type="primary" color="#fff"
+                                style="border-radius:4px;color:#84973b;font-weight: bold;"
                                 @click="onClickAll">ALL</van-button>
                         </template>
                     </van-field>
@@ -46,11 +47,12 @@
                         <span class="noticeText">Withdrawal information >>></span>
                     </div>
                 </div>
-                <van-field class="fieldbox" v-model="password2" :placeholder="t('请输入提现密码')" :type="showPassword ? 'text' : 'password'"
+                <van-field class="fieldbox" v-model="password2" :placeholder="t('请输入提现密码')"
+                    :type="showPassword ? 'text' : 'password'"
                     style="height: 1.75rem;font-size: 0.75rem;margin-top: 0.875rem;">
                     <template #right-icon>
                         <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6" @click="showPassword = false"></van-icon>
-                        <van-icon v-else name="closed-eye"   color="#d6d6d6"  @click="showPassword = true"></van-icon>
+                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
                     </template>
                 </van-field>
                 <van-button class="submitBtn" @click="onSubmit">{{ t('提现') }}</van-button>
@@ -87,7 +89,18 @@
                 </div>
                 <div class="noticeList">
                     <div class="noticeListItem">
-                        <span>You invest a minimum of Rs. 500 to initiate withdrawals.</span>
+                        <span>1. Valid members can apply to withdraw money. There is no limit on the number of withdrawals.
+                            The minimum withdrawal amount is Rs {{ min }}.</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>2. Withdrawal will reach your account within 24-72 .</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>3. Withdrawal tax {{ tar }}%. </span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>4. If the withdrawal fails, please reapply or check whether your bank account information is
+                            correct. </span>
                     </div>
                 </div>
             </div>
@@ -97,25 +110,8 @@
                     <span class="noticeText">Kind tips:</span>
                 </div>
                 <div class="noticeList">
-
                     <div class="noticeListItem">
-                        <span>1. Minimum withdrawal amount is Rs {{ min }}. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>2. You can withdraw once a day. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>3. Withdrawal will reach your account within 24-72 </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>4. Withdrawal tax {{ tar }}%. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>5. If the withdrawal fails, please reapply or check whether your bank account information is
-                            correct. </span>
-                    </div>
-                    <div class="noticeListItem">
-                        <span>6. IFSC should be 11 characters, and the 5th character should be "0", not "O". If you fill in
+                        <span>IFSC should be 11 characters, and the 5th character should be "0", not "O". If you fill in
                             incorrect bank information, your withdrawal will fail.</span>
                     </div>
                 </div>
@@ -137,13 +133,13 @@ import { defineComponent, ref, reactive, onMounted } from "vue";
 import MyNav from "../../components/Nav.vue";
 import Service from '../../components/service.vue';
 import MyTab from "../../components/Tab.vue";
-import { Button, Field, CellGroup, Cell, Checkbox, RadioGroup, Radio, Tag, Picker, Popup,Icon,Image } from "vant";
+import { Button, Field, CellGroup, Cell, Checkbox, RadioGroup, Radio, Tag, Picker, Popup, Icon, Image } from "vant";
 import dpimg from '../../assets/img/dp.png';
 import MyLoading from "../../components/Loading.vue";
 export default defineComponent({
     name: "withdrawal",
     components: {
-        MyNav,MyLoading,
+        MyNav, MyLoading,
         [Button.name]: Button,
         [Field.name]: Field,
         [CellGroup.name]: CellGroup,
@@ -177,7 +173,7 @@ let isRequest = false
 const router = useRouter()
 const loadtitle = ref("Loading...")
 const loadingShow = ref(false);
-const showPassword=ref(false)
+const showPassword = ref(false)
 const showPayOnlinePicker = ref<boolean>(false)
 const payOnlineColumns = ref<Array<string>>(['Pay Online D', 'Pay Online D1'])
 const payOnlineResult = ref('Pay Online D')
@@ -202,7 +198,7 @@ const password2 = ref<string>('')
 
 const dataForm = reactive({
     password2: '',
-    money: '0'
+    money: ''
 })
 
 const sys_pset = reactive({
@@ -245,42 +241,38 @@ const onSubmit = () => {
         }
     }
 
-    if (dataForm.money < ptype.min) {
+    if (dataForm.money < min.value) {
         isRequest = false
-        _alert(ptype.name + ' Minimum withdrawal amount is ' + ptype.min)
+        _alert('Minimum withdrawal amount is ' + min.value)
         return
     }
-    if (dataForm.money > ptype.max) {
+    if (dataForm.money > max.value) {
         isRequest = false
-        _alert(ptype.name + ' Maximum withdrawal amount is ' + ptype.max)
+        _alert('Maximum withdrawal amount is ' + max.value)
         return
     }
 
     loadingShow.value = true;
     const delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
-    http({
-        url: 'c=Finance&a=withdrawAct',
-        data: {
-            //banklog_id:banklog.value.id,
-            money: dataForm.money,
-            password2: md5(password2.value)
-        }
-    }).then((res: any) => {
-        loadingShow.value = false;
-        if (res.code != 1) {
-            isRequest = false
-            _alert(res.msg)
-            return
-        }
-        _alert({
-            type: 'success',
-            message: res.msg,
-            onClose: () => {
-                router.go(-1)
+        http({
+            url: 'c=Finance&a=withdrawAct',
+            data: {
+                //banklog_id:banklog.value.id,
+                money: dataForm.money,
+                password2: md5(password2.value)
             }
+        }).then((res: any) => {
+            loadingShow.value = false;
+            if (res.code != 1) {
+                isRequest = false
+                _alert(res.msg)
+                return
+            }
+            _alert(res.msg, function () {
+                location.reload()
+            })
         })
-    })
     }, delayTime)
 }
 
@@ -289,12 +281,8 @@ onMounted(() => {
         url: 'c=Finance&a=withdraw'
     }).then((res: any) => {
         if (res.code != 1) {
-            _alert({
-                type: 'error',
-                message: res.msg,
-                onClose: () => {
-                    router.go(-1)
-                }
+            _alert(res.msg, function () {
+                router.go(-1)
             })
             return
         }
@@ -329,6 +317,7 @@ onMounted(() => {
 
     .recharge_wrap {
         padding-top: 1rem;
+
         .balances {
             display: flex;
             justify-content: space-between;
@@ -468,5 +457,4 @@ onMounted(() => {
             line-height: 22px;
         }
     }
-}
-</style>
+}</style>

@@ -168,7 +168,7 @@ const getCovers = (covers: any) => {
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => { 
+    // setTimeout(() => { 
     http({
         url: 'c=Product&a=index'
     }).then((res: any) => {
@@ -179,7 +179,7 @@ onMounted(() => {
         }
         getList()
     })
-    }, delayTime)
+    // }, delayTime)
 })
 
 </script>
