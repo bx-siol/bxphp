@@ -260,7 +260,9 @@ onMounted(() => {
     background-color: transparent;
     border-bottom: 1px solid #c69c6d;
 }
-
+.formbox :deep(.van-field__left-icon){
+    height: 1.5rem;
+}
 
 .sendCodeBtn {
     border: none;
