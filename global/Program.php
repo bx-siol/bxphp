@@ -118,7 +118,7 @@ function handleError($errno, $errstr, $errfile, $errline)
 	writeLog($logContent, 'syslog/Error/');
 	// 如果需要PHP内置错误处理则返回false
 	// return false;
-	ReturnToJson(-1, 'fail:Error');
+	//ReturnToJson(-1, 'fail:Error');
 }
 
 // 自定义异常处理函数
@@ -127,7 +127,7 @@ function handleException($exception)
 	$logContent = "[" . date('Y-m-d H:i:s') . "] Exception: [" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
 	writeLog($logContent, 'syslog/Exception/');
 	// 这里可以添加代码显示用户友好的错误页面或其他错误处理
-	ReturnToJson(-1, 'fail:Exception');
+	//ReturnToJson(-1, 'fail:Exception');
 }
 
 // 致命错误处理
@@ -138,7 +138,7 @@ function handleShutdown()
 		$logContent = "[" . date('Y-m-d H:i:s') . "] Fatal Error: [" . $last_error['type'] . "] " . $last_error['message'] . " in " . $last_error['file'] . " on line " . $last_error['line'] . "\n";
 		writeLog($logContent, 'syslog/Shutdown/');
 		// 这里可以添加代码显示用户友好的错误页面或其他错误处理
-		ReturnToJson(-1, 'fail:Shutdown');
+		//ReturnToJson(-1, 'fail:Shutdown');
 	}
 }
 
