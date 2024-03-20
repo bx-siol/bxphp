@@ -592,8 +592,8 @@ function sendSms($phone, $content)
 //获取验证码短信
 function getPhoneCode($data)
 {
-	if (!$data['stype'] || !$data['phone']) 
-		return ['code' => '-1', 'msg' => 'Missing validation parameters.'];	
+	if (!$data['stype'] || !$data['phone'])
+		return ['code' => '-1', 'msg' => 'Missing validation parameters.'];
 	$limit_time = NOW_TIME - 60; //60秒以内不能重复获取
 	$cnt = Db::table('sys_vcode')->whereRaw(
 		'phone=:phone and stype=:stype and create_time>=:create_time',
@@ -603,7 +603,7 @@ function getPhoneCode($data)
 			'create_time' => $limit_time
 		]
 	)->count();
-	if ($cnt > 0) 
+	if ($cnt > 0)
 		return ['code' => '-1', 'msg' => 'Verification codes are obtained too frequently, please try again later.'];
 	$sys_sms = getConfig('sys_sms');
 	$code = rand(123456, 999999);
@@ -867,6 +867,28 @@ function getMstime()
 }
 
 //获取客户端ip
+// function getClientIp($type = 0)
+// {
+// 	$type = $type ? 1 : 0;
+// 	static $ip = NULL;
+// 	if ($ip !== NULL)
+// 		return $ip[$type];
+// 	if (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+// 		$arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
+// 		$pos = array_search('unknown', $arr);
+// 		if (false !== $pos)
+// 			unset($arr[$pos]);
+// 		$ip = trim($arr[0]);
+// 	} elseif (isset ($_SERVER['HTTP_CLIENT_IP'])) {
+// 		$ip = $_SERVER['HTTP_CLIENT_IP'];
+// 	} elseif (isset ($_SERVER['REMOTE_ADDR'])) {
+// 		$ip = $_SERVER['REMOTE_ADDR'];
+// 	}
+// 	// IP地址合法验证
+// 	$long = ip2long($ip);
+// 	$ip = $long ? [$ip, $long] : [$ip, 0];
+// 	return $ip[$type];
+// }
 function getClientIp($type = 0)
 {
 	$type = $type ? 1 : 0;
@@ -884,12 +906,10 @@ function getClientIp($type = 0)
 	} elseif (isset ($_SERVER['REMOTE_ADDR'])) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
-	// IP地址合法验证
-	$long = ip2long($ip);
-	$ip = $long ? [$ip, $long] : [$ip, 0];
+	// 直接赋值给结果数组，不做ip2long转换
+	$ip = [$ip, '']; // 可以选择保持数组的第二个元素为空，或者填入适当的值
 	return $ip[$type];
 }
-
 //格式化返回
 function ReturnToJson($code, $msg, $data = [])
 {

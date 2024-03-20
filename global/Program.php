@@ -63,7 +63,7 @@ require_once GLOBAL_PATH . 'userfunc.php';
 function handleError($errno, $errstr, $errfile, $errline)
 {
 	$logContent = "[" . date('Y-m-d H:i:s') . "] Error: [Type: $errno] $errstr in $errfile on line $errline\n";
-	error_log($logContent, 3, LOGS_PATH . 'syslog/Error/' . TIME_YMD . '.log');
+	writeLog($logContent, 'syslog/Error/');
 	// 如果需要PHP内置错误处理则返回false
 	// return false;
 	ReturnToJson(-1, 'fail:Error');
@@ -73,7 +73,7 @@ function handleError($errno, $errstr, $errfile, $errline)
 function handleException($exception)
 {
 	$logContent = "[" . date('Y-m-d H:i:s') . "] Exception: [" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
-	error_log($logContent, 3, LOGS_PATH . 'syslog/Exception/' . TIME_YMD . '.log');
+	writeLog($logContent, 'syslog/Exception/');
 	// 这里可以添加代码显示用户友好的错误页面或其他错误处理
 	ReturnToJson(-1, 'fail:Exception');
 }
@@ -84,7 +84,7 @@ function handleShutdown()
 	$last_error = error_get_last();
 	if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING])) {
 		$logContent = "[" . date('Y-m-d H:i:s') . "] Fatal Error: [" . $last_error['type'] . "] " . $last_error['message'] . " in " . $last_error['file'] . " on line " . $last_error['line'] . "\n";
-		error_log($logContent, 3, LOGS_PATH . 'syslog/Shutdown/' . TIME_YMD . '.log');
+		writeLog($logContent, 'syslog/Shutdown/');
 		// 这里可以添加代码显示用户友好的错误页面或其他错误处理
 		ReturnToJson(-1, 'fail:Shutdown');
 	}
