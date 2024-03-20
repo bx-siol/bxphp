@@ -778,7 +778,7 @@ class ProductController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$money = floatval($params['money']);
+		//$money = floatval($params['money']);
 		$quantity = intval($params['quantity']);
 		if ($quantity < 1 || $quantity > 1000)
 			ReturnToJson(-1, 'Incorrect purchase quantity');
