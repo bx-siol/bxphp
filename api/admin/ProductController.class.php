@@ -726,20 +726,20 @@ class ProductController extends BaseController
 							throw new \Exception('流水记录写入失败');
 						}
 						//写入收益记录
-						$pro_reward2 = [
-							'uid' => $puser['id'],
-							'oid' => $item['id'],
-							'osn' => $item['osn'],
-							'type' => 2,
-							'level' => 0,
-							'base_money' => 0,
-							'rate' => 0,
-							'money' => $item['price2'],
-							'remark' => $item['osn'],
-							'create_time' => $now_time,
-							'create_day' => $now_day
-						];
-						Db::table('pro_reward')->insertGetId($pro_reward2);
+						// $pro_reward2 = [
+						// 	'uid' => $puser['id'],
+						// 	'oid' => $item['id'],
+						// 	'osn' => $item['osn'],
+						// 	'type' => 2,
+						// 	'level' => 0,
+						// 	'base_money' => 0,
+						// 	'rate' => 0,
+						// 	'money' => $item['price2'],
+						// 	'remark' => $item['osn'],
+						// 	'create_time' => $now_time,
+						// 	'create_day' => $now_day
+						// ];
+						// Db::table('pro_reward')->insertGetId($pro_reward2);
 						$this->redis->rmall(RedisKeys::USER_WALLET . $puser['id']);
 				 	}
 				 }

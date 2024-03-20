@@ -795,6 +795,7 @@ class ProductController extends BaseController
 			}
 			$item = $this->redis->get('pro_goods_' . $params['gsn']);
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
+			writeLog("money".",pro_order" . json_encode($pro_order),'_invest');
 			// $return_data['err'] = $pro_order['err'];
 			// $return_data['u'] = $pageuser;
 			//判断是否积分商品
