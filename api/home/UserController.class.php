@@ -51,7 +51,7 @@ class UserController extends BaseController
 
 		$hb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14)")->sum('money');
 
-		$jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=1019 and money>0 ")->sum('money');//积分兑换余额
+		$jfdh_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and type=45")->sum('money');//积分兑换余额
 
 		$jrhb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']} and receive_day={$now_day}")->sum('money');
 		$jrhb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14) and create_day={$now_day}")->sum('money');
