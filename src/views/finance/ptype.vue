@@ -180,7 +180,7 @@ const power = reactive({
     test: checkPower('Finance_ptype_test'),
     balance: checkPower('Finance_ptype_balance'),
 })
-
+console.log(power.balance);
 const add = () => {
     dataForm.id = 0
     dataForm.name = ''
