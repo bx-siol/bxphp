@@ -69,7 +69,7 @@
                     </van-grid-item>
                     <van-grid-item style="margin-top: 0;">
                         <!-- :to="{ name: 'Finance_reward', params: { type: 2 } }" -->
-                        <p>{{ cutOutNum(t_teamincome) }}</p>
+                        <p>{{ cutOutNum(t_rebate) }}</p>
                         <span>{{ t('团队收入') }}</span>
                     </van-grid-item>
 
@@ -221,7 +221,7 @@ const t_recharge = ref(0.00)
 const t_withdraw = ref(0.00)
 
 const t_reward = ref(0.00)
-const t_teamincome = ref(0.00)
+const t_rebate = ref(0.00)
 const t_tprofit = ref(0.00)
 const withdraw = ref(0.00)
 
@@ -279,7 +279,7 @@ onMounted(() => {
             t_withdraw.value = res.data.withdraw
 
             t_reward.value = res.data.reward
-            t_teamincome.value = res.data.teamincome
+            t_rebate.value = res.data.rebate
             t_tprofit.value = res.data.tprofit
             if (res.data.service_arr && res.data.service_arr.length > 0) {
                 for (let i in res.data.service_arr) {
