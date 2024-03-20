@@ -21,7 +21,7 @@
                 <img v-if="row.icon" :src="imgFlag(row.icon)" @click="onPreviewImg(row.icon)" style="height: 40px;vertical-align: middle;">
                 <span v-else>/</span>
             </template>
-        </el-table-column>-->
+</el-table-column>-->
             <el-table-column prop="sort" label="排序(从大到小)"></el-table-column>
             <el-table-column prop="status_flag" label="状态">
                 <template #default="{ row }">
@@ -32,6 +32,9 @@
             <el-table-column label="操作" width="160">
                 <template #default="scope">
                     <el-button size="small" v-if="power.test" @click="test(scope.$index, scope.row)">测试</el-button>
+
+                    <el-button size="small" v-if="power.balance"
+                        @click="balance(scope.$index, scope.row)">余额</el-button>
                     <el-popconfirm confirmButtonText='确定' cancelButtonText='取消' icon="el-icon-warning" iconColor="red"
                         title="您确定要进行删除吗？" @confirm="del(scope.$index, scope.row)" v-if="power.delete">
                         <template #reference>
@@ -89,6 +92,30 @@
             </el-dialog>
         </template>
 
+
+        <!--弹出层-->
+        <el-dialog :title="configForm.title" v-model="configForm.visiblebalance" :close-on-click-modal="false"
+            :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
+            <el-form :label-width="configForm.labelWidth">
+                <el-form-item label="商户号">
+                    <el-input v-model="merdata.merId" autocomplete="off" placeholder=""></el-input>
+                </el-form-item>
+                <el-form-item label="总余额">
+                    <el-input v-model="merdata.balance" autocomplete="off" placeholder=""></el-input>
+                </el-form-item>
+                <el-form-item label="可代付金额">
+                    <el-input v-model="merdata.payout_balance" autocomplete="off" placeholder=""></el-input>
+                </el-form-item>
+
+            </el-form>
+            <template #footer>
+                <span class="dialog-footer">
+                    <input type="hidden" v-model="dataForm.id" />
+                    <el-button @click="configForm.visiblebalance = false">取消</el-button>
+                </span>
+            </template>
+        </el-dialog>
+
     </Page>
 </template>
 
@@ -126,12 +153,17 @@ const configForm = reactive({
     labelWidth: '100px',
     // top:'1%',
     visible: false,
-    isEdit: false
+    isEdit: false,
+    visiblebalance: false
 })
 
 const iconList = ref<any>([])
 const actItem = ref<any>()
-
+const merdata = reactive<any>({
+    merId: 0,
+    balance: 0,
+    payout_balance: 0
+})
 const dataForm = reactive<any>({
     id: 0,
     name: '',
@@ -147,6 +179,7 @@ const power = reactive({
     update: checkPower('Finance_ptype_update'),
     delete: checkPower('Finance_ptype_delete'),
     test: checkPower('Finance_ptype_test'),
+    balance: checkPower('Finance_ptype_balance'),
 })
 
 const add = () => {
@@ -230,7 +263,27 @@ const save = () => {
         })
     })
 }
-
+const balance = (item: any) => {
+    if (isRequest) {
+        return
+    } else {
+        isRequest = true
+    }
+    configForm.visiblebalance = true;
+    http({
+        url: 'c=Finance&a=ptype_balance',
+        data: { id: item.id }
+    }).then((res: any) => {
+        isRequest = false
+        if (res.code != 1) {
+            _alert(res.msg)
+            return
+        }
+        merdata.merId = res.data.merId;
+        merdata.balance = res.data.balance;
+        merdata.payout_balance = res.data.payout_balance;
+    })
+}
 const del = (idx: number, item: any) => {
     if (isRequest) {
         return
@@ -248,7 +301,6 @@ const del = (idx: number, item: any) => {
         }
         //更新数据集
         pageRef.value.delItem(idx)
-
         _alert({
             type: 'success',
             message: res.msg,
