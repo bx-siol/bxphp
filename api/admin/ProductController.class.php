@@ -630,10 +630,10 @@ class ProductController extends BaseController
 
 	public function Uporder_set($item_id, $pageuser, $status)
 	{
-		Db::startTrans();
+		//Db::startTrans();
 		$now_time = NOW_TIME;
 		$now_day = date('Ymd', NOW_TIME);
-		try {
+		//try {
 			$item = Db::table('pro_order')->where("id={$item_id}")->lock(true)->find();
 			if (!$item || $item['status'] > 99) {
 				ReturnToJson(-1, '不存在相应的订单');
@@ -746,12 +746,12 @@ class ProductController extends BaseController
 			}
 
 
-			Db::commit();
+			//Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $item['uid']);
-		} catch (\Exception $e) {
-			Db::rollback();
-			ReturnToJson(-1, '系统繁忙请稍后再试');
-		}
+		//} catch (\Exception $e) {
+		//	Db::rollback();
+		//	ReturnToJson(-1, '系统繁忙请稍后再试');
+		//}
 		actionLog(['opt_name' => '首购赠送审核', 'sql_str' => Db::getLastSql()]);
 	}
 
