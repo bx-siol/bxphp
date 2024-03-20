@@ -360,7 +360,7 @@ class SettingController extends BaseController
 
 		$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $pageuser['account'], 'code' => $params['code']]);
 		if ($checkVcode['code'] != 1)
-			ReturnToJson(-1, 'Please enter the correct OTP');
+			ReturnToJson(-1, $checkVcode['msg'] .'Please enter the correct OTP');
 
 
 		// if (strlen($params['ifsc']) < 8 || strlen($params['ifsc']) > 11) {
