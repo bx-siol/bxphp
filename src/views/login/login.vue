@@ -5,7 +5,8 @@
             <div class="line-sp"></div>
             <el-input v-model="form.account" placeholder="账号" prefix-icon="el-icon-user"></el-input>
             <div class="line-sp"></div>
-            <el-input v-model="form.password_flag" type="password" placeholder="密码" prefix-icon="el-icon-lock"></el-input>
+            <el-input v-model="form.password_flag" type="password" placeholder="密码"
+                prefix-icon="el-icon-lock"></el-input>
             <!-- <div class="line-sp"></div>
             <el-input v-model="form.gcode" placeholder="谷歌验证码(选填)" prefix-icon="el-icon-timer"></el-input>
             -->
@@ -35,7 +36,7 @@ import { useRouter } from 'vue-router';
 import md5 from 'md5';
 import http from '../../global/network/http';
 import { _alert } from "../../global/common";
-import { doLogin, getUserinfo, isLogin } from '../../global/user';
+import { doLogin, getUserinfo, isLogin, setLocalToken } from '../../global/user';
 import { useStore } from "vuex";
 
 const emit = defineEmits(['loadingClose'])
@@ -120,6 +121,7 @@ const onLogin = () => {
             getVcode()  //更新图形验证码
             return
         }
+        setLocalToken(res.data.token)
         getUserinfo({ token: res.data.token, is_ht: true }).then((res2: any) => {//因为设置了拦截器，回调内必然是调用成功的
             doLogin(res2.data, res.data.token)
             /*                if(store.state.config.active.path){
@@ -155,4 +157,5 @@ onMounted(() => {
 .line-sp {
     height: 1rem;
     clear: both;
-}</style>
+}
+</style>
