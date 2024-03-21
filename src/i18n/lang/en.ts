@@ -394,4 +394,5 @@ export default {
     领取所有: 'Receive All',
     明天领取: 'Tomorrow',
     下载:'download',
+    期限:'Term',
 }

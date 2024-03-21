@@ -101,19 +101,17 @@
 
                               <div class="detailLeft">
                                 <div class="unitprice">
-                                  <span>{{ t('小时收益') }}: </span>
-                                  <span>₹{{ cutOutNum(((item.rate / 100) *
-                                    item.price * item.num) / 24, 2) }}</span>
+                                  <span>{{ t('价格') }}: </span>
+                                  <span>₹{{ item.price }}</span>
                                 </div>
                                 <div class="dailyearnings">
-                                  <span>{{ t('每日收入') }}: </span>
-                                  <span>₹{{ cutOutNum((item.rate / 100) *
-                                    item.price * item.num, 2) }}</span>
+                                  <span>{{ t('期限') }}: </span>
+                                  <span>{{ item.total_days }}/{{item.days}}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}: </span>
                                   <span>
-                                    ₹{{ cutOutNum((item.rate / 100) * item.price * item.days * item.num, 2) }}
+                                    ₹{{ cutOutNum(item.rate * item.price * item.days * item.num / 100, 2) }}
                                   </span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
@@ -175,19 +173,17 @@
 
                               <div class="detailLeft">
                                 <div class="unitprice">
-                                  <span>{{ t('小时收益') }}: </span>
-                                  <span>₹{{ cutOutNum(((item.rate / 100) *
-                                    item.price * item.num) / 24, 2) }}</span>
+                                  <span>{{ t('价格') }}: </span>
+                                  <span>₹{{ item.price }}</span>
                                 </div>
                                 <div class="dailyearnings">
-                                  <span>{{ t('每日收入') }}: </span>
-                                  <span>₹{{ cutOutNum((item.rate / 100) *
-                                    item.price * item.num, 2) }}</span>
+                                  <span>{{ t('期限') }}: </span>
+                                  <span>{{ item.total_days }}/{{item.days}}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}: </span>
                                   <span>
-                                    ₹{{ cutOutNum((item.rate / 100) * item.price * item.days * item.num, 2) }}
+                                    ₹{{ cutOutNum(item.rate * item.price * item.days * item.num / 100, 2) }}
                                   </span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
