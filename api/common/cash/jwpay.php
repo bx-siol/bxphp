@@ -7,21 +7,19 @@ use think\facade\Db;
 
 function CashOrder($fin_cashlog)
 {
-	// $rand_arr = [6, 7, 8, 9];
-	// $phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999); 
 	$config = $_ENV['PAY_CONFIG']['jwpay'];
 	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
 	$milliseconds = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
 		'outType' => 'IMPS',
 		'merchantId' => $config['mch_id'],
-		'orderid' => $fin_cashlog['osn'],
+		'orderId' => $fin_cashlog['osn'],
 		'timestamp' => $milliseconds,
-		'amount' => $fin_cashlog['real_money'],
+		'amount' => floor($fin_cashlog['real_money'] * 100),
 		'accountHolder' => $fin_cashlog['receive_realname'],
 		'accountNumber' => ($fin_cashlog['receive_account']),
 		'ifsc' => $fin_cashlog['receive_ifsc'],
-		'notifyurl' => $config['dnotify_url']
+		'notifyUrl' => $config['dnotify_url']
 	];
 	$pdata['sign'] = CashSign($pdata);
 	$url = $config['dpay_url'];
@@ -30,7 +28,7 @@ function CashOrder($fin_cashlog)
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
-	//writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash');
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash');
 	if ($resultArr['code'] != '100') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'jwpay/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];

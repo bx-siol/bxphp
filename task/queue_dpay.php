@@ -1,5 +1,5 @@
 <?php
-require_once(dirname(__FILE__) . '/daemon.ini.php');
+require_once (dirname(__FILE__) . '/daemon.ini.php');
 
 use think\facade\Db;
 
@@ -39,6 +39,7 @@ while (true) {
 				continue;
 			}
 			$result = cashAct($item, $dtype);
+			output(json_encode($item));
 			output($result);
 			if ($result === false) {
 				Db::rollback();
@@ -75,13 +76,14 @@ while (true) {
 
 function cashAct($item, $dtype)
 {
+
 	//接口
-	$cash_file = APP_PATH . 'common/cash/' . $dtype . '.php';
+	$cash_file = '/www/wwwroot/php/api/api/common/cash/' . $dtype . '.php';
 	if (!file_exists($cash_file)) {
 		return false;
 	}
 	require_once $cash_file;
-	$func_name = $dtype . 'CashOrder';
+	$func_name = 'CashOrder';
 	if (!function_exists($func_name)) {
 		return false;
 	}

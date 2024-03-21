@@ -27,7 +27,7 @@ function CashOrder($fin_cashlog)
 		return $result;
 	}
 	$resultArr = $result['output'];
-	//writeLog(json_encode('resultArr : ' . $resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/cash');
+	writeLog(json_encode('resultArr : ' . $resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/cash');
 	if ($resultArr['code'] != '1') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
