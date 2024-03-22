@@ -103,7 +103,8 @@ class GiftController extends BaseController
 				}
 				$tipMsg = "Money:{$money}";
 			} elseif ($prize['type'] == 2) { //产品
-				$goodInfo = Db::table('pro_goods')->where("id = {$prize['gid']}")->select();
+				$goodInfo = Db::table('pro_goods')->where("id = {$prize['gid']}")->find();
+				writeLog("goodInfo " . json_encode($goodInfo),'bobopay1');
 				Db::table('pro_order')->insertGetId([
 					'uid'=> $pageuser['id'],
 					'osn'=> getRsn(),
