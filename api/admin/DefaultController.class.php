@@ -321,7 +321,7 @@ class DefaultController extends BaseController
 		$invest_today = Db::table('pro_order')->where($where . $uWhere . " and create_time between {$today_start} and {$today_end} and is_give=0")->fieldRaw("count(1) as cnt,sum(num) as num,sum(money) as money")->find();
 		
 		//今日订单分红
-		$reward_money_today =  Db::table('pro_reward')->where("create_time between {$today_start} and {$today_end} and type=1")->sum('money');
+		$reward_money_today =  Db::table('pro_reward')->where("create_time between {$today_start} and {$today_end} and type=1".$uWhere)->sum('money');
 
 		$reward = Db::table('pro_reward')->where($where . "{$uWhere} and type=1")->fieldRaw("count(1) as cnt,sum(money) as money")->find();
 		$return_data = [
