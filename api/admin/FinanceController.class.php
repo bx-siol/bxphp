@@ -175,36 +175,13 @@ class FinanceController extends BaseController
 			$res = Db::table('fin_paylog')->insertGetId($fin_paylog);
 			if ($res) {
 				$sub_pay_type = 0;
-				if (in_array($params['pay_type'], ['rapay101'])) {
-					$file_name = 'rapay';
-				} elseif (in_array($params['pay_type'], ['bobopay'])) {
-					$file_name = 'bobopay';
-				} elseif (in_array($params['pay_type'], ['jwpay'])) {
-					$file_name = 'jwpay';
-				} else {
-					$pay_type_arr = explode('_', $params['pay_type']);
-					$file_name = trim($pay_type_arr[0]);
-					if ($pay_type_arr[1]) {
-						$sub_pay_type = trim($pay_type_arr[1]);
-					}
-				}
-
-				$pay_file = APP_PATH . 'common/pay/' . $file_name . '.php';
-				if (!file_exists($pay_file)) {
-					ReturnToJson(-1, 'Unknown recharge type:' . $params['pay_type']);
-				}
-				if ($params['pay_type'] == 'bobopay') {
-					$sub_pay_type = 1;
-				} elseif (($params['pay_type'] == 'rapay11101')) {
-					$sub_pay_type = 11101;
-				} elseif (($params['pay_type'] == 'jwpay')) {
-					$sub_pay_type = 1;
-				}
+				$pay_file = getPayFilePath($params['pay_type']);
+				$sub_pay_type = getPaySub($params['pay_type']);
 				require_once $pay_file;
 				$result = payOrder($fin_paylog, $sub_pay_type);
-				if ($params['pay_type'] != 'OfflinePay') {
-					//file_put_contents(LOGS_PATH . $file_name . '/payResult' . date("Y-m-d", time()) . '.txt',   json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
-				}
+				// if ($params['pay_type'] != 'OfflinePay') {
+				// 	//file_put_contents(LOGS_PATH . $file_name . '/payResult' . date("Y-m-d", time()) . '.txt',   json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\r\n\r\n", FILE_APPEND);
+				// }
 				if ($result['code'] != 1) {
 					ReturnToJson(-1, $result['msg']);
 				}
@@ -220,6 +197,28 @@ class FinanceController extends BaseController
 		} catch (\Exception $e) {
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
+	}
+
+	//utr 补单
+	public function _utrorder()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$pay_file = getPayFilePath($params['pay_type']);
+		require_once $pay_file;
+		$result = utrorder($$params);
+		ReturnToJsonBystring($result);
+	}
+
+	//utr 查单
+	public function _utr()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$pay_file = getPayFilePath($params['pay_type']);
+		require_once $pay_file;
+		$result = utr($params['utr']);
+		ReturnToJsonBystring($result);
 	}
 
 	//取消订单

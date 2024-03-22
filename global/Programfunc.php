@@ -893,6 +893,37 @@ function getMstime()
 // 	$ip = $long ? [$ip, $long] : [$ip, 0];
 // 	return $ip[$type];
 // }
+
+
+function getPaySub($pay_type)
+{
+	if ($pay_type == 'bobopay') {
+		$sub_pay_type = 1;
+	} elseif (($pay_type == 'rapay11101')) {
+		$sub_pay_type = 11101;
+	} elseif (($pay_type == 'jwpay')) {
+		$sub_pay_type = 1;
+	}
+	return $sub_pay_type;
+}
+function getPayFilePath($pay_type)
+{
+	if (in_array($pay_type, ['rapay101'])) {
+		$file_name = 'rapay';
+	} elseif (in_array($pay_type, ['bobopay'])) {
+		$file_name = 'bobopay';
+	} elseif (in_array($pay_type, ['jwpay'])) {
+		$file_name = 'jwpay';
+	} else {
+		$file_name = $pay_type;
+	}
+	$pay_file = APP_PATH . 'common/pay/' . $file_name . '.php';
+	if (!file_exists($pay_file))
+		ReturnToJson(-1, 'Unknown recharge type:' . $pay_type);
+	return $pay_file;
+}
+
+
 function getClientIp($type = 0)
 {
 	$type = $type ? 1 : 0;
@@ -929,7 +960,13 @@ function ReturnToJson($code, $msg, $data = [])
 	echo $json_str;
 	exit;
 }
-
+//格式化返回
+function ReturnToJsonBystring($msg)
+{
+	$json_str = json_encode($msg, JSON_UNESCAPED_UNICODE);
+	echo $json_str;
+	exit;
+}
 function fReturn($code, $msg, $data = [])
 {
 	$return = [

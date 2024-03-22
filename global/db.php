@@ -127,9 +127,9 @@ $_ENV['PAY_CONFIG']['nicepay'] = [
 
 	'payquery_url' => 'https://g.verynicepay.life/api/pay/query',//收款查询
 	'balance_url' => 'https://g.verynicepay.life/api/pay/balance',//余额
-	'makeOrder_url' => 'https://g.verynicepay.life/api/pay/makeOrder',//utr补单
+	'utrorder_url' => 'https://g.verynicepay.life/api/pay/makeOrder',//utr补单
 	'utrquery_url' => 'https://g.verynicepay.life/api/pay/utrquery',//utr查单
-	'repayquery_url' => 'https://g.verynicepay.life/api/pay/repayquery',//代付查询
+	'dpayquery_url' => 'https://g.verynicepay.life/api/pay/repayquery',//代付查询
 
 	'pay_url' => 'https://g.verynicepay.life/api/pay',//收款
 	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay',//代付
@@ -143,9 +143,19 @@ $_ENV['PAY_CONFIG']['bobopay'] = [
 	'mch_id' => 'TEST100',
 	'mch_key' => 'DRNnGuqGrY',
 
+
+	'payquery_url' => 'https://api.jwpay.net/api/payment/status',//收款查询
+	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status',//代付查询
+
+	'balance_url' => 'https://api.jwpay.net/api/payout/balance',//余额
+
+	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr',//utr补单
+	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr',//utr查单
+
+
 	'pay_url' => 'https://api.bobopay.in/api/payin',
 	'dpay_url' => 'https://api.bobopay.in/api/payout',
-	'query_url' => '',
+
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/',
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/bobopay/pay',
@@ -156,12 +166,20 @@ $_ENV['PAY_CONFIG']['jwpay'] = [
 	'mch_id' => '100',
 	'mch_key' => 'nrCV5HpZ3FzvuX6L',
 
-	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder',
-	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder',
-	'balance_url' => 'https://api.jwpay.net/api/payout/balance',
 
-	'query_url' => '',
-	'returnUrl' => 'http://' . PAY_BACKURL . '/',
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay',
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash'
+
+	'payquery_url' => 'https://api.jwpay.net/api/payment/status',//收款查询
+	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status',//代付查询
+
+	'balance_url' => 'https://api.jwpay.net/api/payout/balance',//余额
+
+	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr',//utr补单
+	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr',//utr查单
+
+	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder',//代收
+	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder',//代付
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay',//代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash'//代付回调
 ];
