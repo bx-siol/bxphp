@@ -26,11 +26,10 @@ class GiftController extends BaseController
 			$count = Db::table('sys_user')->where('first_pay_day >0')->inc('lottery', intval($params['num']))->update();
 
 			//增加中奖记录
-            $prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
-			$randomNumber = mt_rand(0, count($prize_arr) -1);
-            $prize = $prize_arr[$randomNumber];
-			if(empty($prize))
-			{
+			$prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
+			$randomNumber = mt_rand(0, count($prize_arr) - 1);
+			$prize = $prize_arr[$randomNumber];
+			if (empty ($prize)) {
 				$prizeEmpty = array();
 				foreach ($prize_arr as $k) {
 					if ($k['type'] == 4)
@@ -39,10 +38,8 @@ class GiftController extends BaseController
 				$prize = $prizeEmpty;
 			}
 			$syso_userList = Db::table('sys_user')->where('first_pay_day >0')->select();
-			foreach ($syso_userList as $item) 
-			{
-				for ($i = 0; $i < intval($params['num']); $i++) 
-				{
+			foreach ($syso_userList as $item) {
+				for ($i = 0; $i < intval($params['num']); $i++) {
 					Db::table('gift_prize_log')->insertGetId([
 						'uid' => $item['id'],
 						'type' => $prize['type'],
@@ -84,16 +81,16 @@ class GiftController extends BaseController
 		Db::startTrans();
 		try {
 			$user = Db::table('sys_user')->where(" openid='" . $params['user'] . "'")->find();
-			if (!$user) ReturnToJson(-1, '用户不存在');
+			if (!$user)
+				ReturnToJson(-1, '用户不存在');
 			$update['lottery'] = $user['lottery'] + intval($params['num']);
 			$count = Db::table('sys_user')->where(" id=" . $user['id'])->update($update);
 
 			//增加中奖记录
-            $prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
-			$randomNumber = mt_rand(0, count($prize_arr) -1);
-            $prize = $prize_arr[$randomNumber];
-			if(empty($prize))
-			{
+			$prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
+			$randomNumber = mt_rand(0, count($prize_arr) - 1);
+			$prize = $prize_arr[$randomNumber];
+			if (empty ($prize)) {
 				$prizeEmpty = array();
 				foreach ($prize_arr as $k) {
 					if ($k['type'] == 4)
@@ -101,26 +98,25 @@ class GiftController extends BaseController
 				}
 				$prize = $prizeEmpty;
 			}
-			for ($i = 0; $i < intval($params['num']); $i++) 
-				{
-					Db::table('gift_prize_log')->insertGetId([
-						'uid' => $user['id'],
-						'type' => $prize['type'],
-						'money' => 0,
-						'gid' => $prize['gid'],
-						'coupon_id' => $prize['coupon_id'],
-						'prize_name' => $prize['name'],
-						'prize_cover' => $prize['cover'],
-						'remark' => $prize['remark'],
-						'create_time' => NOW_TIME,
-						'create_day' => date('Ymd', NOW_TIME),
-						'create_ip' => '',
-						'split_time' => date('Y-m-d H:i:s', NOW_TIME),
-						'order_money' => 0,
-						'is_user' => 0,
-						'gift_prize_id' => $prize['id'],
-					]);
-				}
+			for ($i = 0; $i < intval($params['num']); $i++) {
+				Db::table('gift_prize_log')->insertGetId([
+					'uid' => $user['id'],
+					'type' => $prize['type'],
+					'money' => 0,
+					'gid' => $prize['gid'],
+					'coupon_id' => $prize['coupon_id'],
+					'prize_name' => $prize['name'],
+					'prize_cover' => $prize['cover'],
+					'remark' => $prize['remark'],
+					'create_time' => NOW_TIME,
+					'create_day' => date('Ymd', NOW_TIME),
+					'create_ip' => '',
+					'split_time' => date('Y-m-d H:i:s', NOW_TIME),
+					'order_money' => 0,
+					'is_user' => 0,
+					'gift_prize_id' => $prize['id'],
+				]);
+			}
 
 			Db::commit();
 		} catch (\Throwable $th) {
@@ -322,7 +318,7 @@ class GiftController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		if ($params['s_keyword']) {
 			//$where .= " and (log.remark like '%{$params['s_keyword']}%')";
 
@@ -449,25 +445,25 @@ class GiftController extends BaseController
 		$goods = Db::table('pro_goods')->select();
 		$coupons = Db::table('coupon_list')->select();
 
-			foreach ($list as &$item) {
-				if($item['type'] == 1)
-					$item['typename']  = "余额";
-				if($item['type'] == 2)
-					$item['typename']  = "产品";
-				if($item['type'] == 3)
-					$item['typename']  = "实物";
-				if($item['type'] == 4)
-					$item['typename']  = "空";
-				if($item['type'] == 5)
-					$item['typename']  = "奖券";
-			}
-			
+		foreach ($list as &$item) {
+			if ($item['type'] == 1)
+				$item['typename'] = "余额";
+			if ($item['type'] == 2)
+				$item['typename'] = "产品";
+			if ($item['type'] == 3)
+				$item['typename'] = "实物";
+			if ($item['type'] == 4)
+				$item['typename'] = "空";
+			if ($item['type'] == 5)
+				$item['typename'] = "奖券";
+		}
+
 		$return_data = [
 			'list' => $list,
 			'limit' => $this->pageSize,
-			'goods' =>$goods,
-			'coupons'=> $coupons
-			
+			'goods' => $goods,
+			'coupons' => $coupons
+
 		];
 		if ($params['page'] < 2) {
 		}
@@ -524,7 +520,7 @@ class GiftController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		
+
 		if ($params['s_keyword']) {
 			$where .= " and (u.account='{$params['s_keyword']}' or u.nickname like '%{$params['s_keyword']}%')";
 		}
@@ -545,21 +541,21 @@ class GiftController extends BaseController
 
 		foreach ($list as &$item) {
 			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
-			$item['is_user_flag'] = $item['is_user'] == 0 ? '未抽奖':'已抽奖';
-			if($item['type'] == 1)
-					$item['typename']  = "余额";
-				if($item['type'] == 2)
-					$item['typename']  = "产品";
-				if($item['type'] == 3)
-					$item['typename']  = "实物";
-				if($item['type'] == 4)
-					$item['typename']  = "空";
-				if($item['type'] == 5)
-					$item['typename']  = "奖券";
+			$item['is_user_flag'] = $item['is_user'] == 0 ? '未抽奖' : '已抽奖';
+			if ($item['type'] == 1)
+				$item['typename'] = "余额";
+			if ($item['type'] == 2)
+				$item['typename'] = "产品";
+			if ($item['type'] == 3)
+				$item['typename'] = "实物";
+			if ($item['type'] == 4)
+				$item['typename'] = "空";
+			if ($item['type'] == 5)
+				$item['typename'] = "奖券";
 		}
 		$return_data = [
 			'list' => $list,
-			'count' =>intval($count_item['cnt']),
+			'count' => intval($count_item['cnt']),
 			'limit' => $this->pageSize
 		];
 		if ($params['page'] < 2) {
@@ -576,7 +572,7 @@ class GiftController extends BaseController
 		$params['s_status'] = intval($params['s_status']);
 
 		$where = "log.status<99";
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
@@ -658,16 +654,16 @@ class GiftController extends BaseController
 			ReturnToJson(-1, '请填写券名称');
 		}
 		/*
-		if($params['discount']<=0&&$params['money']<=0){
-			ReturnToJson(-1,'折扣与面值必须设置一项');
-		}else{
-			if($params['discount']<0||$params['discount']>100){
-				ReturnToJson(-1,'折扣比例不正确');
-			}
-			if($params['money']<0){
-				ReturnToJson(-1,'面额不正确');
-			}
-		}*/
+			  if($params['discount']<=0&&$params['money']<=0){
+				  ReturnToJson(-1,'折扣与面值必须设置一项');
+			  }else{
+				  if($params['discount']<0||$params['discount']>100){
+					  ReturnToJson(-1,'折扣比例不正确');
+				  }
+				  if($params['money']<0){
+					  ReturnToJson(-1,'面额不正确');
+				  }
+			  }*/
 		if ($params['type'] == 1) {
 			//$params['gids'] = [];
 			$params['money'] = 0;
@@ -796,7 +792,7 @@ class GiftController extends BaseController
 
 
 		if ($pageuser['gid'] != 1) {
-			$uid_arr =	getDownUser($pageuser['id'], false, $pageuser);
+			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 			$uid_str = implode(',', $uid_arr);
 			if (!$uid_str) {
 				$uid_str = '0';
@@ -804,8 +800,8 @@ class GiftController extends BaseController
 			$where .= " and log.uid in({$uid_str})";
 		}
 
-		$where .= empty($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
-		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty ($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
+		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
@@ -816,7 +812,7 @@ class GiftController extends BaseController
 		}
 		if ($params['s_keyword']) {
 			//$where .= " and (log.remark like '%{$params['s_keyword']}%')"; 
-			$where  .= " and u.openid='{$params['s_keyword']}' ";
+			$where .= " and u.openid='{$params['s_keyword']}' ";
 		}
 
 		$count_item = Db::table('coupon_log log')
@@ -929,8 +925,8 @@ class GiftController extends BaseController
 		if (!checkDataAction()) {
 			$where .= " and log.create_id={$pageuser['id']}";
 		}
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.rsn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.name like '%{$params['s_keyword']}%')";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.rsn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.name like '%{$params['s_keyword']}%')";
 		$count_item = Db::table('gift_redpack log')
 			->leftJoin('sys_user u', 'log.create_id=u.id')
 			->fieldRaw('count(1) as cnt,sum(log.receive_quantity) as receive_quantity,sum(log.receive_money) as receive_money')->where($where)->find();
@@ -978,20 +974,20 @@ class GiftController extends BaseController
 			ReturnToJson(-1, '红包数量不正确');
 		}
 		/*
-		if(!$params['icon']){
-			ReturnToJson(-1,'请上传图标');
-		}
-		$covers=[];
-		if(!$params['covers']){
-			$params['covers']=[];
-		}
-		foreach($params['covers'] as $cv){
-			if(!$cv){
-				continue;
-			}
-			$covers[]=$cv;
-		}
-		*/
+			  if(!$params['icon']){
+				  ReturnToJson(-1,'请上传图标');
+			  }
+			  $covers=[];
+			  if(!$params['covers']){
+				  $params['covers']=[];
+			  }
+			  foreach($params['covers'] as $cv){
+				  if(!$cv){
+					  continue;
+				  }
+				  $covers[]=$cv;
+			  }
+			  */
 		$cnf_redpack_status = getConfig('cnf_redpack_status');
 		if (!array_key_exists($params['status'], $cnf_redpack_status)) {
 			ReturnToJson(-1, '未知状态');
@@ -1025,7 +1021,7 @@ class GiftController extends BaseController
 				$res = $model->insertGetId($db_data);
 				$db_data['id'] = $res;
 				//生成红包明细
-				require_once(LIB_PATH . 'Redpack.class.php');
+				require_once (LIB_PATH . 'Redpack.class.php');
 				$redpack = new Redpack($params['total_money'], $params['quantity']);
 				$resultArr = $redpack->getPack();
 				foreach ($resultArr as $mv) {
@@ -1119,12 +1115,13 @@ class GiftController extends BaseController
 				$where .= " and log.uid=0";
 			}
 		}
-
-		if ($pageuser['gid'] != 1) {
-			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
-			$uid_arr[] = $pageuser['id'];
-			$uid_str = implode(',', $uid_arr);
-			$where .= " and log.create_id in ({$uid_str})";
+		if (!checkDataAction()) {
+			if ($pageuser['gid'] != 1) {
+				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
+				$uid_arr[] = $pageuser['id'];
+				$uid_str = implode(',', $uid_arr);
+				$where .= " and log.create_id in ({$uid_str})";
+			}
 		}
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
