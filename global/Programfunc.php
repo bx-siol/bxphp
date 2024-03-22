@@ -161,6 +161,8 @@ function getDownUsercount($uid)
 	$down_arr = Db::query($sql);
 	return intval($down_arr['count']);
 }
+
+//这个方法只查询下三级用户，性能高
 function getDownUser_new($uid, $need_all = false, $where = '')
 {
 	$uid = intval($uid);
@@ -183,7 +185,7 @@ function getDownUser_new($uid, $need_all = false, $where = '')
 	}
 	return $down_arr;
 }
-//获取下级
+//获取下级 无限极查询下级用户  
 function getDownUser($uid, $need_all = false, $loinuser = [])
 {
 	$uid = intval($uid);

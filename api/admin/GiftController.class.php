@@ -654,16 +654,16 @@ class GiftController extends BaseController
 			ReturnToJson(-1, '请填写券名称');
 		}
 		/*
-			  if($params['discount']<=0&&$params['money']<=0){
-				  ReturnToJson(-1,'折扣与面值必须设置一项');
-			  }else{
-				  if($params['discount']<0||$params['discount']>100){
-					  ReturnToJson(-1,'折扣比例不正确');
-				  }
-				  if($params['money']<0){
-					  ReturnToJson(-1,'面额不正确');
-				  }
-			  }*/
+								if($params['discount']<=0&&$params['money']<=0){
+									ReturnToJson(-1,'折扣与面值必须设置一项');
+								}else{
+									if($params['discount']<0||$params['discount']>100){
+										ReturnToJson(-1,'折扣比例不正确');
+									}
+									if($params['money']<0){
+										ReturnToJson(-1,'面额不正确');
+									}
+								}*/
 		if ($params['type'] == 1) {
 			//$params['gids'] = [];
 			$params['money'] = 0;
@@ -790,8 +790,7 @@ class GiftController extends BaseController
 			}
 		}
 
-
-		if ($pageuser['gid'] != 1) {
+		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 			$uid_str = implode(',', $uid_arr);
 			if (!$uid_str) {
@@ -799,7 +798,6 @@ class GiftController extends BaseController
 			}
 			$where .= " and log.uid in({$uid_str})";
 		}
-
 		$where .= empty ($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
 		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		if ($params['s_start_time'] && $params['s_end_time']) {
@@ -974,20 +972,20 @@ class GiftController extends BaseController
 			ReturnToJson(-1, '红包数量不正确');
 		}
 		/*
-			  if(!$params['icon']){
-				  ReturnToJson(-1,'请上传图标');
-			  }
-			  $covers=[];
-			  if(!$params['covers']){
-				  $params['covers']=[];
-			  }
-			  foreach($params['covers'] as $cv){
-				  if(!$cv){
-					  continue;
-				  }
-				  $covers[]=$cv;
-			  }
-			  */
+								if(!$params['icon']){
+									ReturnToJson(-1,'请上传图标');
+								}
+								$covers=[];
+								if(!$params['covers']){
+									$params['covers']=[];
+								}
+								foreach($params['covers'] as $cv){
+									if(!$cv){
+										continue;
+									}
+									$covers[]=$cv;
+								}
+								*/
 		$cnf_redpack_status = getConfig('cnf_redpack_status');
 		if (!array_key_exists($params['status'], $cnf_redpack_status)) {
 			ReturnToJson(-1, '未知状态');
@@ -1116,12 +1114,12 @@ class GiftController extends BaseController
 			}
 		}
 		if (!checkDataAction()) {
-			if ($pageuser['gid'] != 1) {
-				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
-				$uid_arr[] = $pageuser['id'];
-				$uid_str = implode(',', $uid_arr);
-				$where .= " and log.create_id in ({$uid_str})";
-			}
+
+			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
+			$uid_arr[] = $pageuser['id'];
+			$uid_str = implode(',', $uid_arr);
+			$where .= " and log.create_id in ({$uid_str})";
+
 		}
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');

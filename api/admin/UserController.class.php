@@ -266,7 +266,7 @@ class UserController extends BaseController
 		if (!array_key_exists($data['gid'], $sys_group)) {
 			ReturnToJson(-1, '不存在相应分组');
 		}
-		if ($pageuser['gid'] != 1) {
+		if (!checkDataAction()) {
 			if ($data['gid'] <= $pageuser['gid']) {
 				ReturnToJson(-1, '您的级别不足以设置该所属分组');
 			}
@@ -324,7 +324,7 @@ class UserController extends BaseController
 			$data['reg_time'] = NOW_TIME;
 			$data['reg_ip'] = CLIENT_IP;
 		} else {
-			if ($pageuser['gid'] > 41) {
+			if (!checkDataAction()) {
 				$uid_arr = getDownUser($pageuser['id']);
 				if (!in_array($item_id, $uid_arr)) {
 					ReturnToJson(-1, '不是自己下级用户无法编辑');
@@ -408,7 +408,7 @@ class UserController extends BaseController
 		if ($item_id == 1) {
 			ReturnToJson(-1, '超级管理员不能删除');
 		}
-		if ($pageuser['gid'] > 41) {
+		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 			if (!in_array($item_id, $uid_arr)) {
 				ReturnToJson(-1, '不是自己的用户无法删除');
@@ -433,7 +433,7 @@ class UserController extends BaseController
 		if (!$item_id) {
 			ReturnToJson(-1, '缺少参数');
 		}
-		if ($pageuser['gid'] != 1) {
+		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id']);
 			if (!in_array($item_id, $uid_arr)) {
 				ReturnToJson(-1, '不是自己的用户无法踢下线');
@@ -468,7 +468,7 @@ class UserController extends BaseController
 				ReturnToJson('-1', '不存在要操作的用户');
 			}
 
-			if ($pageuser['gid'] > 41) {
+			if (!checkDataAction()) {
 				ReturnToJson('-1', '未开放充值类型');
 			}
 			$sys_user = [];
@@ -668,7 +668,7 @@ class UserController extends BaseController
 		$params['s_status'] = intval($params['s_status']);
 
 		$where = "log.status>0";
-		if ($pageuser['gid'] > 41) {
+		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id']);
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.uid in({$uid_str})";
@@ -732,7 +732,7 @@ class UserController extends BaseController
 		if (!in_array($item['status'], [1, 2])) {
 			ReturnToJson(-1, '当前状态不可操作');
 		}
-		if ($pageuser['gid'] > 41) {
+		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id']);
 			if (!in_array($item['uid'], $uid_arr)) {
 				ReturnToJson(-1, '不是自己的用户无法操作');

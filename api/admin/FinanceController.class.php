@@ -429,12 +429,13 @@ class FinanceController extends BaseController
 			if ($order['status'] == 1 && $order['pay_type'] != 'offline') {
 				ReturnToJson(-1, '该订单当前状态不可操作');
 			}
-			if ($pageuser['gid'] > 41) {
+			if (!checkDataAction()) {
 				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 				if (!in_array($order['uid'], $uid_arr)) {
 					ReturnToJson('-1', '非下级用户的记录无法操作');
 				}
 			}
+
 			$fin_paylog = [
 				'status' => $params['status'],
 				'check_remark' => $params['check_remark'],
@@ -970,7 +971,7 @@ class FinanceController extends BaseController
 				//ReturnToJson(-1,'订单当前状态不可操作');
 				return ['code' => -1, 'msg' => '订单当前状态不可操作'];
 			}
-			if ($pageuser['gid'] > 41) {
+			if (!checkDataAction()) {
 				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 				if (!in_array($order['uid'], $uid_arr)) {
 					//ReturnToJson(-1,'非下级用户的记录无法操作');
@@ -1102,7 +1103,7 @@ class FinanceController extends BaseController
 				return ['code' => -1, 'msg' => '不存在相应的订单'];
 			}
 
-			if ($pageuser['gid'] > 41) {
+			if (!checkDataAction()) {
 				$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 				if (!in_array($order['uid'], $uid_arr)) {
 					return ['code' => -1, 'msg' => '非下级用户的记录无法操作'];

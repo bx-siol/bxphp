@@ -21,7 +21,7 @@ class ExtController extends BaseController
 			$where .= " and log.uid={$pageuser['id']}";
 		}
 		//$where.=empty($params['s_status'])?'':" and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
 		$count_item = Db::table('ext_service log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
 			->fieldRaw('count(1) as cnt')->where($where)->find();
@@ -66,10 +66,10 @@ class ExtController extends BaseController
 			ReturnToJson(-1, '客服类型不正确');
 		}
 		/*
-			  if(!$params['qrcode']){
-				  ReturnToJson(-1,'请上传二维码');
-			  }
-			  */
+									  if(!$params['qrcode']){
+										  ReturnToJson(-1,'请上传二维码');
+									  }
+									  */
 		$db_data = [
 			'gid' => $pageuser['gid'],
 			'uid' => $pageuser['id'],
@@ -144,7 +144,7 @@ class ExtController extends BaseController
 			$where .= " and log.uid={$pageuser['id']}";
 		}
 		//$where.=empty($params['s_status'])?'':" and log.status={$params['s_status']}";
-		$where .= empty($params['s_keyword']) ? '' : " and (log.name='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.name='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
 		$count_item = Db::table('ext_task log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
 			->fieldRaw('count(1) as cnt')->where($where)->find();
@@ -283,13 +283,13 @@ class ExtController extends BaseController
 			$uid_arr = [];
 			$s_puser = Db::table('sys_user')->where("id='{$s_keyword}' or account='{$s_keyword}' or email='{$s_keyword}' or realname='{$s_keyword}' or nickname='{$s_keyword}'")->find();
 			if ($s_puser) {
-				$uid_arr = getDownUser($s_puser['id']);
+				$uid_arr = getDownUser_new($s_puser['id']);
 			}
 			$uid_arr[] = 0;
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.uid in({$uid_str})";
 		}
-		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
 		if ($params['s_keyword']) {
 			$where .= " and (log.tsn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or u.nickname like '%{$params['s_keyword']}%')";
 		}
@@ -302,30 +302,21 @@ class ExtController extends BaseController
 			->find();
 
 		$list = [];
-		if ($pageuser['gid'] != '1') {
+
+		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
 			$uid_arr[] = 0;
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.uid in ({$uid_str})";
-
-			$list = Db::view(['ext_tasklog' => 'log'], ['*'])
-				->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
-				->view(['ext_task' => 't'], ['name' => 'task_name'], 'log.tid=t.id', 'LEFT')
-				->where($where)
-				->order(['log.id' => 'desc'])
-				->page($params['page'], $this->pageSize)
-				->select()
-				->toArray();
-		} else
-			$list = Db::view(['ext_tasklog' => 'log'], ['*'])
-				->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
-				->view(['ext_task' => 't'], ['name' => 'task_name'], 'log.tid=t.id', 'LEFT')
-				->where($where)
-				->order(['log.id' => 'desc'])
-				->page($params['page'], $this->pageSize)
-				->select()
-				->toArray();
-
+		}
+		$list = Db::view(['ext_tasklog' => 'log'], ['*'])
+			->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
+			->view(['ext_task' => 't'], ['name' => 'task_name'], 'log.tid=t.id', 'LEFT')
+			->where($where)
+			->order(['log.id' => 'desc'])
+			->page($params['page'], $this->pageSize)
+			->select()
+			->toArray();
 		$cnf_task_status = getConfig('cnf_task_status');
 		foreach ($list as &$item) {
 			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
