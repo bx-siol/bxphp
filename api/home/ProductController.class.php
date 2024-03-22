@@ -794,8 +794,11 @@ class ProductController extends BaseController
 			}
 			$item = $this->redis->get('pro_goods_' . $params['gsn']);
 			$money = $quantity * $item['price'];
+			if ($money <= 0) {
+				ReturnToJson(-1, "I'm really sorry, the system is currently busy. Please try again later.");
+			}
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
-			writeLog("money".",pro_order" . json_encode($pro_order),'_invest');
+			writeLog("money" . ",pro_order" . json_encode($pro_order), '_invest');
 			// $return_data['err'] = $pro_order['err'];
 			// $return_data['u'] = $pageuser;
 			//判断是否积分商品
@@ -803,9 +806,9 @@ class ProductController extends BaseController
 				$this->invest_date_gift($pageuser, $item, $quantity, $pro_order);
 			} else {
 				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
-				if($check_num == 0)
+				if ($check_num == 0)
 					$pro_order["p3"] = 1;
-				
+
 				$this->invest_date($params, $pageuser, $item, $quantity, $check_num, $pro_order);
 				$this->Productgift($item, $quantity, $pageuser, $check_num, $pro_order);
 			}
@@ -1209,11 +1212,11 @@ class ProductController extends BaseController
 			}
 			//首次购买送自己
 			//if ($item['price1'] > 0)			
-				//updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
+			//updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
 
 			//首次购买送上级
 			//if ($item['price2'] > 0)
-				//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
+			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 
 		} else {
 			if ($item['price0'] > 0)//复购送自己
