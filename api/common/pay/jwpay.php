@@ -54,7 +54,7 @@ function payOrder($fin_paylog, $sub_type = '')
 //查询订单状态
 function status($orderId)
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName() . ''];
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
 	$timestamp = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
@@ -99,7 +99,7 @@ function status($orderId)
 //utr 补单
 function utrorder($fin_paylog)
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName() . ''];
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
 	$timestamp = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
@@ -135,7 +135,7 @@ function utrorder($fin_paylog)
 //utr 查单
 function utr($utr)
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName() . ''];
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
 	$timestamp = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
@@ -180,7 +180,7 @@ function utr($utr)
 //查询余额
 function balance()
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName() . ''];
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
 	$timestamp = round($microtime * 1000); // 将时间戳转换为毫秒级
 	$pdata = [
@@ -204,8 +204,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['balance'],
-			'payout_balance' => $resultArr['balance'],
+			'balance' => $resultArr['balance'] / 100,
+			'payout_balance' => $resultArr['balance'] / 100,
 		]
 	];
 	return $return_data;
@@ -215,7 +215,7 @@ function balance()
 
 function paySign($params, $type = 0)
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName() . ''];
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$signStr = '';
 	switch ($type) {
 		case 0://代收

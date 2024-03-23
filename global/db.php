@@ -144,13 +144,13 @@ $_ENV['PAY_CONFIG']['bobopay'] = [
 	'mch_key' => 'DRNnGuqGrY',
 
 
-	'payquery_url' => 'https://api.jwpay.net/api/payment/status',//收款查询
-	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status',//代付查询
+	'payquery_url' => 'https://api.bobopay.in/api/payin/query',//收款查询
+	'dpayquery_url' => 'https://api.bobopay.in/api/payout/query',//代付查询
 
-	'balance_url' => 'https://api.jwpay.net/api/payout/balance',//余额
+	'balance_url' => 'https://api.bobopay.in/api/balance',//余额
 
-	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr',//utr补单
-	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr',//utr查单
+	'utrorder_url' => 'https://api.bobopay.in/api/payin/submit/utr',//utr补单
+	'utrquery_url' => 'https://api.bobopay.in/api/payin/query/utr',//utr查单
 
 
 	'pay_url' => 'https://api.bobopay.in/api/payin',
