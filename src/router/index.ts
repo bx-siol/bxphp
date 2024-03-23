@@ -263,6 +263,10 @@ const routes: Array<RouteRecordRaw> = [
                 path: 'ext/tasklog',
                 name: 'Ext_tasklog',
                 component: () => import('../views/ext/tasklog.vue')
+            }, {
+                path: 'finance/utr',
+                name: 'Ext_tasklog',
+                component: () => import('../views/finance/utr.vue')
             },
         ]
     }
