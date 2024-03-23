@@ -99,7 +99,7 @@ class BaseController extends CommonCtl
 				$rs = sendbdjt($up_user, $order['money'], $osn);
 				writeLog($rs, 'bot');
 			} catch (\Exception $ed) {
-				writeLog($osn . "订单异常", $paytype . 'bot/err');
+				writeLog($osn . "订单异常", 'bot/err');
 			}
 		} catch (\Exception $e) {
 			writeLog($osn . "订单异常" . json_encode($e, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $paytype . '/notify/pay');
