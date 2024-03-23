@@ -80,8 +80,8 @@ function balance()
 		'msg' => $resultArr['message'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['data']['totalAmount'] / 100,
-			'payout_balance' => $resultArr['data']['availableAmount'] / 100,
+			'balance' => $resultArr['data']['totalAmount'],
+			'payout_balance' => $resultArr['data']['availableAmount'],
 		]
 	];
 	return $return_data;
