@@ -12,7 +12,7 @@
                     :placeholder="t('请填写IFSC代码')" />
                 <van-field readonly v-model="dataForm.phone" :label="t('手机号码')" />
                 <van-field :rules="[{ pattern: /^[0-9]+$/, message: 'Only numbers can be entered', trigger: 'onBlur' }]"
-                    label="OTP" v-model="dataForm.scode" :placeholder="t('请输入OTP')">
+                    label="OTP" v-model="dataForm.scode" :placeholder="t('请输入OTP')" class="fieldcode"> 
                     <template #button>
                         <van-button size="mini" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
                             <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
@@ -169,7 +169,7 @@ const onSubmit = () => {
         _alert('The length of IFSC is 11 bits, the fifth bit is 0')
         return;
     }
-    var str = new RegExp("[`_-~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？+ ]");
+    var str = new RegExp("[^A-Za-z0-9]");
     if (str.test(dataForm.ifsc)) {
         _alert('Symbols cannot appear in the ifsc')
         return;
@@ -262,7 +262,7 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-.conBox {
+.conBox { 
     background: #fff;
     color: #b2b2b2;
     min-height: 100%;
@@ -314,6 +314,9 @@ onMounted(() => {
             .van-field__control {
                 color: #000;
             }
+            .van-field__body{
+                width: 100%;
+            }
         }
 
         .van-badge__wrapper {
@@ -338,9 +341,12 @@ onMounted(() => {
             font: bold 18px/48px "Rotobo";
             color: #000;
         }
+    }
 
-
-
+    .fieldcode{
+        :deep .van-cell__value{
+            flex-direction: column;
+        }
     }
 }
 </style>
