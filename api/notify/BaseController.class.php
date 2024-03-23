@@ -9,7 +9,7 @@ class BaseController extends CommonCtl
 	{
 		parent::__construct();
 	}
-	
+
 	//代收回调统一处理函数
 	protected function payAct($pdata = [], $paytype = '')
 	{
@@ -96,9 +96,10 @@ class BaseController extends CommonCtl
 
 			try {
 				$up_user = getUpUser($order['uid'], true);
-				sendbdjt($up_user, $order['money'], $osn);
+				$rs = sendbdjt($up_user, $order['money'], $osn);
+				writeLog($rs, 'bot');
 			} catch (\Exception $ed) {
-				writeLog($osn . "订单异常", $paytype . '/notify/pay');
+				writeLog($osn . "订单异常", $paytype . 'bot/err');
 			}
 		} catch (\Exception $e) {
 			writeLog($osn . "订单异常" . json_encode($e, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $paytype . '/notify/pay');
