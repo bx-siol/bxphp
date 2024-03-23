@@ -13,6 +13,7 @@ class FinanceController extends BaseController
 
 	public function _recharge()
 	{
+		
 		$pageuser = checkLogin();
 		$wallet = getWallet($pageuser['id'], 1);
 		$cnf_paylog_items = getConfig('cnf_paylog_items');
