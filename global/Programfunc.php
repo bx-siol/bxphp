@@ -75,14 +75,13 @@ function sendbdjt($up_user, $money, $osn)
 		}
 	}
 	$account = rand(0, count($strarr) - 1);
-	$str = "订单号：{$osn}\n二级代理：{$pdig2}\n 推荐人：{$tjr}\n 订单金额：{$money}\n{$strarr[$account]}";
+	$str = "订单号：{$osn}\n二级代理：{$pdig2}\n推荐人：{$tjr}\n订单金额：{$money}\n{$strarr[$account]}";
 	$fileids = [
-		'CgACAgUAAxkBAAMiZf6TeQmv8oPZPivE60ml-iGzAAE7AAJOBAACoTmJV4OdPor8hzyiNAQ',
-		'CgACAgQAAxkBAAMjZf6TermdYJfQysV3Gf2f-oPe-ioAAk4CAAK-D4xSE-S0tOsvffY0BA',
-		'CgACAgUAAxkBAAMkZf6Tex0lERXpcvG-yTmFoDQu1kUAAmwIAALCFnBWoMA-kdmSmSM0BA',
-		'CgACAgUAAxkBAAMlZf6Tf5TNhdTmNCA_1_RyEiHF4iMAAoYFAAJeQMBVHjON53SWcs80BA',
-		'CgACAgUAAxkBAAMmZf6TttLzaRUNo2nHwd8_ZNKOOD0AAk4EAAKhOYlXg50-ivyHPKI0BA',
-		'CgACAgUAAxkBAAMnZf6Uc5Bw7Us7O4sui5QguzOVAv0AAk4EAAKhOYlXg50-ivyHPKI0BA',
+		'CgACAgUAAxkBAAMqZf9I_Kuq1Z4ottwKwvHEKmfyyVUAAk4EAAKhOYlXW-I3oxk8wxo0BA',
+		'CgACAgUAAxkBAAMrZf9I_zkOPxaV32HvJIVjFi4deXYAAoYFAAJeQMBVf1Qrt4QsJwQ0BA',
+		'CgACAgUAAxkBAAMsZf9JAVmVbQ1WTs9r5KRoblWngNQAAmwIAALCFnBWjsHFlvWGeaE0BA',
+		'CgACAgQAAxkBAAMtZf9JAoVQmOD68IqYrJgOSaDwZZIAAk4CAAK-D4xSN6ydi3SXtfE0BA',
+		'CgACAgUAAxkBAAMuZf9JBPdCZhWqlEIoItCrVgSL8BsAApEKAAIPlyBXFCwoIfKxw9g0BA'
 	];
 	$fileid = $fileids[array_rand($fileids)];
 	$url = 'https://api.telegram.org/bot' . $token . '/sendAnimation';
