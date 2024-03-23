@@ -91,7 +91,7 @@ class BaseController extends CommonCtl
 			//writeLog($osn . " is ok", $paytype . '/notify/pay');
 			// if ($order['gplayerId'] != null && $order['gaccount'] != null) {
 			// 	$gurl = 'http://8.218.132.62/index.php/admin/login/doaddscore.html';
-			// 	$this->curl_post($gurl, ['addscore' => $order['money'] * 100, 'username' => $order['gaccount'], 'uid' => $order['gplayerId']]); //添加游戏积分
+			// curl_post($gurl, ['addscore' => $order['money'] * 100, 'username' => $order['gaccount'], 'uid' => $order['gplayerId']]); //添加游戏积分
 			// }
 
 			try {

@@ -544,7 +544,7 @@ class FinanceController extends BaseController
 				ReturnToJson(-1, '订单不存在');
 			}
 			$url = 'http://47.243.82.107/api/Notify/wowpay/payAuto?osn=' . $item['osn']; //88864d4f65e54066
-			$R = $this->curl_post($url, []);
+			$R = curl_post($url);
 			if ($R == 'success') {
 				$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
 			}
@@ -581,7 +581,7 @@ class FinanceController extends BaseController
 				$token = trim($_SERVER['HTTP_TOKEN']);
 			}
 			$url = REQUEST_SCHEME . '://' . HTTP_HOST . "/api/Notify/aacpay/pay?osn={$item['osn']}&token={$token}";  //88864d4f65e54066
-			$R = $this->curl_post($url, []);
+			$R = curl_post($url);
 			if ($R == 'success') {
 				$item = Db::table('fin_paylog')->where('osn', $item_id)->find();
 			} else {
