@@ -93,7 +93,7 @@ function writeLog($message, $logFile = "sys")
 	$time = date('Y-m-d');
 	$logFile = LOGS_PATH . $logFile . '/' . $time . '.log';
 	$timestamp = date('Y-m-d H:i:s');
-	$logContent = $timestamp . ' : ' . $message . PHP_EOL . PHP_EOL;
+	$logContent = '[' . $timestamp . '] - [' . $message . ']' . PHP_EOL . PHP_EOL;
 	// 检查目录是否存在，不存在则创建
 	$directory = dirname($logFile);
 	if (!file_exists($directory)) {

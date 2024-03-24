@@ -31,13 +31,13 @@ function payOrder($fin_paylog, $sub_type = '')
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
-	//writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName().'/pay');
+	//writeLog( json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName().'/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
 	$resultArr = $result['output'];
 	if ($resultArr['status'] != '200') {
-		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => 'Channel is not open'];
 	}
 	$resultArr['params'] = json_decode($resultArr['params'], true);
@@ -65,14 +65,14 @@ function balance()
 	];
 	$pdata['sign'] = paySign($pdata, 1);
 	$url = $config['balance_url'];
-	//writeLog('resultArr : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	//writeLog( json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
-	writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($resultArr['status'] != 200) {
-		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['message']];
 	}
 	$return_data = [
