@@ -1,16 +1,19 @@
 <template>
     <Page ref="pageRef" XLSXname="用户管理" url="c=User&a=user" @success="onPageSuccess">
         <template #btn="myScope">
-            <el-button  type="danger" size="small"  @click="DisableStatus(1,'status')">禁用</el-button>
-            <el-button size="small" @click="DisableStatus(2,'status')">解禁</el-button>
-            <el-button type="danger" size="small" @click="DisableStatus(1,'icode_status')" >验证码禁用</el-button>
-            <el-button size="small" @click="DisableStatus(0,'icode_status')">验证码解禁</el-button>
-            <el-button type="danger" v-if="power.yxupdata" @click="DisableStatus(0,'first_pay_day','first_pay_day')" size="small" >无效</el-button>
-            <el-button size="small" v-if="power.yxupdata" @click="DisableStatus(1,'first_pay_day','first_pay_day')" >有效</el-button>
-            <el-button v-if="power.transfer" type="warning" size="small"  @click="onTransfer1">同步用户层级</el-button>
-            <el-button v-if="power.transfer" type="warning" size="small"  @click="onTransfer2">同步单个用户层级</el-button>
-            <el-button v-if="power.transfer" type="warning" size="small"  @click="onTransfer">转移下级</el-button>
-            <el-button v-if="power.update && store.state.user.gid <= 71" type="success" size="small" @click="add(myScope)">添加账号</el-button>
+            <el-button type="danger" size="small" @click="DisableStatus(1, 'status')">禁用</el-button>
+            <el-button size="small" @click="DisableStatus(2, 'status')">解禁</el-button>
+            <el-button type="danger" size="small" @click="DisableStatus(1, 'icode_status')">验证码禁用</el-button>
+            <el-button size="small" @click="DisableStatus(0, 'icode_status')">验证码解禁</el-button>
+            <el-button type="danger" v-if="power.yxupdata" @click="DisableStatus(0, 'first_pay_day', 'first_pay_day')"
+                size="small">无效</el-button>
+            <el-button size="small" v-if="power.yxupdata"
+                @click="DisableStatus(1, 'first_pay_day', 'first_pay_day')">有效</el-button>
+            <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer1">同步用户层级</el-button>
+            <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer2">同步单个用户层级</el-button>
+            <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer">转移下级</el-button>
+            <el-button v-if="power.update && store.state.user.gid <= 71" type="success" size="small"
+                @click="add(myScope)">添加账号</el-button>
 
         </template>
 
@@ -44,36 +47,43 @@
                 <template #prepend>直推搜索</template>
             </el-input>
             <div style="height: 10px;"></div>
-            <el-input style="width: 240px;margin-left: 10px;" placeholder="起始金额范围" clearable v-model="params.moneyFrom" @keyup.enter="doSearch">
+            <el-input style="width: 240px;margin-left: 10px;" placeholder="起始金额范围" clearable v-model="params.moneyFrom"
+                @keyup.enter="doSearch">
                 <template #prepend>起始金额范围</template>
             </el-input>
             <span>&nbsp;至&nbsp;</span>
-            <el-input style="width: 150px;" placeholder="结束金额范围" clearable v-model="params.moneyTo" @keyup.enter="doSearch">
+            <el-input style="width: 150px;" placeholder="结束金额范围" clearable v-model="params.moneyTo"
+                @keyup.enter="doSearch">
             </el-input>
             <span style="margin-left: 10px;color: #909399;">注册时间：</span>
-            <el-date-picker v-model="params.regTimeRange" type="datetimerange" align="right" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+            <el-date-picker v-model="params.regTimeRange" type="datetimerange" align="right" start-placeholder="开始日期"
+                end-placeholder="结束日期"></el-date-picker>
             <span style="font-size: 14px;margin-left: 10px;">状态：</span>
-            <el-select style="width: 90px;" v-model="params.status" placeholder="全部" >
+            <el-select style="width: 90px;" v-model="params.status" placeholder="全部">
                 <el-option key="0" label="全部" value="0"></el-option>
                 <el-option key="1" label="禁用" value="1"></el-option>
                 <el-option key="2" label="正常" value="2"></el-option>
             </el-select>
             <div style="height: 10px;"></div>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="登录ip" clearable v-model="params.s_loginip" @keyup.enter="doSearch">
+            <el-input style="width: 250px;margin-left: 10px;" placeholder="登录ip" clearable v-model="params.s_loginip"
+                @keyup.enter="doSearch">
                 <template #prepend>登录ip</template>
             </el-input>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_regip" @keyup.enter="doSearch">
+            <el-input style="width: 250px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_regip"
+                @keyup.enter="doSearch">
                 <template #prepend>注册ip</template>
             </el-input>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="搜索银行卡" clearable v-model="params.s_bankc" @keyup.enter="doSearch">
+            <el-input style="width: 250px;margin-left: 10px;" placeholder="搜索银行卡" clearable v-model="params.s_bankc"
+                @keyup.enter="doSearch">
                 <template #prepend>银行卡</template>
             </el-input>
         </template>
         <template #table="myScope">
 
             <el-table-column prop="checked" :label="'选择'" width="70" fixed>
-                <template #default="{row, $index }">
-                    <el-checkbox v-model="selectAllArr[$index]" size="large" @change="onSelectItem($index, $event)"></el-checkbox>
+                <template #default="{ row, $index }">
+                    <el-checkbox v-model="selectAllArr[$index]" size="large"
+                        @change="onSelectItem($index, $event)"></el-checkbox>
                 </template>
             </el-table-column>
 
@@ -103,6 +113,16 @@
                     <div v-if="scope.row.pid" style="line-height: 20px;">{{ scope.row.p_account }}</div>
                 </template>
             </el-table-column>
+            <el-table-column prop="pid" :label="isTrans ? '一级代理' : 'pid'" width="120">
+                <template #default="scope">
+                    <div v-if="scope.row.pidg1" style="line-height: 20px;">{{ scope.row.p1_account }}</div>
+                </template>
+            </el-table-column>
+            <el-table-column prop="pid" :label="isTrans ? '二级代理' : 'pid'" width="120">
+                <template #default="scope">
+                    <div v-if="scope.row.pidG2" style="line-height: 20px;">{{ scope.row.p2_account }}</div>
+                </template>
+            </el-table-column>
             <el-table-column prop="lottery" :label="isTrans ? '剩余抽奖' : 'lottery'" width="90"></el-table-column>
             <el-table-column prop="xf" :label="isTrans ? '总消费' : ''" width="100"></el-table-column>
 
@@ -120,7 +140,8 @@
                 </template>
             </el-table-column>
             <el-table-column prop="status_flag" :label="isTrans ? '状态' : 'status_flag'" width="70"></el-table-column>
-            <el-table-column prop="icode_status_flag" :label="isTrans ? '邀请码状态' : 'icode_status_flag'" width="100"></el-table-column>
+            <el-table-column prop="icode_status_flag" :label="isTrans ? '邀请码状态' : 'icode_status_flag'"
+                width="100"></el-table-column>
             <el-table-column :label="isTrans ? '操作' : ''" min-width="300" fixed="right">
                 <template #default="scope">
                     <el-popconfirm confirmButtonText='确定' cancelButtonText='取消' icon="el-icon-warning" iconColor="red"
@@ -133,7 +154,7 @@
                         @click="edit(scope.$index, scope.row)">编辑</el-button>
                     <el-button style="padding: 0px 6px;" size="small" v-if="power.yxupdata"
                         @click="edit1(scope.$index, scope.row)">{{
-                            scope.row.first_pay_day == 0 ? '转有效' : '转无效' }}</el-button>
+        scope.row.first_pay_day == 0 ? '转有效' : '转无效' }}</el-button>
                     <el-button style="padding: 0px 6px;" size="small" v-if="power.kick"
                         @click="kick(scope.$index, scope.row)" type="warning">踢下线</el-button>
                     <router-link v-if="power.wallet" :to="{ name: 'Finance_wallet', query: { uid: scope.row.id } }"
@@ -157,7 +178,8 @@
                 :width="configForm.width" :top="configForm.top">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="账号">
-                        <el-input v-model="dataForm.account" autocomplete="off" :disabled="configForm.isEdit"></el-input>
+                        <el-input v-model="dataForm.account" autocomplete="off"
+                            :disabled="configForm.isEdit"></el-input>
                     </el-form-item>
                     <el-form-item label="机构编号" v-if="false && (dataForm.gid == 61 || dataForm.gid == 63)">
                         <el-input v-model="dataForm.suf_usn" autocomplete="off">
@@ -615,7 +637,7 @@ const getActionIds = () => {
     return ids
 }
 //状态禁用和解禁，验证码禁用和解禁,转有效无效
-const DisableStatus=(status:number,field:string,bs:string)=>{
+const DisableStatus = (status: number, field: string, bs: string) => {
     let idxs = getActionIdxs()
     if (idxs.length < 1) {
         _alert('至少需要选择一项')
@@ -632,8 +654,8 @@ const DisableStatus=(status:number,field:string,bs:string)=>{
         data: {
             ids: ids,
             status: status,
-            field:field,
-            bs:bs
+            field: field,
+            bs: bs
         }
     }).then((res: any) => {
         if (res.code != 1) {
@@ -648,7 +670,7 @@ const DisableStatus=(status:number,field:string,bs:string)=>{
             type: 'success',
             message: res.msg,
             onClose: () => {
-                
+
             }
         })
     })
