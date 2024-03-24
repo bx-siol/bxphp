@@ -41,7 +41,7 @@ function payOrder($fin_paylog, $sub_type = '')
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
 			'out_osn' => $resultArr['sysorderno'],
-			'pay_url' => $resultArr['data']['payurl’']
+			'pay_url' => $resultArr['data']['payurl']
 		]
 	];
 	return $return_data;
@@ -130,4 +130,4 @@ function rsa_verify($dataString, $signString, $publicKey)
 	$flg = openssl_verify($dataString, $signature, $pubKey, OPENSSL_ALGO_SHA256);
 	return $flg;
 }
- 
+
