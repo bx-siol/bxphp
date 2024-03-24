@@ -17,16 +17,17 @@ class NicepayController extends BaseController
     }
     public function _pay()
     {
-        $jsonStr = trim(file_get_contents('php://input'));
-        $params = json_decode($jsonStr, true);
+        // $jsonStr = trim(file_get_contents('php://input'));
+        // $params = json_decode($jsonStr, true);
+        // if (!$params)
+        $params = $_POST;
         writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/notify/pay');
-        if (!$params)
-            $params = $_POST;
         require_once APP_PATH . 'common/pay/nicepay.php';
         $sign = paySign($params, true);
-        //writeLog($sign, 'nicepay/notify/pay');
+        writeLog($sign, 'nicepay/notify/pay');
         if (!$sign)
             ReturnToJson(-1, 'Sign error');
+
         $pdata = [
             'code' => $params['status'] == '1' ? 1 : -1,
             'osn' => $params['orderId'],
@@ -38,12 +39,11 @@ class NicepayController extends BaseController
 
     public function _cash()
     {
-        $jsonStr = trim(file_get_contents('php://input'));
-        $params = json_decode($jsonStr, true);
+        // $jsonStr = trim(file_get_contents('php://input'));
+        // $params = json_decode($jsonStr, true); 
+        // if (!$params)
+        $params = $_POST;
         writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/notify/cash');
-        if (!$params)
-            $params = $_POST;
-
         require_once APP_PATH . 'common/cash/nicepay.php';
         $sign = CashSign($params);
         //writeLog($sign, 'nicepay/notify/pay');
@@ -61,3 +61,13 @@ class NicepayController extends BaseController
         $this->cashAct($pdata);
     }
 }
+
+
+// merId:202403664
+// orderId:5d81d13816f2993b
+// sysOrderId:171127140136278
+// desc:desc
+// orderAmt:600.00
+// status:1
+// nonceStr:0uY2c6R1IToOsePb4FlDLSC7z9Ayqj8W
+// sign:TlxZuNLeRcSo6ZqIZNJHi15NHqBW/Pxe7jy2kFpJi6hUEW11A1PvyuI+uZp7rOBACelo0EAldp/6S/DXLFBM0wlJRiiTXCZsVtGknjWTilMFbvljF1FfySRzPAKNYJohyB1wxGoo+zizmZcfUel9wE+ZrRPjq1sv0lQhDwoljTFh9dFKa0TOjuPF+xa1f1veg8fK2hpGghOHG93l5RYMVJZZsC3OjHXO9pBsbSp6KkJ42qyijlVHAKgYEaFUumSy8FAMePNYWuafjbI6lcmGUjl/CjtkQTdqqFJuab+QJw/FLQqOzA1saxTGDJeVrG6S2kLdQK8ScmN0/xEPe6r2zQ==

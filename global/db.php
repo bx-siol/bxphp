@@ -135,7 +135,7 @@ $_ENV['PAY_CONFIG']['nicepay'] = [
 	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay',//代付
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
-	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash',//收款回调
+	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/pay',//收款回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash'//代付回调
 ];
 
@@ -176,9 +176,16 @@ $_ENV['PAY_CONFIG']['jwpay'] = [
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay',//代收回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash'//代付回调
 ];
+
 $_ENV['PAY_CONFIG']['zippay'] = [
 	'mch_id' => '100',
 	'mch_key' => 'nrCV5HpZ3FzvuX6L',
+	//publickey 是平台的
+	'publickey' => 'MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCdyGahg4/fKswVcVdXoQsCPdmsxbaRzyUu5jkaj0ZKBKoCfeD9Yf9jzxPO7+4DR/jtdiVTIP7Fvb6oW9qRFy3a0WqNHm7jMlYXLN1QsTmMStRR9f+xnA2QN1NJhw/z7n9OURjlguRJ9jB3uP4kxlv9lZogrxWNntN7wRCwIf0ojQIDAQAB',
+
+	//privatekey是自己的
+	'privatekey' => 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALnB48C7UFnJ6yZC3EAlzXn4crf+rAEFLjUPLFQFPORE/X/2Qpg0IBBBZEkHTSDne2mTKZBQ5F3aBkYxdHFcsfAK6HPCNJ9YvuqmLOkYZwd8q6J2IrJUm8CgaKisPqy/PWsdapsHHXxg8AQcdTulv6rjJs5u2L7dntM27Nwz3Al9AgMBAAECgYEAoN5dEygk6d2IG9aDT7ptPFgBYX7YDvohjinZxdnTZgypTQxDl/RsYCeBZg1AqmJN6pxbvnOPkgeir19c7F/OaA2KbeoXykzcMwssbJkPXvRW6Xr2sR3Bn2FFPM6D4Q7d8Madk+0mNtvYqRcc+G+G773BfZ+sv7XKrkX62OsegTECQQDmEyLunOw8GITVyiF/gEK2X4+32MB+2AHSV8UtnxApkJEXe275i+FVVSJ2O+NUWP6ZVExaSrE2CJ8o+ZDRphM/AkEAzrBZjnvExbGQ9KKKqYlUDG/FOc36CsvStd5hGutj/fs6dLhwVIlzV+OtYdpfiFeccbnY6XEGu6gnrLK6AlsAQwJAHTDSXsnkIx/NQr65j067qB3pwx6qFa3cVU6zgr1KtKtV7U/I3bqEpWn+zFd+2UXNT7DlWxNc9okTgIRhfmf+ywJAHoDYNrb9a0+xXOlAHZUu2kcEjGtho4ZBKqYPHrHup+UT03YE3fULGMV5KR/ZSX3kkMQkxw7vN3KxqEMYQJC9kQJBAJPwWiR+2aSUFX3v9FgxIQ0L50E+nQvZPQiFYEw/jX7v6Qy5ERzqVG58bHfCzVSjEG4GLYTQDD+/9TTIaVm//D8=',
+
 
 	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder',//代收
 	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder',//代付
@@ -189,7 +196,8 @@ $_ENV['PAY_CONFIG']['zippay'] = [
 	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr',//utr补单
 	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr',//utr查单 
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay',//代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash'//代付回调
+	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/pay',//代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash'//代付回调
 ];
+// MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5wePAu1BZyesmQtxAJc15+HK3/qwBBS41DyxUBTzkRP1/9kKYNCAQQWRJB00g53tpkymQUORd2gZGMXRxXLHwCuhzwjSfWL7qpizpGGcHfKuidiKyVJvAoGiorD6svz1rHWqbBx18YPAEHHU7pb+q4ybObti+3Z7TNuzcM9wJfQIDAQAB
