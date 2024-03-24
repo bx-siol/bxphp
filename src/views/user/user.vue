@@ -120,7 +120,7 @@
             </el-table-column>
             <el-table-column prop="pid" :label="isTrans ? '二级代理' : 'pid'" width="120">
                 <template #default="scope">
-                    <div v-if="scope.row.pidG2" style="line-height: 20px;">{{ scope.row.p2_account }}</div>
+                    <div v-if="scope.row.pidg2" style="line-height: 20px;">{{ scope.row.p2_account }}</div>
                 </template>
             </el-table-column>
             <el-table-column prop="lottery" :label="isTrans ? '剩余抽奖' : 'lottery'" width="90"></el-table-column>
