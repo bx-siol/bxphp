@@ -5,7 +5,7 @@ use think\facade\Db;
 
 function GetPayName()
 {
-	return "nicepay";
+	return "zippay";
 }
 function payOrder($fin_paylog, $sub_type = '')
 {
@@ -125,9 +125,7 @@ function rsa_verify($dataString, $signString, $publicKey)
 	$pem = chunk_split($publicKey, 64, "\n");
 	$pem = "-----BEGIN PUBLIC KEY-----\n" . $pem . "-----END PUBLIC KEY-----\n";
 	$pubKey = openssl_pkey_get_public($pem);
-
 	$signature = base64_decode($signString);
 	$flg = openssl_verify($dataString, $signature, $pubKey, OPENSSL_ALGO_SHA256);
 	return $flg;
 }
- 

@@ -76,13 +76,7 @@ function sendbdjt($up_user, $money, $osn)
 	}
 	$account = rand(0, count($strarr) - 1);
 	$str = "订单号：{$osn}\n二级代理：{$pdig2}\n推荐人：{$tjr}\n订单金额：{$money}\n{$strarr[$account]}";
-	$fileids = [
-		'CgACAgUAAxkBAAMqZf9I_Kuq1Z4ottwKwvHEKmfyyVUAAk4EAAKhOYlXW-I3oxk8wxo0BA',
-		'CgACAgUAAxkBAAMrZf9I_zkOPxaV32HvJIVjFi4deXYAAoYFAAJeQMBVf1Qrt4QsJwQ0BA',
-		'CgACAgUAAxkBAAMsZf9JAVmVbQ1WTs9r5KRoblWngNQAAmwIAALCFnBWjsHFlvWGeaE0BA',
-		'CgACAgQAAxkBAAMtZf9JAoVQmOD68IqYrJgOSaDwZZIAAk4CAAK-D4xSN6ydi3SXtfE0BA',
-		'CgACAgUAAxkBAAMuZf9JBPdCZhWqlEIoItCrVgSL8BsAApEKAAIPlyBXFCwoIfKxw9g0BA'
-	];
+	$fileids = $_ENV['fileids'];
 	$fileid = $fileids[array_rand($fileids)];
 	$url = 'https://api.telegram.org/bot' . $token . '/sendAnimation';
 	$data = [
@@ -1406,7 +1400,44 @@ function http_fget($url, $timeout = 30)
 	];
 	return $arrCurlResult;
 }
-
+function CurlPost($url, $data = [], $timeout = 30)
+{
+	$curl = curl_init();
+	curl_setopt_array(
+		$curl,
+		array(
+			CURLOPT_URL => $url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => false,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => $timeout,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_CUSTOMREQUEST => 'POST',
+			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+			CURLOPT_HTTPHEADER => array(
+				'Content-Type:application/json'
+			)
+		)
+	);
+	$response = curl_exec($curl);
+	if ($curl->error) {
+		$arrCurlResult = [
+			'code' => -1,
+			'msg' => $curl->errorMessage
+		];
+	} else {
+		$arrCurlResult = [
+			'code' => 1,
+			'msg' => 'ok',
+			'output' => json_decode($response, true)
+		];
+	}
+	curl_close($curl);
+	unset($curl);
+	return $arrCurlResult;
+}
 function curl_post($url, $data = [], $timeout = 30, $isJosn = false)
 {
 	if ($isJosn == 'json') {
