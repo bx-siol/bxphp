@@ -47,7 +47,7 @@
             <div class="makeup area">
                 <p>Dont Have An Account? <span @click="onLink({ name: 'Register' })">{{ t('注册') }}</span></p>
             </div>
-            <div v-show="appshow" @click="appdload" class="appIco" v-if="false">
+            <div v-show="appshow" @click="appdload" class="appIco">
                 <span>APP</span>
             </div>
         </div>
