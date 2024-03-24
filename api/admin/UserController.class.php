@@ -157,6 +157,8 @@ class UserController extends BaseController
 			->where($where)
 			->find();
 		$list = Db::view(['sys_user' => 'log'], ['*'])
+			->view(['sys_user' => 'pu1'], ['account' => 'p1_account'], 'log.pidg1=pu1.id', 'LEFT')
+			->view(['sys_user' => 'pu2'], ['account' => 'p2_account'], 'log.pidg2=pu2.id', 'LEFT')
 			->view(['sys_user' => 'pu'], ['account' => 'p_account', 'nickname' => 'p_nickname', 'realname' => 'p_realname'], 'log.pid=pu.id', 'LEFT')
 			->view(['cnf_banklog' => 'bk'], ['account' => 'bk_account'], 'log.id=bk.uid', 'LEFT')
 			->where($where)
