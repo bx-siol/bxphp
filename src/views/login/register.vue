@@ -1,6 +1,10 @@
 <template>
     <div class="register">
-        <MyNav :title="t('注册')" leftText=''></MyNav>
+        <MyNav :title="t('注册')">
+            <template #left>
+                <van-icon name="arrow-left" class="alter" @click="onLink({ name: 'Login' })"/>
+            </template>
+        </MyNav>
 
         <div class="formbox">
             <div class="deckout"></div>
@@ -60,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Button, CellGroup, Col, Field, Row, Image, CountDown, NavBar } from "vant";
+import { Button, CellGroup, Col, Field, Row, Image, CountDown, NavBar,Icon } from "vant";
 
 export default defineComponent({
     components: {
@@ -71,7 +75,9 @@ export default defineComponent({
         [Col.name]: Col,
         [Image.name]: Image,
         [CountDown.name]: CountDown,
-        [NavBar.name]: NavBar
+        [NavBar.name]: NavBar,
+        [Icon.name]: Icon,
+
     }
 })
 
@@ -277,6 +283,9 @@ onMounted(() => {
     :deep(.van-nav-bar__left) {
         .alter {
             color: #ffffff !important;
+            font-size: 1.3rem;
+            vertical-align: middle;
+            top: 0px;
         }
     }
 
