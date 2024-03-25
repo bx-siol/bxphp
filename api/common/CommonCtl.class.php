@@ -237,7 +237,7 @@ class CommonCtl
 		if ($cnf_register_type == 1) {
 			$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $params['account'], 'code' => $params['vcode']]);
 			if ($checkVcode['code'] != 1) {
-				exit(json_encode($checkVcode));
+				exit (json_encode($checkVcode));
 			}
 			$user_phone = Db::table('sys_user')->field(['id'])->whereRaw('phone=:phone', ['phone' => $params['account']])->find();
 			if ($user_phone) {
@@ -429,7 +429,7 @@ class CommonCtl
 		if ($cnf_register_type == 1) {
 			$checkVcode = checkPhoneCode(['stype' => 3, 'phone' => $params['account'], 'code' => $params['vcode']]);
 			if ($checkVcode['code'] != 1) {
-				exit(json_encode($checkVcode));
+				exit (json_encode($checkVcode));
 			}
 		}
 		// else {
@@ -532,7 +532,7 @@ class CommonCtl
 		$cnf_domain = trim(trim($_ENV['cnf_domain']), '/');
 		$language_code = 'en-us';
 		$return_data = [
-			//'img_url' => REQUEST_SCHEME . '://' . HTTP_HOST,
+			'img_url' => REQUEST_SCHEME . '://' . HTTP_HOST,
 			'name' => getConfig('sys_name'),
 			'version' => 'v1',
 			'yes_or_no' => ['1' => '是', '0' => '否'],
@@ -601,7 +601,7 @@ class CommonCtl
 			'stype' => $stype
 		];
 		$res = getPhoneCode($data);
-		exit(json_encode($res));
+		exit (json_encode($res));
 	}
 
 	//获取邮箱验证码
