@@ -5,7 +5,7 @@
         </template>
 
         <template #search="{ params, tdata, doSearch }">
-            <el-select style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -56,21 +56,21 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="通道名称">
-                        <el-input v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="通道编码">
-                        <el-input v-model="dataForm.type" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.type" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="排序">
-                        <el-input v-model="dataForm.sort" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.sort" autocomplete="off" placeholder=""></el-input>
                         <span> 从大到小</span>
                     </el-form-item>
 
                     <el-form-item label="最小金额">
-                        <el-input v-model="dataForm.min" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.min" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="最大金额">
-                        <el-input v-model="dataForm.max" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.max" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <!--                <el-form-item label="图标">-->
                     <!--                    <MyUpload2 v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;"></MyUpload2>-->
@@ -96,13 +96,13 @@
                 :width="configForm.width" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="商户号">
-                        <el-input v-model="merdata.merId" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="merdata.merId" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="总余额">
-                        <el-input v-model="merdata.balance" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="merdata.balance" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="可代付金额">
-                        <el-input v-model="merdata.payout_balance" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="merdata.payout_balance" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
 
                 </el-form>

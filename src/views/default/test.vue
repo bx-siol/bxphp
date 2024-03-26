@@ -1,9 +1,5 @@
 <template>
-    <div class="conbar">
-        <el-breadcrumb separator="/" style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <el-breadcrumb-item>测试</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
+  
 
     <div class="conbox">
         <div>

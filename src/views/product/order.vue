@@ -3,7 +3,7 @@
         <template #search="{params,tdata,doSearch}">
 
             <span style="margin-left: 10px;color: #909399;">产品分类:</span>
-            <el-select style="width: 160px;margin-left: 10px;" v-model="params.s_cid" @change="onChangeCid" placeholder="全部分类">
+            <el-select size="small" style="width: 160px;margin-left: 10px;" v-model="params.s_cid" @change="onChangeCid" placeholder="全部分类">
                 <el-option key="0" label="全部分类" value="0"></el-option>
                 <el-option
                         v-for="(item,idx) in tdata.category_tree"
@@ -14,7 +14,7 @@
             </el-select>
 
             <span style="margin-left: 10px;color: #909399;">所属产品:</span>
-            <el-select style="width: 280px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部产品">
+            <el-select size="small" style="width: 280px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部产品">
                 <el-option key="0" label="全部产品" value="0"></el-option>
                 <el-option
                         v-for="(item,idx) in tableData.goods_arr"
@@ -24,7 +24,7 @@
                 </el-option>
             </el-select>
 
-            <el-input
+            <el-input size="small"
                     style="width: 280px;margin-left: 10px;"
                     placeholder="ID/账号/昵称"
                     clearable
@@ -33,7 +33,7 @@
                 <template #prepend>投资用户</template>
             </el-input>
 
-            <el-input
+            <el-input size="small"
                     style="width: 280px;margin-left: 10px;"
                     placeholder="ID/账号/昵称"
                     clearable
@@ -45,7 +45,7 @@
             <div style="clear: both;height: 10px;"></div>
 
             <span style="margin-left: 10px;color: #909399;">订单状态:</span>
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
                 <el-option key="0" label="全部状态" value="0"></el-option>
                 <el-option
                         v-for="(item,idx) in tdata.status_arr"
@@ -56,14 +56,14 @@
             </el-select>
 
             <span style="margin-left: 10px;color: #909399;">日期:</span>
-            <el-date-picker
+            <el-date-picker size="small"
                     :style="{marginLeft:'10px',width:'150px'}"
                     clearable
                     v-model="params.s_start_time_flag"
                     type="date"
                     placeholder="开始日期">
             </el-date-picker>
-            <el-date-picker
+            <el-date-picker size="small"
                     :style="{marginLeft:'10px',width:'150px'}"
                     clearable
                     v-model="params.s_end_time_flag"
@@ -118,7 +118,7 @@
             <el-dialog title="订单设置" v-model="setShow" :close-on-click-modal="false" :width="500">
                 <el-form :label-width="100">
                     <el-form-item label="订单号">
-                        <el-input v-model="actItem.osn" autocomplete="off" disabled></el-input>
+                        <el-input size="small" v-model="actItem.osn" autocomplete="off" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="订单状态" style="margin-bottom: 0;">
                         <el-radio-group v-model="orderForm.status">

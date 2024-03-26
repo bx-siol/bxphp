@@ -4,7 +4,7 @@
         <el-aside :width="menuWidth" style="overflow-x: hidden;background: #ffffff;">
             <el-scrollbar height="100%" view-style="overflow-x:hidden;">
                 <el-affix :offset="0.1" v-if="!isShrink">
-                    <div @click="onTopSetClick({ path: '/', name: '首页' })"
+                    <div @click="onTopSetClick({ path: '/index', name: '统计' })"
                         style="background: #ffffff;height: 50px;line-height: 50px;padding: 0 20px;cursor: default;font-weight: bold;border-bottom: 1px solid #f2f2f2;box-sizing:border-box;">
                         <i class="el-icon-s-home"></i>{{ store.state.config.name }}
                     </div>
@@ -12,7 +12,7 @@
 
                 <!--菜单-->
                 <el-menu :default-openeds="store.state.user.open_menus" :default-active="active" @select="onMenuSelect"
-                    style="border: 0;" router>
+                    style="border: 0;">
                     <el-sub-menu :index="vo.path" v-for="(vo, idx) in store.state.user.menus">
                         <template #title><i :class="vo.ico"></i>{{ vo.name }}</template>
                         <el-menu-item-group>
@@ -23,7 +23,6 @@
                         </el-menu-item-group>
                     </el-sub-menu>
                 </el-menu>
-
             </el-scrollbar>
         </el-aside>
 
@@ -32,9 +31,6 @@
             <el-header style="background: #ffffff;line-height: 50px;padding: 0 10px;" height="50px">
                 <el-row>
                     <el-col style="text-align: right;overflow: auto;height: 50px;">
-                        <!--                        <el-button type="primary" icon="el-icon-edit" size="small" circle></el-button>-->
-                        <!--                        <el-button type="success" icon="el-icon-check" size="small" circle></el-button>-->
-                        <!--                        <el-button type="warning" icon="el-icon-star-off" size="small" circle></el-button>-->
                         <el-button type="danger" size="small" @click="clearCache">清理缓存</el-button>
                         &nbsp;&nbsp
                         <el-dropdown>
@@ -61,16 +57,24 @@
                         <arrow-left v-if="!isShrink" style="width: 30px;height: 23px;vertical-align: middle;" />
                         <arrow-right v-else style="width: 30px;height: 23px;vertical-align: middle;" />
                     </el-icon>
-                    <a href="/" target="_blank"><img src="../assets/images/web.png"
+                    <a :href="h5url" target="_blank"><img src="../assets/images/web.png"
                             style="height: 20px;vertical-align: middle;" /></a>
                 </div>
             </el-header>
 
             <!--内容区域-->
             <el-main style="height: 100%;width: 100%;padding: 0;background: #f2f2f2;overflow: hidden;">
+
+
                 <el-scrollbar height="100%" v-loading="loadingCpu" always>
-                    <div style="background: #ffffff;margin: 10px 12px;min-width: 800px;">
-                        <router-view v-if="showView"></router-view>
+                    <div style="background: #ffffff; ">
+                        <el-tabs v-model="activeTab" @tab-click="handleTabClick" @edit="removeTab" type="card" closable>
+                            <!-- <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.title" :name="item.name" /> -->
+                            <el-tab-pane v-for="item in tabs" :key="item.name" :label="item.title" :name="item.name">
+
+                            </el-tab-pane>
+                        </el-tabs>
+                        <router-view v-if="showView" />
                     </div>
                 </el-scrollbar>
             </el-main>
@@ -80,7 +84,7 @@
 </template>
 
 <script lang="ts" setup>
-import { ref, onMounted, computed, nextTick } from 'vue'
+import { ref, onMounted, computed, nextTick, watch } from 'vue'
 import http from "../global/network/http";
 import { getSrcUrl, _alert, getConfig, setConfig } from "../global/common";
 import { useRoute, useRouter } from "vue-router";
@@ -89,11 +93,59 @@ import { ElMessageBox } from "element-plus";
 import { doLogout, flushUserinfo, getUserinfo, setLocalUser } from "../global/user";
 import { ArrowLeft, ArrowRight } from "@element-plus/icons";
 
+import { ElTabPane, ElTabs } from 'element-plus';
+// import 'element-plus/lib/theme-chalk/el-tabs.css';
+// import 'element-plus/lib/theme-chalk/el-tab-pane.css';
+
+const route = useRoute();
+const router = useRouter();
+
+const tabs = ref([
+    {
+        title: '首页',
+        name: '首页',
+        path: '/index',
+    }
+]);
+
+const activeTab = ref(route.name);
+
+const handleTabClick = (tab: any) => {
+    updateActive({ path: null, name: tab.paneName })
+    router.push({ name: tab.paneName })
+};
+
+const addTab = (routeName: string, routePath: string) => {
+    const tabExists = tabs.value.some(tab => tab.name === routeName);
+    if (!tabExists) {
+        tabs.value.push({
+            title: routeName,
+            name: routeName,
+            path: routePath,
+        });
+    }
+    activeTab.value = routeName;
+    router.push({ path: routePath })
+    reloadView()
+};
+
+watch(() => route.name, (newRouteName) => {
+    newRouteName && addTab(newRouteName as string, route.path);
+});
+
+const removeTab = (targetName: string) => {
+    tabs.value = tabs.value.filter(tab => tab.name !== targetName);
+    if (activeTab.value === targetName) {
+        const nextTab = tabs.value[tabs.value.length - 1] || tabs.value[0];
+        router.push(nextTab.path);
+    }
+};
+
+
 const emit = defineEmits(['loadingClose'])
 
 let isRequest = false
-const route = useRoute()
-const router = useRouter()
+
 const store = useStore()
 
 const menuWidth = ref('170px')
@@ -111,6 +163,7 @@ const showView = ref(true)
 const loadingCpu = computed(() => {
     return store.state.loading as Boolean
 })
+
 
 //更新active
 const updateActive = (activeInfo: any) => {
@@ -132,7 +185,7 @@ const reloadView = () => {
     }, 300)
     store.dispatch('loadingStart')
 }
-
+const h5url = ref('/');
 const active = computed(() => {
     //初始化时没有设置active数据
     if (!store.state.config.active.path) {
@@ -161,8 +214,9 @@ const active = computed(() => {
 
 //子菜单点击
 const onMenuClick = (ev: any, item: any) => {
+    // console.log(ev, item); 
     updateActive({ path: ev.index, name: item.name })
-    reloadView()
+    addTab(item.name, item.path);
 }
 
 //子菜单切换-每次点击都会执行
@@ -239,6 +293,9 @@ onMounted(async () => {
     if (route.path != store.state.config.active.path) {
         updateActive({ path: route.path, name: '首页' })
     }
+    var cf = getConfig();
+    //console.log(cf);
+    h5url.value = cf.img_url;
 })
 
 </script>

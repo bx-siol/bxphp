@@ -31,13 +31,13 @@
         <el-dialog :title="configForm.title" v-model="configForm.visible" :close-on-click-modal="false" :width="configForm.width">
             <el-form :label-width="configForm.labelWidth">
                 <el-form-item label="标题">
-                    <el-input type="text" v-model="dataForm.title" autocomplete="off"></el-input>
+                    <el-input size="small" type="text" v-model="dataForm.title" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="内容">
-                    <el-input type="textarea" v-model="dataForm.text" autocomplete="off" rows="8"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.text" autocomplete="off" rows="8"></el-input>
                 </el-form-item>
                 <el-form-item label="排序">
-                    <el-input v-model="dataForm.sort" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.sort" autocomplete="off"></el-input>
                     <span>从大到小</span>
                 </el-form-item>
             </el-form>

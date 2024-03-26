@@ -2,7 +2,7 @@
     <div class="agentBox">
         <Page url="c=User&a=agent" ref="pageRef" :need-time="true">
             <template #search="{ params, tdata, doSearch }">
-                <!--            <el-input
+                <!--            <el-input size="small"
                     style="width: 280px;margin-left: 10px;margin-right: 10px;"
                     placeholder="上级用户账号"
                     clearable

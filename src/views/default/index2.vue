@@ -1,16 +1,12 @@
 <template>
-    <div class="conbar">
-        <el-breadcrumb separator="/" style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <el-breadcrumb-item>首页</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
+    
     <div class="conbox">
         <div class="consearch">
             <el-button type="success" v-for="item in searchArr" @click="onClickSearchItem(item)">{{ item.name }}</el-button>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="sStartTime" type="date"
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="sStartTime" type="date"
                 placeholder="开始日期">
             </el-date-picker>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="sEndTime" type="date"
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="sEndTime" type="date"
                 placeholder="结束日期">
             </el-date-picker>
             <el-button type="primary" style="margin-left: 10px;" @click="onSearch">查询</el-button>

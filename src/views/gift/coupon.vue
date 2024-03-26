@@ -5,7 +5,7 @@
         </template>
 
         <template #search="{ params, tdata, doSearch }">
-            <el-select style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -71,28 +71,28 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="名称">
-                        <el-input v-model="dataForm.name" autocomplete="off" placeholder="任意填写，便于区分红包用途"></el-input>
+                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder="任意填写，便于区分红包用途"></el-input>
                     </el-form-item>
                     <el-form-item v-if="dataForm.type == '1'" label="折扣">
-                        <el-input v-model="dataForm.discount" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.discount" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 180px;"></el-input>
                         <span> %</span>
                     </el-form-item>
 
                     <el-form-item v-if="dataForm.type == '2'" label="面值金额">
-                        <el-input v-model="dataForm.money" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.money" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 180px;"></el-input>
 
                     </el-form-item>
 
                     <el-form-item label="库存数量">
-                        <el-input v-model="dataForm.stock_num" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.stock_num" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder=""></el-input>
 
                     </el-form-item>
 
                     <el-form-item label="可用产品">
-                        <el-select multiple collapse-tags v-model="dataForm.gids" placeholder="请选择">
+                        <el-select size="small" multiple collapse-tags v-model="dataForm.gids" placeholder="请选择">
                             <el-option key="0" label="请选择" value="0"></el-option>
                             <el-option v-for="(item ) in tdata.goods_arr" :key="item.id" :label="item.name"
                                 :value="item.id">
@@ -103,7 +103,7 @@
 
 
                     <el-form-item label="期限">
-                        <el-input v-model="dataForm.qx" style="width: 180px;" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.qx" style="width: 180px;" autocomplete="off" placeholder=""></el-input>
                         <span>多少天后到期</span>
                     </el-form-item>
 
@@ -111,7 +111,7 @@
 
                     <el-form-item label="截止有效期">
 
-                        <el-date-picker v-model="dataForm.effective_time" type="datetime" placeholder="截止有效期">
+                        <el-date-picker size="small" v-model="dataForm.effective_time" type="datetime" placeholder="截止有效期">
                         </el-date-picker>
 
 
@@ -125,7 +125,7 @@
                     </el-form-item>
 
                     <el-form-item label="备注">
-                        <el-input v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder=""></el-input>
 
                     </el-form-item>

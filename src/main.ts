@@ -35,7 +35,7 @@ init(() => {
     router.beforeEach(function (to, from, next) {
         if (to.name == 'Login' || to.name == 'Login_tlog') {
             if (isLogin()) {
-                next({ name: 'Default_index' })
+                next({ path: '/index' })
                 return
             }
         } else {

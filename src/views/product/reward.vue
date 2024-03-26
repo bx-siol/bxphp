@@ -3,7 +3,7 @@
         <template #search="{params,tdata,doSearch}">
 
             <span style="margin-left: 10px;color: #909399;">收益类型:</span>
-            <el-select style="width: 160px;margin-left: 10px;" v-model="params.s_type" @change="onChangeCid" placeholder="全部类型">
+            <el-select size="small" style="width: 160px;margin-left: 10px;" v-model="params.s_type" @change="onChangeCid" placeholder="全部类型">
                 <el-option key="0" label="全部类型" value="0"></el-option>
                 <el-option
                         v-for="(item,idx) in tdata.type_arr"
@@ -14,7 +14,7 @@
             </el-select>
 
             <span style="margin-left: 10px;color: #909399;">产品分类:</span>
-            <el-select style="width: 160px;margin-left: 10px;" v-model="params.s_cid" @change="onChangeCid" placeholder="全部分类">
+            <el-select size="small" style="width: 160px;margin-left: 10px;" v-model="params.s_cid" @change="onChangeCid" placeholder="全部分类">
                 <el-option key="0" label="全部分类" value="0"></el-option>
                 <el-option
                         v-for="(item,idx) in tdata.category_tree"
@@ -25,7 +25,7 @@
             </el-select>
 
             <span style="margin-left: 10px;color: #909399;">所属产品:</span>
-            <el-select style="width: 280px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部产品">
+            <el-select size="small" style="width: 280px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部产品">
                 <el-option key="0" label="全部产品" value="0"></el-option>
                 <el-option
                         v-for="(item,idx) in tableData.goods_arr"
@@ -35,7 +35,7 @@
                 </el-option>
             </el-select>
 
-            <el-input
+            <el-input size="small"
                     style="width: 280px;margin-left: 10px;"
                     placeholder="ID/账号/昵称"
                     clearable
@@ -44,7 +44,7 @@
                 <template #prepend>投资用户</template>
             </el-input>
 
-            <el-input
+            <el-input size="small"
                     style="width: 280px;margin-left: 10px;"
                     placeholder="ID/账号/昵称"
                     clearable
@@ -55,7 +55,7 @@
 
             <div style="clear: both;height: 10px;"></div>
 
-            <el-input
+            <el-input size="small"
                     style="width: 300px;margin-left: 10px;"
                     placeholder="请输入"
                     clearable
@@ -65,14 +65,14 @@
             </el-input>
 
             <span style="margin-left: 10px;color: #909399;">日期:</span>
-            <el-date-picker
+            <el-date-picker size="small"
                     :style="{marginLeft:'10px',width:'150px'}"
                     clearable
                     v-model="params.s_start_time_flag"
                     type="date"
                     placeholder="开始日期">
             </el-date-picker>
-            <el-date-picker
+            <el-date-picker size="small"
                     :style="{marginLeft:'10px',width:'150px'}"
                     clearable
                     v-model="params.s_end_time_flag"

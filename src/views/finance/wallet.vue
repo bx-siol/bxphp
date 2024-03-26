@@ -10,7 +10,7 @@
         </el-breadcrumb-item>
     </template>
     <template #search="{params,tdata}">
-        <el-select style="width: 120px;" v-model="params.s_cid" placeholder="全部钱包">
+        <el-select size="small" style="width: 120px;" v-model="params.s_cid" placeholder="全部钱包">
             <el-option key="0" label="全部钱包" value="0"></el-option>
             <el-option
                     v-for="(item,idx) in tdata.currency_arr"
@@ -85,15 +85,15 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="充值额度">
-                    <el-input type="text" v-model="dataForm.money" autocomplete="off"></el-input>
+                    <el-input size="small" type="text" v-model="dataForm.money" autocomplete="off"></el-input>
                     <div style="color: #ff6600;" v-if="dataForm.type==1">正数是增加，负数是减少</div>
                     <div style="color: #ff6600;" v-else>填写大于0的数</div>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
                 </el-form-item>
                 <el-form-item label="二级密码">
-                    <el-input type="password" v-model="dataForm.password2_flag" autocomplete="off" placeholder="您自己的二级密码"></el-input>
+                    <el-input size="small" type="password" v-model="dataForm.password2_flag" autocomplete="off" placeholder="您自己的二级密码"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>

@@ -36,16 +36,16 @@
         <el-dialog :title="configForm.title" v-model="configForm.visible" :close-on-click-modal="false" :width="configForm.width">
             <el-form :label-width="configForm.labelWidth">
                 <el-form-item label="简体中文">
-                    <el-input v-model="dataForm.cn" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.cn" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="繁体中文">
-                    <el-input v-model="dataForm.tw" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.tw" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="西班牙语">
-                    <el-input v-model="dataForm.es" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.es" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="英文">
-                    <el-input type="textarea" v-model="dataForm.en" autocomplete="off" rows="3"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.en" autocomplete="off" rows="3"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>

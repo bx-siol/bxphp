@@ -5,7 +5,7 @@
     </template>
 
     <template #search="{params,tdata,doSearch}">
-        <el-select style="width: 180px;margin-left: 10px;" v-model="params.s_cid" placeholder="所属分类">
+        <el-select size="small" style="width: 180px;margin-left: 10px;" v-model="params.s_cid" placeholder="所属分类">
             <el-option
                     key="0"
                     label="所属分类"
@@ -76,7 +76,7 @@
         <el-dialog :title="configForm.title" v-model="configForm.visible" :close-on-click-modal="false" :width="configForm.width" :top="configForm.top" @opened="dialogOpened" @closed="onDialogClosed">
             <el-form :label-width="configForm.labelWidth">
                 <el-form-item label="所属分类">
-                    <el-select style="width: 200px;" v-model="dataForm.cid" placeholder="选择分类">
+                    <el-select size="small" style="width: 200px;" v-model="dataForm.cid" placeholder="选择分类">
                         <el-option
                                 key="0"
                                 label="选择分类"
@@ -91,23 +91,23 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="标题">
-                    <el-input v-model="dataForm.title" autocomplete="off" placeholder=""></el-input>
+                    <el-input size="small" v-model="dataForm.title" autocomplete="off" placeholder=""></el-input>
                 </el-form-item>
                 <el-form-item label="跳转地址">
-                    <el-input v-model="dataForm.url" autocomplete="off" placeholder="填写地址则直接跳转"></el-input>
+                    <el-input size="small" v-model="dataForm.url" autocomplete="off" placeholder="填写地址则直接跳转"></el-input>
                 </el-form-item>
                 <el-form-item label="标签" style="margin-bottom: 0;">
-                    <el-input v-model="dataForm.label" autocomplete="off" placeholder=""></el-input>
+                    <el-input size="small" v-model="dataForm.label" autocomplete="off" placeholder=""></el-input>
                     <span>多个之间使用逗号分隔</span>
                 </el-form-item>
                 <el-form-item label="作者">
-                    <el-input v-model="dataForm.author" autocomplete="off" placeholder=""></el-input>
+                    <el-input size="small" v-model="dataForm.author" autocomplete="off" placeholder=""></el-input>
                 </el-form-item>
                 <el-form-item label="摘要">
-                    <el-input type="textarea" v-model="dataForm.ndesc" autocomplete="off" rows="3"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.ndesc" autocomplete="off" rows="3"></el-input>
                 </el-form-item>
                 <el-form-item label="发布时间" style="margin-bottom: 0;">
-                    <el-date-picker
+                    <el-date-picker size="small"
                             v-model="dataForm.publish_time_flag"
                             type="datetime"
                             placeholder="请选择"

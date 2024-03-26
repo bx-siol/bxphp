@@ -19,68 +19,68 @@
 
         <template #search="{ params, tdata, doSearch }">
             <span style="font-size: 14px;margin-left: 10px;">翻译：</span>
-            <el-select style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
+            <el-select size="small" style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
                 <el-option key="0" label="否" value="0"></el-option>
                 <el-option key="1" label="是" value="1"></el-option>
             </el-select>
-            <el-select style="width: 100px;" v-model="params.s_has_pay" placeholder="有充值">
+            <el-select size="small" style="width: 100px;" v-model="params.s_has_pay" placeholder="有充值">
                 <el-option key="all" label="有充值" value="all">
                 </el-option>
                 <el-option v-for="(item, idx) in store.state.config.yes_or_no" :key="idx" :label="item" :value="idx">
                 </el-option>
             </el-select>
-            <el-input style="width: 260px;margin-left: 10px;" placeholder="输入账号" clearable v-model="params.s_keyword3"
+            <el-input size="small" style="width: 260px;margin-left: 10px;" placeholder="输入账号" clearable v-model="params.s_keyword3"
                 @keyup.enter="doSearch">
                 <template #prepend>查询上级</template>
             </el-input>
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部分组">
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部分组">
                 <el-option key="all" label="全部分组" value="all"></el-option>
                 <el-option v-for="(item, idx) in tdata.sys_group" :key="idx" :label="item" :value="idx">
                 </el-option>
             </el-select>
-            <el-input style="width: 260px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword2"
+            <el-input size="small" style="width: 260px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword2"
                 @keyup.enter="doSearch">
                 <template #prepend>团队搜索</template>
             </el-input>
-            <el-input style="width: 260px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword4"
+            <el-input size="small" style="width: 260px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword4"
                 @keyup.enter="doSearch">
                 <template #prepend>直推搜索</template>
             </el-input>
             <div style="height: 10px;"></div>
-            <el-input style="width: 240px;margin-left: 10px;" placeholder="起始金额范围" clearable v-model="params.moneyFrom"
+            <el-input size="small" style="width: 240px;margin-left: 10px;" placeholder="起始金额范围" clearable v-model="params.moneyFrom"
                 @keyup.enter="doSearch">
                 <template #prepend>起始金额范围</template>
             </el-input>
             <span>&nbsp;至&nbsp;</span>
-            <el-input style="width: 150px;" placeholder="结束金额范围" clearable v-model="params.moneyTo"
+            <el-input size="small" style="width: 150px;" placeholder="结束金额范围" clearable v-model="params.moneyTo"
                 @keyup.enter="doSearch">
             </el-input>
             <span style="margin-left: 10px;color: #909399;">注册时间：</span>
-            <el-date-picker v-model="params.regTimeRange" type="datetimerange" align="right" start-placeholder="开始日期"
+            <el-date-picker size="small" v-model="params.regTimeRange" type="datetimerange" align="right" start-placeholder="开始日期"
                 end-placeholder="结束日期"></el-date-picker>
             <span style="font-size: 14px;margin-left: 10px;">状态：</span>
-            <el-select style="width: 90px;" v-model="params.status" placeholder="全部">
+            <el-select size="small" style="width: 90px;" v-model="params.status" placeholder="全部">
                 <el-option key="0" label="全部" value="0"></el-option>
                 <el-option key="1" label="禁用" value="1"></el-option>
                 <el-option key="2" label="正常" value="2"></el-option>
             </el-select>
             <div style="height: 10px;"></div>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="登录ip" clearable v-model="params.s_loginip"
+            <el-input size="small" style="width: 250px;margin-left: 10px;" placeholder="登录ip" clearable v-model="params.s_loginip"
                 @keyup.enter="doSearch">
                 <template #prepend>登录ip</template>
             </el-input>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_regip"
+            <el-input size="small" style="width: 250px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_regip"
                 @keyup.enter="doSearch">
                 <template #prepend>注册ip</template>
             </el-input>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="搜索银行卡" clearable v-model="params.s_bankc"
+            <el-input size="small" style="width: 250px;margin-left: 10px;" placeholder="搜索银行卡" clearable v-model="params.s_bankc"
                 @keyup.enter="doSearch">
                 <template #prepend>银行卡</template>
             </el-input>
         </template>
         <template #table="myScope">
 
-            <el-table-column prop="checked" :label="'选择'" width="70" fixed>
+            <el-table-column prop="checked" :label="'选择'" width="50" fixed>
                 <template #default="{ row, $index }">
                     <el-checkbox v-model="selectAllArr[$index]" size="large"
                         @change="onSelectItem($index, $event)"></el-checkbox>
@@ -157,7 +157,7 @@
         scope.row.first_pay_day == 0 ? '转有效' : '转无效' }}</el-button>
                     <el-button style="padding: 0px 6px;" size="small" v-if="power.kick"
                         @click="kick(scope.$index, scope.row)" type="warning">踢下线</el-button>
-                    <router-link v-if="power.wallet" :to="{ name: 'Finance_wallet', query: { uid: scope.row.id } }"
+                    <router-link v-if="power.wallet" :to="{ name: '资产列表', query: { uid: scope.row.id } }"
                         style="margin-left: 10px;"><el-button style="padding: 0px 6px;" size="small"
                             type="success">资产</el-button></router-link>
                     <!--                <el-button size="small" v-if="power.pay" @click="pay(scope.$index,scope.row)" type="success">充值</el-button>-->
@@ -178,35 +178,35 @@
                 :width="configForm.width" :top="configForm.top">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="账号">
-                        <el-input v-model="dataForm.account" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.account" autocomplete="off"
                             :disabled="configForm.isEdit"></el-input>
                     </el-form-item>
                     <el-form-item label="机构编号" v-if="false && (dataForm.gid == 61 || dataForm.gid == 63)">
-                        <el-input v-model="dataForm.suf_usn" autocomplete="off">
+                        <el-input size="small" v-model="dataForm.suf_usn" autocomplete="off">
                             <template #prepend>{{ actItem.pre_usn ? actItem.pre_usn : tdata.p_usn }}</template>
                         </el-input>
                     </el-form-item>
                     <el-form-item label="登录密码">
-                        <el-input type="password" v-model="dataForm.password_flag" autocomplete="off"></el-input>
+                        <el-input size="small" type="password" v-model="dataForm.password_flag" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="二级密码">
-                        <el-input type="password" v-model="dataForm.password2_flag" autocomplete="off"></el-input>
+                        <el-input size="small" type="password" v-model="dataForm.password2_flag" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
-                        <el-input v-model="dataForm.phone" autocomplete="off" placeholder="选填"></el-input>
+                        <el-input size="small" v-model="dataForm.phone" autocomplete="off" placeholder="选填"></el-input>
                     </el-form-item>
                     <el-form-item label="分组">
-                        <el-select style="width: 120px;" v-model="dataForm.gid" placeholder="选择分组">
+                        <el-select size="small" style="width: 120px;" v-model="dataForm.gid" placeholder="选择分组">
                             <el-option key="0" label="选择分组" value="0"></el-option>
                             <el-option v-for="(item, idx) in tdata.sys_group" :key="idx" :label="item" :value="idx">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="邀请人">
-                        <el-input v-model="dataForm.p_account" autocomplete="off" placeholder="邀请人账号-选填"></el-input>
+                        <el-input size="small" v-model="dataForm.p_account" autocomplete="off" placeholder="邀请人账号-选填"></el-input>
                     </el-form-item>
                     <el-form-item label="昵称">
-                        <el-input v-model="dataForm.nickname" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="dataForm.nickname" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="头像" style="margin-bottom: 0;height: 65px;">
                         <Upload v-model:file-list="headimgList" width="60px" height="60px"></Upload>
@@ -245,7 +245,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="允许登录IP" v-if="store.state.user.gid == 1">
-                        <el-input type="textarea" v-model="dataForm.white_ip" autocomplete="off" rows="3"></el-input>
+                        <el-input size="small" type="textarea" v-model="dataForm.white_ip" autocomplete="off" rows="3"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>
@@ -262,13 +262,13 @@
                 :width="configForm2.width">
                 <el-form :label-width="configForm2.labelWidth">
                     <el-form-item label="账号">
-                        <el-input v-model="actItem.account" autocomplete="off" disabled></el-input>
+                        <el-input size="small" v-model="actItem.account" autocomplete="off" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="可用余额">
-                        <el-input v-model="actItem.balance" autocomplete="off" disabled></el-input>
+                        <el-input size="small" v-model="actItem.balance" autocomplete="off" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="冻结余额">
-                        <el-input v-model="actItem.fz_balance" autocomplete="off" disabled></el-input>
+                        <el-input size="small" v-model="actItem.fz_balance" autocomplete="off" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="充值类型" style="margin-bottom: 0;">
                         <el-radio-group v-model="payForm.ptype">
@@ -277,14 +277,14 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="充值额度" style="margin-bottom: 0;">
-                        <el-input v-model="payForm.money" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="payForm.money" autocomplete="off"></el-input>
                         <span style="position: relative;top:-2px;color: #ff4400;">充值正数为增加，负数为扣除</span>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="payForm.remark" autocomplete="off" rows="3"></el-input>
+                        <el-input size="small" type="textarea" v-model="payForm.remark" autocomplete="off" rows="3"></el-input>
                     </el-form-item>
                     <el-form-item label="二级密码">
-                        <el-input type="password" v-model="payForm.password2_flag" autocomplete="off"></el-input>
+                        <el-input size="small" type="password" v-model="payForm.password2_flag" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>
@@ -298,13 +298,13 @@
             <el-dialog title="转移下级" v-model="transferShow" :close-on-click-modal="false" width="600px">
                 <el-form :label-width="configForm2.labelWidth">
                     <el-form-item label="转出账号">
-                        <el-input v-model="transferForm.from_account" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="transferForm.from_account" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="转入账号">
-                        <el-input v-model="transferForm.to_account" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="transferForm.to_account" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="二级密码">
-                        <el-input type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
+                        <el-input size="small" type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>
@@ -319,11 +319,11 @@
             <el-dialog title="同步会员层级" v-model="transferShow1" :close-on-click-modal="false" width="600px">
                 <el-form :label-width="configForm2.labelWidth">
                     <el-form-item label="代理账号">
-                        <el-input v-model="transferForm.from_account" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="transferForm.from_account" autocomplete="off"></el-input>
                     </el-form-item>
 
                     <el-form-item label="二级密码">
-                        <el-input type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
+                        <el-input size="small" type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>
@@ -338,11 +338,11 @@
             <el-dialog title="同步单个会员层级" v-model="transferShow2" :close-on-click-modal="false" width="600px">
                 <el-form :label-width="configForm2.labelWidth">
                     <el-form-item label="会员账号">
-                        <el-input v-model="transferForm.from_account" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="transferForm.from_account" autocomplete="off"></el-input>
                     </el-form-item>
 
                     <el-form-item label="二级密码">
-                        <el-input type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
+                        <el-input size="small" type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>

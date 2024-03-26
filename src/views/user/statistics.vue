@@ -3,35 +3,35 @@
         <template #search="{ params, tdata, doSearch }">
 
             <span style="font-size: 14px;margin-left: 10px;">有消费：</span>
-            <el-select style="width: 90px;" v-model="params.s_xiaofei" placeholder="全部">
+            <el-select size="small" style="width: 90px;" v-model="params.s_xiaofei" placeholder="全部">
                 <el-option key="all" label="全部" value="all"></el-option>
                 <el-option key="0" label="否" value="0"></el-option>
                 <el-option key="1" label="是" value="1"></el-option>
             </el-select>
 
             <span style="font-size: 14px;margin-left: 10px;">金额范围：</span>
-            <el-input style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
+            <el-input size="small" style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
                 @keyup.enter="doSearch">
             </el-input>
             <span style="font-size: 14px;">&nbsp;&nbsp;到&nbsp;&nbsp;</span>
-            <el-input style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
+            <el-input size="small" style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
                 @keyup.enter="doSearch">
             </el-input>
             <span style="font-size: 14px;margin-left: 10px;">注册时间：</span>
-            <el-date-picker v-model="params.regTimeRange" type="datetimerange" align="right" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword3"
+            <el-date-picker size="small" v-model="params.regTimeRange" type="datetimerange" align="right" start-placeholder="开始日期" end-placeholder="结束日期"></el-date-picker>
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword3"
                 @keyup.enter="doSearch">
                 <template #prepend>直推搜索</template>
             </el-input>
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword2"
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword2"
                 @keyup.enter="doSearch">
                 <template #prepend>团队搜索</template>
             </el-input>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="登录ip" clearable v-model="params.s_loginip"
+            <el-input size="small" style="width: 250px;margin-left: 10px;" placeholder="登录ip" clearable v-model="params.s_loginip"
                 @keyup.enter="doSearch">
                 <template #prepend>登录ip</template>
             </el-input>
-            <el-input style="width: 250px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_regip"
+            <el-input size="small" style="width: 250px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_regip"
                 @keyup.enter="doSearch">
                 <template #prepend>注册ip</template>
             </el-input>

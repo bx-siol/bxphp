@@ -3,14 +3,14 @@
         <el-col :span="box_span">
             <div style="text-align: center;font-size: 1.5rem;font-weight: 400;">Tlog</div>
             <div class="line-sp"></div>
-            <el-input v-model="form.account" placeholder="账号" prefix-icon="el-icon-user" style="display: none;"></el-input>
+            <el-input size="small" v-model="form.account" placeholder="账号" prefix-icon="el-icon-user" style="display: none;"></el-input>
             <div class="line-sp"></div>
-            <el-input v-model="form.password_flag" type="password" placeholder="口令密码" prefix-icon="el-icon-lock"></el-input>
+            <el-input size="small" v-model="form.password_flag" type="password" placeholder="口令密码" prefix-icon="el-icon-lock"></el-input>
             <!-- <div class="line-sp"></div>
-            <el-input v-model="form.gcode" placeholder="谷歌验证码" prefix-icon="el-icon-timer"></el-input>
+            <el-input size="small" v-model="form.gcode" placeholder="谷歌验证码" prefix-icon="el-icon-timer"></el-input>
              -->
             <div class="line-sp"></div>
-            <el-input v-model="form.vcode" placeholder="图形验证码" prefix-icon="el-icon-picture-outline-round"
+            <el-input size="small" v-model="form.vcode" placeholder="图形验证码" prefix-icon="el-icon-picture-outline-round"
                 style="width: 69%;" @keyup.enter="onLogin"></el-input>
             <el-image
                 style="width: 90px; height: 41px;position: relative;top:-1px;vertical-align: middle;float: right;cursor: pointer;"

@@ -57,18 +57,18 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened" @closed="onDialogClosed">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="名称">
-                        <el-input v-model="dataForm.name" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="dataForm.name" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="图标">
                         <MyUpload v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;">
                         </MyUpload>
                     </el-form-item>
                     <el-form-item label="用户每日限量">
-                        <el-input v-model="dataForm.day_limit" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="dataForm.day_limit" autocomplete="off"></el-input>
                     </el-form-item>
 
                     <el-form-item label="任务限量">
-                        <el-input v-model="dataForm.all_limit" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="dataForm.all_limit" autocomplete="off"></el-input>
                     </el-form-item>
 
                     <el-form-item label="领取类型">
@@ -90,7 +90,7 @@
                     </el-form-item>
 
                     <el-form-item label="截止日期">
-                        <el-date-picker :style="{ width: '250px' }" clearable v-model="dataForm.end_time" type="datetime"
+                        <el-date-picker size="small" :style="{ width: '250px' }" clearable v-model="dataForm.end_time" type="datetime"
                             placeholder="截止日期">
                         </el-date-picker>
                     </el-form-item>
@@ -99,10 +99,10 @@
 
 
                     <el-form-item label="奖励额度">
-                        <el-input v-model="dataForm.award" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="dataForm.award" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="排序">
-                        <el-input v-model="dataForm.sort" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="dataForm.sort" autocomplete="off"></el-input>
                         <span> 从大到小</span>
                     </el-form-item>
                     <!--               <el-form-item label="图标">

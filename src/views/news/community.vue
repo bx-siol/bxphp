@@ -47,25 +47,25 @@
 
 
                     <el-form-item label="用户昵称">
-                        <el-input v-model="dataForm.nikename" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.nikename" autocomplete="off" placeholder=""></el-input>
 
                     </el-form-item>
                     <el-form-item label="点赞数">
-                        <el-input type="number" v-model="dataForm.commendatory" autocomplete="off" rows="3"></el-input>
+                        <el-input size="small" type="number" v-model="dataForm.commendatory" autocomplete="off" rows="3"></el-input>
                     </el-form-item>
 
                     <el-form-item label="排序">
-                        <el-input type="number" v-model="dataForm.sort" autocomplete="off" rows="3"></el-input>
+                        <el-input size="small" type="number" v-model="dataForm.sort" autocomplete="off" rows="3"></el-input>
                     </el-form-item>
 
                     <!--  <el-form-item label="置顶评论" style="margin-bottom: 0;">
-                        <el-input type="textarea" v-model="dataForm.comments" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" type="textarea" v-model="dataForm.comments" autocomplete="off" placeholder=""></el-input>
                         <span>多个之间使用逗号分隔</span> 
                     </el-form-item>-->
 
 
                     <el-form-item label="发布时间" style="margin-bottom: 0;">
-                        <el-date-picker v-model="dataForm.releasetime" type="datetime" placeholder="请选择">
+                        <el-date-picker size="small" v-model="dataForm.releasetime" type="datetime" placeholder="请选择">
                         </el-date-picker>
                     </el-form-item>
 
@@ -84,7 +84,7 @@
                     </el-form-item>
 
                     <el-form-item label="文章内容">
-                        <!-- <el-input type="textarea" v-model="dataForm.content" autocomplete="off" placeholder=""></el-input> -->
+                        <!-- <el-input size="small" type="textarea" v-model="dataForm.content" autocomplete="off" placeholder=""></el-input> -->
                         <Editor :height="400" ref="editor"></Editor>
                     </el-form-item>
                 </el-form>

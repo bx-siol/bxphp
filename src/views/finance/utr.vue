@@ -1,18 +1,10 @@
 <template>
-    <div class="conbar">
-        <el-breadcrumb separator="/"
-            style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <el-breadcrumb-item>UTR 操作</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
     <div class="conbox">
-
-        <el-input style="width: 320px;margin-left: 10px;" placeholder="请输入UTR" clearable v-model="utr"
+        <el-input size="small" style="width: 320px;margin-left: 10px;" placeholder="请输入UTR" clearable v-model="utr"
             @keyup.enter="doSearch">
             <template #prepend>UTR<i class="el-icon-search"></i></template>
         </el-input>
         <el-button type="primary" style="margin-left: 10px;" @click="doSearch">查询</el-button>
-
     </div>
 </template>
 

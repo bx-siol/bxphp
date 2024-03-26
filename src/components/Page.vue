@@ -1,11 +1,5 @@
 <template>
     <div class="conbar">
-        <el-breadcrumb separator="/"
-            style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <slot name="title" :tdata="tableData" :title="compTitle">
-                <el-breadcrumb-item>{{ compTitle }}</el-breadcrumb-item>
-            </slot>
-        </el-breadcrumb>
         <div style="float: right;padding-top: 7px;padding-right: 12px;">
             <slot name="btn" :doSearch="onSearch" :tdata="tableData"></slot>
         </div>
@@ -20,37 +14,37 @@
                 <slot name="search" :params="searchForm" :tdata="tableData" :doSearch="onSearch"></slot>
 
                 <template v-if="searchTimeOpt.need">
-                    <el-date-picker
+                    <el-date-picker size="small"
                         :style="{ marginLeft: '10px', width: (searchTimeOpt.type == 'date' ? '150px' : '200px') }"
                         clearable v-model="sStartTime" :type="searchTimeOpt.type"
                         :default-value="searchTimeOpt.start_default_time" :placeholder="startPlaceholder">
                     </el-date-picker>
-                    <el-date-picker
+                    <el-date-picker size="small"
                         :style="{ marginLeft: '10px', width: (searchTimeOpt.type == 'date' ? '150px' : '200px') }"
                         clearable v-model="sEndTime" :type="searchTimeOpt.type"
                         :default-value="searchTimeOpt.end_default_time" :placeholder="endPlaceholder">
                     </el-date-picker>
                 </template>
 
-                <el-input style="width: 320px;margin-left: 10px;" placeholder="请输入" clearable
+                <el-input size="small" style="width: 320px;margin-left: 10px;" placeholder="请输入" clearable
                     v-model="searchForm.s_keyword" @keyup.enter="onSearch">
                     <template #prepend>关键词<i class="el-icon-search"></i></template>
                 </el-input>
-                <el-button @click="exportToExcel">导出</el-button>
-                <el-button type="primary" style="margin-left: 10px;" @click="onSearch">查询</el-button>
+                <el-button style="margin-left: 10px;" size="small" @click="exportToExcel">导出</el-button>
+                <el-button size="small" type="primary" style="margin-left: 10px;" @click="onSearch">查询</el-button>
             </template>
         </div>
 
         <!--数据表-->
         <div class="user_skills">
-            <el-table :header-cell-class-name="cellfun" :data="tableData.list"
+            <el-table :max-height="tableheight" :header-cell-class-name="cellfun" :data="tableData.list"
                 :header-cell-style="{ textAlign: 'center' }" :cell-style="{ textAlign: 'center' }"
                 :row-class-name="rowClass" border ref="multipleTable">
                 <slot name="table" :tdata="tableData" :delItem="delItem" :params="searchForm" :doSearch="onSearch">
                 </slot>
             </el-table>
         </div>
-
+        <!-- 50 38 32 -->
 
         <div class="consummary" v-if="slots.summary">
             <slot name="summary" :tdata="tableData"></slot>
@@ -67,7 +61,6 @@
     </div>
 
     <slot name="layer" :tdata="tableData"></slot>
-    <slot name="balance" :tdata="tableData"></slot>
 </template>
 
 <script lang="ts" setup>
@@ -101,7 +94,7 @@ interface SearchParams {
 }
 
 const emit = defineEmits(['success'])
-
+const tableheight = ref(800);
 const getdate = () => {
     const date = new Date()
     return `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}:${date.getSeconds().toString().padStart(2, '0')}`;
@@ -207,7 +200,7 @@ const cellfun = (item: any) => {
             }
 
             if (element.property == 'receive_type') {
-                console.log(element.property, index, item.row.length)
+                //console.log(element.property, index, item.row.length)
                 txflg = true
             }
         }
@@ -401,6 +394,12 @@ defineExpose({
 onMounted(() => {
     init()
     hasInit = true
+    var tablehide = document.getElementsByClassName('consearch')[0].clientHeight + document.getElementsByClassName('conbar')[0].clientHeight + 38 + 50 + 40 + 36;
+    // if (document.getElementsByClassName('plActionBox')[0] != undefined) {
+    //     tablehide += document.getElementsByClassName('plActionBox')[0].clientHeight
+    // }
+    tableheight.value = window.innerHeight - tablehide;
+    //alert(tableheight.val)
 })
 
 </script>

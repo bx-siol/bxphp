@@ -6,12 +6,12 @@
         </template>
 
         <template #search="{ params, tdata }">
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_type" placeholder="全部类型" v-if="false">
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_type" placeholder="全部类型" v-if="false">
                 <el-option key="0" label="全部类型" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.type_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
             </el-select>
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
                 <el-option key="0" label="全部状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -110,7 +110,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <!-- <el-form-item label="银行" v-show="dataForm.type==1">
-                    <el-select style="width: 220px;" v-model="dataForm.bank_id" placeholder="请选择" ref="bankNode">
+                    <el-select size="small" style="width: 220px;" v-model="dataForm.bank_id" placeholder="请选择" ref="bankNode">
                         <el-option key="0" label="请选择" value="0"></el-option>
                         <el-option
                                 v-for="(item,idx) in tdata.bank_arr"
@@ -122,11 +122,11 @@
                 </el-form-item> -->
 
                     <el-form-item label="银行" v-show="dataForm.type == 1">
-                        <el-input v-model="dataForm.bank_name" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.bank_name" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
 
                     <el-form-item label="省" v-show="dataForm.type == 1" v-if="false">
-                        <el-select style="width: 160px;" v-model="dataForm.province_id" placeholder="请选择"
+                        <el-select size="small" style="width: 160px;" v-model="dataForm.province_id" placeholder="请选择"
                             @change="onProvinceChange" ref="provinceNode">
                             <el-option key="0" label="请选择" value="0"></el-option>
                             <el-option v-for="(item, idx) in tdata.province_arr" :key="item.id" :label="item.name"
@@ -134,23 +134,23 @@
                             </el-option>
                         </el-select>
                         <span style="padding:0 10px;">市</span>
-                        <el-select style="width: 160px;" v-model="dataForm.city_id" placeholder="请选择" ref="cityNode">
+                        <el-select size="small" style="width: 160px;" v-model="dataForm.city_id" placeholder="请选择" ref="cityNode">
                             <el-option key="0" label="请选择" value="0"></el-option>
                             <el-option v-for="(item, idx) in cityArr" :key="item.id" :label="item.name" :value="item.id">
                             </el-option>
                         </el-select>
                     </el-form-item>
                     <el-form-item label="clabe" v-show="dataForm.type == 1">
-                        <el-input v-model="dataForm.ifsc" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.ifsc" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="姓名" v-if="dataForm.type < 4">
-                        <el-input v-model="dataForm.realname" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.realname" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="账户" v-if="dataForm.type < 4">
-                        <el-input v-model="dataForm.account" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.account" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="UPI" v-show="dataForm.type == 1">
-                        <el-input v-model="dataForm.upi" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.upi" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="协议" v-show="dataForm.type == 4">
                         <el-radio-group v-model="dataForm.protocal">
@@ -158,13 +158,13 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="钱包地址" v-if="dataForm.type >= 4">
-                        <el-input v-model="dataForm.address" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.address" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="收款码" style="margin-bottom: 0" v-show="dataForm.type > 1">
                         <Upload v-model:file-list="qrcodeList"></Upload>
                     </el-form-item>
                     <el-form-item label="排序值">
-                        <el-input v-model="dataForm.sort" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.sort" autocomplete="off" placeholder=""></el-input>
                         <span>从大到小</span>
                     </el-form-item>
                     <el-form-item label="状态" style="margin-bottom: 0;">
@@ -173,7 +173,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="备注说明">
-                        <el-input type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
+                        <el-input size="small" type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>

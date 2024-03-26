@@ -5,7 +5,7 @@
         </template>
 
         <template #search="{ params, tdata, doSearch }">
-            <el-select style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -60,14 +60,14 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="红包名称">
-                        <el-input v-model="dataForm.name" autocomplete="off" placeholder="任意填写，便于区分红包用途"></el-input>
+                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder="任意填写，便于区分红包用途"></el-input>
                     </el-form-item>
                     <el-form-item label="红包总额">
-                        <el-input v-model="dataForm.total_money" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.total_money" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 180px;"></el-input>
                     </el-form-item>
                     <el-form-item label="红包数量">
-                        <el-input v-model="dataForm.quantity" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.quantity" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 180px;"></el-input>
                         <span> 大于等于1且需要保障每包最小额度0.01</span>
                     </el-form-item>

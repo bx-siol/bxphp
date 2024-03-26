@@ -14,7 +14,7 @@
             <el-table-column prop="account" label="用户账号" width="140"></el-table-column>
             <!--        <el-table-column prop="nickname" label="用户昵称" width="130"></el-table-column>-->
             <el-table-column prop="category_name" label="产品分类" width="120"></el-table-column>
-            <el-table-column prop="goods_name" label="产品名称" min-width="320"></el-table-column>
+            <el-table-column prop="goods_name" label="产品名称" min-width="120"></el-table-column>
             <el-table-column prop="days" label="期限(天)" width="100"></el-table-column>
             <el-table-column prop="rate" label="收益率(%)" width="100"></el-table-column>
             <el-table-column prop="price" label="产品单价" width="120"></el-table-column>
@@ -48,11 +48,11 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="赠送账号">
-                        <el-input v-model="dataForm.account" autocomplete="off" placeholder=""
+                        <el-input size="small" v-model="dataForm.account" autocomplete="off" placeholder=""
                             :disabled="configForm.isEdit"></el-input>
                     </el-form-item>
                     <el-form-item label="赠送设备">
-                        <el-select v-model="dataForm.gid" placeholder="请选择设备" style="width: 100%;"
+                        <el-select size="small" v-model="dataForm.gid" placeholder="请选择设备" style="width: 100%;"
                             :disabled="configForm.isEdit">
                             <el-option key="0" label="请选择设备" value="0"></el-option>
                             <el-option v-for="(item, idx) in tdata.goods_arr" :key="item.id"
@@ -61,10 +61,10 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="赠送数量">
-                        <el-input v-model="dataForm.num" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.num" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="收益天数">
-                        <el-input v-model="dataForm.days" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.days" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>

@@ -62,7 +62,7 @@
                         </template>
                     </Page>
                     <el-form-item label="回复内容">
-                        <el-input type="textarea" v-model="replyForm.content" autocomplete="off" rows="3"></el-input>
+                        <el-input size="small" type="textarea" v-model="replyForm.content" autocomplete="off" rows="3"></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>

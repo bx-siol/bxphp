@@ -1,56 +1,59 @@
 <template>
     <Page :url="pageUrl" ref="pageRef" @success="onPageSuccess">
-        <template #search="{params,tdata,doSearch}">
+        <template #search="{ params, tdata, doSearch }">
 
             <span style="margin-left: 10px;color: #909399;">产品分类:</span>
-            <el-select style="width: 160px;margin-left: 10px;" v-model="params.s_cid" @change="onChangeCid"
+            <el-select size="small" style="width: 160px;margin-left: 10px;" v-model="params.s_cid" @change="onChangeCid"
                 placeholder="全部分类">
                 <el-option key="0" label="全部分类" value="0"></el-option>
-                <el-option v-for="(item,idx) in tdata.category_tree" :key="item.id" :label="item.name" :value="item.id">
+                <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id" :label="item.name"
+                    :value="item.id">
                 </el-option>
             </el-select>
 
             <span style="margin-left: 10px;color: #909399;">所属产品:</span>
-            <el-select style="width: 280px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部产品">
+            <el-select size="small" style="width: 280px;margin-left: 10px;" v-model="params.s_gid" placeholder="全部产品">
                 <el-option key="0" label="全部产品" value="0"></el-option>
-                <el-option v-for="(item,idx) in tableData.goods_arr" :key="item.id" :label="item.name" :value="item.id">
+                <el-option v-for="(item, idx) in tableData.goods_arr" :key="item.id" :label="item.name"
+                    :value="item.id">
                 </el-option>
             </el-select>
 
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_user"
-                @keyup.enter="doSearch">
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable
+                v-model="params.s_user" @keyup.enter="doSearch">
                 <template #prepend>投资用户</template>
             </el-input>
 
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_puser"
-                @keyup.enter="doSearch">
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable
+                v-model="params.s_puser" @keyup.enter="doSearch">
                 <template #prepend>团队搜索</template>
             </el-input>
 
             <div style="clear: both;height: 10px;"></div>
 
             <span style="margin-left: 10px;color: #909399;">订单状态:</span>
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status"
+                placeholder="全部状态">
                 <el-option key="0" label="全部状态" value="0"></el-option>
-                <el-option v-for="(item,idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
+                <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
             </el-select>
 
             <span style="margin-left: 10px;color: #909399;">日期:</span>
-            <el-date-picker :style="{marginLeft:'10px',width:'150px'}" clearable v-model="params.s_start_time_flag"
-                type="date" placeholder="开始日期">
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable
+                v-model="params.s_start_time_flag" type="date" placeholder="开始日期">
             </el-date-picker>
-            <el-date-picker :style="{marginLeft:'10px',width:'150px'}" clearable v-model="params.s_end_time_flag"
-                type="date" placeholder="结束日期">
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable
+                v-model="params.s_end_time_flag" type="date" placeholder="结束日期">
             </el-date-picker>
 
         </template>
 
         <template #table="myScope">
 
-            <el-table-column prop="checked" :label="'选择'" width="70" fixed>
-                <template #default="{row, $index }">
-                    <template v-if="  ((row.p1 == 0 ))">
+            <el-table-column prop="checked" :label="'选择'" width="50" fixed>
+                <template #default="{ row, $index }">
+                    <template v-if="((row.p1 == 0))">
                         <el-checkbox v-model="selectAllArr[$index]" size="large" @change="onSelectItem($index, $event)">
                         </el-checkbox>
                     </template>
@@ -79,11 +82,11 @@
             <el-table-column prop="p1" label="审核状态" width="200">
                 <template #default="scope">
 
-                    <el-button size="small" v-if="power.set&&(scope.row.p1==0)"
-                        @click="onOrderSet(scope.$index,scope.row,1)" type="success">通过</el-button>
+                    <el-button size="small" v-if="power.set && (scope.row.p1 == 0)"
+                        @click="onOrderSet(scope.$index, scope.row, 1)" type="success">通过</el-button>
 
-                    <el-button size="small" v-if="power.set&&scope.row.p1==0"
-                        @click="onOrderSet(scope.$index,scope.row,2)" type="danger">拒绝</el-button>
+                    <el-button size="small" v-if="power.set && scope.row.p1 == 0"
+                        @click="onOrderSet(scope.$index, scope.row, 2)" type="danger">拒绝</el-button>
 
                 </template>
             </el-table-column>
@@ -99,7 +102,7 @@
             <el-table-column prop="rate" label="收益率(%)" width="100"></el-table-column>
             <el-table-column prop="price" label="产品单价" width="120"></el-table-column>
             <el-table-column prop="num" label="购买数量" width="100"></el-table-column>
-           
+
             <!-- <el-table-column prop="money" label="总额度" width="120"></el-table-column>
             <el-table-column prop="total_reward" label="累计收益额度" width="130"></el-table-column>
             <el-table-column prop="total_days" label="累计收益天数" width="130"></el-table-column>
@@ -108,8 +111,8 @@
 
         </template>
 
-        <template #summary="{tdata}">
-            <div class="plActionBox" style="text-align: left;border-bottom: 1px solid #dedede;padding-bottom: 10px;">
+        <template #summary="{ tdata }">
+            <div class="plActionBox" style="text-align: left;  ">
                 <span style="display: inline-block;width: 55px;text-align: center;">
                     <el-checkbox v-model="selectAll" size="large" @change="onSelectAll"></el-checkbox>
                 </span>
@@ -119,9 +122,9 @@
                 </el-button>
             </div>
 
-            <span>订单数：{{tdata.count}}</span>
-            <span>投资总额：{{tdata.money}}</span>
-            <span>收益总额：{{tdata.total_reward}}</span>
+            <span>订单数：{{ tdata.count }}</span>
+            <span>投资总额：{{ tdata.money }}</span>
+            <span>收益总额：{{ tdata.total_reward }}</span>
         </template>
 
     </Page>

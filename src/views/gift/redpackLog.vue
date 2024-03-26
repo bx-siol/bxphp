@@ -3,13 +3,13 @@
         <template #search="{ params, tdata, doSearch }">
 
             <span style="margin-left: 10px;color: #909399;">日期:</span>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_start_time_flag"
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_start_time_flag"
                 type="date" placeholder="开始日期">
             </el-date-picker>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_end_time_flag"
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_end_time_flag"
                 type="date" placeholder="结束日期">
             </el-date-picker>
-            <el-input style="width: 180px;margin-left: 10px;" placeholder="用户账号" v-model="params.s_user"></el-input>
+            <el-input size="small" style="width: 180px;margin-left: 10px;" placeholder="用户账号" v-model="params.s_user"></el-input>
 
         </template>
 

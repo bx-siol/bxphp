@@ -1,8 +1,6 @@
 <template>
     <div class="conbar">
-        <el-breadcrumb separator="/" style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <el-breadcrumb-item>{{store.state.config.active.name}}</el-breadcrumb-item>
-        </el-breadcrumb>
+        
         <div style="float: right;padding-top: 7px;padding-right: 12px;" v-if="power.update">
             <el-button type="success" size="small" icon="el-icon-plus" @click="add">添加分类</el-button>
         </div>
@@ -46,10 +44,10 @@
                 <div v-if="dataForm.pname">{{dataForm.pname}}</div>
             </el-form-item>
             <el-form-item label="分类名称">
-                <el-input v-model="dataForm.name" autocomplete="off"></el-input>
+                <el-input size="small" v-model="dataForm.name" autocomplete="off"></el-input>
             </el-form-item>
             <el-form-item label="排序值" style="margin-bottom: 0;">
-                <el-input v-model="dataForm.sort" autocomplete="off" placeholder=""></el-input>
+                <el-input size="small" v-model="dataForm.sort" autocomplete="off" placeholder=""></el-input>
                 <span>从大到小</span>
             </el-form-item>
             <el-form-item label="图标">
@@ -62,7 +60,7 @@
                 </el-radio-group>
             </el-form-item>
             <el-form-item label="备注">
-                <el-input type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
+                <el-input size="small" type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
             </el-form-item>
         </el-form>
         <template #footer>

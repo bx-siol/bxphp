@@ -8,22 +8,22 @@
                 <el-switch v-model="viewAccountInfo" size="large" active-text="显示" inactive-text="隐藏" />
 
                 <span style="font-size: 14px;margin-left: 20px;">金额范围：</span>
-                <el-input style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
+                <el-input size="small" style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;">&nbsp;&nbsp;到&nbsp;&nbsp;</span>
-                <el-input style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
+                <el-input size="small" style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
                     @keyup.enter="doSearch">
                 </el-input>
 
                 <span style="font-size: 14px;margin-left: 10px;">翻译：</span>
-                <el-select style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
+                <el-select size="small" style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
                     <el-option key="0" label="否" value="0"></el-option>
                     <el-option key="1" label="是" value="1"></el-option>
                 </el-select>
 
                 <span style="font-size: 14px;margin-left: 10px;">推荐人：</span>
-                <el-select style="width: 110px;" v-model="params.s_tjr" placeholder="全部">
+                <el-select size="small" style="width: 110px;" v-model="params.s_tjr" placeholder="全部">
                     <el-option key="0" label="全部" value="0"></el-option>
                     <el-option key="1" label="二级代理" value="1"></el-option>
                 </el-select>
@@ -31,18 +31,18 @@
                 <div style="height: 0.5rem;"></div>
 
                 <span style="font-size: 14px;margin-left: 20px;">推荐人：</span>
-                <el-input style="width: 168px;" placeholder="推荐人" clearable v-model="params.s_spuser"
+                <el-input size="small" style="width: 168px;" placeholder="推荐人" clearable v-model="params.s_spuser"
                     @keyup.enter="doSearch">
                 </el-input>
 
                 <span style="font-size:15px;margin-left: 10px;">首充:</span>
-                <el-select style="width: 80px;margin-left: 10px;" v-model="params.s_is_first" placeholder="全部">
+                <el-select size="small" style="width: 80px;margin-left: 10px;" v-model="params.s_is_first" placeholder="全部">
                     <el-option key="all" label="全部" value="all"></el-option>
                     <el-option key="1" label="是" value="1"></el-option>
                     <el-option key="0" label="否" value="0"></el-option>
                 </el-select>
 
-                <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
+                <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
                     <el-option key="0" label="全部状态" value="0"></el-option>
                     <el-option v-for="(item, idx) in tdata.paylog_status_arr" :key="idx" :label="item" :value="idx">
                     </el-option>
@@ -50,7 +50,7 @@
 
 
                 <span style="font-size: 14px;margin-left: 20px;">取消支付</span>
-                <el-input style="width: 168px;" placeholder="订单号" clearable v-model="ddh">
+                <el-input size="small" style="width: 168px;" placeholder="订单号" clearable v-model="ddh">
                 </el-input>
                 <el-button v-if="power.update" @click="qxdd()">取消支付</el-button>
 
@@ -60,24 +60,24 @@
 
 
                 <span style="font-size: 14px;margin-left: 10px;">支付通道</span>
-                <el-input style="width: 180px;" placeholder="支付通道" clearable v-model="params.s_paytype_s"
+                <el-input size="small" style="width: 180px;" placeholder="支付通道" clearable v-model="params.s_paytype_s"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">通道单号:</span>
-                <el-input style="width: 180px;" placeholder="通道单号" clearable v-model="params.s_oldosn"
+                <el-input size="small" style="width: 180px;" placeholder="通道单号" clearable v-model="params.s_oldosn"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">用户账号</span>
-                <el-input style="width: 180px;" placeholder="用户账号" clearable v-model="params.s_user_account"
+                <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable v-model="params.s_user_account"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">系统单号:</span>
-                <el-input style="width: 180px;" placeholder="系统单号" clearable v-model="params.s_osn"
+                <el-input size="small" style="width: 180px;" placeholder="系统单号" clearable v-model="params.s_osn"
                     @keyup.enter="doSearch">
                 </el-input>
 
                 <span style="font-size: 14px;margin-left: 10px;">UTR</span>
-                <el-input style="width: 180px;" placeholder="UTR" clearable v-model="params.s_utr"
+                <el-input size="small" style="width: 180px;" placeholder="UTR" clearable v-model="params.s_utr"
                     @keyup.enter="doSearch">
                 </el-input>
 
@@ -202,13 +202,13 @@
                         <template v-if="power.check">
                             <el-button size="small"
                                 v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9"
-                                @click="checkbank(1, row)" type="success">到账</el-button>
+                                @click="checkbank(1, row)" type="success">卡到账</el-button>
 
                         </template>
                         <template v-if="power.check">
                             <el-button size="small"
                                 v-if="row.pay_type == 'offline' && row.status >= 1 && row.status < 9 && row.status != 3"
-                                @click="checkbank(2, row)" type="danger">未到账</el-button>
+                                @click="checkbank(2, row)" type="danger">卡未到账</el-button>
                         </template>
 
 
@@ -219,9 +219,8 @@
                         </template>
 
                         <template v-if="power.check_onlie">
-                            <el-button size="small"
-                                v-if="row.pay_type != 'offline' && row.status >= 1 && row.status < 9 && row.status != 3"
-                                @click="checkbank_onlie(2, row)" type="danger">未到账</el-button>
+                            <el-button size="small" v-if="row.pay_type != 'offline'" @click="checkbank_onlie(2, row)"
+                                type="danger">未到账</el-button>
                         </template>
 
 
@@ -241,13 +240,13 @@
                     :width="configForm.width">
                     <el-form :label-width="configForm.labelWidth">
                         <el-form-item label="单号">
-                            <el-input v-model="actItem.osn" autocomplete="off" disabled></el-input>
+                            <el-input size="small" v-model="actItem.osn" autocomplete="off" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="钱包" style="margin-bottom: 0;">
                             充值钱包
                         </el-form-item>
                         <el-form-item label="额度">
-                            <el-input v-model="actItem.money" autocomplete="off" disabled></el-input>
+                            <el-input size="small" v-model="actItem.money" autocomplete="off" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="订单状态" style="margin-bottom: 0;">
                             <el-radio-group v-model="checkForm.status">
@@ -265,13 +264,13 @@
 
                         </el-form-item>
                         <el-form-item label="汇率" style="display: none;">
-                            <el-input v-model="checkForm.rate" autocomplete="off"></el-input>
+                            <el-input size="small" v-model="checkForm.rate" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="UTR">
-                            <el-input v-model="actItem.pay_remark" autocomplete="off"></el-input>
+                            <el-input size="small" v-model="actItem.pay_remark" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="备注">
-                            <el-input type="textarea" v-model="checkForm.check_remark" autocomplete="off" rows="3">
+                            <el-input size="small" type="textarea" v-model="checkForm.check_remark" autocomplete="off" rows="3">
                             </el-input>
                         </el-form-item>
                     </el-form>
@@ -467,37 +466,3 @@ const onTrans = (ev: any) => {
     color: red !important;
 }
 </style>
-
-
-
-<!-- <style scoped>
-
-
-.el-pagination.is-background .el-pager li:not(.disabled).active {
-    color: aliceblue;
-}
-
-.el-input-group__prepend {
-    background: none;
-}
-
-.divs {
-    background-image: url('../../assets/11.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-:root {
-    --el-color-white: #00000000 !important;
-    --el-background-color-base: #2196f3 !important;
-}
-
-.el-table .el-table__cell {
-    color: aliceblue;
-}
-</style> -->

@@ -19,15 +19,15 @@ const routes: Array<RouteRecordRaw> = [
     },
     {
         path: '/',
-        name: 'Admin',
+        name: '后台',
         meta: {
             title: '管理后台'
         },
         component: () => import('../views/admin.vue'),
         children: [
             {
-                path: '',
-                name: 'Default_index',
+                path: '/index',
+                name: '首页',
                 component: () => import('../views/default/index2.vue')
             },
             {
@@ -37,22 +37,22 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'sys/bset',
-                name: 'Sys_bset',
+                name: '基础配置',
                 component: () => import('../views/sys/bset.vue')
             },
             {
                 path: 'sys/node',
-                name: 'Sys_node',
+                name: '节点管理',
                 component: () => import('../views/sys/node.vue')
             },
             {
                 path: 'sys/log',
-                name: 'Sys_log',
+                name: '操作日志',
                 component: () => import('../views/sys/log.vue')
             },
             {
                 path: 'sys/pset',
-                name: 'Sys_pset',
+                name: '平台设置',
                 component: () => import('../views/sys/pset.vue')
             },
             {
@@ -62,13 +62,13 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'sys/trans',
-                name: 'Sys_trans',
+                name: '语言翻译',
                 component: () => import('../views/sys/trans.vue')
 
             },
             {
                 path: 'sys/oauth',
-                name: 'Sys_oauth',
+                name: '权限管理',
                 component: () => import('../views/sys/oauth.vue')
             },
             {
@@ -83,7 +83,7 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'news/category',
-                name: 'News_category',
+                name: '文章分类',
                 component: () => import('../views/news/category.vue')
             },
             {
@@ -93,22 +93,22 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'news/article',
-                name: 'News_article',
+                name: '文章列表',
                 component: () => import('../views/news/article.vue')
             },
             {
                 path: 'news/notice',
-                name: 'News_notice',
+                name: '系统公告',
                 component: () => import('../views/news/notice.vue')
             },
             {
                 path: 'user/group',
-                name: 'User_group',
+                name: '用户分组',
                 component: () => import('../views/user/group.vue')
             },
             {
                 path: 'user/user',
-                name: 'User_user',
+                name: '用户列表',
                 component: () => import('../views/user/user.vue')
             },
             {
@@ -118,17 +118,17 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'user/ulink',
-                name: 'User_ulink',
+                name: '邀请链接',
                 component: () => import('../views/user/ulink.vue')
             },
             {
                 path: 'user/statistics',
-                name: 'User_statistics',
+                name: '会员统计',
                 component: () => import('../views/user/statistics.vue')
             },
             {
                 path: 'user/agent',
-                name: 'User_agent',
+                name: '代理查询',
                 component: () => import('../views/user/agent.vue')
             },
             {
@@ -138,37 +138,37 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'finance/wallet',
-                name: 'Finance_wallet',
+                name: '资产列表',
                 component: () => import('../views/finance/wallet.vue')
             },
             {
                 path: 'finance/walletLog',
-                name: 'Finance_walletLog',
+                name: '资产账变记录',
                 component: () => import('../views/finance/walletLog.vue')
             },
             {
                 path: 'finance/banklog',
-                name: 'Finance_banklog',
+                name: '收款卡号',
                 component: () => import('../views/finance/banklog.vue')
             },
             {
                 path: 'finance/paylog',
-                name: 'Finance_paylog',
+                name: '充值记录',
                 component: () => import('../views/finance/paylog.vue')
             },
             {
                 path: 'finance/cashlog',
-                name: 'Finance_cashlog',
+                name: '提现记录',
                 component: () => import('../views/finance/cashlog.vue')
             },
             {
                 path: 'finance/ptype',
-                name: 'Finance_ptype',
+                name: '支付通道管理',
                 component: () => import('../views/finance/ptype.vue')
             },
             {
                 path: 'finance/dtype',
-                name: 'Finance_dtype',
+                name: '代付通道管理',
                 component: () => import('../views/finance/dtype.vue')
             },
 
@@ -186,82 +186,82 @@ const routes: Array<RouteRecordRaw> = [
             },
             {
                 path: 'gift/coupon',
-                name: 'Gift_coupon',
+                name: '优惠券列表',
                 component: () => import('../views/gift/coupon.vue')
             },
             {
                 path: 'gift/couponLog',
-                name: 'Gift_couponLog',
+                name: '领券记录',
                 component: () => import('../views/gift/couponLog.vue')
             },
             {
                 path: 'gift/lottery',
-                name: 'Gift_lottery',
+                name: '抽奖设置',
                 component: () => import('../views/gift/lottery.vue')
             },
             {
                 path: 'gift/lotteryLog',
-                name: 'Gift_lotteryLog',
+                name: '抽奖记录',
                 component: () => import('../views/gift/lotteryLog.vue')
             },
             {
                 path: 'gift/redpack',
-                name: 'Gift_redpack',
+                name: '红包码管理',
                 component: () => import('../views/gift/redpack.vue')
             },
             {
                 path: 'gift/redpackLog',
-                name: 'Gift_redpackLog',
+                name: '红包领取记录',
                 component: () => import('../views/gift/redpackLog.vue')
             },
             {
                 path: 'product/category',
-                name: 'Product_category',
+                name: '产品分类',
                 component: () => import('../views/product/category.vue')
             },
             {
                 path: 'product/goods',
-                name: 'Product_goods',
+                name: '产品列表',
                 component: () => import('../views/product/goods.vue')
             },
             {
                 path: 'product/order',
-                name: 'Product_order',
+                name: '订单列表',
                 component: () => import('../views/product/order.vue')
             },
             {
                 path: 'product/order1',
-                name: 'Product_order1',
+                name: '奖金审核',
                 component: () => import('../views/product/order1.vue')
             },
             {
                 path: 'product/reward',
-                name: 'Product_reward',
+                name: '收益记录',
                 component: () => import('../views/product/reward.vue')
             },
             {
                 path: 'product/rebate',
-                name: 'Product_rebate',
+                name: '佣金明细',
                 component: () => import('../views/product/rebate.vue')
             },
             {
                 path: 'product/guser',
-                name: 'Product_guser',
+                name: '赠送管理',
                 component: () => import('../views/product/guser.vue')
             },
             {
                 path: 'ext/service',
-                name: 'Ext_service',
+                name: '客服管理',
                 component: () => import('../views/ext/service.vue')
             },
             {
                 path: 'ext/task',
-                name: 'Ext_task',
+                name: '任务管理',
                 component: () => import('../views/ext/task.vue')
             },
             {
                 path: 'ext/tasklog',
-                name: 'Ext_tasklog',
+                name: '任务领取记录',
                 component: () => import('../views/ext/tasklog.vue')
             }, {
                 path: 'finance/utr',

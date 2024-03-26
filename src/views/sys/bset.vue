@@ -5,7 +5,7 @@
     </template>
 
     <template #search="{params,tdata}">
-        <el-select style="width: 100px;" v-model="params.s_single" placeholder="单KEY">
+        <el-select size="small" style="width: 100px;" v-model="params.s_single" placeholder="单KEY">
             <el-option
                     key="all"
                     label="单KEY"
@@ -59,13 +59,13 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="SKEY">
-                    <el-input v-model="dataForm.skey" autocomplete="off" :disabled="configForm.isEdit"></el-input>
+                    <el-input size="small" v-model="dataForm.skey" autocomplete="off" :disabled="configForm.isEdit"></el-input>
                 </el-form-item>
                 <el-form-item label="名称">
-                    <el-input v-model="dataForm.name" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.name" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="配置内容">
-                    <el-input type="textarea" v-model="dataForm.config" autocomplete="off" rows="5"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.config" autocomplete="off" rows="5"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>

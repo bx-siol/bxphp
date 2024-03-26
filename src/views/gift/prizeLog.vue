@@ -3,14 +3,14 @@
         <template #search="{ params, tdata, doSearch }">
 
             <span style="margin-left: 10px;color: #909399;">{{ isTrans ? 'Date' : '日期' }}:</span>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_start_time_flag"
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_start_time_flag"
                 type="date" :placeholder="isTrans ? 'Date' : '开始日期'">
             </el-date-picker>
-            <el-date-picker :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_end_time_flag"
+            <el-date-picker size="small" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_end_time_flag"
                 type="date" :placeholder="isTrans ? 'Date' : '结束日期'">
             </el-date-picker>
             <span style="font-size: 14px;margin-left: 10px;">{{ isTrans ? 'Translate' : '翻译' }}：</span>
-            <el-select style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
+            <el-select size="small" style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
                 <el-option key="0" :label="isTrans ? 'No' : '否'" value="0"></el-option>
                 <el-option key="1" :label="isTrans ? 'Yes' : '是'" value="1"></el-option>
             </el-select>

@@ -1,25 +1,20 @@
 <template>
-    <div class="conbar">
-        <el-breadcrumb separator="/" style="padding-left:12px;padding-top: 2px;line-height: 40px;display: inline-block;">
-            <el-breadcrumb-item>{{ store.state.config.active.name }}</el-breadcrumb-item>
-        </el-breadcrumb>
-    </div>
     <div class="conbox">
         <el-row>
             <el-col :span="10">
                 <el-form :style="{ width: configForm.width }" :label-width="configForm.labelWidth">
                     <el-form-item label="账号">
-                        <el-input v-model="userinfo.account" autocomplete="off" disabled></el-input>
+                        <el-input size="small" v-model="userinfo.account" autocomplete="off" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="手机号">
-                        <el-input v-model="userinfo.phone" autocomplete="off"></el-input>
+                        <el-input size="small" v-model="userinfo.phone" autocomplete="off"></el-input>
                     </el-form-item>
                     <el-form-item label="新登录密码">
-                        <el-input v-model="userinfo.password_flag" type="password" autocomplete="off"
+                        <el-input size="small" v-model="userinfo.password_flag" type="password" autocomplete="off"
                             placeholder="留空则忽略修改"></el-input>
                     </el-form-item>
                     <el-form-item label="新二级密码">
-                        <el-input v-model="userinfo.password2_flag" type="password" autocomplete="off"
+                        <el-input size="small" v-model="userinfo.password2_flag" type="password" autocomplete="off"
                             placeholder="留空则忽略修改"></el-input>
                     </el-form-item>
                     <!-- <el-form-item label="谷歌验证">
@@ -29,11 +24,11 @@
                         </el-radio-group>
                     </el-form-item> -->
                     <el-form-item label="允许登录IP">
-                        <el-input type="textarea" v-model="userinfo.white_ip" autocomplete="off" rows="3"
+                        <el-input size="small" type="textarea" v-model="userinfo.white_ip" autocomplete="off" rows="3"
                             placeholder="多个ip之间使用逗号“,”相隔，留空则不限制"></el-input>
                     </el-form-item>
                     <el-form-item label="当前二级密码">
-                        <el-input v-model="userinfo.password2_ck_flag" type="password" autocomplete="off"
+                        <el-input size="small" v-model="userinfo.password2_ck_flag" type="password" autocomplete="off"
                             placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="" style="padding-top: 10px;">

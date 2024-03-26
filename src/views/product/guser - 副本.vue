@@ -47,11 +47,11 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="赠送账号">
-                        <el-input v-model="dataForm.account" autocomplete="off" placeholder=""
+                        <el-input size="small" v-model="dataForm.account" autocomplete="off" placeholder=""
                             :disabled="configForm.isEdit"></el-input>
                     </el-form-item>
                     <el-form-item label="赠送设备">
-                        <el-select v-model="dataForm.gid" placeholder="请选择设备" style="width: 100%;">
+                        <el-select size="small" v-model="dataForm.gid" placeholder="请选择设备" style="width: 100%;">
                             <el-option key="0" label="请选择设备" value="0"></el-option>
                             <el-option v-for="(item, idx) in tdata.goods_arr" :key="item.id"
                                 :label="item.price + ' ' + item.name" :value="item.id">
@@ -59,10 +59,10 @@
                         </el-select>
                     </el-form-item>
                     <el-form-item label="赠送数量">
-                        <el-input v-model="dataForm.num" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.num" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-form-item label="收益天数">
-                        <el-input v-model="dataForm.days" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.days" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                 </el-form>
                 <template #footer>

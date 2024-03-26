@@ -5,7 +5,7 @@
     </template>
 
     <template #search="{params,tdata}">
-        <el-select style="width: 100px;" v-model="params.s_public" placeholder="公共">
+        <el-select size="small" style="width: 100px;" v-model="params.s_public" placeholder="公共">
             <el-option
                     key="all"
                     label="公共"
@@ -18,7 +18,7 @@
                     :value="idx">
             </el-option>
         </el-select>
-        <el-select style="width: 100px;margin-left: 10px;" v-model="params.s_type" placeholder="菜单">
+        <el-select size="small" style="width: 100px;margin-left: 10px;" v-model="params.s_type" placeholder="菜单">
             <el-option
                     key="all"
                     label="菜单"
@@ -90,28 +90,28 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="父级节点">
-                    <el-select v-model="dataForm.pid" placeholder="请选择" style="width: 160px;">
+                    <el-select size="small" v-model="dataForm.pid" placeholder="请选择" style="width: 160px;">
                         <el-option label="请选择" :value="0"></el-option>
                         <el-option :label="vo.name" :value="vo.id" v-for="vo in tdata.top"></el-option>
                     </el-select>
                 </el-form-item>
                 <el-form-item label="Nkey">
-                    <el-input v-model="dataForm.nkey" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.nkey" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="名称">
-                    <el-input v-model="dataForm.name" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.name" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="图标">
-                    <el-input v-model="dataForm.ico" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.ico" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="排序">
-                    <el-input v-model="dataForm.sort" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.sort" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="链接">
-                    <el-input v-model="dataForm.url" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.url" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>

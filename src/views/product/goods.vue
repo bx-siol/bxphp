@@ -5,12 +5,12 @@
         </template>
 
         <template #search="{ params, tdata, doSearch }">
-            <el-select style="width: 200px;margin-left: 10px;" v-model="params.s_cid" placeholder="所属分类">
+            <el-select size="small" style="width: 200px;margin-left: 10px;" v-model="params.s_cid" placeholder="所属分类">
                 <el-option key="0" label="所属分类" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id" :label="item.name" :value="item.id">
                 </el-option>
             </el-select>
-            <el-select style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -96,12 +96,12 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="产品名称">
-                        <el-input v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="所属分类">
-                                <el-select style="width: 300px;" v-model="dataForm.cid" placeholder="选择分类">
+                                <el-select size="small" style="width: 300px;" v-model="dataForm.cid" placeholder="选择分类">
                                     <el-option key="0" label="选择分类" value="0"></el-option>
                                     <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id" :label="item.name" :value="item.id">
                                     </el-option>
@@ -110,7 +110,7 @@
                         </el-col>
                         <el-col :span="16">
                             <el-form-item label="购买送自己">
-                            <el-select style="width: 300px;" v-model="dataForm.gifttoself" placeholder="选择产品">
+                            <el-select size="small" style="width: 300px;" v-model="dataForm.gifttoself" placeholder="选择产品">
                                 <el-option key="0" label="选择产品" value="0"></el-option>
                                 <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id">
                                 </el-option>
@@ -122,12 +122,12 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="产品单价">
-                                <el-input v-model="dataForm.price" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="16">
                             <el-form-item label="购买送推荐人">
-                                <el-select style="width: 300px;" v-model="dataForm.gifttopuser" placeholder="选择产品">
+                                <el-select size="small" style="width: 300px;" v-model="dataForm.gifttopuser" placeholder="选择产品">
                                     <el-option key="0" label="选择产品" value="0"></el-option>
                                     <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
@@ -138,19 +138,19 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="上级赠送积分">
-                                <el-input v-model="dataForm.Integral" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.Integral" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span> </span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="赠送积分">
-                                <el-input v-model="dataForm.selfintegral" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.selfintegral" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span> </span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="赠送余额">
-                                <el-input v-model="dataForm.selfbg" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.selfbg" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span> </span>
                             </el-form-item>
                         </el-col>
@@ -158,13 +158,13 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="产品期限">
-                                <el-input v-model="dataForm.days" autocomplete="off" placeholder="" style="width: 275px;"></el-input>
+                                <el-input size="small" v-model="dataForm.days" autocomplete="off" placeholder="" style="width: 275px;"></el-input>
                                 <span>&nbsp;&nbsp;天</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="16">
                             <el-form-item label="限充值钱包">
-                                <el-input v-model="dataForm.buyday" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.buyday" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;设置此参数后只能使用充值钱包购买该产品。默认为0</span>
                             </el-form-item>
                         </el-col>
@@ -172,13 +172,13 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="收益率(%)">
-                                <el-input v-model="dataForm.rate" autocomplete="off" placeholder="" style="width: 260px;"></el-input>
+                                <el-input size="small" v-model="dataForm.rate" autocomplete="off" placeholder="" style="width: 260px;"></el-input>
                                 <span>&nbsp;&nbsp;每天</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="16">
                             <el-form-item label="多久后领取">
-                                <el-input v-model="dataForm.dayout" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.dayout" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;天&nbsp;&nbsp;(设置此参数后只能在达到限定天数后领取收益。默认为0)</span>
                             </el-form-item>
                         </el-col>                        
@@ -186,13 +186,13 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="限购数量">
-                                <el-input v-model="dataForm.invest_limit" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.invest_limit" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;填0或空则不限</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="复购送自己">
-                                <el-input v-model="dataForm.price0" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price0" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;复购送自己金额</span>
                             </el-form-item>
                         </el-col>
@@ -200,13 +200,13 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="首购送自己">
-                                <el-input v-model="dataForm.price1" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price1" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;首次购买送自己金额</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="首购送上级">
-                                <el-input v-model="dataForm.price2" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price2" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;首次购买送上级金额</span>
                             </el-form-item>
                         </el-col>
@@ -214,13 +214,13 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="首购抽奖">
-                                <el-input v-model="dataForm.cjcs" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.cjcs" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;首次购买送自己抽奖</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="首购上级抽奖">
-                                <el-input v-model="dataForm.sjcjcs" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.sjcjcs" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;首次购买送上级抽奖</span>
                             </el-form-item>
                         </el-col>
@@ -228,13 +228,13 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="定时上架">
-                                <el-date-picker v-model="dataForm.dssj" type="datetime" placeholder="请选择"></el-date-picker>
+                                <el-date-picker size="small" v-model="dataForm.dssj" type="datetime" placeholder="请选择"></el-date-picker>
                                 <span>&nbsp;&nbsp;定时上架时间 </span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="倒计时">
-                                <el-date-picker v-model="dataForm.djs" type="datetime" placeholder="请选择"></el-date-picker>
+                                <el-date-picker size="small" v-model="dataForm.djs" type="datetime" placeholder="请选择"></el-date-picker>
                                 <span>&nbsp;&nbsp;倒计时截止时间 </span>
                             </el-form-item>
                         </el-col>
@@ -242,12 +242,12 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="担保机构">
-                                <el-input v-model="dataForm.guarantors" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.guarantors" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="排序">
-                                <el-input v-model="dataForm.sort" autocomplete="off" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.sort" autocomplete="off" style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;从大到小</span>
                             </el-form-item>
                         </el-col>
@@ -269,12 +269,12 @@
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="库存">
-                                <el-input v-model="dataForm.kc" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.kc" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="需邀请人数">
-                                <el-input v-model="dataForm.yaoqing" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.yaoqing" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>

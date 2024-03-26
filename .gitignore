@@ -1,49 +1,5 @@
-# Build and Release Folders
-bin-debug/
-bin-release/
-[Oo]bj/
-[Bb]in/
-node_modules/
-# Other files and folders
-.settings/
-game/gameapp/build/
-game/gameapp/local/
-game/gameapp/packages/
-game/gameapp/temp/
-# Executables
-*.swf
-*.air
-*.ipa
-*.apk
-
-# Project files, i.e. `.project`, `.actionScriptProperties` and `.flexProperties`
-# should NOT be excluded as they contain compiler settings and other important
-# information for Eclipse / Flash Builder.
-admin/admin.zip
-h5/h5.zip
-admin/favicon.ico
-admin/index.html
-admin/assets/*.js
-admin/assets/*.css
-admin/assets/*.*
-ht8888/
-h5/.DS_Store
-h5/ball.png
-h5/coin.png
-h5/discount6.png
-h5/discount10.png
-h5/grid.png
-h5/index.html
-h5/lotterymid.png
-h5/share.png
-h5/static/*.*
-h5/assets/*.*
-h5/video/video.mp4
-logs/*
-h5/avatar/headimgurl.jpg
-new/h5/*
-new/new.zip
-new/uploads/qrcode/*
-
-new/vue/Nestle/h5/*
-new/vue/Syngenta/h5/*
+node_modules
+.DS_Store
+dist
+dist-ssr
+*.local

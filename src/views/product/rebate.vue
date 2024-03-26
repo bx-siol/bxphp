@@ -2,33 +2,33 @@
     <Page :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #search="{params,tdata,doSearch}">
 
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_user"
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_user"
                 @keyup.enter="doSearch">
                 <template #prepend>所属用户</template>
             </el-input>
 
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_user1"
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_user1"
                 @keyup.enter="doSearch">
                 <template #prepend>来源用户</template>
             </el-input>
 
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_puser"
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_puser"
                 @keyup.enter="doSearch">
                 <template #prepend>团队搜索</template>
             </el-input>
 
             <div style="clear: both;height: 10px;"></div>
 
-            <el-input style="width: 300px;margin-left: 10px;" placeholder="请输入" clearable v-model="params.s_osn"
+            <el-input size="small" style="width: 300px;margin-left: 10px;" placeholder="请输入" clearable v-model="params.s_osn"
                 @keyup.enter="doSearch">
                 <template #prepend>订单号</template>
             </el-input>
 
             <span style="margin-left: 10px;color: #909399;">日期:</span>
-            <el-date-picker :style="{marginLeft:'10px',width:'150px'}" clearable v-model="params.s_start_time_flag"
+            <el-date-picker size="small" :style="{marginLeft:'10px',width:'150px'}" clearable v-model="params.s_start_time_flag"
                 type="date" placeholder="开始日期">
             </el-date-picker>
-            <el-date-picker :style="{marginLeft:'10px',width:'150px'}" clearable v-model="params.s_end_time_flag"
+            <el-date-picker size="small" :style="{marginLeft:'10px',width:'150px'}" clearable v-model="params.s_end_time_flag"
                 type="date" placeholder="结束日期">
             </el-date-picker>
 

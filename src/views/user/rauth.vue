@@ -1,7 +1,7 @@
 <template>
 <Page url="c=User&a=rauth">
     <template #search="{params,tdata}">
-        <el-select style="width: 120px;" v-model="params.s_status" placeholder="认证状态">
+        <el-select size="small" style="width: 120px;" v-model="params.s_status" placeholder="认证状态">
             <el-option key="0" label="认证状态" value="0"></el-option>
             <el-option
                     v-for="(item,idx) in tdata.rauth_status"
@@ -87,7 +87,7 @@
                     </el-radio-group>
                 </el-form-item>
                 <el-form-item label="备注">
-                    <el-input type="textarea" v-model="dataForm.check_remark" autocomplete="off" rows="3"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.check_remark" autocomplete="off" rows="3"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>

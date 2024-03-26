@@ -2,7 +2,7 @@
     <Page :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #search="{ params, tdata, doSearch }">
 
-            <!--            <el-input
+            <!--            <el-input size="small"
                     style="width: 280px;margin-left: 10px;"
                     placeholder="ID/账号/昵称"
                     clearable
@@ -11,13 +11,13 @@
                 <template #prepend>用户搜索</template>
             </el-input>-->
 
-            <el-input style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_puser"
+            <el-input size="small" style="width: 280px;margin-left: 10px;" placeholder="ID/账号/昵称" clearable v-model="params.s_puser"
                 @keyup.enter="doSearch">
                 <template #prepend>团队搜索</template>
             </el-input>
 
             <span style="margin-left: 10px;color: #909399;">任务状态:</span>
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
                 <el-option key="0" label="全部状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -81,7 +81,7 @@
             <el-dialog title="任务审核" v-model="configForm.checkVisible" :close-on-click-modal="false" :width="500">
                 <el-form :label-width="100">
                     <el-form-item label="任务序列号">
-                        <el-input v-model="actItem.tsn" autocomplete="off" disabled></el-input>
+                        <el-input size="small" v-model="actItem.tsn" autocomplete="off" disabled></el-input>
                     </el-form-item>
                     <el-form-item label="任务状态" style="margin-bottom: 0;">
                         <el-radio-group v-model="checkForm.status">
@@ -90,7 +90,7 @@
                         </el-radio-group>
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input type="textarea" v-model="checkForm.check_remark" autocomplete="off"
+                        <el-input size="small" type="textarea" v-model="checkForm.check_remark" autocomplete="off"
                             rows="3"></el-input>
                     </el-form-item>
                 </el-form>

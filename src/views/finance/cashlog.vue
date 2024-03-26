@@ -11,24 +11,24 @@
             <template #search="{ params, tdata, doSearch }">
 
                 <span style="font-size: 14px;margin-left: 10px;">收款账号长度：</span>
-                <el-select style="width: 90px;" v-model="params.s_lt14" placeholder="全部">
+                <el-select size="small" style="width: 90px;" v-model="params.s_lt14" placeholder="全部">
                     <el-option key="0" label="全部" value="0"></el-option>
                     <el-option key="1" label="≥14" value="1"></el-option>
                     <el-option key="2" label="<14" value="2"></el-option>
                 </el-select>
 
                 <span style="font-size: 14px;margin-left: 10px;">翻译：</span>
-                <el-select style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
+                <el-select size="small" style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
                     <el-option key="0" label="否" value="0"></el-option>
                     <el-option key="1" label="是" value="1"></el-option>
                 </el-select>
                 <span style="font-size: 14px;margin-left: 10px;">代付渠道：</span>
-                <el-select style="width: 120px;" v-model="s_paytype" placeholder="">
+                <el-select size="small" style="width: 120px;" v-model="s_paytype" placeholder="">
                     <el-option v-for="(item, idx) in tdata.dtype" :key="idx" :label="item.type" :value="item.type">
                     </el-option>
                 </el-select>
                 <span style="font-size: 14px;margin-left: 10px;">代付状态：</span>
-                <el-select style="width: 120px;" v-model="params.s_pay_status" placeholder="全部状态">
+                <el-select size="small" style="width: 120px;" v-model="params.s_pay_status" placeholder="全部状态">
                     <el-option key="all" label="全部状态" value="all">
                     </el-option>
                     <el-option v-for="(item, idx) in tdata.pay_status_arr" :key="idx" :label="item" :value="idx">
@@ -37,7 +37,7 @@
 
                 <el-button v-if="power.checktk" @click="checkAllShowifsc = true">退款</el-button>
                 <span style="font-size: 14px;margin-left: 10px;">审核状态：</span>
-                <el-select style="width: 120px;" v-model="params.s_status" placeholder="全部状态">
+                <el-select size="small" style="width: 120px;" v-model="params.s_status" placeholder="全部状态">
                     <el-option key="0" label="全部状态" value="0">
                     </el-option>
                     <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
@@ -45,12 +45,12 @@
                 </el-select>
 
                 <span style="font-size: 14px;margin-left: 10px;">金额范围：</span>
-                <el-input style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
+                <el-input size="small" style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;">&nbsp;&nbsp;到&nbsp;&nbsp;</span>
 
-                <el-input style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
+                <el-input size="small" style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
                     @keyup.enter="doSearch">
                 </el-input>
 
@@ -58,14 +58,14 @@
                 <span style="font-size: 14px;margin-left: 10px;">提现模式：</span>
 
 
-                <el-select style="width: 120px;" v-model="falseflg" placeholder="处理失败">
+                <el-select size="small" style="width: 120px;" v-model="falseflg" placeholder="处理失败">
                     <el-option key="0" label="否" value="0">
                     </el-option>
                     <el-option key="1" label="是" value="1">
                     </el-option>
                 </el-select>
 
-                <el-select style="width: 120px;" v-model="params.txflg" placeholder="全部状态">
+                <el-select size="small" style="width: 120px;" v-model="params.txflg" placeholder="全部状态">
 
                     <el-option key="0" label="关闭" value="0">
                     </el-option>
@@ -77,74 +77,77 @@
                     </el-option>
                 </el-select>
                 <span style="font-size: 14px;margin-left: 10px;">历史订单：</span>
-                <el-input style="width: 180px;" placeholder="历史订单号" clearable v-model="params.s_oldosn"
+                <el-input size="small" style="width: 180px;" placeholder="历史订单号" clearable v-model="params.s_oldosn"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">代付渠道：</span>
-                <el-input style="width: 180px;" placeholder="代付渠道" clearable v-model="params.s_paytype_s"
+                <el-input size="small" style="width: 180px;" placeholder="代付渠道" clearable v-model="params.s_paytype_s"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">用户账号：</span>
-                <el-input style="width: 180px;" placeholder="用户账号" clearable v-model="params.s_user_account"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable
+                    v-model="params.s_user_account" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">订单：</span>
-                <el-input style="width: 180px;" placeholder="订单号" clearable v-model="params.s_osn" @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="订单号" clearable v-model="params.s_osn"
+                    @keyup.enter="doSearch">
                 </el-input>
-                <el-button type="primary" style="margin-left: 10px;" ref="kjcspageRef" @click="doSearch">快捷查询</el-button>
+                <el-button size="small" type="primary" style="margin-left: 10px;" ref="kjcspageRef"
+                    @click="doSearch">快捷查询</el-button>
                 <div style="height: 10px;"></div>
 
                 <!-- <span style="font-size: 14px;margin-left: 10px;">代付通道：</span>
-            <el-select style="width: 120px;" v-model="s_paytype" placeholder="代付通道">
+            <el-select size="small" style="width: 120px;" v-model="s_paytype" placeholder="代付通道">
                 <el-option key="0" label="代付通道" value="0">
                 </el-option>
                 <el-option v-for="(item, idx) in tdata.paytype_arr" :key="idx" :label="item.name" :value="item.type">
                 </el-option>
             </el-select> -->
                 <span style="font-size: 14px;margin-left: 10px;">收款账号：</span>
-                <el-input style="width: 180px;" placeholder="收款账号" clearable v-model="params.receive_account"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="收款账号" clearable
+                    v-model="params.receive_account" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">ID：</span>
-                <el-input style="width: 180px;" placeholder="ID" clearable v-model="params.id"
+                <el-input size="small" style="width: 180px;" placeholder="ID" clearable v-model="params.id"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">一级代理：</span>
-                <el-input style="width: 180px;" placeholder="一级代理" clearable v-model="params.pidg1"
+                <el-input size="small" style="width: 180px;" placeholder="一级代理" clearable v-model="params.pidg1"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">二级代理：</span>
-                <el-input style="width: 180px;" placeholder="二级代理" clearable v-model="params.pidg2"
+                <el-input size="small" style="width: 180px;" placeholder="二级代理" clearable v-model="params.pidg2"
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">上级账号：</span>
-                <el-input style="width: 180px;" placeholder="上级账号" clearable v-model="params.pid"
+                <el-input size="small" style="width: 180px;" placeholder="上级账号" clearable v-model="params.pid"
                     @keyup.enter="doSearch">
                 </el-input>
                 <div style="height: 10px;"></div>
 
                 <span style="font-size: 14px;margin-left: 10px;">通道到账：</span>
-                <el-date-picker type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable
+                <el-date-picker size="small" type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable
                     v-model="params.s_start_time2_flag" placeholder="开始时间">
                 </el-date-picker>
-                <el-date-picker type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable
+                <el-date-picker size="small" type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable
                     v-model="params.s_end_time2_flag" placeholder="结束时间">
                 </el-date-picker>
                 <span style="font-size: 14px;margin-left: 20px;">用户提现：</span>
             </template>
 
             <template #table="myScope">
-                <el-table-column prop="checked" :label="isTrans ? 'Option' : '选择'" width="70" fixed>
+                <el-table-column prop="checked" :label="isTrans ? 'Option' : '选择'" width="50" fixed>
                     <template #default="{ row, $index }">
                         <template v-if="power.check && (row.status == 1 || (row.status == 9 && row.pay_status == 3))">
-                            <el-checkbox v-model="selectAllArr[$index]" size="large" @change="onSelectItem($index, $event)">
+                            <el-checkbox v-model="selectAllArr[$index]" size="large"
+                                @change="onSelectItem($index, $event)">
                             </el-checkbox>
                         </template>
                         <template v-else>/</template>
                     </template>
                 </el-table-column>
 
-                <el-table-column :label="isTrans ? 'Operate' : '操作'" width="260" fixed>
+                <el-table-column :label="isTrans ? 'Operate' : '操作'" width="160" fixed>
                     <template #default="{ row, $index }">
                         <template v-if="power.updata">
                             <el-button v-if="!isTrans" size="small" @click="update(row)" type="success">
@@ -174,11 +177,13 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="pay_type" :label="isTrans ? 'Channel' : '代付通道'" width="100" fixed></el-table-column>
+                <el-table-column prop="pay_type" :label="isTrans ? 'Channel' : '代付通道'" width="100"
+                    fixed></el-table-column>
                 <el-table-column prop="pay_status_flag" :label="isTrans ? 'Payment status' : '代付状态'" width="100" fixed>
                     <template #default="{ row }">
                         {{ row.pay_status_flag }}
-                        <div @click="onShowPayMsg(row)" v-if="row.pay_status == 3" style="color: #f56c6c;cursor: pointer;">
+                        <div @click="onShowPayMsg(row)" v-if="row.pay_status == 3"
+                            style="color: #f56c6c;cursor: pointer;">
                             {{ isTrans ? 'View errors' : '查看错误' }}</div>
                         <div @click="getifsc(row)" v-if="row.pay_status == 3" style="color: #f56c6c;cursor: pointer;">
                             {{ isTrans ? 'View errors' : '查看ifsc' }}</div>
@@ -236,31 +241,33 @@
                         </div>
                     </template>
                 </el-table-column>
-                <el-table-column prop="create_time" :label="isTrans ? 'Order time' : '提交时间'" width="130"></el-table-column>
-                <el-table-column prop="check_time" :label="isTrans ? 'Check time' : '审核时间'" width="130"></el-table-column>
+                <el-table-column prop="create_time" :label="isTrans ? 'Order time' : '提交时间'"
+                    width="130"></el-table-column>
+                <el-table-column prop="check_time" :label="isTrans ? 'Check time' : '审核时间'"
+                    width="130"></el-table-column>
                 <el-table-column prop="pay_time" :label="isTrans ? 'Pay time' : '到账时间'" width="130"></el-table-column>
 
 
             </template>
 
             <template #summary="{ tdata }">
-                <div v-if="power.check_all" class="plActionBox"
-                    style="text-align: left;border-bottom: 1px solid #dedede;padding-bottom: 10px;">
-                    <span style="display: inline-block;width: 55px;text-align: center;">
-                        <el-checkbox v-model="selectAll" size="large" @change="onSelectAll"></el-checkbox>
+                <div v-if="power.check_all" class="plActionBox" style="text-align: left; ">
+                    <span style="display: inline-block;  text-align: center;">
+                        <el-checkbox v-model="selectAll" size="small" @change="onSelectAll"></el-checkbox>
                     </span>
                     <el-button size="small" type="success" @click="onPlAction(9)">{{ isTrans ? 'Batch pass' : '批量通过' }}
                     </el-button>
-                    <el-button size="small" type="danger" @click="onPlAction(3)">{{ isTrans ? 'Bulk rejection' : '批量驳回' }}
+                    <el-button size="small" type="danger" @click="onPlAction(3)">{{ isTrans ? 'Bulk rejection' : '批量驳回'
+                        }}
                     </el-button>
+
+                    <span>{{ isTrans ? 'Records' : '记录' }}：{{ tdata.count }}</span>
+                    <span>{{ isTrans ? 'Total money' : '总额' }}：{{ tdata.money }}</span>
+                    <span>{{ isTrans ? 'Total money' : '实付总额' }}：{{ tdata.real_money }}</span>
+                    <span>{{ isTrans ? 'Total money' : '笔数' }}：{{ tdata.money1 }}</span>
+                    <span>{{ isTrans ? 'Total money' : '金额' }}：{{ tdata.real_money1 }}</span>
                 </div>
-                <span>{{ isTrans ? 'Records' : '记录' }}：{{ tdata.count }}</span>
-                <span>{{ isTrans ? 'Total money' : '总额' }}：{{ tdata.money }}</span>
-                <span>{{ isTrans ? 'Total money' : '实付总额' }}：{{ tdata.real_money }}</span>
 
-
-                <span>{{ isTrans ? 'Total money' : '笔数' }}：{{ tdata.money1 }}</span>
-                <span>{{ isTrans ? 'Total money' : '金额' }}：{{ tdata.real_money1 }}</span>
             </template>
 
             <template #layer="{ tdata }">
@@ -269,16 +276,16 @@
                     :width="configForm.width">
                     <el-form>
                         <el-form-item label="单号" :label-width="configForm.labelWidth">
-                            <el-input v-model="actItem.osn" autocomplete="off" disabled></el-input>
+                            <el-input size="small" v-model="actItem.osn" autocomplete="off" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="提现额度" :label-width="configForm.labelWidth">
-                            <el-input v-model="actItem.money" autocomplete="off" disabled></el-input>
+                            <el-input size="small" v-model="actItem.money" autocomplete="off" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="手续费" :label-width="configForm.labelWidth">
-                            <el-input v-model="actItem.fee" autocomplete="off" disabled></el-input>
+                            <el-input size="small" v-model="actItem.fee" autocomplete="off" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="实际到账" :label-width="configForm.labelWidth">
-                            <el-input v-model="actItem.real_money" autocomplete="off" disabled></el-input>
+                            <el-input size="small" v-model="actItem.real_money" autocomplete="off" disabled></el-input>
                         </el-form-item>
                         <el-form-item label="订单状态" :label-width="configForm.labelWidth" style="margin-bottom: 0;">
                             <el-radio-group v-model="checkForm.status">
@@ -296,7 +303,8 @@
 
 
                         <el-form-item label="备注" :label-width="configForm.labelWidth">
-                            <el-input type="textarea" v-model="checkForm.check_remark" autocomplete="off" rows="3">
+                            <el-input size="small" type="textarea" v-model="checkForm.check_remark" autocomplete="off"
+                                rows="3">
                             </el-input>
                         </el-form-item>
                     </el-form>
@@ -347,7 +355,7 @@
                     <div style="width: 100%; height: 100%;">
                         <el-form>
                             <el-form-item label="单号" :label-width="configForm.labelWidth">
-                                <el-input v-model="osn" autocomplete="off"></el-input>
+                                <el-input size="small" v-model="osn" autocomplete="off"></el-input>
                             </el-form-item>
                         </el-form>
                     </div>
@@ -787,41 +795,3 @@ onMounted(() => {
     }
 })
 </script>
-
-<!-- <style scoped>
-.plActionBox span {
-    padding: 0;
-}
-
-.el-pagination.is-background .el-pager li:not(.disabled).active {
-    color: aliceblue;
-}
-
-.el-input-group__prepend {
-    background: none;
-}
-
-.divs {
-    background-image: url('../../assets/11.jpg');
-    background-repeat: no-repeat;
-    background-size: 100%;
-    width: 100%;
-    height: 100%;
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
-}
-
-.divs /deep/ .el-table tr {
-    background: #00000000 !important;
-}
-
-:root {
-    --el-color-white: #00000000 !important;
-    --el-background-color-base: #2196f3 !important;
-}
-
-.el-table .el-table__cell {
-    color: aliceblue;
-}
-</style> -->

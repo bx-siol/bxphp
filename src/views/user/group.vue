@@ -48,20 +48,20 @@
         <el-dialog :title="configForm.title" v-model="configForm.visible" :close-on-click-modal="false" :width="configForm.width" :top="configForm.top" @opened="dialogOpened" @closed="onDialogClosed">
             <el-form :label-width="configForm.labelWidth">
                 <el-form-item label="ID">
-                    <el-input v-model="dataForm.nid" :disabled="dataForm.nid==1" placeholder="添加时留空自动分配" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.nid" :disabled="dataForm.nid==1" placeholder="添加时留空自动分配" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="名称">
-                    <el-input v-model="dataForm.name" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.name" autocomplete="off"></el-input>
                 </el-form-item>
                 <el-form-item label="排序">
-                    <el-input v-model="dataForm.sort" autocomplete="off"></el-input>
+                    <el-input size="small" v-model="dataForm.sort" autocomplete="off"></el-input>
                     <span>从大到小</span>
                 </el-form-item>
                 <el-form-item label="图标">
                     <Upload v-model:file-list="coverList" width="50px" height="50px"></Upload>
                 </el-form-item>
                 <el-form-item label="描述">
-                    <el-input type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
+                    <el-input size="small" type="textarea" v-model="dataForm.remark" autocomplete="off" rows="3"></el-input>
                 </el-form-item>
             </el-form>
             <template #footer>

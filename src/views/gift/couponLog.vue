@@ -2,12 +2,12 @@
     <Page url="c=Gift&a=couponLog" ref="pageRef">
         <template #btn="myScope">
 
-            <el-input v-if="power.update1" style="width: 180px;margin-left: 10px;" placeholder="赠送次数"
+            <el-input size="small" v-if="power.update1" style="width: 180px;margin-left: 10px;" placeholder="赠送次数"
                 v-model="s_addyxyh"></el-input>
 
             <el-button v-if="power.update1" type="success" size="small" icon="el-icon-plus"
                 @click="addyxyh">赠送有效用户</el-button>
-            <el-input v-if="power.update1" style="width: 180px;margin-left: 10px;" placeholder="赠送用户"
+            <el-input size="small" v-if="power.update1" style="width: 180px;margin-left: 10px;" placeholder="赠送用户"
                 v-model="s_cuser"></el-input>
 
 
@@ -18,7 +18,7 @@
         </template>
 
         <template #search="{ params, tdata, doSearch }">
-            <el-select style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -62,12 +62,12 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="接收账号">
-                        <el-input v-model="dataForm.account" autocomplete="off" placeholder="任意填写，便于区分红包用途"></el-input>
+                        <el-input size="small" v-model="dataForm.account" autocomplete="off" placeholder="任意填写，便于区分红包用途"></el-input>
                     </el-form-item>
                     <el-form-item label="赠送券">
 
 
-                        <el-select style="width: 310px;" v-model="dataForm.coupon_id" placeholder="请选择">
+                        <el-select size="small" style="width: 310px;" v-model="dataForm.coupon_id" placeholder="请选择">
                             <el-option key="0" label="请选择" value="0"></el-option>
                             <el-option v-for="(item ) in tdata.coupon_arr" :key="item.id" :label="item.name"
                                 :value="item.id">
@@ -77,12 +77,12 @@
 
                     </el-form-item>
                     <el-form-item label="赠送数量">
-                        <el-input v-model="dataForm.num" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.num" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder=""></el-input>
 
                     </el-form-item>
                     <el-form-item label="备注">
-                        <el-input v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder=""></el-input>
 
                     </el-form-item>

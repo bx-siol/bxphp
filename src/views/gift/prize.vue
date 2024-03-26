@@ -5,7 +5,7 @@
         </template> -->
 
         <!-- <template #search="{ params, tdata, doSearch }">
-            <el-select style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -50,7 +50,7 @@
                 :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
                 <el-form :label-width="configForm.labelWidth">
                     <el-form-item label="奖品名称">
-                        <el-input v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
+                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
                     </el-form-item>
 
                     <el-form-item label="图标">
@@ -59,7 +59,7 @@
                     </el-form-item>
 
                     <el-form-item label="中奖概率">
-                        <el-input v-model="dataForm.probability" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.probability" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 180px;"></el-input>
                         <span>%</span>
                     </el-form-item>
@@ -74,14 +74,14 @@
                     </el-form-item>
 
                     <el-form-item v-if="dataForm.type == '1'" label="金额区间" style="margin-bottom: 0;">
-                        <el-input style="width: 110px;margin-left: 10px;" v-model="dataForm.from_money"
+                        <el-input size="small" style="width: 110px;margin-left: 10px;" v-model="dataForm.from_money"
                             autocomplete="off" placeholder="最小金额"></el-input> 到
-                        <el-input style="width: 110px;margin-left: 10px;" v-model="dataForm.to_money" autocomplete="off"
+                        <el-input size="small" style="width: 110px;margin-left: 10px;" v-model="dataForm.to_money" autocomplete="off"
                             placeholder="最大金额"></el-input>
                     </el-form-item>
 
                     <el-form-item v-if="dataForm.type == '2'" label="产品" style="margin-bottom: 0;">
-                        <el-select style="width: 310px;margin-left: 10px;" v-model="dataForm.gid" placeholder="请选择">
+                        <el-select size="small" style="width: 310px;margin-left: 10px;" v-model="dataForm.gid" placeholder="请选择">
                             <el-option key="0" label="请选择" value="0"></el-option>
                             <el-option v-for="(item ) in tdata.goods_arr" :key="item.id" :label="item.name"
                                 :value="item.id">
@@ -91,13 +91,13 @@
 
 
                     <el-form-item v-if="dataForm.type == '3'" label="中奖描述" style="margin-bottom: 0;">
-                        <el-input v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 310px;"></el-input>
                     </el-form-item>
 
 
                     <el-form-item v-if="dataForm.type == '4'" label="中奖描述" style="margin-bottom: 0;">
-                        <el-input v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
+                        <el-input size="small" v-model="dataForm.remark" :disabled="configForm.isEdit" autocomplete="off"
                             placeholder="" style="width: 310px;"></el-input>
                     </el-form-item>
 
@@ -105,7 +105,7 @@
                     <el-form-item v-if="dataForm.type == '5'" label="奖券" style="margin-bottom: 0;">
 
 
-                        <el-select style="width: 310px;margin-left: 10px;" v-model="dataForm.coupon_id"
+                        <el-select size="small" style="width: 310px;margin-left: 10px;" v-model="dataForm.coupon_id"
                             placeholder="请选择">
                             <el-option key="0" label="请选择" value="0"></el-option>
                             <el-option v-for="(item ) in tdata.coupon_arr" :key="item.id" :label="item.name"

@@ -22,13 +22,13 @@
             </template>
         </template>
         <template #search="{ params, tdata }">
-            <el-select style="width: 120px;margin-left: 10px;" v-model="params.s_cid" placeholder="全部币种"
+            <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_cid" placeholder="全部币种"
                 v-if="!tdata.wallet">
                 <el-option key="0" label="全部币种" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.currency_arr" :key="idx" :label="item.name" :value="item.id">
                 </el-option>
             </el-select>
-            <el-select style="width: 140px;margin-left: 10px;" v-model="params.s_type" placeholder="全部账变类型">
+            <el-select size="small" style="width: 140px;margin-left: 10px;" v-model="params.s_type" placeholder="全部账变类型">
                 <el-option key="0" label="全部账变类型" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.balance_type" :key="idx" :label="item" :value="idx">
                 </el-option>
