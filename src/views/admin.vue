@@ -1,7 +1,7 @@
 <template>
     <el-container style="height: 100%;background: #f2f2f2;">
         <!--侧边栏-->
-        <el-aside :width="menuWidth" style="overflow-x: hidden;background: #ffffff;">
+        <el-aside :width="menuWidth" style="overflow-x: hidden;background: #ffffff;border: 1px solid #ebeef5;">
             <el-scrollbar height="100%" view-style="overflow-x:hidden;">
                 <el-affix :offset="0.1" v-if="!isShrink">
                     <div @click="onTopSetClick({ path: '/index', name: '统计' })"

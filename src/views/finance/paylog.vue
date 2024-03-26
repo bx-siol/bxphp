@@ -1,7 +1,7 @@
 <template>
     <div class="divs">
         <Page url="c=Finance&a=paylog" ref="pageRef" :need-time="true" :row-class="payFinish"
-            :page-layout="isTrans ? 'prev,pager,next' : 'prev, pager, next, jumper'">
+            :page-layout="isTrans ? 'prev,pager,next' : 'total, sizes, prev, pager, next, jumper'">
             <template #search="{ params, tdata, doSearch }">
 
                 <span style="font-size: 14px;margin-left: 10px;">收款信息：</span>
@@ -36,13 +36,15 @@
                 </el-input>
 
                 <span style="font-size:15px;margin-left: 10px;">首充:</span>
-                <el-select size="small" style="width: 80px;margin-left: 10px;" v-model="params.s_is_first" placeholder="全部">
+                <el-select size="small" style="width: 80px;margin-left: 10px;" v-model="params.s_is_first"
+                    placeholder="全部">
                     <el-option key="all" label="全部" value="all"></el-option>
                     <el-option key="1" label="是" value="1"></el-option>
                     <el-option key="0" label="否" value="0"></el-option>
                 </el-select>
 
-                <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status" placeholder="全部状态">
+                <el-select size="small" style="width: 120px;margin-left: 10px;" v-model="params.s_status"
+                    placeholder="全部状态">
                     <el-option key="0" label="全部状态" value="0"></el-option>
                     <el-option v-for="(item, idx) in tdata.paylog_status_arr" :key="idx" :label="item" :value="idx">
                     </el-option>
@@ -68,8 +70,8 @@
                     @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">用户账号</span>
-                <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable v-model="params.s_user_account"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable
+                    v-model="params.s_user_account" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">系统单号:</span>
                 <el-input size="small" style="width: 180px;" placeholder="系统单号" clearable v-model="params.s_osn"
@@ -270,7 +272,8 @@
                             <el-input size="small" v-model="actItem.pay_remark" autocomplete="off"></el-input>
                         </el-form-item>
                         <el-form-item label="备注">
-                            <el-input size="small" type="textarea" v-model="checkForm.check_remark" autocomplete="off" rows="3">
+                            <el-input size="small" type="textarea" v-model="checkForm.check_remark" autocomplete="off"
+                                rows="3">
                             </el-input>
                         </el-form-item>
                     </el-form>
