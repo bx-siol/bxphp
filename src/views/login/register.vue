@@ -328,13 +328,13 @@ onMounted(() => {
         padding: 0rem 1rem 1.25rem;
         box-sizing: border-box;
         position: relative;
-        top: 5rem;
+        top: 5.15rem;
         border-radius: 8px;
         background-color: #fff;
 
         .deckout {
             position: absolute;
-            top: -2.4rem;
+            top: -2.38rem;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgb(255, 255, 255, 0.15);
@@ -345,7 +345,7 @@ onMounted(() => {
 
         .deckout2 {
             position: absolute;
-            top: -1.2rem;
+            top: -1.26rem;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgb(255, 255, 255, 0.2);

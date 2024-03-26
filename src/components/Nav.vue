@@ -100,7 +100,7 @@ const onLeftClick = () => {
 
 /* .myNavBar .van-nav-bar{background-color: #0098a2;max-width: 640px;margin: 0 auto;right: 0;} */
 .van-hairline--bottom::after {
-    border-bottom-width: 0;
+    border-bottom-width: 0 !important;
 }
 
 .myNavBar .van-nav-bar__left {
@@ -111,9 +111,6 @@ const onLeftClick = () => {
     padding: 0 10px;
 }
 
-.van-hairline--bottom::after {
-    border-bottom: 0px solid #c8d0dc;
-}
 
 /*box-shadow: 0px 0px 3px 2px #c8d0dc;*/
 
