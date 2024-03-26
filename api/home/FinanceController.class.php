@@ -140,6 +140,8 @@ class FinanceController extends BaseController
 					$sub_pay_type = 11101;
 				} elseif (($params['pay_type'] == 'jwpay')) {
 					$sub_pay_type = 1;
+				} elseif (($params['pay_type'] == 'cowpay')) {
+					$sub_pay_type = 1;
 				}
 
 				require_once $pay_file;

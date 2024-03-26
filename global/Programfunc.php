@@ -956,6 +956,8 @@ function getPaySub($pay_type)
 		$sub_pay_type = 11101;
 	} elseif (($pay_type == 'jwpay')) {
 		$sub_pay_type = 1;
+	} elseif (($pay_type == 'cowpay')) {
+		$sub_pay_type = 1;
 	}
 	return $sub_pay_type;
 }
@@ -967,7 +969,10 @@ function getPayFilePath($pay_type)
 		$file_name = 'bobopay';
 	} elseif (in_array($pay_type, ['jwpay'])) {
 		$file_name = 'jwpay';
-	} else {
+	}elseif (in_array($pay_type, ['cowpay'])) {
+		$file_name = 'cowpay';
+	}
+	 else {
 		$file_name = $pay_type;
 	}
 	$pay_file = APP_PATH . 'common/pay/' . $file_name . '.php';

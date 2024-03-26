@@ -202,6 +202,28 @@ $_ENV['PAY_CONFIG']['zippay'] = [
 ];
 // MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5wePAu1BZyesmQtxAJc15+HK3/qwBBS41DyxUBTzkRP1/9kKYNCAQQWRJB00g53tpkymQUORd2gZGMXRxXLHwCuhzwjSfWL7qpizpGGcHfKuidiKyVJvAoGiorD6svz1rHWqbBx18YPAEHHU7pb+q4ybObti+3Z7TNuzcM9wJfQIDAQAB
 
+$_ENV['PAY_CONFIG']['cowpay'] = [
+	'mch_id' => '1704796090718',
+	'mch_key' => 'ca6763871a8047c4f287d6a1f67e86fe',
+	//publickey 是平台的
+	'publickey' => 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKevvI7yS5446o0JsWHr1OB54zDLV39D9nCPch22JcAHqZwOl394oExNua8pKyv900N5UcJ2dTKczSS8gsBiRdkOPnw0uclFcd6oMAzjdcbyQYeSNG+7mGdFYKRf/yvM5CJBDhnUx043nmtEXW5NF/5HxjrG/z9uDXeJLPNuxFzZAgMBAAECgYAiAx4+7Fx0Kl1A4D9vejNCmNaBNi14LePVrvLZnfGIQsWfVsJZ47C36WgJZFNSZ/irDfeMdxSMgIuHsQjgVs6NxOoQ+8ak6t9kj3LQ+mASpkCzdmNNRCu158ut7NVXq+FAlONYn4xtrLfYA+MQ8CdSR0sZ5QtPdrt2NlnQOfhYAQJBAOBNN87GftDumiQ6ONJjghYxwR/HJbHX1TXsQ6QVW/kM4k4PSawCfWlTcltb9nUGjurlcDUwSEPAD8VLiliOtQECQQC/Yku9GePqCjid7rHSYn+XTYq5tM1BN2lqa1njMeydQ68kx4NIRjoRkjulLTT+j3PlWqJ4mG+CXy6Igb5d0e/ZAkANpwWPk2tiojNFozmULLRdT3f2zDNSKNX0a0YOtbIcbZlUsP+F9bzWbVrXjrholRab241B34d2gDk1hAyOqVkBAkBCZEgf9q5RD3CqoRaBBHh8tYKtf6JAwIdKSqlpHnWV7NgCa1AIr4wPcmpMl80tjfhHlVSNf1wXnwtWgaPXii+pAkEAtVd/+8JV3GuY2yvOD2DMQL7+XS0ELG/17ERo2m4larmgrbBPyHsVJcIvocrOdbj3KQtr+nV1IKbsylk3dWltlQ==',
+
+	//privatekey是自己的
+	'privatekey' => 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKevvI7yS5446o0JsWHr1OB54zDLV39D9nCPch22JcAHqZwOl394oExNua8pKyv900N5UcJ2dTKczSS8gsBiRdkOPnw0uclFcd6oMAzjdcbyQYeSNG+7mGdFYKRf/yvM5CJBDhnUx043nmtEXW5NF/5HxjrG/z9uDXeJLPNuxFzZAgMBAAECgYAiAx4+7Fx0Kl1A4D9vejNCmNaBNi14LePVrvLZnfGIQsWfVsJZ47C36WgJZFNSZ/irDfeMdxSMgIuHsQjgVs6NxOoQ+8ak6t9kj3LQ+mASpkCzdmNNRCu158ut7NVXq+FAlONYn4xtrLfYA+MQ8CdSR0sZ5QtPdrt2NlnQOfhYAQJBAOBNN87GftDumiQ6ONJjghYxwR/HJbHX1TXsQ6QVW/kM4k4PSawCfWlTcltb9nUGjurlcDUwSEPAD8VLiliOtQECQQC/Yku9GePqCjid7rHSYn+XTYq5tM1BN2lqa1njMeydQ68kx4NIRjoRkjulLTT+j3PlWqJ4mG+CXy6Igb5d0e/ZAkANpwWPk2tiojNFozmULLRdT3f2zDNSKNX0a0YOtbIcbZlUsP+F9bzWbVrXjrholRab241B34d2gDk1hAyOqVkBAkBCZEgf9q5RD3CqoRaBBHh8tYKtf6JAwIdKSqlpHnWV7NgCa1AIr4wPcmpMl80tjfhHlVSNf1wXnwtWgaPXii+pAkEAtVd/+8JV3GuY2yvOD2DMQL7+XS0ELG/17ERo2m4larmgrbBPyHsVJcIvocrOdbj3KQtr+nV1IKbsylk3dWltlQ==',
+
+	'pay_url' => 'https://pay365.cowpay.co/pay',//代收
+	'dpay_url' => 'https://pay365.cowpay.co/v2/withdraw',//代付
+	'balance_url' => 'https://pay365.cowpay.co/v2/queryBalance',//余额
+
+	'payquery_url' => 'https://pay365.cowpay.co/queryPayOrder',//收款查询
+	'dpayquery_url' => 'https://pay365.cowpay.co/v2/queryWithdrawOrder',//代付查询 
+	'utrorder_url' => 'https://pay365.cowpay.co/pay/submitUTR',//utr补单
+	'utrquery_url' => 'https://pay365.cowpay.co/queryPayOrder',//utr查单 
+
+	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/pay',//代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/cash'//代付回调
+];
 
 $_ENV['PAY_CONFIG']['coppay'] = [
 	'mch_id' => '1704796090718',
