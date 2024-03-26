@@ -1027,7 +1027,7 @@ class UserController extends BaseController
 		$pageuser = checkPower();
 		$params = $this->params;
 		$params['page'] = intval($params['page']);
-		$this->pageSize = 20;
+		//$this->pageSize = 20;
 
 
 		$where = "log.status<99";

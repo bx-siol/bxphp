@@ -189,7 +189,7 @@ class SysController extends BaseController
 	{
 		checkPower();
 		$params = $this->params;
-		$this->pageSize = 20;
+		//$this->pageSize = 20;
 		$where = '1=1';
 		if (is_numeric($params['s_type'])) {
 			$params['s_type'] = intval($params['s_type']);

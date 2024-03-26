@@ -244,7 +244,7 @@ class FinanceController extends BaseController
 		$params = $this->params;
 		$params['s_status'] = intval($params['s_status']);
 		$params['s_receive_type'] = intval($params['s_receive_type']);
-		$this->pageSize = 30;
+		//$this->pageSize = 30;
 
 		$where = "1=1";
 		if (!checkDataAction()) {
@@ -601,7 +601,7 @@ class FinanceController extends BaseController
 		$params['s_status'] = intval($params['s_status']);
 		$params['s_money_from'] = floatval($params['s_money_from']);
 		$params['s_money_to'] = floatval($params['s_money_to']);
-		$this->pageSize = intval($params['s_sizes']) ?? 30;
+		//$this->pageSize = intval($params['s_sizes']) ?? 30;
 		$txflg = $params['txflg'];
 		$where = "1=1";
 		if (!checkDataAction()) {
@@ -1612,7 +1612,7 @@ class FinanceController extends BaseController
 	{
 		$pageuser = checkPower();
 		$params = $this->params;
-		$this->pageSize = 50;
+		//$this->pageSize = 50;
 		$where = "log.status<99";
 		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
 		$where .= empty ($params['s_keyword']) ? '' : " and (log.name like '%{$params['s_keyword']}%')";
@@ -1741,7 +1741,7 @@ class FinanceController extends BaseController
 	public function _dtype()
 	{
 		$pageuser = checkPower();
-		$this->pageSize = 50;
+		//$this->pageSize = 50;
 		$params = $this->params;
 		$where = "log.status<99";
 		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
