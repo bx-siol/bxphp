@@ -201,3 +201,67 @@ $_ENV['PAY_CONFIG']['zippay'] = [
 	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash'//代付回调
 ];
 // MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5wePAu1BZyesmQtxAJc15+HK3/qwBBS41DyxUBTzkRP1/9kKYNCAQQWRJB00g53tpkymQUORd2gZGMXRxXLHwCuhzwjSfWL7qpizpGGcHfKuidiKyVJvAoGiorD6svz1rHWqbBx18YPAEHHU7pb+q4ybObti+3Z7TNuzcM9wJfQIDAQAB
+
+
+$_ENV['PAY_CONFIG']['coppay'] = [
+	'mch_id' => '1704796090718',
+	'mch_key' => 'ca6763871a8047c4f287d6a1f67e86fe',
+	//publickey 是平台的
+	'publickey' => <<<EOD
+	-----BEGIN PRIVATE KEY-----
+	MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKevvI7yS5446o0J
+	sWHr1OB54zDLV39D9nCPch22JcAHqZwOl394oExNua8pKyv900N5UcJ2dTKczSS8
+	gsBiRdkOPnw0uclFcd6oMAzjdcbyQYeSNG+7mGdFYKRf/yvM5CJBDhnUx043nmtE
+	XW5NF/5HxjrG/z9uDXeJLPNuxFzZAgMBAAECgYAiAx4+7Fx0Kl1A4D9vejNCmNaB
+	Ni14LePVrvLZnfGIQsWfVsJZ47C36WgJZFNSZ/irDfeMdxSMgIuHsQjgVs6NxOoQ
+	+8ak6t9kj3LQ+mASpkCzdmNNRCu158ut7NVXq+FAlONYn4xtrLfYA+MQ8CdSR0sZ
+	5QtPdrt2NlnQOfhYAQJBAOBNN87GftDumiQ6ONJjghYxwR/HJbHX1TXsQ6QVW/kM
+	4k4PSawCfWlTcltb9nUGjurlcDUwSEPAD8VLiliOtQECQQC/Yku9GePqCjid7rHS
+	Yn+XTYq5tM1BN2lqa1njMeydQ68kx4NIRjoRkjulLTT+j3PlWqJ4mG+CXy6Igb5d
+	0e/ZAkANpwWPk2tiojNFozmULLRdT3f2zDNSKNX0a0YOtbIcbZlUsP+F9bzWbVrX
+	jrholRab241B34d2gDk1hAyOqVkBAkBCZEgf9q5RD3CqoRaBBHh8tYKtf6JAwIdK
+	SqlpHnWV7NgCa1AIr4wPcmpMl80tjfhHlVSNf1wXnwtWgaPXii+pAkEAtVd/+8JV
+	3GuY2yvOD2DMQL7+XS0ELG/17ERo2m4larmgrbBPyHsVJcIvocrOdbj3KQtr+nV1
+	IKbsylk3dWltlQ==
+	-----END PRIVATE KEY-----
+	EOD,
+
+	//privatekey是自己的
+	'privatekey' => <<<EOD
+	-----BEGIN PRIVATE KEY-----
+	MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKevvI7yS5446o0J
+	sWHr1OB54zDLV39D9nCPch22JcAHqZwOl394oExNua8pKyv900N5UcJ2dTKczSS8
+	gsBiRdkOPnw0uclFcd6oMAzjdcbyQYeSNG+7mGdFYKRf/yvM5CJBDhnUx043nmtE
+	XW5NF/5HxjrG/z9uDXeJLPNuxFzZAgMBAAECgYAiAx4+7Fx0Kl1A4D9vejNCmNaB
+	Ni14LePVrvLZnfGIQsWfVsJZ47C36WgJZFNSZ/irDfeMdxSMgIuHsQjgVs6NxOoQ
+	+8ak6t9kj3LQ+mASpkCzdmNNRCu158ut7NVXq+FAlONYn4xtrLfYA+MQ8CdSR0sZ
+	5QtPdrt2NlnQOfhYAQJBAOBNN87GftDumiQ6ONJjghYxwR/HJbHX1TXsQ6QVW/kM
+	4k4PSawCfWlTcltb9nUGjurlcDUwSEPAD8VLiliOtQECQQC/Yku9GePqCjid7rHS
+	Yn+XTYq5tM1BN2lqa1njMeydQ68kx4NIRjoRkjulLTT+j3PlWqJ4mG+CXy6Igb5d
+	0e/ZAkANpwWPk2tiojNFozmULLRdT3f2zDNSKNX0a0YOtbIcbZlUsP+F9bzWbVrX
+	jrholRab241B34d2gDk1hAyOqVkBAkBCZEgf9q5RD3CqoRaBBHh8tYKtf6JAwIdK
+	SqlpHnWV7NgCa1AIr4wPcmpMl80tjfhHlVSNf1wXnwtWgaPXii+pAkEAtVd/+8JV
+	3GuY2yvOD2DMQL7+XS0ELG/17ERo2m4larmgrbBPyHsVJcIvocrOdbj3KQtr+nV1
+	IKbsylk3dWltlQ==
+	-----END PRIVATE KEY-----
+	EOD,
+
+
+	'pay_url' => 'https://pay365.cowpay.co/pay',//代收
+	'dpay_url' => 'https://pay365.cowpay.co/createOrder',//代付
+	'balance_url' => 'https://pay365.cowpay.co/balance',//余额
+
+	'payquery_url' => 'https://pay365.cowpay.co/status',//收款查询
+	'dpayquery_url' => 'https://pay365.cowpay.co/status',//代付查询 
+	'utrorder_url' => 'https://pay365.cowpay.co/submitUtr',//utr补单
+	'utrquery_url' => 'https://pay365.cowpay.co/findUtr',//utr查单 
+
+	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/pay',//代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash'//代付回调
+];
+
+
+
+
+

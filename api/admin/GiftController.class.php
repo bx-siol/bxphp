@@ -653,17 +653,17 @@ class GiftController extends BaseController
 		if (!$params['name']) {
 			ReturnToJson(-1, '请填写券名称');
 		}
-		/*
-								if($params['discount']<=0&&$params['money']<=0){
-									ReturnToJson(-1,'折扣与面值必须设置一项');
-								}else{
-									if($params['discount']<0||$params['discount']>100){
-										ReturnToJson(-1,'折扣比例不正确');
-									}
-									if($params['money']<0){
-										ReturnToJson(-1,'面额不正确');
-									}
-								}*/
+
+		// if ($params['discount'] <= 0 && $params['money'] <= 0) {
+		// 	ReturnToJson(-1, '折扣与面值必须设置一项');
+		// } else {
+		// 	if ($params['discount'] < 0 || $params['discount'] > 100) {
+		// 		ReturnToJson(-1, '折扣比例不正确');
+		// 	}
+		// 	if ($params['money'] < 0) {
+		// 		ReturnToJson(-1, '面额不正确');
+		// 	}
+		// }
 		if ($params['type'] == 1) {
 			//$params['gids'] = [];
 			$params['money'] = 0;
@@ -683,15 +683,15 @@ class GiftController extends BaseController
 			ReturnToJson(-1, '请上传券图片');
 		}
 
-		// $cnf_coupon_type = getConfig('cnf_coupon_type');
-		// if (!array_key_exists($params['type'], $cnf_coupon_type)) {
-		// 	ReturnToJson(-1, '未知类型');
-		// }
+		$cnf_coupon_type = getConfig('cnf_coupon_type');
+		if (!array_key_exists($params['type'], $cnf_coupon_type)) {
+			ReturnToJson(-1, '未知类型');
+		}
 
-		// $cnf_coupon_status = getConfig('cnf_coupon_status');
-		// if (!array_key_exists($params['status'], $cnf_coupon_status)) {
-		// 	ReturnToJson(-1, '未知状态');
-		// }
+		$cnf_coupon_status = getConfig('cnf_coupon_status');
+		if (!array_key_exists($params['status'], $cnf_coupon_status)) {
+			ReturnToJson(-1, '未知状态');
+		}
 
 		$goods_arr = rows2arr(Db::table('pro_goods')
 			->where("status<99")
@@ -971,21 +971,21 @@ class GiftController extends BaseController
 		if ($params['quantity'] < 1) {
 			ReturnToJson(-1, '红包数量不正确');
 		}
-		/*
-								if(!$params['icon']){
-									ReturnToJson(-1,'请上传图标');
-								}
-								$covers=[];
-								if(!$params['covers']){
-									$params['covers']=[];
-								}
-								foreach($params['covers'] as $cv){
-									if(!$cv){
-										continue;
-									}
-									$covers[]=$cv;
-								}
-								*/
+
+		// if (!$params['icon']) {
+		// 	ReturnToJson(-1, '请上传图标');
+		// }
+		// $covers = [];
+		// if (!$params['covers']) {
+		// 	$params['covers'] = [];
+		// }
+		// foreach ($params['covers'] as $cv) {
+		// 	if (!$cv) {
+		// 		continue;
+		// 	}
+		// 	$covers[] = $cv;
+		// }
+
 		$cnf_redpack_status = getConfig('cnf_redpack_status');
 		if (!array_key_exists($params['status'], $cnf_redpack_status)) {
 			ReturnToJson(-1, '未知状态');

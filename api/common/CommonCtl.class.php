@@ -15,6 +15,9 @@ class CommonCtl
 	{
 		$this->redis = new MyRedis();
 		$this->params = $this->param();
+		if ($this->params['s_sizes']) {
+			$this->pageSize = $this->params['s_sizes'];
+		}
 	}
 
 	public function _index()
