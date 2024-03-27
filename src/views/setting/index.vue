@@ -9,7 +9,7 @@
                 </template>
                 <template #value>
                     <van-image style="vertical-align: middle;" width="30" height="30"
-                        :src="imgFlag(current)" />
+                        :src="imgFlag(dataForm.headimgurl)" />
                 </template>
             </van-cell>
             <van-cell style="text-align: left;" :title="t('修改登录密码')" :to="{ name: 'Setting_password' }" is-link />
@@ -103,8 +103,6 @@ const onLogout = () => {
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
-const Defaultavatar = syngenta; 
-const current = computed(() => dataForm.headimgurl || Defaultavatar);
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);

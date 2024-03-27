@@ -12,7 +12,7 @@
                 <van-field :label="t('头像')" placeholder="">
                     <template #input>
                         <van-image style="position: relative;top:-4px;margin-right: 10px;" width="80" height="80"
-                            @click="imgPreview(current)" :src="imgFlag(current)" />
+                            @click="imgPreview(user.headimgurl)" :src="imgFlag(user.headimgurl)" />
                     </template>
                 </van-field>
                 <van-field :label="t('修改头像')" placeholder="">
@@ -79,8 +79,7 @@ const dataForm = reactive({
     headimgurl: '',
     password: '',
 })
-const Defaultavatar = syngenta; 
-const current = computed(() => dataForm.headimgurl || Defaultavatar);
+
 const onChoseAvatar = () => {
     avatarRef.value.chooseFile()
 }
