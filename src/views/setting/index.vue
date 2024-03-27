@@ -9,7 +9,7 @@
                 </template>
                 <template #value>
                     <van-image style="vertical-align: middle;" width="30" height="30"
-                        :src="imgFlag(dataForm.headimgurl)" />
+                        :src="imgFlag(current)" />
                 </template>
             </van-cell>
             <van-cell style="text-align: left;" :title="t('修改登录密码')" :to="{ name: 'Setting_password' }" is-link />
@@ -32,10 +32,11 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref,onMounted,reactive } from 'vue';
+import { defineComponent, ref,onMounted,reactive,computed } from 'vue';
 import { CellGroup, Cell, Button, Image, Dialog } from 'vant';
 import Nav from '../../components/Nav.vue';
 import MyLanguage from '../../components/Language.vue';
+import syngenta from '../../assets/img/home/syngenta.jpg'
 
 export default defineComponent({
     components: {
@@ -102,6 +103,8 @@ const onLogout = () => {
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
+const Defaultavatar = syngenta; 
+const current = computed(() => dataForm.headimgurl || Defaultavatar);
 
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);

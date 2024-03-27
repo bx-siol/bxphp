@@ -12,7 +12,7 @@
                 <van-field :label="t('头像')" placeholder="">
                     <template #input>
                         <van-image style="position: relative;top:-4px;margin-right: 10px;" width="80" height="80"
-                            @click="imgPreview(user.headimgurl)" :src="imgFlag(user.headimgurl)" />
+                            @click="imgPreview(current)" :src="imgFlag(current)" />
                     </template>
                 </van-field>
                 <van-field :label="t('修改头像')" placeholder="">
@@ -38,7 +38,7 @@ import { defineComponent } from 'vue';
 import { Button, Form, Field, Uploader, CellGroup, Image, Icon, Overlay } from 'vant';
 import Nav from "../../components/Nav.vue";
 import Avatar from "../../components/Avatar.vue";
-
+import syngenta from '../../assets/img/home/syngenta.jpg'
 export default defineComponent({
     components: {
         Nav, Avatar,
@@ -56,7 +56,7 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { _alert, lang, getSrcUrl, imgPreview } from "../../global/common";
-import { ref, reactive, onMounted } from 'vue';
+import { ref, reactive, onMounted,computed } from 'vue';
 import { useStore } from "vuex";
 import { http } from "../../global/network/http";
 import md5 from 'md5';
@@ -77,9 +77,10 @@ const configForm = reactive({
 const dataForm = reactive({
     nickname: '',
     headimgurl: '',
-    password: ''
+    password: '',
 })
-
+const Defaultavatar = syngenta; 
+const current = computed(() => dataForm.headimgurl || Defaultavatar);
 const onChoseAvatar = () => {
     avatarRef.value.chooseFile()
 }
