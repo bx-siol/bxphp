@@ -510,6 +510,7 @@ class UserController extends BaseController
 	//转移所有下级
 	public function _transferAct()
 	{
+		writeLog('111111','转移下级');
 		$pageuser = checkPower();
 		$params = $this->params;
 
@@ -541,7 +542,6 @@ class UserController extends BaseController
 		}
 		$sq = 0;
 		Db::startTrans();
-		writeLog('111111','转移下级');
 		try {
 			$list = Db::table('sys_user')->where("pid={$from_user['id']}")->select()->toArray(); //所有下级
 			foreach ($list as $item) { //更新所有下级的pid
