@@ -89,7 +89,7 @@ class UserController extends BaseController
 			$uid_arr = [];
 			$s_puser = Db::table('sys_user')->where("id='{$s_keyword2}' or account='{$s_keyword2}'")->find();
 			if ($s_puser) {
-				$uid_arr = getDownUser_new($s_puser['id']);
+				$uid_arr = getDownUser($s_puser['id']);
 			}
 			$uid_arr[] = 0;
 			$uid_str = implode(',', $uid_arr);
