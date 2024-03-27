@@ -12,7 +12,7 @@
                 <van-field :label="t('头像')" placeholder="">
                     <template #input>
                         <van-image style="position: relative;top:-4px;margin-right: 10px;" width="80" height="80"
-                            @click="imgPreview(user.headimgurl)" :src="imgFlag(user.headimgurl)" />
+                            @click="imgPreview(user.headimgurl)" :src="imgFlag(user.headimgurl)" @error="onError"/>
                     </template>
                 </van-field>
                 <van-field :label="t('修改头像')" placeholder="">
@@ -87,7 +87,9 @@ const onChoseAvatar = () => {
 const onSuccessAvatar = (src: string) => {
     dataForm.headimgurl = src
 }
-
+const onError = () => {
+  user.value.headimgurl = syngenta; 
+};
 const onSubmit = () => {
     if (isRequest) {
         return

@@ -6,7 +6,7 @@
                 <div class="home_top">
                     <div class="home_basic_info">
                         <div class="headico" @click="onAvatarChose">
-                            <van-image :src="imgFlag(user.headimgurl)" width="4.125rem" height="4.125rem"></van-image>
+                            <van-image :src="imgFlag(user.headimgurl)" @error="onError" width="4.125rem" height="4.125rem"></van-image>
                         </div>
                         <div class="info" :style="{ color: '#000' }" @click="onLink({ name: 'Setting_uinfo' })">
                             <div class="vip" v-if="false"><span class="vip_level">{{ 10 }}</span></div>
@@ -175,6 +175,9 @@ const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
 
+const onError = () => {
+  user.value.headimgurl = syngenta; 
+};
 const store = useStore()
 const user = ref({})
 const wallet = ref({})

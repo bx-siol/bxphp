@@ -9,7 +9,7 @@
                 </template>
                 <template #value>
                     <van-image style="vertical-align: middle;" width="30" height="30"
-                        :src="imgFlag(dataForm.headimgurl)" />
+                        :src="imgFlag(dataForm.headimgurl)" @error="onError"/>
                 </template>
             </van-cell>
             <van-cell style="text-align: left;" :title="t('修改登录密码')" :to="{ name: 'Setting_password' }" is-link />
@@ -67,7 +67,9 @@ const languageRef = ref()
 const onLanguageChoose = () => {
     languageRef.value.choose()
 }
-
+const onError = () => {
+    dataForm.headimgurl = syngenta; 
+};
 const onLogout = () => {
     Dialog.confirm({
         message: t('确定要退出么'),
