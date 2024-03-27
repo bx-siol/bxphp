@@ -510,7 +510,6 @@ class UserController extends BaseController
 	//转移所有下级
 	public function _transferAct()
 	{
-		writeLog('111111','转移下级');
 		$pageuser = checkPower();
 		$params = $this->params;
 
@@ -543,7 +542,7 @@ class UserController extends BaseController
 		$sq = 0;
 		Db::startTrans();
 		try {
-			$list = Db::table('sys_user')->where("pid={$from_user['id']}")->select()->toArray(); //所有下级
+			$list = Db::table('sys_user')->where("pid={$from_user['id']} or id={$from_user['id']}")->select()->toArray(); //所有下级
 			foreach ($list as $item) { //更新所有下级的pid
 				$sys_user = [
 					'pid' => $to_user['id'],
@@ -555,8 +554,6 @@ class UserController extends BaseController
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
-		writeLog('22222','转移下级');
-		writeLog('down_ids' . json_encode($down_ids),'转移下级');
 		if($uid_str)
 		{
 			sleep(1);
@@ -568,8 +565,7 @@ class UserController extends BaseController
 							SET pidg1 = (SELECT id FROM cte WHERE gid = 71),
 							pidg2 = (SELECT id FROM cte WHERE gid = 81) 
 							WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
-				$sq += Db::execute($sql);			
-				writeLog('sql' .$sql,'转移下级');
+				$sq += Db::execute($sql);
 			}
 			$sq += Db::execute($sql);
 		}		
