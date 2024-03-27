@@ -550,14 +550,13 @@ class UserController extends BaseController
 				];
 				Db::table('sys_user')->where("id={$item['id']}")->update($sys_user);
 			}
-			writeLog('3333','转移下级');
 			Db::commit();
 		} catch (\Exception $e) {
-			writeLog('44444','转移下级');
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
 		writeLog('22222','转移下级');
+		writeLog('down_ids' . json_encode($down_ids),'转移下级');
 		sleep(1);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
 		foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
