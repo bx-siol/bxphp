@@ -93,7 +93,6 @@ class UserController extends BaseController
 			}
 			$uid_arr[] = 0;
 			$uid_str = implode(',', $uid_arr);
-			writeLog('uid_str:' .$uid_str,'用户查询');
 			$where .= " and log.id in({$uid_str})";
 		}
 
