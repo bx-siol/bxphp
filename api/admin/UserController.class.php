@@ -542,7 +542,7 @@ class UserController extends BaseController
 		$sq = 0;
 		Db::startTrans();
 		try {
-			$list = Db::table('sys_user')->where("pid={$from_user['id']} or id={$from_user['id']}")->select()->toArray(); //所有下级
+			$list = Db::table('sys_user')->where("pid={$from_user['id']}")->select()->toArray(); //所有下级
 			foreach ($list as $item) { //更新所有下级的pid
 				$sys_user = [
 					'pid' => $to_user['id'],
@@ -569,6 +569,79 @@ class UserController extends BaseController
 			}
 			$sq += Db::execute($sql);
 		}		
+		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
+	}
+
+	//转移自己及所有下级
+	public function _transferActOwn()
+	{
+		$pageuser = checkPower();
+		$params = $this->params;
+
+		$from_account = $params['from_account'] ?? null;
+		$to_account = $params['to_account'] ?? null;
+		$password2 = getPassword($params['password2'] ?? '');
+
+		if (!$from_account || !$to_account) {
+			ReturnToJson(-1, '请填写转入/转出账号');
+		}
+		if ($from_account == $to_account) {
+			ReturnToJson(-1, '转入账号和转出账号不能相同');
+		}
+
+		if ($pageuser['password2'] != $password2) {
+			ReturnToJson(-1, '二级密码不正确');
+		}
+
+		$from_user = Db::table('sys_user')->where("account='{$from_account}'")->find();
+		$to_user = Db::table('sys_user')->where("account='{$to_account}'")->find();
+
+		if (!$from_user || !$to_user) {
+			ReturnToJson(-1, '账号不存在');
+		}
+		$down_ids = getDownUser($from_user['id']);
+		$uid_str = implode(',', $down_ids);
+		if (in_array($to_user['id'], $down_ids)) {
+			ReturnToJson(-1, '转入账号不能是转出账号的下级');
+		}
+		$sq = 0;
+		Db::startTrans();
+		try {
+				$sys_user = [
+					'pid' => $to_user['id'],
+				];
+				Db::table('sys_user')->where("id={$from_user['id']}")->update($sys_user);
+
+			// $list = Db::table('sys_user')->where("pid={$from_user['id']}")->select()->toArray(); //所有下级
+			// foreach ($list as $item) { //更新所有下级的pid
+			// 	$sys_user = [
+			// 		'pid' => $to_user['id'],
+			// 	];
+			// 	Db::table('sys_user')->where("id={$item['id']}")->update($sys_user);
+			// }
+			Db::commit();
+		} catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(-1, '系统繁忙请稍后再试');
+		}
+		if(!$uid_str)		
+			$uid_str = $from_user['id'];		
+		else			
+			$uid_str = $uid_str .','. $from_user['id'];		
+		
+		sleep(1);
+		array_push($down_ids,$from_user['id']);
+		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
+		foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
+			$sql = "WITH RECURSIVE cte AS (SELECT id, pid, gid FROM sys_user WHERE id = {$item}
+						UNION ALL SELECT t.id, t.pid, t.gid FROM sys_user t JOIN cte ON t.id = cte.pid) 
+						UPDATE sys_user
+						SET pidg1 = (SELECT id FROM cte WHERE gid = 71),
+						pidg2 = (SELECT id FROM cte WHERE gid = 81) 
+						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
+			$sq += Db::execute($sql);
+		}
+		$sq += Db::execute($sql);
 		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
 	}
 
