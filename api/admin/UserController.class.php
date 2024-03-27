@@ -557,19 +557,22 @@ class UserController extends BaseController
 		}
 		writeLog('22222','转移下级');
 		writeLog('down_ids' . json_encode($down_ids),'转移下级');
-		sleep(1);
-		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
-		foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
-			$sql = "WITH RECURSIVE cte AS (SELECT id, pid, gid FROM sys_user WHERE id = {$item}
-						UNION ALL SELECT t.id, t.pid, t.gid FROM sys_user t JOIN cte ON t.id = cte.pid) 
-						UPDATE sys_user
-						SET pidg1 = (SELECT id FROM cte WHERE gid = 71),
-						pidg2 = (SELECT id FROM cte WHERE gid = 81) 
-						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
-			$sq += Db::execute($sql);			
-			writeLog('sql' .$sql,'转移下级');
-		}
-		$sq += Db::execute($sql);
+		if($uid_str)
+		{
+			sleep(1);
+			Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
+			foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
+				$sql = "WITH RECURSIVE cte AS (SELECT id, pid, gid FROM sys_user WHERE id = {$item}
+							UNION ALL SELECT t.id, t.pid, t.gid FROM sys_user t JOIN cte ON t.id = cte.pid) 
+							UPDATE sys_user
+							SET pidg1 = (SELECT id FROM cte WHERE gid = 71),
+							pidg2 = (SELECT id FROM cte WHERE gid = 81) 
+							WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
+				$sq += Db::execute($sql);			
+				writeLog('sql' .$sql,'转移下级');
+			}
+			$sq += Db::execute($sql);
+		}		
 		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
 	}
 
