@@ -541,6 +541,7 @@ class UserController extends BaseController
 		}
 		$sq = 0;
 		Db::startTrans();
+		writeLog('111111','转移下级');
 		try {
 			$list = Db::table('sys_user')->where("pid={$from_user['id']}")->select()->toArray(); //所有下级
 			foreach ($list as $item) { //更新所有下级的pid
@@ -549,11 +550,14 @@ class UserController extends BaseController
 				];
 				Db::table('sys_user')->where("id={$item['id']}")->update($sys_user);
 			}
+			writeLog('3333','转移下级');
 			Db::commit();
 		} catch (\Exception $e) {
+			writeLog('44444','转移下级');
 			Db::rollback();
 			ReturnToJson(-1, '系统繁忙请稍后再试');
 		}
+		writeLog('22222','转移下级');
 		sleep(1);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
 		foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
@@ -563,7 +567,8 @@ class UserController extends BaseController
 						SET pidg1 = (SELECT id FROM cte WHERE gid = 71),
 						pidg2 = (SELECT id FROM cte WHERE gid = 81) 
 						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
-			$sq += Db::execute($sql);
+			$sq += Db::execute($sql);			
+			writeLog('sql' .$sql,'转移下级');
 		}
 		$sq += Db::execute($sql);
 		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
