@@ -12,6 +12,7 @@
             <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer1">同步用户层级</el-button>
             <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer2">同步单个用户层级</el-button>
             <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer">转移下级</el-button>
+            <el-button v-if="power.transfer" type="warning" size="small" @click="onTransfer3">转移自己</el-button>
             <el-button v-if="power.update && store.state.user.gid <= 71" type="success" size="small"
                 @click="add(myScope)">添加账号</el-button>
 
@@ -349,6 +350,26 @@
                     <span class="dialog-footer">
                         <el-button @click="transferShow2 = false">取消</el-button>
                         <el-button type="primary" @click="onSaveTransfer2">提交</el-button>
+                    </span>
+                </template>
+            </el-dialog>
+
+            <el-dialog title="转移自己" v-model="transferShow3" :close-on-click-modal="false" width="600px">
+                <el-form :label-width="configForm2.labelWidth">
+                    <el-form-item label="转出账号">
+                        <el-input size="small" v-model="transferForm.from_account" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="转入账号">
+                        <el-input size="small" v-model="transferForm.to_account" autocomplete="off"></el-input>
+                    </el-form-item>
+                    <el-form-item label="二级密码">
+                        <el-input size="small" type="password" v-model="transferForm.password2" autocomplete="off"></el-input>
+                    </el-form-item>
+                </el-form>
+                <template #footer>
+                    <span class="dialog-footer">
+                        <el-button @click="transferShow3 = false">取消</el-button>
+                        <el-button type="primary" @click="onSaveTransfer3">提交</el-button>
                     </span>
                 </template>
             </el-dialog>
@@ -777,6 +798,7 @@ onMounted(() => {
 const transferShow = ref(false)
 const transferShow1 = ref(false)
 const transferShow2 = ref(false)
+const transferShow3 = ref(false)
 const transferForm = reactive({
     from_account: '',
     to_account: '',
@@ -791,6 +813,9 @@ const onTransfer1 = () => {
 }
 const onTransfer2 = () => {
     transferShow2.value = true
+}
+const onTransfer3 = () => {
+    transferShow3.value = true
 }
 const onSaveTransfer = () => {
     if (isRequest) {
@@ -901,6 +926,36 @@ const onSaveTransfer2 = () => {
             onClose: () => {
                 isRequest = false
                 //transferShow2.value = false
+            }
+        })
+    })
+}
+
+const onSaveTransfer3 = () => {
+    if (isRequest) {
+        return false
+    } else {
+        isRequest = true
+    }
+    http({
+        url: 'c=User&a=transferActOwn',
+        data: {
+            from_account: transferForm.from_account,
+            to_account: transferForm.to_account,
+            password2: md5(transferForm.password2)
+        }
+    }).then((res: any) => {
+        if (res.code != 1) {
+            isRequest = false
+            _alert(res.msg)
+            return
+        }
+        transferShow.value = false
+        _alert({
+            type: 'success',
+            message: res.msg,
+            onClose: () => {
+                router.go(0)
             }
         })
     })
