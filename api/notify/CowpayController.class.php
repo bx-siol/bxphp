@@ -3,7 +3,7 @@
 
 use think\facade\Db;
 
-class CoppayController extends BaseController
+class CowpayController extends BaseController
 {
 
     public function __construct()
@@ -12,11 +12,11 @@ class CoppayController extends BaseController
     }
     public function GetPayName()
     {
-        return 'coppay';
+        return 'cowpay';
     }
     public function _index()
     {
-        echo 'coppay';
+        echo 'cowpay';
     }
     public function _pay()
     {
