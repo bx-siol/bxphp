@@ -11,7 +11,6 @@ function GetPayName()
 }
 function CashOrder($fin_cashlog)
 {
-	writeLog("开始代付", GetPayName() . '/cash');
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
 	$milliseconds = round($microtime * 1000); // 将时间戳转换为毫秒级
