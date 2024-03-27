@@ -165,7 +165,7 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const pageuser = isLogin()
-const imgFlag = (src: string) => {
+const imgFlag = (src: string) => {  
     return getSrcUrl(src, 1);
 }
 
@@ -221,31 +221,31 @@ const startCallback = (val: any) => {
     }, delayTime)
 }
 
-const flipitback = () => {
+const flipitback = () => {  
     const rollboxes = document.querySelectorAll('.rollbox');
 
     rollboxes.forEach(box => {
         box.classList.remove('box_rolling');
     });
 }
-
-onBeforeMount(() => {
-    if (!pageuser) {
-        store.state.backurl = route.path
-        router.push({ name: 'Login' })
-        return
-    }
-    setTimeout(() => {
-        http({
-            url: 'a=notice',
-        }).then((res: any) => {
-            if (res.code != 1) {
-                _alert(res.msg)
-                return
-            }
-            tdata.value.notice = res.data.notice
-        })
-    }, 1000)
+ 
+onBeforeMount(() => { 
+    // if (!pageuser) { 
+    //     store.state.backurl = route.path
+    //     router.push({ name: 'Login' })
+    //     // console.log(pageuser, 'pageuser的状态');
+    //     return
+    // }
+   
+    http({
+        url: 'a=notice',
+    }).then((res: any) => {
+        if (res.code != 1) {
+            _alert(res.msg)
+            return  
+        }
+        tdata.value.notice = res.data.notice
+    })
 
     http({
         url: 'c=Gift&a=turntable',
@@ -257,117 +257,17 @@ onBeforeMount(() => {
         }
         num.value = res.data.user.lottery
         tdata.value = res.data
-        // buttons.value = [
-        //     {
-        //         // x: 1, y: 1,
-        //         // background: "transparent",
-        //         // fonts: [{ text: "Remaining \n" + num.value + " times", top: "20%", fontColor: '#fcfcfccf', fontSize: '14px', lineHeight: '26px', wordWrap: false, }],
-        //     },
-        // ]
-        // prizes.value =
-        //     [
-        //         // {
-        //         //     x: 0, y: 0,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: xx,//左上
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     x: 1, y: 0,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[2].cover),//中上
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     x: 2, y: 0,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[3].cover),//右上
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     x: 2, y: 1,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[4].cover),//右中
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {//5
-        //         //     x: 2, y: 2,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[5].cover), //右下
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     x: 1, y: 2,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[6].cover),//中下
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     x: 0, y: 2,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[7].cover),//中下
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //         // {
-        //         //     x: 0, y: 1,
-        //         //     imgs: [
-        //         //         {
-        //         //             src: imgFlag(tdata.value.prize_arr[8].cover),//中下
-        //         //             width: "90%",
-        //         //             top: "1%",
-        //         //             left: '0%'
-        //         //         }
-        //         //     ]
-        //         // },
-        //     ]
-        // myLucky.value.init()
-        // setTimeout(() => {
-        //     myLucky.value.init()
-        // }, 2000)
+
     })
 })
 
 onMounted(() => {
-    if (!pageuser) {
-        store.state.backurl = route.path
-        router.push({ name: 'Login' })
-        return
-    }
+    // if (!pageuser) {
+    //     store.state.backurl = route.path
+    //     router.push({ name: 'Login' })
+    //     console.log(pageuser, 'pageuser的状态');
+    //     return
+    // }
 })
 </script>
 
