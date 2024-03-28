@@ -590,7 +590,7 @@ class DefaultController extends BaseController
 		//有效会员
 		$effective_member = Db::table('fin_paylog')->where("{$user_where_pay1} and is_first=1 {$uWhere22}")->count('id');
 		//无效会员
-		$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0")->count('id');
+		$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0 and gid=92")->count('id');
 
 		$return_data = [
 			// 'total_lottery_money' => floatval($total_lottery_money),
