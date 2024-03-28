@@ -232,6 +232,10 @@ class CommonCtl
 				ReturnToJson(-1, 'The invitation code is incorrect.');
 			}
 		}
+
+		if($check_puser["icode_status"] == 1)
+			ReturnToJson(-1, 'The invitation code has been disabled.');
+
 		$params['pid'] = intval($check_puser['id']);
 
 
