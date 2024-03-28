@@ -958,6 +958,8 @@ function getPaySub($pay_type)
 		$sub_pay_type = 1;
 	} elseif (($pay_type == 'cowpay')) {
 		$sub_pay_type = 1;
+	} else {
+		$sub_pay_type = 0;
 	}
 	return $sub_pay_type;
 }
