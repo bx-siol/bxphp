@@ -3,8 +3,8 @@
         <template #btn="myScope">
             <el-button type="danger" size="small" @click="DisableStatus(1, 'status')">禁用</el-button>
             <el-button size="small" @click="DisableStatus(2, 'status')">解禁</el-button>
-            <el-button type="danger" size="small" @click="DisableStatus(1, 'icode_status')">验证码禁用</el-button>
-            <el-button size="small" @click="DisableStatus(0, 'icode_status')">验证码解禁</el-button>
+            <el-button type="danger" size="small" @click="DisableStatus(1, 'icode_status')">邀请码禁用</el-button>
+            <el-button size="small" @click="DisableStatus(0, 'icode_status')">邀请码解禁</el-button>
             <el-button type="danger" v-if="power.yxupdata" @click="DisableStatus(0, 'first_pay_day', 'first_pay_day')"
                 size="small">无效</el-button>
             <el-button size="small" v-if="power.yxupdata"
