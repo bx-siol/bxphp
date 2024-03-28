@@ -30,7 +30,7 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	$str = json_encode(($pdata));
 
-	$data = encryptNew($str, $config['aeskey'], $config['aeslv']);
+	$data = paySign($str, $config['aeskey'], $config['aeslv']);
 	$info['data'] = $data;
 	$data = json_encode($info);
 
