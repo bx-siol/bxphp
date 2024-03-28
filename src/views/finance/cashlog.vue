@@ -7,16 +7,13 @@
             <template #btn>
                 <!--            <el-button v-if="power.check_all" type="success" size="small" @click="checkAll">一键审核</el-button>-->
             </template>
-
             <template #search="{ params, tdata, doSearch }">
-
                 <span style="font-size: 14px;margin-left: 10px;">收款账号长度：</span>
                 <el-select size="small" style="width: 90px;" v-model="params.s_lt14" placeholder="全部">
                     <el-option key="0" label="全部" value="0"></el-option>
                     <el-option key="1" label="≥14" value="1"></el-option>
                     <el-option key="2" label="<14" value="2"></el-option>
                 </el-select>
-
                 <span style="font-size: 14px;margin-left: 10px;">翻译：</span>
                 <el-select size="small" style="width: 70px;" v-model="params.s_trans" placeholder="否" @change="onTrans">
                     <el-option key="0" label="否" value="0"></el-option>
@@ -24,78 +21,51 @@
                 </el-select>
                 <span style="font-size: 14px;margin-left: 10px;">代付渠道：</span>
                 <el-select size="small" style="width: 120px;" v-model="s_paytype" placeholder="">
-                    <el-option v-for="(item, idx) in tdata.dtype" :key="idx" :label="item.type" :value="item.type">
-                    </el-option>
+                    <el-option v-for="(item, idx) in tdata.dtype" :key="idx" :label="item.type" :value="item.type"></el-option>
                 </el-select>
                 <span style="font-size: 14px;margin-left: 10px;">代付状态：</span>
                 <el-select size="small" style="width: 120px;" v-model="params.s_pay_status" placeholder="全部状态">
-                    <el-option key="all" label="全部状态" value="all">
-                    </el-option>
-                    <el-option v-for="(item, idx) in tdata.pay_status_arr" :key="idx" :label="item" :value="idx">
-                    </el-option>
+                    <el-option key="all" label="全部状态" value="all"></el-option>
+                    <el-option v-for="(item, idx) in tdata.pay_status_arr" :key="idx" :label="item" :value="idx"></el-option>
                 </el-select>
-
                 <el-button v-if="power.checktk" @click="checkAllShowifsc = true">退款</el-button>
                 <span style="font-size: 14px;margin-left: 10px;">审核状态：</span>
                 <el-select size="small" style="width: 120px;" v-model="params.s_status" placeholder="全部状态">
-                    <el-option key="0" label="全部状态" value="0">
-                    </el-option>
-                    <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
-                    </el-option>
+                    <el-option key="0" label="全部状态" value="0"></el-option>
+                    <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx"></el-option>
                 </el-select>
-
                 <span style="font-size: 14px;margin-left: 10px;">金额范围：</span>
-                <el-input size="small" style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 108px;" placeholder="起始金额" clearable v-model="params.s_money_from" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;">&nbsp;&nbsp;到&nbsp;&nbsp;</span>
 
-                <el-input size="small" style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to"
-                    @keyup.enter="doSearch">
-                </el-input>
+                <el-input size="small" style="width: 108px;" placeholder="结束金额" clearable v-model="params.s_money_to" @keyup.enter="doSearch"></el-input>
 
                 <div style="height: 10px;"></div>
                 <span style="font-size: 14px;margin-left: 10px;">提现模式：</span>
-
-
                 <el-select size="small" style="width: 120px;" v-model="falseflg" placeholder="处理失败">
-                    <el-option key="0" label="否" value="0">
-                    </el-option>
-                    <el-option key="1" label="是" value="1">
-                    </el-option>
+                    <el-option key="0" label="否" value="0"></el-option>
+                    <el-option key="1" label="是" value="1"></el-option>
                 </el-select>
 
                 <el-select size="small" style="width: 120px;" v-model="params.txflg" placeholder="全部状态">
-
-                    <el-option key="0" label="关闭" value="0">
-                    </el-option>
-                    <el-option key="1" label="急速模式" value="1">
-                    </el-option>
-                    <el-option key="2" label="快速模式" value="2">
-                    </el-option>
-                    <el-option key="3" label="处理失败" value="3">
-                    </el-option>
+                    <el-option key="0" label="关闭" value="0"></el-option>
+                    <el-option key="1" label="急速模式" value="1"></el-option>
+                    <el-option key="2" label="快速模式" value="2"></el-option>
+                    <el-option key="3" label="处理失败" value="3"></el-option>
                 </el-select>
                 <span style="font-size: 14px;margin-left: 10px;">历史订单：</span>
-                <el-input size="small" style="width: 180px;" placeholder="历史订单号" clearable v-model="params.s_oldosn"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="历史订单号" clearable v-model="params.s_oldosn" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">代付渠道：</span>
-                <el-input size="small" style="width: 180px;" placeholder="代付渠道" clearable v-model="params.s_paytype_s"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="代付渠道" clearable v-model="params.s_paytype_s" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">用户账号：</span>
-                <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable
-                    v-model="params.s_user_account" @keyup.enter="doSearch">
-                </el-input>
+                <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable v-model="params.s_user_account" @keyup.enter="doSearch"></el-input>
                 <span style="font-size: 14px;margin-left: 10px;">订单：</span>
-                <el-input size="small" style="width: 180px;" placeholder="订单号" clearable v-model="params.s_osn"
-                    @keyup.enter="doSearch">
-                </el-input>
-                <el-button size="small" type="primary" style="margin-left: 10px;" ref="kjcspageRef"
-                    @click="doSearch">快捷查询</el-button>
+                <el-input size="small" style="width: 180px;" placeholder="订单号" clearable v-model="params.s_osn" @keyup.enter="doSearch"></el-input>
+                <el-button size="small" type="primary" style="margin-left: 10px;" ref="kjcspageRef" @click="doSearch">快捷查询</el-button>
                 <div style="height: 10px;"></div>
-
                 <!-- <span style="font-size: 14px;margin-left: 10px;">代付通道：</span>
             <el-select size="small" style="width: 120px;" v-model="s_paytype" placeholder="代付通道">
                 <el-option key="0" label="代付通道" value="0">
@@ -104,33 +74,28 @@
                 </el-option>
             </el-select> -->
                 <span style="font-size: 14px;margin-left: 10px;">收款账号：</span>
-                <el-input size="small" style="width: 180px;" placeholder="收款账号" clearable
-                    v-model="params.receive_account" @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="收款账号" clearable v-model="params.receive_account" @keyup.enter="doSearch"></el-input>
+                <el-input size="small" style="width: 260px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword2" @keyup.enter="doSearch">
+                    <template #prepend>团队搜索</template>
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">ID：</span>
-                <el-input size="small" style="width: 180px;" placeholder="ID" clearable v-model="params.id"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="ID" clearable v-model="params.id" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">一级代理：</span>
-                <el-input size="small" style="width: 180px;" placeholder="一级代理" clearable v-model="params.pidg1"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="一级代理" clearable v-model="params.pidg1" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">二级代理：</span>
-                <el-input size="small" style="width: 180px;" placeholder="二级代理" clearable v-model="params.pidg2"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="二级代理" clearable v-model="params.pidg2" @keyup.enter="doSearch">
                 </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">上级账号：</span>
-                <el-input size="small" style="width: 180px;" placeholder="上级账号" clearable v-model="params.pid"
-                    @keyup.enter="doSearch">
+                <el-input size="small" style="width: 180px;" placeholder="上级账号" clearable v-model="params.pid" @keyup.enter="doSearch">
                 </el-input>
                 <div style="height: 10px;"></div>
 
                 <span style="font-size: 14px;margin-left: 10px;">通道到账：</span>
-                <el-date-picker size="small" type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable
-                    v-model="params.s_start_time2_flag" placeholder="开始时间">
+                <el-date-picker size="small" type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_start_time2_flag" placeholder="开始时间">
                 </el-date-picker>
-                <el-date-picker size="small" type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable
-                    v-model="params.s_end_time2_flag" placeholder="结束时间">
+                <el-date-picker size="small" type="date" :style="{ marginLeft: '10px', width: '150px' }" clearable v-model="params.s_end_time2_flag" placeholder="结束时间">
                 </el-date-picker>
                 <span style="font-size: 14px;margin-left: 20px;">用户提现：</span>
             </template>

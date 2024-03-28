@@ -209,6 +209,17 @@
                 <el-col :span="6">
                     <div class="countItem">
                         <div class="countItemLeft">
+                            <el-image :src="ico_2" class="countItemIcon" />
+                        </div>
+                        <div class="countItemRight">
+                            <div class="countItemNum">{{ tableData.Invalid_member }}</div>
+                            <div class="countItemTxt">无效会员</div>
+                        </div>
+                    </div>
+                </el-col>
+                <el-col :span="6">
+                    <div class="countItem">
+                        <div class="countItemLeft">
                             <el-image :src="ico_1" class="countItemIcon" />
                         </div>
                         <div class="countItemRight">
@@ -332,6 +343,7 @@ const doSearch = () => {
                 tableData.value.total_member = res.data.total_member
                 tableData.value.today_member = res.data.today_member
                 tableData.value.effective_member = res.data.effective_member
+                tableData.value.Invalid_member = res.data.Invalid_member
             })
 
         })
