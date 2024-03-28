@@ -709,6 +709,19 @@ class FinanceController extends BaseController
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.uid in({$uid_str})";
 		}
+		//团队搜索
+		if ($params['s_keyword2']) {
+			$s_keyword2 = $params['s_keyword2'];
+			$uid_arr = [];
+			$s_puser = Db::table('sys_user')->where("id='{$s_keyword2}' or account='{$s_keyword2}'")->find();
+			if ($s_puser) {
+				$uid_arr = getDownUser($s_puser['id']);
+			}
+			$uid_arr[] = 0;
+			$uid_str = implode(',', $uid_arr);
+			$where .= " and u.id in({$uid_str})";
+		}
+
 
 		$count_item = Db::table('fin_cashlog log')
 			->leftJoin('sys_user u', 'log.uid=u.id')
