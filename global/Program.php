@@ -163,7 +163,7 @@ if (!PHP_CLI) {
 	}
 
 	// 注册自定义的错误处理函数、异常处理函数和致命错误处理函数
-	set_error_handler("handleError");
+	//set_error_handler("handleError");
 	set_exception_handler("handleException");
 	register_shutdown_function("handleShutdown");
 
