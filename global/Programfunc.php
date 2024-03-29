@@ -22,7 +22,7 @@ function curl_postd($url, $data)
 function sendbdjt($up_user, $money, $osn)
 {
 	//https://api.telegram.org/bot6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA/getUpdates
-	$token = '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA';//6979574687:AAFAgf0TS5KLGqEXfpLxnPSUhZTjfG2z6tU
+	$token = '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'; //6979574687:AAFAgf0TS5KLGqEXfpLxnPSUhZTjfG2z6tU
 	$tokens = [
 		'0' => ['id' => '-4165632848', 'tk' => '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'],
 		'1' => ['id' => '-4181160027', 'tk' => '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'],
@@ -463,7 +463,7 @@ function list2tree($list, $pk = 'id', $pid = 'pid', $child = 'children', $root =
 			if ($root == $parentId) {
 				$tree[] = &$list[$key];
 			} else {
-				if (isset ($refer[$parentId])) {
+				if (isset($refer[$parentId])) {
 					$parent = &$refer[$parentId];
 					$list[$key]['pname'] = $refer[$parentId]['name'];
 					$parent[$child][] = &$list[$key];
@@ -569,7 +569,7 @@ function loadLang($ltype = null)
 			return [];
 		}
 	}
-	return require_once ($file);
+	return require_once($file);
 }
 
 //翻译
@@ -579,7 +579,7 @@ function lang($str)
 		$_ENV['lang'] = loadLang();
 	}
 	$str2 = trim($_ENV['lang'][$str]);
-	return !empty ($str2) ? $str2 : $str;
+	return !empty($str2) ? $str2 : $str;
 }
 
 function lang2($str, $ltype = 'en-us')
@@ -588,7 +588,7 @@ function lang2($str, $ltype = 'en-us')
 		$_ENV['lang2'] = loadLang($ltype);
 	}
 	$str2 = trim($_ENV['lang2'][$str]);
-	return !empty ($str2) ? $str2 : $str;
+	return !empty($str2) ? $str2 : $str;
 }
 
 //#####################短信验证码相关开始#####################
@@ -884,7 +884,7 @@ function getParam($paramName = '')
 {
 	if ($paramName == "token")
 		return "";
-	if (!empty ($paramName)) {
+	if (!empty($paramName)) {
 		$paramValue = filterParam($_REQUEST[$paramName]);
 		return $paramValue;
 	}
@@ -958,6 +958,8 @@ function getPaySub($pay_type)
 		$sub_pay_type = 1;
 	} elseif (($pay_type == 'cowpay')) {
 		$sub_pay_type = 1;
+	} else {
+		$sub_pay_type = 0;
 	}
 	return $sub_pay_type;
 }
@@ -969,10 +971,9 @@ function getPayFilePath($pay_type)
 		$file_name = 'bobopay';
 	} elseif (in_array($pay_type, ['jwpay'])) {
 		$file_name = 'jwpay';
-	}elseif (in_array($pay_type, ['cowpay'])) {
+	} elseif (in_array($pay_type, ['cowpay'])) {
 		$file_name = 'cowpay';
-	}
-	 else {
+	} else {
 		$file_name = $pay_type;
 	}
 	$pay_file = APP_PATH . 'common/pay/' . $file_name . '.php';
@@ -988,7 +989,7 @@ function GetXName()
 		return 1;
 	} else if (file_exists(ROOT_PATH . 'syngentaxm')) {
 		return 2;
-	} else {//测试服 
+	} else { //测试服 
 		return 0;
 	}
 }
@@ -999,15 +1000,15 @@ function getClientIp($type = 0)
 	static $ip = NULL;
 	if ($ip !== NULL)
 		return $ip[$type];
-	if (isset ($_SERVER['HTTP_X_FORWARDED_FOR'])) {
+	if (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
 		$arr = explode(',', $_SERVER['HTTP_X_FORWARDED_FOR']);
 		$pos = array_search('unknown', $arr);
 		if (false !== $pos)
 			unset($arr[$pos]);
 		$ip = trim($arr[0]);
-	} elseif (isset ($_SERVER['HTTP_CLIENT_IP'])) {
+	} elseif (isset($_SERVER['HTTP_CLIENT_IP'])) {
 		$ip = $_SERVER['HTTP_CLIENT_IP'];
-	} elseif (isset ($_SERVER['REMOTE_ADDR'])) {
+	} elseif (isset($_SERVER['REMOTE_ADDR'])) {
 		$ip = $_SERVER['REMOTE_ADDR'];
 	}
 	// 直接赋值给结果数组，不做ip2long转换
@@ -1070,7 +1071,7 @@ function output($str)
 function doExit($str)
 {
 	if (APP_DEBUG) {
-		exit ($str);
+		exit($str);
 	}
 	exit;
 }
@@ -1333,8 +1334,8 @@ function formSubmit($url, $data, $notice = '')
 	}
 	$html .= '</form>';
 	$html .= '<script>document.forms["submitForm"].submit();</script>';
-	$html .= empty ($notice) ? 'Submit...' : $notice;
-	exit ($html);
+	$html .= empty($notice) ? 'Submit...' : $notice;
+	exit($html);
 }
 
 //smarty模板渲染
@@ -1343,7 +1344,7 @@ function display($tpl, $data = array(), $return = false)
 	$template_dir = APP_PATH . '/view/' . strtolower(MODULE_NAME) . '/';
 	$path = $template_dir . $tpl;
 	if (!file_exists($path)) {
-		exit (lang('Template does not exist.'));
+		exit(lang('Template does not exist.'));
 	}
 	$smarty = new Smarty();
 	$smarty->template_dir = $template_dir;
@@ -1405,7 +1406,7 @@ function http_fget($url, $timeout = 30)
 	];
 	return $arrCurlResult;
 }
-function CurlPost($url, $data = [], $timeout = 30)
+function CurlPost($url, $data = [], $timeout = 30, $header = array('Content-Type:application/json'))
 {
 	$curl = curl_init();
 	curl_setopt_array(
@@ -1421,9 +1422,7 @@ function CurlPost($url, $data = [], $timeout = 30)
 			CURLOPT_FOLLOWLOCATION => true,
 			CURLOPT_CUSTOMREQUEST => 'POST',
 			CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
-			CURLOPT_HTTPHEADER => array(
-				'Content-Type:application/json'
-			)
+			CURLOPT_HTTPHEADER => $header
 		)
 	);
 	$response = curl_exec($curl);
@@ -1522,12 +1521,12 @@ function curl_post2($url, $data = [], $timeout = 30, $header = [])
 function getDirFileList($path, &$filename, $recursive = false, $ext = false, $baseurl = true)
 {
 	if (!$path) {
-		die ('Please pass in the directory path.');
+		die('Please pass in the directory path.');
 	}
 	$path = trim($path, '/');
 	$resource = opendir($path);
 	if (!$resource) {
-		die ('The directory passed in is incorrect.');
+		die('The directory passed in is incorrect.');
 	}
 	//遍历目录
 	while ($rows = readdir($resource)) {
@@ -1540,7 +1539,7 @@ function getDirFileList($path, &$filename, $recursive = false, $ext = false, $ba
 				if ($ext) {
 					//必须为数组
 					if (!is_array($ext)) {
-						die ('Please pass in the suffix name in array form.');
+						die('Please pass in the suffix name in array form.');
 					}
 					//转换小写
 					foreach ($ext as &$v) {
@@ -1717,7 +1716,7 @@ function isPhone($tel, $type = 'sj')
 		'tel' => '/^(010|02\d{1}|0[3-9]\d{2})-\d{7,9}(-\d+)?$/',
 		'400' => '/^400(-\d{3,4}){2}$/'
 	];
-	if ($type && isset ($regxArr[$type])) {
+	if ($type && isset($regxArr[$type])) {
 		return preg_match($regxArr[$type], $tel) ? true : false;
 	}
 	foreach ($regxArr as $regx) {
@@ -1763,22 +1762,22 @@ function isMoney($val)
 //判断是否是ajax请求 同时满足是ajax和post请求才算是ajax，异步统一使用post提交数据
 function isAjax()
 {
-	$isAjax = isset ($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && strtolower($_SERVER['REQUEST_METHOD']) == 'post';
+	$isAjax = isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest' && strtolower($_SERVER['REQUEST_METHOD']) == 'post';
 	return $isAjax;
 }
 
 //是否是移动端请求
 function isMobileReq()
 {
-	$_SERVER['ALL_HTTP'] = isset ($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
+	$_SERVER['ALL_HTTP'] = isset($_SERVER['ALL_HTTP']) ? $_SERVER['ALL_HTTP'] : '';
 	$mobile_browser = '0';
 	if (preg_match('/(up.browser|up.link|mmp|symbian|smartphone|midp|wap|phone|iphone|ipad|ipod|android|xoom)/i', strtolower($_SERVER['HTTP_USER_AGENT'])))
 		$mobile_browser++;
-	if ((isset ($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false))
+	if ((isset($_SERVER['HTTP_ACCEPT'])) and (strpos(strtolower($_SERVER['HTTP_ACCEPT']), 'application/vnd.wap.xhtml+xml') !== false))
 		$mobile_browser++;
-	if (isset ($_SERVER['HTTP_X_WAP_PROFILE']))
+	if (isset($_SERVER['HTTP_X_WAP_PROFILE']))
 		$mobile_browser++;
-	if (isset ($_SERVER['HTTP_PROFILE']))
+	if (isset($_SERVER['HTTP_PROFILE']))
 		$mobile_browser++;
 	$mobile_ua = strtolower(substr($_SERVER['HTTP_USER_AGENT'], 0, 4));
 	$mobile_agents = [
