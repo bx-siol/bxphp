@@ -6,10 +6,7 @@ use think\facade\Db;
 class GreenpayController extends BaseController
 {
 
-    public function GetPayName()
-    {
-        return "greenpay";
-    }
+
 
     public function __construct()
     {
@@ -24,12 +21,12 @@ class GreenpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog(json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/notify/pay');
+        writeLog(json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'greenpay/notify/pay');
         if (!$params)
             $params = $_POST;
-        require_once APP_PATH . 'common/pay/' . GetPayName() . '.php';
-        $sign = paySign($params);
-        writeLog($sign, GetPayName() . '/notify/pay');
+        require_once APP_PATH . 'common/pay/greenpay.php';
+        $sign = dsign($params);
+        writeLog($sign, 'greenpay/notify/pay');
         if ($sign != $params['signature_n'])
             ReturnToJson(-1, 'Sign error');
         $pdata = [
@@ -38,7 +35,7 @@ class GreenpayController extends BaseController
             'amount' => $params['data']['amount'],
             'successStr' => '{"code":200}'
         ];
-        writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/notify/pay');
+        writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'greenpay/notify/pay');
         $this->payAct($pdata, GetPayName());
     }
 
@@ -46,11 +43,11 @@ class GreenpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $params = json_decode($jsonStr, true);
-        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/notify/cash');
+        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'greenpay/notify/cash');
         if (!$params)
             $params = $_POST;
 
-        require_once APP_PATH . 'common/cash/' . GetPayName() . '.php';
+        require_once APP_PATH . 'common/cash/greenpay.php';
         $sign = CashSign($params);
         //writeLog($sign, GetPayName().'/notify/pay');
         if ($sign != $params['sign'])
