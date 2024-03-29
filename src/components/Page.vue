@@ -37,7 +37,9 @@
 
         <!--数据表-->
         <div class="user_skills">
-            <el-table :max-height="tableheight" :header-cell-class-name="cellfun" :data="tableData.list"
+            <!-- :max-height="tableheight" -->
+
+            <el-table :header-cell-class-name="cellfun" :data="tableData.list"
                 :header-cell-style="{ textAlign: 'center' }" :cell-style="{ textAlign: 'center' }"
                 :row-class-name="rowClass" border ref="multipleTable">
                 <slot name="table" :tdata="tableData" :delItem="delItem" :params="searchForm" :doSearch="onSearch">
@@ -394,11 +396,11 @@ defineExpose({
 onMounted(() => {
     init()
     hasInit = true
-    var tablehide = document.getElementsByClassName('consearch')[0].clientHeight + document.getElementsByClassName('conbar')[0].clientHeight + 38 + 50 + 40 + 36;
+    //var tablehide = document.getElementsByClassName('consearch')[0].clientHeight + document.getElementsByClassName('conbar')[0].clientHeight + 38 + 50 + 40 + 36;
     // if (document.getElementsByClassName('plActionBox')[0] != undefined) {
     //     tablehide += document.getElementsByClassName('plActionBox')[0].clientHeight
     // }
-    tableheight.value = window.innerHeight - tablehide;
+    //tableheight.value = window.innerHeight - tablehide;
     //alert(tableheight.val)
 })
 
