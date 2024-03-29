@@ -32,10 +32,10 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	$data = paySign($str, $config['aeskey'], $config['aeslv']);
 	$info['data'] = $data;
-	$data = json_encode($info);
+	//$data = json_encode($info);
 
 	//$pdata['sign'] = paySign($pdata);
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL . $data, GetPayName() . '/pay');
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . PHP_EOL . $info, GetPayName() . '/pay');
 
 	$result = [];
 	try {
@@ -44,7 +44,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		$headers[] = 'merchant_key: ' . $config['mch_key'];
 
 
-		$result = CurlPost($config['pay_url'], $data, 30, $headers);
+		$result = CurlPost($config['pay_url'], $info, 30, $headers);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => 'Channel is not open.-9001'];
 	}
@@ -70,22 +70,29 @@ function payOrder($fin_paylog, $sub_type = '')
 	return $return_data;
 }
 
-
+function dsign($pdata)
+{
+	//MD5 加密,,merchantKey+message+amount+status+merchantOrderNo+orderNo+aeskey
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+	$outstr = strtolower(md5($config['mch_key'] . $pdata['data']['message']
+		. $pdata['data']['amount'] . $pdata['data']['status'] . $pdata['data']['merchantOrderNo'] . $pdata['data']['orderNo'] . $config['aeskey']));
+	return $outstr;
+}
 
 //查询余额
 function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
-	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
-	$timestamp = round($microtime * 1000); // 将时间戳转换为毫秒级
-	$pdata = [
-		'merchantId' => $config['mch_id'],
-		'timestamp' => $timestamp,
-	];
-	$pdata['sign'] = paySign($pdata, 1);
+
+	$headers = array();
+	$headers[] = 'Content-Type: ' . 'application/json;charset=UTF-8';
+	$headers[] = 'merchant_key: ' . $config['mch_key'];
+
+
+	$result = CurlPost($config['pay_url'], [], 30, $headers);
 	$url = $config['balance_url'];
 	//writeLog( json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	$result = CurlPost($url, $pdata, 30);
+	// $result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
@@ -99,8 +106,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['balance'] / 100,
-			'payout_balance' => $resultArr['balance'] / 100,
+			'balance' => $resultArr['balance'],
+			'payout_balance' => $resultArr['balance'],
 		]
 	];
 	return $return_data;
