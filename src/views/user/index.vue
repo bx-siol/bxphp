@@ -6,12 +6,12 @@
                 <div class="home_top">
                     <div class="home_basic_info">
                         <div class="info" :style="{ color: '#fff' }" @click="onLink({ name: 'Setting_uinfo' })">
-                            <div class="vip" v-if="flase"><span class="vip_level">{{ 10 }}</span></div>
+                            <div class="vip" v-if="false"><span class="vip_level">{{ 10 }}</span></div>
                             <p class="username">{{ user.account }}</p>
                             <!-- <P style="color: #ff9900;">points: {{ wallet3.balance }}</P> -->
                         </div>
                         <div class="headico" @click="onAvatarChose">
-                            <van-image :src="imgFlag(nestie)" width="4.125rem" height="4.125rem"></van-image>
+                            <van-image :src="imgFlag(user.headimgurl)" @error="onError"  width="4.125rem" height="4.125rem"></van-image>
                         </div>
                     </div>
                 </div>
@@ -159,6 +159,9 @@ const appdload = () => {
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
+const onError = () => {
+  user.value.headimgurl = nestie; 
+};
 
 const store = useStore()
 const user = ref({})

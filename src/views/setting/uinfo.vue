@@ -12,7 +12,7 @@
                 <van-field :label="t('头像')" placeholder="">
                     <template #input>
                         <van-image style="position: relative;top:-4px;margin-right: 10px;" width="80" height="80"
-                            @click="imgPreview(user.headimgurl)" :src="imgFlag(user.headimgurl)" />
+                            @click="imgPreview(user.headimgurl)" :src="imgFlag(user.headimgurl)" @error="onError"/>
                     </template>
                 </van-field>
                 <van-field :label="t('修改头像')" placeholder="">
@@ -38,6 +38,7 @@ import { defineComponent } from 'vue';
 import { Button, Form, Field, Uploader, CellGroup, Image, Icon, Overlay } from 'vant';
 import Nav from "../../components/Nav.vue";
 import Avatar from "../../components/Avatar.vue";
+import nestie from '../../assets/img/home/nestie.jpg'
 
 export default defineComponent({
     components: {
@@ -127,7 +128,9 @@ const onSubmit = () => {
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
-
+const onError = () => {
+  user.value.headimgurl = nestie; 
+};
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
     // setTimeout(() => {
