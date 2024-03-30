@@ -245,8 +245,9 @@ onMounted(() => {
                 dataForm.realname = res.data.bank.realname
                 dataForm.ifsc = res.data.bank.ifsc
                 for (let i in res.data.bank_arr) {
-                    if (res.data.bank_arr[i].code == res.data.bank.bank_id) {
-                        bankIdx.value = res.data.bank_arr[i].id
+                    if (res.data.bank_arr[i].code == res.data.bank.bank_id) {                        
+                        bankIdx.value = res.data.bank_arr[i].id-1;
+                        dataForm.bank_id = res.data.bank_arr[i].id;
                     }
                 }
             }
