@@ -132,7 +132,7 @@
 
     const goWalletLog=(item:any)=>{
         // router.push({name:'Finance_walletLog',params:{wid:item.id}})
-        router.push({name:'Finance_walletLog',query:{wid:item.id}})
+        router.push({name:'资产账变记录',query:{wid:item.id}})
     }
 
     const configForm=reactive({
