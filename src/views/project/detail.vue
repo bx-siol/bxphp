@@ -1,5 +1,5 @@
 <template>
-  <div class="project_detail">+
+  <div class="project_detail">
     <Nav leftText=''></Nav>
     <div style="background: ">
       <div :class="['project_img', { backdrop: info.pointshop == 1 }]">

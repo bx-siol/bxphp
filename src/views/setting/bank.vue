@@ -12,7 +12,7 @@
                     pattern: /^[0-9]+$/,
                     message: 'Only numbers can be entered',
                     trigger: 'onBlur'
-                }]" />
+                }]"  class="fieldaccount"/>
                 
                 <van-field :label="t('ifsc')" show-word-limit maxlength="11" v-model="dataForm.ifsc"
                     :placeholder="t('请填写IFSC代码')" />
@@ -128,7 +128,7 @@ const onSubmit = () => {
         _alert('The length of IFSC is 11 bits, the fifth bit is 0')
         return;
     }
-    var str = new RegExp("[`_-~!@#$^&*()=|{}':;',\\[\\].<>《》/?~！@#￥……&*（）——|{}【】‘；：”“'。，、？+ ]");
+    var str = new RegExp("[^A-Za-z0-9]");
     if (str.test(dataForm.ifsc)) {
         _alert('Symbols cannot appear in the ifsc')
         return;
@@ -288,6 +288,9 @@ onMounted(() => {
             .van-field__word-limit{
                 color: #fff;
             }
+            .van-field__body{
+                width: 100%;
+            }
         }
 
         .van-badge__wrapper {
@@ -313,8 +316,11 @@ onMounted(() => {
             color: #fff;
         }
 
-
-
+    }
+    .fieldaccount{
+        :deep .van-cell__value{
+            flex-direction: column;
+        }
     }
 }
 </style>

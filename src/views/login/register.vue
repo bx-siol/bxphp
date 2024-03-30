@@ -1,6 +1,10 @@
 <template>
     <div class="register">
-        <MyNav :title="t('注册')" leftText=''></MyNav>
+        <MyNav :title="t('注册')">
+            <template #left>
+                <van-icon name="arrow-left" class="alter" @click="onLink({ name: 'Login' })"/>
+            </template>
+        </MyNav>
 
         <div class="formbox">
             <div class="deckout"></div>
@@ -60,7 +64,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Button, CellGroup, Col, Field, Row, Image, CountDown, NavBar } from "vant";
+import { Button, CellGroup, Col, Field, Row, Image, CountDown, NavBar,Icon } from "vant";
 
 export default defineComponent({
     components: {
@@ -71,7 +75,9 @@ export default defineComponent({
         [Col.name]: Col,
         [Image.name]: Image,
         [CountDown.name]: CountDown,
-        [NavBar.name]: NavBar
+        [NavBar.name]: NavBar,
+        [Icon.name]: Icon,
+
     }
 })
 
@@ -277,6 +283,9 @@ onMounted(() => {
     :deep(.van-nav-bar__left) {
         .alter {
             color: #ffffff !important;
+            font-size: 1.3rem;
+            vertical-align: middle;
+            top: 0px;
         }
     }
 
@@ -319,13 +328,13 @@ onMounted(() => {
         padding: 0rem 1rem 1.25rem;
         box-sizing: border-box;
         position: relative;
-        top: 5rem;
+        top: 5.15rem;
         border-radius: 8px;
         background-color: #fff;
 
         .deckout {
             position: absolute;
-            top: -2.4rem;
+            top: -2.38rem;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgb(255, 255, 255, 0.15);
@@ -336,7 +345,7 @@ onMounted(() => {
 
         .deckout2 {
             position: absolute;
-            top: -1.2rem;
+            top: -1.26rem;
             left: 50%;
             transform: translateX(-50%);
             background-color: rgb(255, 255, 255, 0.2);
