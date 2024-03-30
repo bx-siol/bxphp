@@ -105,6 +105,7 @@ const tabs = ref([
         title: '首页',
         name: '首页',
         path: '/index',
+        query: [],
     }
 ]);
 
@@ -115,23 +116,29 @@ const handleTabClick = (tab: any) => {
     router.push({ name: tab.paneName })
 };
 
-const addTab = (routeName: string, routePath: string) => {
+const addTab = (routeName: string, routePath: string, query: any) => {
     const tabExists = tabs.value.some(tab => tab.name === routeName);
     if (!tabExists) {
         tabs.value.push({
             title: routeName,
             name: routeName,
             path: routePath,
+            query: query // 将查询参数添加到你的tab对象中，以便可以传递给router
         });
     }
     activeTab.value = routeName;
-    router.push({ path: routePath })
+    router.push({ path: routePath, query: query }) // 在这里传递查询参数
     reloadView()
 };
 
+// 监听路由变化，添加tab
 watch(() => route.name, (newRouteName) => {
-    newRouteName && addTab(newRouteName as string, route.path);
+    if (newRouteName) {
+        // 注意传递查询参数
+        addTab(newRouteName as string, route.path, route.query);
+    }
 });
+
 
 const removeTab = (targetName: string) => {
     tabs.value = tabs.value.filter(tab => tab.name !== targetName);
@@ -141,6 +148,12 @@ const removeTab = (targetName: string) => {
     }
 };
 
+//子菜单点击
+const onMenuClick = (ev: any, item: any) => {
+    // console.log(ev, item); 
+    updateActive({ path: ev.index, name: item.name })
+    addTab(item.name, item.path, []);
+}
 
 const emit = defineEmits(['loadingClose'])
 
@@ -212,12 +225,6 @@ const active = computed(() => {
     return store.state.config.active.path
 })
 
-//子菜单点击
-const onMenuClick = (ev: any, item: any) => {
-    // console.log(ev, item); 
-    updateActive({ path: ev.index, name: item.name })
-    addTab(item.name, item.path);
-}
 
 //子菜单切换-每次点击都会执行
 const onMenuSelect = (ev: string) => { }
