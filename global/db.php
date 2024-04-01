@@ -125,18 +125,18 @@ $_ENV['PAY_CONFIG']['nicepay'] = [
 	//privatekey是自己的
 	'privatekey' => 'qMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDG7s7Jt7B/H8pg7wH1N2X6kc+S86bY7/I5PV4+1AeJeYL0wZUwycgWnExW4FPi7PcfmNQ7VrubhWlJ4zlxyuGlfKSVeBVOrYVA/uqCkZRu8qbg9eWTcseRuQMaGKsltohxEkwTS0iU+bGjsMO+KDod1cvBsAqbAWEpI6qkRhVOmHpzn0k0dpu6diKgMKkS/dt2gbaQIjNiGum5zpB9zHfHcZIn2tESf7wnRe5qcqNlqat2aXg2MlFpBZquyLba8wIDSxdRU/73b8T+72aVCMlZdHRwijGMrnFO1jInad4k3Zx+pEoPf1IecMvtmfIh22tgpZ5waqAbc8j73J1CxZrJAgMBAAECggEAfUKNbrJ9Le6kjdixEOirC9WYMF2/J0Ye7S/ZEhKMFGIwtVDXUfscRDByWRmzeGXhTUH8EMkSJGEi5OVwnFg1MPCE6aDNOddE2qIoo8JrBlk//tKWlftl8jne3CXATmTbEOeGg3eZ4kQ/OGTrO+c0gOjH/dONOgDqXu8YWYvPisaXmma9m/OVhHFnta2VKCv14fRyGHgH+f7Pf7hShw0rWctn+bfQ8KVsMLwITlVQxg3tsFVpq1VJ4UZeOvVT7i5PqnQZ3FYW3Tt7R9pDu4r1CTp3+2jg4BlQq/VLc8pk1rVNia33mLz4cb3jTiBcvLDbodv0mMNnnHt4CsD2T8YSoQKBgQDqr9HZgmXSmnL8JN5q4h8/itvrijU+9F8cPewiklyvrvtF3h/nu4DiUpcHeLMP+EScG6je6o1eLebEVJrY+9M2QxO8+o1ax1onl/ETULV0EWCv8XXIhuTytp3WJVSvML3qxXCtpa9jUfdTPR30o5565oPpIAjH5cfeZdY80BgnpQKBgQDY/8ChxGVrUC8lS9r0Mfqy6WmK+I/o3WgrC0063hNrS5mvYNJIY6xsiKmJJI8Bvp79xY9d2PH6xWX74ErhwhPDAuguDfhcxou0Vcy8XtLAqmiAgU7Fv69Cu93W3viUpkReY84fqnaUl9pg4TKO8yrCuhTdJj850ZM4+VoB/7vdVQKBgQDPIZKC+LXJpQtrQ1cS2rRdrr7fKkJIaAIxuO1arfckD7oyNhPOwQzFs8MckwjnRWW4qijnZfiTcMvF6C4q6EfIEnevSSvNPTlyzIW3WHpuEJBXeTNNYtFa7pZr1NLjNI/KT6xddmhPrp4tVznDG03ahu1RqjZVx5YZ0aO+VKOdCQKBgAOZYlmMh14bS1zkADKyrYTQKEb8zm4/Vd345wQF8O6Dp33oLjSzKoX2UlGLALA3uC1fXHxi/8h4A7QEyVkrPearIqy44JixVlncXnP1Yqt9aBRRkLvo7QA/W3OX6SmWBGZIY3/U9PiL+DxJH+yNDfWC3pu4aa4M0tNMF3kXA8etAoGBANTPabuz9R2QYZOrCd3SGjApKZ3Hx+9wAJR6bw1ajCc12ItOMu4vhxPJnGRAcPnsg7lG3arRznfK0VXCcrf5J1VU6njCbF+kz48/sVoAhlDeKjL/51oGLKW9B+QFQJWOHDAescwbVVkZXSJOfNCDv0ZA0lWgmUcjO4Jwgon/cVtR',
 
-	'payquery_url' => 'https://g.verynicepay.life/api/pay/query',//收款查询
-	'balance_url' => 'https://g.verynicepay.life/api/pay/balance',//余额
-	'utrorder_url' => 'https://g.verynicepay.life/api/pay/makeOrder',//utr补单
-	'utrquery_url' => 'https://g.verynicepay.life/api/pay/utrquery',//utr查单
-	'dpayquery_url' => 'https://g.verynicepay.life/api/pay/repayquery',//代付查询
+	'payquery_url' => 'https://g.verynicepay.life/api/pay/query', //收款查询
+	'balance_url' => 'https://g.verynicepay.life/api/pay/balance', //余额
+	'utrorder_url' => 'https://g.verynicepay.life/api/pay/makeOrder', //utr补单
+	'utrquery_url' => 'https://g.verynicepay.life/api/pay/utrquery', //utr查单
+	'dpayquery_url' => 'https://g.verynicepay.life/api/pay/repayquery', //代付查询
 
-	'pay_url' => 'https://g.verynicepay.life/api/pay',//收款
-	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay',//代付
+	'pay_url' => 'https://g.verynicepay.life/api/pay', //收款
+	'dpay_url' => 'https://g.verynicepay.life/api/pay/repay', //代付
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
-	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/pay',//收款回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash'//代付回调
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notifyUrl' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/pay', //收款回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/nicepay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['bobopay'] = [
@@ -145,13 +145,13 @@ $_ENV['PAY_CONFIG']['bobopay'] = [
 
 	'pay_url' => 'https://api.bobopay.in/api/payin',
 	'dpay_url' => 'https://api.bobopay.in/api/payout',
-	'balance_url' => 'https://api.bobopay.in/api/balance',//余额
+	'balance_url' => 'https://api.bobopay.in/api/balance', //余额
 
-	'payquery_url' => 'https://api.bobopay.in/api/payin/query',//收款查询
-	'dpayquery_url' => 'https://api.bobopay.in/api/payout/query',//代付查询
+	'payquery_url' => 'https://api.bobopay.in/api/payin/query', //收款查询
+	'dpayquery_url' => 'https://api.bobopay.in/api/payout/query', //代付查询
 
-	'utrorder_url' => 'https://api.bobopay.in/api/payin/submit/utr',//utr补单
-	'utrquery_url' => 'https://api.bobopay.in/api/payin/query/utr',//utr查单
+	'utrorder_url' => 'https://api.bobopay.in/api/payin/submit/utr', //utr补单
+	'utrquery_url' => 'https://api.bobopay.in/api/payin/query/utr', //utr查单
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/',
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/bobopay/pay',
@@ -162,19 +162,19 @@ $_ENV['PAY_CONFIG']['jwpay'] = [
 	'mch_id' => '100',
 	'mch_key' => 'nrCV5HpZ3FzvuX6L',
 
-	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder',//代收
-	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder',//代付
-	'balance_url' => 'https://api.jwpay.net/api/payout/balance',//余额
+	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder', //代收
+	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder', //代付
+	'balance_url' => 'https://api.jwpay.net/api/payout/balance', //余额
 
-	'payquery_url' => 'https://api.jwpay.net/api/payment/status',//收款查询
-	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status',//代付查询
+	'payquery_url' => 'https://api.jwpay.net/api/payment/status', //收款查询
+	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status', //代付查询
 
-	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr',//utr补单
-	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr',//utr查单
+	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr', //utr补单
+	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr', //utr查单
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay',//代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash'//代付回调
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/jwpay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['zippay'] = [
@@ -187,18 +187,18 @@ $_ENV['PAY_CONFIG']['zippay'] = [
 	'privatekey' => 'MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBALnB48C7UFnJ6yZC3EAlzXn4crf+rAEFLjUPLFQFPORE/X/2Qpg0IBBBZEkHTSDne2mTKZBQ5F3aBkYxdHFcsfAK6HPCNJ9YvuqmLOkYZwd8q6J2IrJUm8CgaKisPqy/PWsdapsHHXxg8AQcdTulv6rjJs5u2L7dntM27Nwz3Al9AgMBAAECgYEAoN5dEygk6d2IG9aDT7ptPFgBYX7YDvohjinZxdnTZgypTQxDl/RsYCeBZg1AqmJN6pxbvnOPkgeir19c7F/OaA2KbeoXykzcMwssbJkPXvRW6Xr2sR3Bn2FFPM6D4Q7d8Madk+0mNtvYqRcc+G+G773BfZ+sv7XKrkX62OsegTECQQDmEyLunOw8GITVyiF/gEK2X4+32MB+2AHSV8UtnxApkJEXe275i+FVVSJ2O+NUWP6ZVExaSrE2CJ8o+ZDRphM/AkEAzrBZjnvExbGQ9KKKqYlUDG/FOc36CsvStd5hGutj/fs6dLhwVIlzV+OtYdpfiFeccbnY6XEGu6gnrLK6AlsAQwJAHTDSXsnkIx/NQr65j067qB3pwx6qFa3cVU6zgr1KtKtV7U/I3bqEpWn+zFd+2UXNT7DlWxNc9okTgIRhfmf+ywJAHoDYNrb9a0+xXOlAHZUu2kcEjGtho4ZBKqYPHrHup+UT03YE3fULGMV5KR/ZSX3kkMQkxw7vN3KxqEMYQJC9kQJBAJPwWiR+2aSUFX3v9FgxIQ0L50E+nQvZPQiFYEw/jX7v6Qy5ERzqVG58bHfCzVSjEG4GLYTQDD+/9TTIaVm//D8=',
 
 
-	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder',//代收
-	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder',//代付
-	'balance_url' => 'https://api.jwpay.net/api/payout/balance',//余额
+	'pay_url' => 'https://api.jwpay.net/api/payment/createOrder', //代收
+	'dpay_url' => 'https://api.jwpay.net/api/payout/createOrder', //代付
+	'balance_url' => 'https://api.jwpay.net/api/payout/balance', //余额
 
-	'payquery_url' => 'https://api.jwpay.net/api/payment/status',//收款查询
-	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status',//代付查询 
-	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr',//utr补单
-	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr',//utr查单 
+	'payquery_url' => 'https://api.jwpay.net/api/payment/status', //收款查询
+	'dpayquery_url' => 'https://api.jwpay.net/api/payout/status', //代付查询 
+	'utrorder_url' => 'https://api.jwpay.net/api/payment/submitUtr', //utr补单
+	'utrquery_url' => 'https://api.jwpay.net/api/payment/findUtr', //utr查单 
 
-	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/pay',//代收回调
-	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash'//代付回调
+	'returnUrl' => 'https://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/pay', //代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash' //代付回调
 ];
 // MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQC5wePAu1BZyesmQtxAJc15+HK3/qwBBS41DyxUBTzkRP1/9kKYNCAQQWRJB00g53tpkymQUORd2gZGMXRxXLHwCuhzwjSfWL7qpizpGGcHfKuidiKyVJvAoGiorD6svz1rHWqbBx18YPAEHHU7pb+q4ybObti+3Z7TNuzcM9wJfQIDAQAB
 
@@ -211,18 +211,18 @@ $_ENV['PAY_CONFIG']['cowpay'] = [
 	//privatekey是自己的
 	'privatekey' => 'MIICdgIBADANBgkqhkiG9w0BAQEFAASCAmAwggJcAgEAAoGBAKevvI7yS5446o0JsWHr1OB54zDLV39D9nCPch22JcAHqZwOl394oExNua8pKyv900N5UcJ2dTKczSS8gsBiRdkOPnw0uclFcd6oMAzjdcbyQYeSNG+7mGdFYKRf/yvM5CJBDhnUx043nmtEXW5NF/5HxjrG/z9uDXeJLPNuxFzZAgMBAAECgYAiAx4+7Fx0Kl1A4D9vejNCmNaBNi14LePVrvLZnfGIQsWfVsJZ47C36WgJZFNSZ/irDfeMdxSMgIuHsQjgVs6NxOoQ+8ak6t9kj3LQ+mASpkCzdmNNRCu158ut7NVXq+FAlONYn4xtrLfYA+MQ8CdSR0sZ5QtPdrt2NlnQOfhYAQJBAOBNN87GftDumiQ6ONJjghYxwR/HJbHX1TXsQ6QVW/kM4k4PSawCfWlTcltb9nUGjurlcDUwSEPAD8VLiliOtQECQQC/Yku9GePqCjid7rHSYn+XTYq5tM1BN2lqa1njMeydQ68kx4NIRjoRkjulLTT+j3PlWqJ4mG+CXy6Igb5d0e/ZAkANpwWPk2tiojNFozmULLRdT3f2zDNSKNX0a0YOtbIcbZlUsP+F9bzWbVrXjrholRab241B34d2gDk1hAyOqVkBAkBCZEgf9q5RD3CqoRaBBHh8tYKtf6JAwIdKSqlpHnWV7NgCa1AIr4wPcmpMl80tjfhHlVSNf1wXnwtWgaPXii+pAkEAtVd/+8JV3GuY2yvOD2DMQL7+XS0ELG/17ERo2m4larmgrbBPyHsVJcIvocrOdbj3KQtr+nV1IKbsylk3dWltlQ==',
 
-	'pay_url' => 'https://pay365.cowpay.co/pay',//代收
-	'dpay_url' => 'https://pay365.cowpay.co/v2/withdraw',//代付
-	'balance_url' => 'https://pay365.cowpay.co/v2/queryBalance',//余额
+	'pay_url' => 'https://pay365.cowpay.co/pay', //代收
+	'dpay_url' => 'https://pay365.cowpay.co/v2/withdraw', //代付
+	'balance_url' => 'https://pay365.cowpay.co/v2/queryBalance', //余额
 
-	'payquery_url' => 'https://pay365.cowpay.co/queryPayOrder',//收款查询
-	'dpayquery_url' => 'https://pay365.cowpay.co/v2/queryWithdrawOrder',//代付查询 
-	'utrorder_url' => 'https://pay365.cowpay.co/pay/submitUTR',//utr补单
-	'utrquery_url' => 'https://pay365.cowpay.co/queryPayOrder',//utr查单 
+	'payquery_url' => 'https://pay365.cowpay.co/queryPayOrder', //收款查询
+	'dpayquery_url' => 'https://pay365.cowpay.co/v2/queryWithdrawOrder', //代付查询 
+	'utrorder_url' => 'https://pay365.cowpay.co/pay/submitUTR', //utr补单
+	'utrquery_url' => 'https://pay365.cowpay.co/queryPayOrder', //utr查单 
 
-	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/pay',//代收回调
-	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/cash'//代付回调
+	'returnUrl' => 'https://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/pay', //代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['coppay'] = [
@@ -269,18 +269,18 @@ $_ENV['PAY_CONFIG']['coppay'] = [
 	EOD,
 
 
-	'pay_url' => 'https://pay365.cowpay.co/pay',//代收
-	'dpay_url' => 'https://pay365.cowpay.co/createOrder',//代付
-	'balance_url' => 'https://pay365.cowpay.co/balance',//余额
+	'pay_url' => 'https://pay365.cowpay.co/pay', //代收
+	'dpay_url' => 'https://pay365.cowpay.co/createOrder', //代付
+	'balance_url' => 'https://pay365.cowpay.co/balance', //余额
 
-	'payquery_url' => 'https://pay365.cowpay.co/status',//收款查询
-	'dpayquery_url' => 'https://pay365.cowpay.co/status',//代付查询 
-	'utrorder_url' => 'https://pay365.cowpay.co/submitUtr',//utr补单
-	'utrquery_url' => 'https://pay365.cowpay.co/findUtr',//utr查单 
+	'payquery_url' => 'https://pay365.cowpay.co/status', //收款查询
+	'dpayquery_url' => 'https://pay365.cowpay.co/status', //代付查询 
+	'utrorder_url' => 'https://pay365.cowpay.co/submitUtr', //utr补单
+	'utrquery_url' => 'https://pay365.cowpay.co/findUtr', //utr查单 
 
-	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/pay',//代收回调
-	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash'//代付回调
+	'returnUrl' => 'https://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/pay', //代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['sunpay'] = [
