@@ -59,23 +59,23 @@ class SunpayController extends BaseController
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
         require_once APP_PATH . 'common/cash/sunpay.php';
-        $sign = CashSign($params);
+        $sign = CashSign($rdata);
         writeLog($sign, 'sunpay/notify/cash');
-        if ($sign != $params['sign'])
+        if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $params['merTransferId'],
-            'out_osn' => $params['tradeNo'],
-            'pay_status' => $params['tradeResult'] == '1' ? 9 : 3,
-            'pay_msg' => $params['respCode'],
-            'amount' => $params['transferAmount'] ,
+            'osn' => $rdata['merTransferId'],
+            'out_osn' => $rdata['tradeNo'],
+            'pay_status' => $rdata['tradeResult'] == '1' ? 9 : 3,
+            'pay_msg' => $rdata['respCode'],
+            'amount' => $rdata['transferAmount'] ,
             'successStr' => 'OK',
             'failStr' => 'OK1'
         ];
 
         //冲正状态
-        if ($params['tradeResult'] == '5')
+        if ($rdata['tradeResult'] == '5')
             $pdata['pay_status'] = 4;
 
         $this->cashAct($pdata);
