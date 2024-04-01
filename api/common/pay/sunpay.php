@@ -65,5 +65,7 @@ function paySign($params,$appSecret)
 		$signOriginStr .=  "$key=$value&";
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";
+    
+    writeLog($signOriginStr, 'sunpay/notify/pay');
     return  md5($signOriginStr);
 }
