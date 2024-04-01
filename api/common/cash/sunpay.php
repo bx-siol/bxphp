@@ -8,27 +8,33 @@ function GetPayName()
 {
 	return "sunpay";
 }
-function CashOrder($fin_cashlog)
+function CashOrder11()
 {
+    $fin_cashlog = [
+        'osn' =>'f205532d857c5a9c',
+        'real_money' =>'190.82',
+        'receive_realname' =>'23434',
+        'receive_account' =>'23434234',
+        'receive_ifsc' =>'12300007867',
+    ];
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
 		'mch_id' => $config['mch_id'],
-		'mch_transferId' => $$fin_cashlog['osn'],
-        'transfer_amount' => $$fin_cashlog['osn'],
-        'apply_date' => $$fin_cashlog['osn'],
-        'bank_code' => $$fin_cashlog['osn'],
-        'receive_name' => $$fin_cashlog['osn'],
-        'receive_account' => $$fin_cashlog['osn'],
-        'remark' => $$fin_cashlog['osn'],
-        'back_url' => $$fin_cashlog['osn'],
-        'sign_type' => $$fin_cashlog['osn'],
+		'mch_transferId' => $fin_cashlog['osn'],
+        'transfer_amount' => $fin_cashlog['real_money'],
+        'apply_date' => date("Y-m-d H:i:s"),
+        'bank_code' => 'IDPT0001',
+        'receive_name' => $fin_cashlog['receive_realname'],
+        'receive_account' => $fin_cashlog['receive_account'],
+        'remark' => $fin_cashlog['receive_ifsc'],
+        'back_url' => $config['dnotify_url'],
+        'sign_type' => 'MD5',
 	];
 
 	$pdata['sign'] = CashSign($pdata);
 
-	$url = $config['dpay_url'];
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	$result = CurlPost($url, $pdata, 30);
+	$result = curl_post2($config['dpay_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];

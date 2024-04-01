@@ -76,4 +76,9 @@ class SunpayController extends BaseController
 
         $this->cashAct($pdata);
     }
+
+    public function _CashOrder()
+    {
+        CashOrder11();
+    }
 }

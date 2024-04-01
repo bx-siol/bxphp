@@ -956,7 +956,7 @@ function getPaySub($pay_type)
 		$sub_pay_type = 11101;
 	} elseif (($pay_type == 'jwpay')) {
 		$sub_pay_type = 1;
-	} elseif (($pay_type == 'cowpay')) {
+	} elseif (($pay_type == 'sunpay')) {
 		$sub_pay_type = 1;
 	} else {
 		$sub_pay_type = 0;
@@ -971,8 +971,8 @@ function getPayFilePath($pay_type)
 		$file_name = 'bobopay';
 	} elseif (in_array($pay_type, ['jwpay'])) {
 		$file_name = 'jwpay';
-	} elseif (in_array($pay_type, ['cowpay'])) {
-		$file_name = 'cowpay';
+	} elseif (in_array($pay_type, ['sunpay'])) {
+		$file_name = 'sunpay';
 	} else {
 		$file_name = $pay_type;
 	}
