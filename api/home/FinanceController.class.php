@@ -210,8 +210,11 @@ class FinanceController extends BaseController
 		}
 		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->find();
 		if (!$pro_order) {
-			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased');
+			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
+		$sys_user = Db::table('sys_user')->where("uid={$pageuser['id']}")->find();
+		if($sys_user["status"] != 2)
+			ReturnToJson(-1, 'This account is prohibited from operation.');
 
 		Db::startTrans();
 		try {
