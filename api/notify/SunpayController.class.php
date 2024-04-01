@@ -43,7 +43,7 @@ class SunpayController extends BaseController
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $rdata['status'] == '1' ? 1 : -1,
+            'code' => $rdata['tradeResult'] == '1' ? 1 : -1,
             'osn' => $rdata['mchOrderNo'],
             'amount' => $rdata['amount'],
             'successStr' => 'OK'
