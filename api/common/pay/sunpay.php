@@ -29,7 +29,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = [];
 	try {
-		$result = CurlPost($config['pay_url'], $pdata, 30);
+		$result = curl_post2($config['pay_url'], $pdata, 30);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
