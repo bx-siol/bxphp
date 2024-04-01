@@ -54,6 +54,10 @@ class SunpayController extends BaseController
         if (!$params)
             $params = $_POST;
 
+        foreach ($params as $k => $v) {
+            $arr = explode("=", $v);
+            $rdata[$arr[0]] = urldecode($arr[1]);
+        }
         require_once APP_PATH . 'common/cash/sunpay.php';
         $sign = CashSign($params);
         writeLog($sign, 'sunpay/notify/cash');
