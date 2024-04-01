@@ -33,7 +33,6 @@ class SunpayController extends BaseController
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
         require_once APP_PATH . 'common/pay/sunpay.php';
-        ksort($rdata);
         $sign = paySign($rdata);
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');

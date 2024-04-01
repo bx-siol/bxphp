@@ -22,7 +22,6 @@ function payOrder($fin_paylog, $sub_type = '')
 		'order_date' => date("Y-m-d H:i:s"),
         'goods_name' => $fin_paylog['osn'],
 	];
-    ksort($pdata);
     $pdata['sign_type'] = 'MD5';
     $pdata['sign'] = paySign($pdata);
 
@@ -58,6 +57,7 @@ function payOrder($fin_paylog, $sub_type = '')
 //签名
 function paySign($params)
 {
+    ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
