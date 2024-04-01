@@ -25,7 +25,15 @@ function payOrder($fin_paylog, $sub_type = '')
 		'notifyUrl' => $config['notify_url'],
 	];
 	$result = [];
-	$headers = paySign();
+	$headerarr = [
+		'X-Qu-Access-Key' => $config['mch_key'],
+		'X-Qu-Mid' => $config['mch_id'],
+		'X-Qu-Nonce' => getRsn("", 1),
+		'X-Qu-Signature-Method' => 'HmacSHA256',
+		'X-Qu-Timestamp' => time(),
+		'X-Qu-Signature-Version' => 'v1.0'
+	];
+	$headers = paySign($headerarr);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .
 		PHP_EOL . json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
@@ -116,18 +124,11 @@ function build_sorted_query_string($params)
 
 
 
-function paySign()
+function paySign($headerarr)
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$headers = array();
-	$headerarr = [
-		'X-Qu-Access-Key' => $config['mch_key'],
-		'X-Qu-Mid' => $config['mch_id'],
-		'X-Qu-Nonce' => getRsn("", 1),
-		'X-Qu-Signature-Method' => 'HmacSHA256',
-		'X-Qu-Timestamp' => time(),
-		'X-Qu-Signature-Version' => 'v1.0'
-	];
+
 
 	$sign_str = build_sorted_query_string($headerarr);
 
