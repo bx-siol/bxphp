@@ -71,5 +71,7 @@ function CashSign($params)
 		$signOriginStr .=  "$key=$value&";
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";
+    
+	writeLog($signOriginStr, GetPayName() . '/cash');
     return  md5($signOriginStr);
 }
