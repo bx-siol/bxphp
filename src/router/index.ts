@@ -269,7 +269,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/setting/password',
         name: 'Setting_password',
         meta: {
-            title: 'Change Password',
+            title: 'Login Password',
             needLogin: false
         },
         component: () => import('../views/setting/password.vue')

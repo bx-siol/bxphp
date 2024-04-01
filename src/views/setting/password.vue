@@ -1,7 +1,7 @@
 <template>
     <div class="conBox">
         <Nav></Nav>
-        <div class="streamer">
+        <div class="streamer" v-if="false">
             <div :class="{ activeTab: currentTab === 'LOGIN' }" @click="handleTab('LOGIN')">LOGIN PASSWORD</div>
             <div :class="{ activeTab: currentTab === 'PAYMENT' }" @click="handleTab('PAYMENT')">PAYMENT PASSWORD</div>
         </div>
@@ -96,21 +96,21 @@ const configForm = reactive({
     }
 })
 
-const currentTab = ref('LOGIN');
-const isPassword2 = ref(false)
+// const currentTab = ref('LOGIN');
 
-const handleTab = (tab: string) => {
-    currentTab.value = tab;
-    if (tab == 'PAYMENT') {
-           isPassword2.value = true;
-           dataForm.type = 2;
-    } else {
-           isPassword2.value = false;
-           dataForm.type = 1;
-    }
-};
+// const handleTab = (tab: string) => {
+//     currentTab.value = tab;
+//     if (tab == 'PAYMENT') {
+//         isPassword2.value = true;
+//         dataForm.type = 2;
+//     } else {
+//         isPassword2.value = false;
+//         dataForm.type = 1;
+//     }
+// };
 
 
+const isPassword2 = ref(route.name == 'Setting_password2')
 const dataForm = reactive({
     account: store.state.user.account,
     phone_flag: store.state.user.phone_flag,
