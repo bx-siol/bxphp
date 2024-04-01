@@ -129,19 +129,21 @@ function build_sorted_query_string($params)
 	return $str;
 }
 
+function getsignstr($headerarr)
+{
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+	$sign_str = build_sorted_query_string($headerarr);
+	$sign = hash_hmac('sha256', $sign_str, $config['secret_key'], false);
+	// 转大写
+	$sign = strtoupper($sign);
+	return $sign;
+}
 
 
 function paySign($headerarr)
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$headers = array();
-
-
-	$sign_str = build_sorted_query_string($headerarr);
-
-	$sign = hash_hmac('sha256', $sign_str, $config['secret_key'], false);
-	// 转大写
-	$sign = strtoupper($sign);
+	$sign = getsignstr($headerarr);
 	$headers[] = 'Content-Type: ' . 'application/json;charset=UTF-8';
 	$headers[] = 'X-Qu-Signature: ' . $sign;
 	foreach ($headerarr as $key => $value) {
