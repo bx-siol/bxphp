@@ -78,21 +78,28 @@ function dsign($pdata)
 function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+	// $pdata = ['currency' => 'INR'];
+	$headerarr = [
+		'X-Qu-Access-Key' => $config['mch_key'],
+		'X-Qu-Mid' => $config['mch_id'],
+		'X-Qu-Nonce' => getRsn("", 1),
+		'X-Qu-Signature-Method' => 'HmacSHA256',
+		'X-Qu-Timestamp' => time(),
+		'X-Qu-Signature-Version' => 'v1.0'
+	];
+	$headers = paySign($headerarr);
 
-	$headers = array();
-	$headers[] = 'Content-Type: ' . 'application/json;charset=UTF-8';
-	$headers[] = 'merchant_key: ' . $config['mch_key'];
+	writeLog(json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 
-
-	$result = CurlPost($config['pay_url'], [], 30, $headers);
-	$url = $config['balance_url'];
+	$result = CurlGet($config['balance_url'] . '?currency=INR', 30, $headers);
+	// $url = $config['balance_url'];
 	//writeLog( json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	// $result = CurlPost($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	if ($resultArr['code'] != 100) {
+	if ($resultArr['code'] != '00000') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
@@ -101,8 +108,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['balance'],
-			'payout_balance' => $resultArr['balance'],
+			'balance' => $resultArr['data']['totalBanlance'],
+			'payout_balance' => $resultArr['data']['withdrawBanlance'],
 		]
 	];
 	return $return_data;
