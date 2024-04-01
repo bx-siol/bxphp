@@ -79,7 +79,6 @@ class SunpayController extends BaseController
 
     public function _CashOrder()
     {
-        writeLog("开始",  'sunpay/cash');
         $pay_file = APP_PATH . 'common/cash/sunpay.php';
         require_once $pay_file;
         $result = CashOrder11();

@@ -10,7 +10,7 @@ function GetPayName()
 }
 function CashOrder11()
 {    
-	writeLog("开始111", GetPayName() . '/cash');
+	writeLog("开始", GetPayName() . '/cash');
     $fin_cashlog = [
         'osn' =>'f205532d857c5a9c',
         'real_money' =>'190.82',
@@ -36,6 +36,8 @@ function CashOrder11()
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	$result = curl_post2($config['dpay_url'], $pdata, 30);
+    writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
+
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
