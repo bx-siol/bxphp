@@ -71,7 +71,7 @@ class SunpayController extends BaseController
         ];
 
         //冲正状态
-        if ($params['status'] == '4')
+        if ($params['tradeResult'] == '5')
             $pdata['pay_status'] = 4;
 
         $this->cashAct($pdata);
