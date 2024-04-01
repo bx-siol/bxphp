@@ -33,7 +33,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		return ['code' => -1, 'msg' => ''];
 	}
 
-	writeLog("result" .$result, GetPayName() . '/pay');
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
