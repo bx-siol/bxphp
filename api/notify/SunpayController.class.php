@@ -49,7 +49,7 @@ class SunpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('jsonStr : ' . $jsonStr, 'sunpay/notify/cash');
-        $jsonStr = "tradeResult=1&merTransferId=daa4b5199b4c9b12&merNo=100001002&tradeNo=9637878&transferAmount=313.02&sign=88f94a13b0f2952fc5a48928877ce5a0&signType=MD5&applyDate=2024-04-02+05%3A56%3A10&version=1.0&respCode=SUCCESS";
+        $jsonStr = "tradeResult=1&merTransferId=3e667d4e2b7954f0&merNo=100001002&tradeNo=9638172&transferAmount=197.40&sign=b987775ec415e431579917e4dc001bf7&signType=MD5&applyDate=2024-04-02+06%3A32%3A39&version=1.0&respCode=SUCCESS";
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -79,14 +79,5 @@ class SunpayController extends BaseController
             $pdata['pay_status'] = 4;
 
         $this->cashAct($pdata);
-    }
-
-    public function _CashOrder()
-    {
-		$params = $this->params;
-        $fin_cashlog = Db::name('fin_cashlog')->where("id={$params['id']}")->find();
-        $pay_file = APP_PATH . 'common/cash/sunpay.php';
-        require_once $pay_file;
-        $result = CashOrder($fin_cashlog);
     }
 }
