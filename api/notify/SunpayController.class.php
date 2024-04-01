@@ -19,13 +19,31 @@ class SunpayController extends BaseController
     {
         writeLog('开始', 'sunpay/notify/pay');
         $jsonStr = trim(file_get_contents('php://input'));
-        $jsonStr = " tradeResult=1&oriAmount=611.00&amount=611.00&mchId=100001002&orderNo=341644414&mchOrderNo=11c5f441642bbdc2&sign=a268431006928f3144a980b55f683dc8&signType=MD5&orderDate=2024-04-01+21%3A39%3A40";
+        $jsonStr = "tradeResult=1&oriAmount=611.00&amount=611.00&mchId=100001002&orderNo=341644414&mchOrderNo=11c5f441642bbdc2&sign=a268431006928f3144a980b55f683dc8&signType=MD5&orderDate=2024-04-01+21%3A39%3A40";
         $params = explode("&", $jsonStr);
         writeLog('pdatajwt : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
         if (!$params)
             $params = $_POST;
+
+        foreach ($params as $k => $v) {
+            $arr = explode("=", $jsonStr);
+            $pdata[$arr[0]] = $arr[1];
+        }
+        writeLog('pdata : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
         require_once APP_PATH . 'common/pay/sunpay.php';
-        $sign = paySign($params);
+        // $pdata = [
+        //     'version' => '1.0',
+        //     'mch_id' => $config['mch_id'],
+        //     'notify_url' => $config['notify_url'],
+        //     'page_url'=> $config['returnUrl'],
+        //     'mch_order_no' => $fin_paylog['osn'],
+        //     'pay_type' => $config['pay_type'],
+        //     'trade_amount' => strval($fin_paylog['money']),
+        //     'order_date' => date("Y-m-d H:i:s"),
+        //     'goods_name' => $fin_paylog['osn'],
+        // ];
+        ksort($pdata);
+        $sign = paySign($pdata,$config['mch_key']);
         writeLog($sign, 'sunpay/notify/pay');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
