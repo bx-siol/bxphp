@@ -57,6 +57,7 @@ function payOrder($fin_paylog, $sub_type = '')
 //签名
 function paySign($params)
 {
+    $signOriginStr = '';
     sort($params);
     foreach ($params as $key => $value) {
 		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type') {
