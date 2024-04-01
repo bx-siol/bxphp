@@ -89,7 +89,7 @@ function balance()
 	];
 	$headers = paySign($headerarr);
 
-	writeLog(json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	//writeLog(json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 
 	$result = CurlGet($config['balance_url'] . '?currency=INR', 30, $headers);
 	// $url = $config['balance_url'];
