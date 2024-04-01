@@ -212,7 +212,7 @@ class FinanceController extends BaseController
 		if (!$pro_order) {
 			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
-		$sys_user = Db::table('sys_user')->where("uid={$pageuser['id']}")->find();
+		$sys_user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		if($sys_user["status"] != 2)
 			ReturnToJson(-1, 'This account is prohibited from operation.');
 
