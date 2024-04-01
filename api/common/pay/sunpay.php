@@ -15,19 +15,21 @@ function payOrder($fin_paylog, $sub_type = '')
         'version' => '1.0',
 		'mch_id' => $config['mch_id'],
 		'notify_url' => $config['notify_url'],
+        'page_url'=> $config['returnUrl'],
 		'mch_order_no' => $fin_paylog['osn'],
 		'pay_type' => '173',
 		'trade_amount' => strval($fin_paylog['money']),
 		'order_date' => date("Y-m-d H:i:s"),
         'goods_name' => $fin_paylog['osn'],
 	];
+    ksort($pdata);
     $pdata['sign_type'] = 'MD5';
     $pdata['sign'] = paySign($pdata,$config['mch_key']);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = [];
 	try {
-		$result = CurlPost($config['pay_url'], $pdata, 30,array('application/x-www-form-urlencoded'));
+		$result = curl_post2($config['pay_url'], $pdata, 30);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
@@ -57,8 +59,6 @@ function payOrder($fin_paylog, $sub_type = '')
 //签名
 function paySign($params,$appSecret)
 {
-    $signOriginStr = '';
-    ksort($params);
     foreach ($params as $key => $value) {
 		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type') {
 			continue;
