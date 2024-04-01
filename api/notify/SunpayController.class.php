@@ -49,7 +49,7 @@ class SunpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('jsonStr : ' . $jsonStr, 'sunpay/notify/cash');
-        $jsonStr = "tradeResult=1&merTransferId=3e667d4e2b7954f0&merNo=100001002&tradeNo=9638172&transferAmount=197.40&sign=b987775ec415e431579917e4dc001bf7&signType=MD5&applyDate=2024-04-02+06%3A32%3A39&version=1.0&respCode=SUCCESS";
+        $jsonStr = "tradeResult=1&merTransferId=3e667d4e2b7954f0&merNo=100001002&tradeNo=9638172&transferAmount=197.40&sign=dc0363f618e7d17980cd47c05ff61d0c&signType=MD5&applyDate=2024-04-02+06%3A32%3A39&version=1.0&respCode=SUCCESS";
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
