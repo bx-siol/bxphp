@@ -22,8 +22,8 @@ function payOrder($fin_paylog, $sub_type = '')
         'goods_name' => $fin_paylog['osn'],
 	];
     $pdata['sign_type'] = 'MD5';
-    $pdata['sign'] = paySign($pdata);
     $pdata['key'] = $config['mch_key'];
+    $pdata['sign'] = paySign($pdata);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = [];
