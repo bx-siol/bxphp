@@ -78,6 +78,10 @@
                 @keyup.enter="doSearch">
                 <template #prepend>银行卡</template>
             </el-input>
+            <el-input size="small" style="width: 250px;margin-left: 10px;" placeholder="搜索邀请码" clearable v-model="params.s_icode"
+                @keyup.enter="doSearch">
+                <template #prepend>邀请码</template>
+            </el-input>
         </template>
         <template #table="myScope">
 
