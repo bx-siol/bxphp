@@ -1406,6 +1406,43 @@ function http_fget($url, $timeout = 30)
 	];
 	return $arrCurlResult;
 }
+function CurlGet($url, $timeout = 30, $header = array('Content-Type:application/json'))
+{
+	$curl = curl_init();
+	curl_setopt_array(
+		$curl,
+		array(
+			CURLOPT_URL => $url,
+			CURLOPT_RETURNTRANSFER => true,
+			CURLOPT_SSL_VERIFYPEER => false,
+			CURLOPT_SSL_VERIFYHOST => false,
+			CURLOPT_ENCODING => '',
+			CURLOPT_MAXREDIRS => 10,
+			CURLOPT_TIMEOUT => $timeout,
+			CURLOPT_FOLLOWLOCATION => true,
+			CURLOPT_CUSTOMREQUEST => 'GET',
+			//CURLOPT_POSTFIELDS => json_encode($data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE),
+			CURLOPT_HTTPHEADER => $header
+		)
+	);
+	$response = curl_exec($curl);
+	if ($curl->error) {
+		$arrCurlResult = [
+			'code' => -1,
+			'msg' => $curl->errorMessage
+		];
+	} else {
+		$arrCurlResult = [
+			'code' => 1,
+			'msg' => 'ok',
+			'output' => json_decode($response, true)
+		];
+	}
+	curl_close($curl);
+	unset($curl);
+	return $arrCurlResult;
+}
+
 function CurlPost($url, $data = [], $timeout = 30, $header = array('Content-Type:application/json'))
 {
 	$curl = curl_init();
@@ -1442,6 +1479,7 @@ function CurlPost($url, $data = [], $timeout = 30, $header = array('Content-Type
 	unset($curl);
 	return $arrCurlResult;
 }
+
 function curl_post($url, $data = [], $timeout = 30, $isJosn = false)
 {
 	if ($isJosn == 'json') {
