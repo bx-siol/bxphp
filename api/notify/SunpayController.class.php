@@ -49,6 +49,8 @@ class SunpayController extends BaseController
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
+        writeLog('jsonStr : ' . $jsonStr, 'sunpay/notify/cash');
+
         $params = json_decode($jsonStr, true);
         writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/cash');
         if (!$params)
@@ -79,8 +81,10 @@ class SunpayController extends BaseController
 
     public function _CashOrder()
     {
+		$params = $this->params;
+        $fin_cashlog = Db::name('fin_cashlog')->where("id={$params['id']}")->find();
         $pay_file = APP_PATH . 'common/cash/sunpay.php';
         require_once $pay_file;
-        $result = CashOrder11();
+        $result = CashOrder($fin_cashlog);
     }
 }

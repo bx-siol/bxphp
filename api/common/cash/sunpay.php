@@ -8,16 +8,9 @@ function GetPayName()
 {
 	return "sunpay";
 }
-function CashOrder11()
+function CashOrder($fin_cashlog)
 {    
 	writeLog("开始", GetPayName() . '/cash');
-    $fin_cashlog = [
-        'osn' =>'f205532d857c5a9c',
-        'real_money' =>'190.82',
-        'receive_realname' =>'23434',
-        'receive_account' =>'23434234',
-        'receive_ifsc' =>'12300007867',
-    ];
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
 		'mch_id' => $config['mch_id'],
@@ -33,18 +26,16 @@ function CashOrder11()
 	];
 
 	$pdata['sign'] = CashSign($pdata);
-
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	$result = curl_post2($config['dpay_url'], $pdata, 30);
-    writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	if ($resultArr['status'] != '1') {
+	if ($resultArr['respCode'] != 'SUCCESS') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
-		return ['code' => -1, 'msg' => $resultArr['msg']];
+		return ['code' => -1, 'msg' => $resultArr['errorMsg']];
 	}
 
 	$return_data = [
@@ -53,7 +44,7 @@ function CashOrder11()
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => $resultArr['msg']['transaction_id']
+			'out_osn' => $resultArr['msg']['tradeNo']
 		]
 	];
 	return $return_data;
