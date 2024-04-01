@@ -24,7 +24,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
     ksort($pdata);
     $pdata['sign_type'] = 'MD5';
-    $pdata['sign'] = paySign($pdata,$config['mch_key']);
+    $pdata['sign'] = paySign($pdata);
 
 	$result = [];
 	try {
@@ -56,8 +56,10 @@ function payOrder($fin_paylog, $sub_type = '')
 	return $return_data;
 }
 //签名
-function paySign($params,$appSecret)
+function paySign($params)
 {
+    $config = $_ENV['PAY_CONFIG'][GetPayName()];
+    $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
 		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type' || $key == 'signType') {
 			continue;
