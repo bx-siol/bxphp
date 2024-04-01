@@ -19,6 +19,7 @@ class SunpayController extends BaseController
     {
         writeLog('开始', 'sunpay/notify/pay');
         $jsonStr = trim(file_get_contents('php://input'));
+        writeLog('开始 1: ' . $jsonStr, 'sunpay/notify/pay');
         $params = json_decode($jsonStr, true);
         writeLog('pdatajwt : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
         if (!$params)
