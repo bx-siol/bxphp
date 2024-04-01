@@ -33,6 +33,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		return ['code' => -1, 'msg' => ''];
 	}
 
+	writeLog("result" .$result, GetPayName() . '/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
