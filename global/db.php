@@ -283,7 +283,24 @@ $_ENV['PAY_CONFIG']['coppay'] = [
 	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/zippay/cash'//代付回调
 ];
 
+$_ENV['PAY_CONFIG']['sunpay'] = [
+	'mch_id' => '100001002',
+	'mch_key' => 'd76276295d6f43c49d9e450327af4d2f',
 
+	'pay_url' => 'https://pay.sunpayonline.xyz/pay/web',//代收
+	'dpay_url' => 'https://pay.sunpayonline.xyz/pay/transfer',//代付
+	'balance_url' => 'https://pay.sunpayonline.xyz/query/balance',//余额
+
+	'payquery_url' => '',//收款查询
+	'dpayquery_url' => 'https://pay.sunpayonline.xyz/query/transfer',//代付查询
+
+	'utrorder_url' => '',//utr补单
+	'utrquery_url' => '',//utr查单
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/sunpay/pay',//代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/sunpay/cash'//代付回调
+];
 
 
 
