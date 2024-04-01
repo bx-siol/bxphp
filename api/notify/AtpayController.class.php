@@ -50,7 +50,7 @@ class AtpayController extends BaseController
             ReturnToJson(-1, 'Sign error');
         $pdata = [
             'code' =>  $params['resource']['tradeStatus'] == 'SUCCESS' ? 1 : 0,
-            'osn' => $params['resource']['tradeNo'],
+            'osn' => $params['resource']['outTradeNo'],
             'amount' => $params['resource']['tradeAmount'],
             'successStr' => 'OK'
         ];
