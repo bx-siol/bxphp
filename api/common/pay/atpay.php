@@ -91,7 +91,7 @@ function balance()
 
 	writeLog(json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 
-	$result = CurlPost($config['balance_url'] . '?currency=INR', [], 30, $headers);
+	$result = CurlGet($config['balance_url'] . '?currency=INR', 30, $headers);
 	// $url = $config['balance_url'];
 	//writeLog( json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	// $result = CurlPost($url, $pdata, 30);
