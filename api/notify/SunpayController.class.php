@@ -27,21 +27,21 @@ class SunpayController extends BaseController
 
         foreach ($params as $k => $v) {
             $arr = explode("=", $v);
-            $pdata[$arr[0]] = $arr[1];
+            $rdata[$arr[0]] = $arr[1];
         }
-        writeLog('pdata : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
+        writeLog('pdata : ' . json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
         require_once APP_PATH . 'common/pay/sunpay.php';
-        // $pdata = [
-        //     'version' => '1.0',
-        //     'mch_id' => $config['mch_id'],
-        //     'notify_url' => $config['notify_url'],
-        //     'page_url'=> $config['returnUrl'],
-        //     'mch_order_no' => $fin_paylog['osn'],
-        //     'pay_type' => $config['pay_type'],
-        //     'trade_amount' => strval($fin_paylog['money']),
-        //     'order_date' => date("Y-m-d H:i:s"),
-        //     'goods_name' => $fin_paylog['osn'],
-        // ];
+        $pdata = [
+            'version' => '1.0',
+            'mch_id' => $config['mch_id'],
+            'notify_url' => $config['notify_url'],
+            'page_url'=> $config['returnUrl'],
+            'mch_order_no' => $rdata['mchOrderNo'],
+            'pay_type' => $config['pay_type'],
+            'trade_amount' => strval($rdata['oriAmount']),
+            'order_date' => date("Y-m-d H:i:s"),
+            'goods_name' => $rdata['mchOrderNo'],
+        ];
         ksort($pdata);
         $sign = paySign($pdata,$config['mch_key']);
         writeLog($sign, 'sunpay/notify/pay');
