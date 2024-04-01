@@ -59,7 +59,7 @@ function payOrder($fin_paylog, $sub_type = '')
 function paySign($params,$appSecret)
 {
     foreach ($params as $key => $value) {
-		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type') {
+		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type' || $key == 'signType') {
 			continue;
 		}
 		$signOriginStr .=  "$key=$value&";
