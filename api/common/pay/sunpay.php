@@ -57,12 +57,12 @@ function payOrder($fin_paylog, $sub_type = '')
 //签名
 function paySign($params)
 {
-    ksort($params);
+    sort($params);
     foreach ($params as $key => $value) {
 		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type') {
 			continue;
 		}
-		$signOriginStr = "$key=$value&";
+		$signOriginStr .= "$key=$value&";
 	}    
 	writeLog('字符串：' .$signOriginStr, GetPayName() . '/pay');
     return  md5($signOriginStr);
