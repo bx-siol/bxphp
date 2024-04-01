@@ -63,6 +63,6 @@ function CashSign($params)
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";
     
-	writeLog($signOriginStr, GetPayName() . '/cash');
+    writeLog($signOriginStr, 'sunpay/notify/cash');
     return  md5($signOriginStr);
 }

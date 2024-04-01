@@ -21,7 +21,6 @@ class SunpayController extends BaseController
     }
     public function _pay()
     {
-        writeLog('开始', 'sunpay/notify/pay');
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('pdatajwt : ' . $jsonStr, 'sunpay/notify/pay');
         $params = explode("&", $jsonStr);
@@ -50,15 +49,14 @@ class SunpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('jsonStr : ' . $jsonStr, 'sunpay/notify/cash');
-
-        $params = json_decode($jsonStr, true);
-        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/cash');
+        $jsonStr = "tradeResult=1&merTransferId=daa4b5199b4c9b12&merNo=100001002&tradeNo=9637878&transferAmount=313.02&sign=88f94a13b0f2952fc5a48928877ce5a0&signType=MD5&applyDate=2024-04-02+05%3A56%3A10&version=1.0&respCode=SUCCESS";
+        $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
 
         require_once APP_PATH . 'common/cash/sunpay.php';
         $sign = CashSign($params);
-        writeLog($sign, 'sunpay/notify/pay');
+        writeLog($sign, 'sunpay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
@@ -67,7 +65,7 @@ class SunpayController extends BaseController
             'out_osn' => $params['tradeNo'],
             'pay_status' => $params['tradeResult'] == '1' ? 9 : 3,
             'pay_msg' => $params['respCode'],
-            'amount' => $params['transferAmount'] / 100,
+            'amount' => $params['transferAmount'] ,
             'successStr' => 'OK',
             'failStr' => 'OK1'
         ];
