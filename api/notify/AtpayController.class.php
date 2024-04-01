@@ -43,9 +43,10 @@ class AtpayController extends BaseController
         if (!$params)
             $params = $_POST;
         require_once APP_PATH . 'common/pay/atpay.php';
-        $sign = paySign($headers);
+        $sign = getsignstr($headers);
+        writeLog($sign . '||||' . $xQuSignature, 'atpay/notify/pay');
         //writeLog($sign, 'atpay/notify/pay');
-        if ($sign != strtoupper($xQuSignature))
+        if ($sign != $xQuSignature)
             ReturnToJson(-1, 'Sign error');
         $pdata = [
             'code' =>  $params['resource']['tradeStatus'] == 'SUCCESS' ? 1 : 0,
