@@ -63,6 +63,7 @@ function paySign($params)
 			continue;
 		}
 		$signOriginStr = "$key=$value&";
-	}
+	}    
+	writeLog('字符串：' .$signOriginStr, GetPayName() . '/pay');
     return  md5($signOriginStr);
 }
