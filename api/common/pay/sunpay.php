@@ -62,7 +62,7 @@ function paySign($params)
 		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type') {
 			continue;
 		}
-		$signOriginStr .= "$key=$value&";
+		$signOriginStr .= "{$key}={$value}&";
 	}    
     $signOriginStr =substr($signOriginStr, 0, strlen($signOriginStr)-1);
 	writeLog('字符串：' .$signOriginStr, GetPayName() . '/pay');
