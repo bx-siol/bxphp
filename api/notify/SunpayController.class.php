@@ -20,6 +20,7 @@ class SunpayController extends BaseController
         writeLog('开始', 'sunpay/notify/pay');
         $jsonStr = trim(file_get_contents('php://input'));
         $jsonStr = "tradeResult=1&oriAmount=611.00&amount=611.00&mchId=100001002&orderNo=341644414&mchOrderNo=11c5f441642bbdc2&sign=a268431006928f3144a980b55f683dc8&signType=MD5&orderDate=2024-04-01+21%3A39%3A40";
+        //tradeResult=1&oriAmount=1100.00&amount=1100.00&mchId=100001002&orderNo=341644801&mchOrderNo=39b1069b9454b081&sign=7836d7665b73d32c602c68f7439a7563&signType=MD5&orderDate=2024-04-01+21%3A42%3A57
         $params = explode("&", $jsonStr);
         writeLog('pdatajwt : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
         if (!$params)
@@ -33,6 +34,7 @@ class SunpayController extends BaseController
 
         require_once APP_PATH . 'common/pay/sunpay.php';
         ksort($rdata);
+        writeLog('rdata1 : ' . json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
         $sign = paySign($rdata,$config['mch_key']);
         writeLog($sign, 'sunpay/notify/pay');
         if ($sign != $rdata['sign'])
