@@ -65,7 +65,7 @@ function paySign($params,$appSecret)
 		}
 		$signOriginStr .=  "$key=$value&";
 	}
-    $signOriginStr .=  "key=$appSecret";
+    $signOriginStr = $signOriginStr . "key=$appSecret";
 	writeLog('字符串：' .$signOriginStr, GetPayName() . '/pay');
     return  md5($signOriginStr);
 }
