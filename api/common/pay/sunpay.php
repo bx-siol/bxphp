@@ -49,7 +49,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
-			'out_osn' => $resultArr['data']['payOrderId'],
+			'out_osn' => $resultArr['data']['orderNo'],
 			'pay_url' => $resultArr['data']['payInfo'] 
 		]
 	];
