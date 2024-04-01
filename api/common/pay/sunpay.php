@@ -15,6 +15,7 @@ function payOrder($fin_paylog, $sub_type = '')
         'version' => '1.0',
 		'mch_id' => $config['mch_id'],
 		'notify_url' => $config['notify_url'],
+        'page_url'=> $config['returnUrl'],
 		'mch_order_no' => $fin_paylog['osn'],
 		'pay_type' => '173',
 		'trade_amount' => strval($fin_paylog['money']),
