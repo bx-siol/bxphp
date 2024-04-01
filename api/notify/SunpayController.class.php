@@ -32,8 +32,8 @@ class SunpayController extends BaseController
         writeLog('pdata : ' . json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
 
         require_once APP_PATH . 'common/pay/sunpay.php';
-        ksort($pdata);
-        $sign = paySign($pdata,$config['mch_key']);
+        ksort($rdata);
+        $sign = paySign($rdata,$config['mch_key']);
         writeLog($sign, 'sunpay/notify/pay');
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
