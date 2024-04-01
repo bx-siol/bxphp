@@ -25,6 +25,7 @@ function payOrder($fin_paylog, $sub_type = '')
     $pdata['sign_type'] = 'MD5';
     $pdata['sign'] = paySign($pdata);
 
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = [];
 	try {
 		$result = curl_post2($config['pay_url'], $pdata, 30);
@@ -32,7 +33,6 @@ function payOrder($fin_paylog, $sub_type = '')
 		return ['code' => -1, 'msg' => ''];
 	}
 
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}

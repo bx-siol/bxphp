@@ -10,7 +10,6 @@ function GetPayName()
 }
 function CashOrder($fin_cashlog)
 {    
-	writeLog("开始", GetPayName() . '/cash');
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
 		'mch_id' => $config['mch_id'],
@@ -44,7 +43,7 @@ function CashOrder($fin_cashlog)
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => $resultArr['msg']['tradeNo']
+			'out_osn' => $resultArr['tradeNo']
 		]
 	];
 	return $return_data;
@@ -61,8 +60,6 @@ function CashSign($params)
 		}
 		$signOriginStr .=  "$key=$value&";
 	}
-    $signOriginStr = $signOriginStr . "key=$appSecret";
-    
-    writeLog($signOriginStr, 'sunpay/notify/cash');
+    $signOriginStr = $signOriginStr . "key=$appSecret";    
     return  md5($signOriginStr);
 }
