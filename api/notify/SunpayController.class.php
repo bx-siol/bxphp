@@ -26,7 +26,7 @@ class SunpayController extends BaseController
             $params = $_POST;
 
         foreach ($params as $k => $v) {
-            $arr = explode("=", $jsonStr);
+            $arr = explode("=", $v);
             $pdata[$arr[0]] = $arr[1];
         }
         writeLog('pdata : ' . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
