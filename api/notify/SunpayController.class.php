@@ -29,7 +29,7 @@ class SunpayController extends BaseController
             $arr = explode("=", $v);
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
-        writeLog('pdata : ' . json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
+        writeLog('rdata : ' . json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'sunpay/notify/pay');
 
         require_once APP_PATH . 'common/pay/sunpay.php';
         ksort($rdata);
