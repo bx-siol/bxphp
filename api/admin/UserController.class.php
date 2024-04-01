@@ -134,6 +134,9 @@ class UserController extends BaseController
 		if ($params['status'] != 0)
 			$where .= " and log.status={$params['status']}";
 
+		if ($params['s_icode'])
+			$where .= " and log.icode={$params['s_icode']}";
+
 		$where .= empty ($params['s_gid']) ? '' : " and log.gid={$params['s_gid']}";
 		$where .= empty ($params['s_keyword']) ? '' : " and (log.id='{$params['s_keyword']}'  
 		or log.phone='{$params['s_keyword']}' 
