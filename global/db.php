@@ -286,6 +286,7 @@ $_ENV['PAY_CONFIG']['coppay'] = [
 $_ENV['PAY_CONFIG']['sunpay'] = [
 	'mch_id' => '100001002',
 	'mch_key' => 'd76276295d6f43c49d9e450327af4d2f',
+	'pay_type' => '173', //支付类型   商户后台获取商户信息-通道信息-通道代码
 
 	'pay_url' => 'https://pay.sunpayonline.xyz/pay/web',//代收
 	'dpay_url' => 'https://pay.sunpayonline.xyz/pay/transfer',//代付
