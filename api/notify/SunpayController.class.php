@@ -39,7 +39,7 @@ class SunpayController extends BaseController
             'mch_order_no' => $rdata['mchOrderNo'],
             'pay_type' => $config['pay_type'],
             'trade_amount' => strval($rdata['oriAmount']),
-            'order_date' => date("Y-m-d H:i:s"),
+            'order_date' => urldecode($rdata['orderDate']),
             'goods_name' => $rdata['mchOrderNo'],
         ];
         ksort($pdata);
