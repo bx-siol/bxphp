@@ -10,7 +10,7 @@ function GetPayName()
 }
 function CashOrder11()
 {    
-	writeLog("开始", GetPayName() . '/cash');
+	writeLog("开始111", GetPayName() . '/cash');
     $fin_cashlog = [
         'osn' =>'f205532d857c5a9c',
         'real_money' =>'190.82',

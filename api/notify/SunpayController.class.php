@@ -79,6 +79,7 @@ class SunpayController extends BaseController
 
     public function _CashOrder()
     {
+        writeLog("开始", GetPayName() . '/cash');
         CashOrder11();
     }
 }
