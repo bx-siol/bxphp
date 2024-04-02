@@ -54,6 +54,40 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 	return $return_data;
 }
+
+//查询余额
+function balance()
+{
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
+	$pdata = [
+		'mch_id' => $config['mch_id'],
+		'sign_type' => 'MD5',
+	];
+	$pdata['sign'] = paySign($pdata, 1);
+	$url = $config['balance_url'];
+
+	$result = CurlPost($url, $pdata, 30);
+	if ($result['code'] != 1)
+		return $result;
+	$resultArr = $result['output'];
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	if ($resultArr['respCode'] != 'SUCCESS') {
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
+		return ['code' => -1, 'msg' => $resultArr['errorMsg']];
+	}
+	$return_data = [
+		'code' => 1,
+		'msg' => $resultArr['respCode'],
+		'data' => [
+			'merId' => $config['mch_id'],
+			'balance' => $resultArr['amount'],
+			'payout_balance' => $resultArr['availableAmount'],
+		]
+	];
+	return $return_data;
+}
+
+
 //签名
 function paySign($params)
 {
