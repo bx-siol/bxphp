@@ -10,7 +10,6 @@ function GetPayName()
 function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
-	writeLog("fin_paylog：" .json_encode($fin_paylog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$pdata = [
 		'merchant_code' => $config['mch_id'],				//	M	string	20	商户编号	平台分配的唯一编号
 		'order_no' => $fin_paylog['osn'],					//	M	string	30	商户订单号	平商户订单号，不可重复，最长30位
@@ -27,9 +26,9 @@ function payOrder($fin_paylog, $sub_type = '')
 	$rdata['sign'] = urlencode(strtoupper(paySign($pdata)));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
 
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	writeLog(json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/pay');
 	$result = curl_post($config['pay_url'], $rdata, 30,'json');
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['code'] != 0)
 		return $result;
 
