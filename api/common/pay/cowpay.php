@@ -23,11 +23,12 @@ function payOrder($fin_paylog, $sub_type = '')
 		'payer_info' => $fin_paylog['receive_realname'],	//	C	string	30	付款人姓名	付款人姓名
 	];
 
-	$rdata['sign'] = paySign($pdata);
 	$rdata['signtype'] = "MD5";
+	$rdata['sign'] = strtoupper(paySign($pdata));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	writeLog(json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = CurlPost($config['pay_url'], $rdata, 30);
 	if ($result['code'] != 0)
 		return $result;
