@@ -23,7 +23,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 
 	$rdata['signtype'] = "MD5";
-	$rdata['sign'] = urlencode(strtoupper(paySign($pdata)));
+	$rdata['sign'] = urlencode(paySign($pdata));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
 
 	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/pay');
@@ -93,5 +93,5 @@ function paySign($params, $verify = false)
 		$signOriginStr = "$signOriginStr$key=$value&";
 	
 	$signOriginStr = $signOriginStr . "key=$appSecret";	
-    return  md5($signOriginStr);
+    return  strtoupper(md5($signOriginStr));
 }
