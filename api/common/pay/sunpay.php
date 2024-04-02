@@ -66,7 +66,7 @@ function balance()
 	$pdata['sign'] = paySign($pdata, 1);
 	$url = $config['balance_url'];
 
-	$result = CurlPost($url, $pdata, 30);
+	$result = curl_post2($url, $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
