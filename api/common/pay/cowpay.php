@@ -95,6 +95,7 @@ function paySign($params, $verify = false)
 	foreach ($params as $key => $value) 
 		$signOriginStr = "$signOriginStr$key=$value&";
 	
-	$signOriginStr = $signOriginStr . "key=$appSecret";
+	$signOriginStr = $signOriginStr . "key=$appSecret";	
+	writeLog("signOriginStr：" . $signOriginStr, GetPayName() . '/pay');
     return  md5($signOriginStr);
 }
