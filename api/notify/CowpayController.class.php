@@ -10,25 +10,21 @@ class CowpayController extends BaseController
     {
         parent::__construct();
     }
-    public function GetPayName()
-    {
-        return 'cowpay';
-    }
     public function _index()
     {
         echo 'cowpay';
     }
     public function _pay()
     {
-        writeLog('回调开始', GetPayName() .'/notify/pay');
+        writeLog('回调开始', 'cowpay/notify/pay');
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('jsonStr : ' . $jsonStr, GetPayName() .'/notify/pay');
+        writeLog('jsonStr : ' . $jsonStr,'cowpay/notify/pay');
         $params = $_POST;
-        writeLog("params" .json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/notify/pay');
+        writeLog("params" .json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'cowpay/notify/pay');
 
-        require_once APP_PATH . 'common/pay/' . GetPayName() . '.php';
+        require_once APP_PATH . 'common/pay/cowpay.php';
         $sign = paySign($params, true);
-        writeLog($sign, GetPayName() . '/notify/pay');
+        writeLog($sign,'cowpay/notify/pay');
         if (!$sign)
             ReturnToJson(-1, 'Sign error');
         $pdata = [
@@ -37,7 +33,7 @@ class CowpayController extends BaseController
             'amount' => $params['orderAmt'],
             'successStr' => 'success'
         ];
-        $this->payAct($pdata, GetPayName() . '');
+        $this->payAct($pdata,'cowpay');
     }
 
     public function _cash()
