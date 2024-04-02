@@ -20,8 +20,12 @@ class CowpayController extends BaseController
     }
     public function _pay()
     {
+        writeLog('回调开始', 'sunpay/notify/pay');
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog($jsonStr, GetPayName() . '/notify/pay');
+        writeLog('jsonStr : ' . $jsonStr, 'sunpay/notify/pay');
+        $params = $_POST;
+        writeLog("params" .json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/notify/pay');
+
         require_once APP_PATH . 'common/pay/' . GetPayName() . '.php';
         $sign = paySign($params, true);
         writeLog($sign, GetPayName() . '/notify/pay');
