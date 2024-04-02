@@ -32,9 +32,9 @@ class CowpayController extends BaseController
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $params['status'] == '1' ? 1 : -1,
-            'osn' => $params['orderId'],
-            'amount' => $params['orderAmt'],
+            'code' => $rdata['payment'] == '支付成功' ? 1 : -1,
+            'osn' => $rdata['order_no'],
+            'amount' => $rdata['order_amount'],
             'successStr' => 'success'
         ];
         $this->payAct($pdata,'cowpay');
