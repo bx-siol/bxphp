@@ -17,7 +17,6 @@ class CowpayController extends BaseController
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        $jsonStr = "{\"sign\":\"C79823EBABAC1C7F5DB1120AAA1A24F8\",\"transdata\":\"%7B%22order_no%22%3A%22e08038298e26f1a4%22%2C%22order_time%22%3A1712048747000%2C%22product_code%22%3A%221%22%2C%22product_name%22%3A%22e08038298e26f1a4%22%2C%22order_amount%22%3A%22200.000%22%2C%22pay_type%22%3A%22india-upi-h5%22%2C%22payment%22%3A%22%E6%94%AF%E4%BB%98%E6%88%90%E5%8A%9F%22%7D\"}";
         writeLog('pdatajwt : ' . $jsonStr, 'sunpay/notify/pay');
         $params = json_decode($jsonStr, true); 
         $rdata = json_decode(urldecode($params["transdata"]), true);
