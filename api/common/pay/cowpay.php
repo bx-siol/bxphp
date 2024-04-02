@@ -55,16 +55,20 @@ function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
-		'merId' => $config['mch_id'],
-		'nonceStr' => getRsn()
+		'merchant_code' => $config['mch_id'],
 	];
-	$pdata['sign'] = paySign($pdata);
-	$url = $config['balance_url'];
+
+	$rdata['signtype'] = "MD5";
+	$rdata['sign'] = urlencode(paySign($pdata));
+	$rdata['transdata'] = urlencode(json_encode($pdata));
+
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	$result = CurlPost($url, $pdata, 30);
+	$result = curl_post($config['balance_url'], $rdata, 30,'json');
+
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
+
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($resultArr['code'] != '1') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
