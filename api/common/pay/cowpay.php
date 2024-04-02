@@ -32,10 +32,10 @@ function payOrder($fin_paylog, $sub_type = '')
 	if ($result['response_code'] != 200)
 		return $result;
 
-	$resultArr = json_decode($result['output']);
+	$resultArr = json_decode($result['output'], true);
 	writeLog("resultArr：".json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	writeLog("11111111111", GetPayName() . '/pay');
-	writeLog("resultArr：code:".$resultArr['code'], GetPayName() . '/pay');
+	writeLog("resultArr：code:".$resultArr["orderNo"], GetPayName() . '/pay');
 	writeLog("222222", GetPayName() . '/pay');
 	if ($resultArr['code'] != 0) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
