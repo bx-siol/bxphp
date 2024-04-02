@@ -34,6 +34,7 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	$resultArr = json_decode($result['output']) ;
 	writeLog("resultArr：".json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	writeLog("resultArr：code:".$resultArr['code'], GetPayName() . '/pay');
 	if ($resultArr['code'] != 0) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
