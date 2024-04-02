@@ -32,7 +32,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	if ($result['response_code'] != 200)
 		return $result;
 
-	$resultArr = $result['output'];
+	$resultArr = json_decode($result['output']) ;
 	if ($resultArr['code'] != '0') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
