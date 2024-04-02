@@ -24,7 +24,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 
 	$rdata['signtype'] = "MD5";
-	$rdata['sign'] = strtoupper(paySign($pdata));
+	$rdata['sign'] = urlencode(strtoupper(paySign($pdata)));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
