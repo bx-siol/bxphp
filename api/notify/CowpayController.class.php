@@ -17,7 +17,7 @@ class CowpayController extends BaseController
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('pdatajwt : ' . $jsonStr, 'sunpay/notify/pay');
+        writeLog('pdatajwt : ' . $jsonStr, 'cowpay/notify/pay');
         $params = json_decode($jsonStr, true); 
         $rdata = json_decode(urldecode($params["transdata"]), true);
         
