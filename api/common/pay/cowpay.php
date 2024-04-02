@@ -28,21 +28,15 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/pay');
 	$result = curl_post($config['pay_url'], $rdata, 30,'json');
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['response_code'] != 200)
 		return $result;
 
 	$resultArr = json_decode($result['output'], true);
-	writeLog("resultArr：".json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	writeLog("11111111111", GetPayName() . '/pay');
-	writeLog("resultArr：code:".$resultArr["orderNo"], GetPayName() . '/pay');
-	writeLog("222222", GetPayName() . '/pay');
 	if ($resultArr['code'] != 0) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
-	writeLog("333333", GetPayName() . '/pay');
 	$return_data = [
 		'code' => 1,
 		'msg' => $resultArr['msg'],
