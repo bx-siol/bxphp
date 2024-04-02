@@ -16,36 +16,37 @@ function payOrder($fin_paylog, $sub_type = '')
 		'order_no' => $fin_paylog['osn'],					//	M	string	30	商户订单号	平商户订单号，不可重复，最长30位
 		'order_amount' => $fin_paylog['money'],				//	M	string		交易金额	单位：inr（只支持整数）
 		'order_time' => $microtime,							//	M	string	15	交易时间	时间戳，纯数字
-		'product_name' => $microtime,						//	M	string	60	产品名称	请尽量不要传固定值，否则会影响成功率；请尽量不要带空格。
+		'product_name' => $fin_paylog['osn'],				//	M	string	60	产品名称	请尽量不要传固定值，否则会影响成功率；请尽量不要带空格。
 		'notify_url' => $config['notify_url'],				//	M	string	254	异步通知地址	异步回调通知地址，不支持参数传递
 		'pay_type' => 'india-upi',							//	M	string	30	支付类型	指定支付方式，详见 [支付类型]
-		'return_url' => '',									//	C	string	30	成功回跳地址	提交成功后跳转的地址，非必填，但建议商户也传递该字段
+		'return_url' => $config['returnUrl'],				//	C	string	30	成功回跳地址	提交成功后跳转的地址，非必填，但建议商户也传递该字段
 		'payer_info' => $fin_paylog['receive_realname'],	//	C	string	30	付款人姓名	付款人姓名
 	];
-	$pdata['sign'] = paySign($pdata);
-	$pdata['signtype'] = "RSA-SHA256";
-	$pdata['transdata'] = urlencode($pdata);
 
-	$url = $config['pay_url'];
+	$rdata['sign'] = paySign($pdata);
+	$rdata['signtype'] = "MD5";
+	$rdata['transdata'] = urlencode(json_encode($pdata));
+
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	$result = CurlPost($url, $pdata, 30);
+	$result = CurlPost($config['pay_url'], $rdata, 30);
 	if ($result['code'] != 0)
 		return $result;
 
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	if ($result['code'] != '0') {
-		writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
-		return ['code' => -1, 'msg' => $result['msg']];
+	$resultArr = $result['output'];
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	if ($resultArr['code'] != '0') {
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
+		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
 	$return_data = [
 		'code' => 1,
-		'msg' => $result['msg'],
+		'msg' => $resultArr['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
-			'out_osn' => $result['orderNo'],
-			'pay_url' => $result['payUrl']
+			'out_osn' => $resultArr['orderNo'],
+			'pay_url' => $resultArr['payUrl']
 		]
 	];
 	return $return_data;
@@ -87,51 +88,12 @@ function balance()
 function paySign($params, $verify = false)
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
-	if ($verify) {
-		$signstr = create_sign($params, $config['md5_key']);
-		$sign = strtoupper(md5(trim($signstr)));
-		$outstr = rsa_verify($sign, $params['sign'], $config['publickey']);
-	} else {
-		$signstr = create_sign($params, $config['md5_key']);
-		$sign = strtoupper(md5(trim($signstr)));
-		$outstr = rsa_sign($sign, $config['privatekey']);
-	}
-	return $outstr;
-}
-// 创建签名字符串
-function create_sign($params, $appSecret)
-{
+	$appSecret = $config['mch_key'];
 	$signOriginStr = '';
 	ksort($params);
-	foreach ($params as $key => $value) {
-		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'signType' || $key == 'signature') {
-			continue;
-		}
+	foreach ($params as $key => $value) 
 		$signOriginStr = "$signOriginStr$key=$value&";
-	}
-	return $signOriginStr . "key=$appSecret";
+	
+	$signOriginStr = $signOriginStr . "key=$appSecret";
+    return  md5($signOriginStr);
 }
-
-// rsa签名
-function rsa_sign($dataString, $privateKey)
-{
-	$pem = chunk_split($privateKey, 64, "\n");
-	$pem = "-----BEGIN PRIVATE KEY-----\n" . $pem . "-----END PRIVATE KEY-----\n";
-	$privKey = openssl_pkey_get_private($pem);
-	$signature = false;
-	openssl_sign($dataString, $signature, $privKey, OPENSSL_ALGO_SHA256);
-	return base64_encode($signature);
-}
-
-// rsa验证签名
-function rsa_verify($dataString, $signString, $publicKey)
-{
-	$pem = chunk_split($publicKey, 64, "\n");
-	$pem = "-----BEGIN PUBLIC KEY-----\n" . $pem . "-----END PUBLIC KEY-----\n";
-	$pubKey = openssl_pkey_get_public($pem);
-
-	$signature = base64_decode($signString);
-	$flg = openssl_verify($dataString, $signature, $pubKey, OPENSSL_ALGO_SHA256);
-	return $flg;
-}
-
