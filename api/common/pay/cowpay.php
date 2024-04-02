@@ -9,8 +9,8 @@ function GetPayName()
 }
 function payOrder($fin_paylog, $sub_type = '')
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName()];
-	$microtime = microtime(true); // 获取浮点数形式的当前时间戳
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
+	writeLog("fin_paylog：" .json_encode($fin_paylog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$pdata = [
 		'merchant_code' => $config['mch_id'],				//	M	string	20	商户编号	平台分配的唯一编号
 		'order_no' => $fin_paylog['osn'],					//	M	string	30	商户订单号	平商户订单号，不可重复，最长30位
