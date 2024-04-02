@@ -64,13 +64,14 @@ function balance()
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$result = curl_post($config['balance_url'], $rdata, 30,'json');
+	writeLog("result：" .$result, GetPayName() . '/balance');
 
-	if ($result['code'] != 1)
+	if ($result['response_code'] != 200)
 		return $result;
-	$resultArr = $result['output'];
 
+	$resultArr = json_decode($result['output'], true);
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	if ($resultArr['code'] != '1') {
+	if ($resultArr['status'] != 'true') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
@@ -79,8 +80,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['data']['balance'],
-			'payout_balance' => $resultArr['data']['payout_balance'],
+			'balance' => $resultArr['total_order_amount'],
+			'payout_balance' => $resultArr['payout_balance'],
 		]
 	];
 	return $return_data;
