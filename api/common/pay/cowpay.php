@@ -28,6 +28,7 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/pay');
 	$result = curl_post($config['pay_url'], $rdata, 30,'json');
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['code'] != 200)
 		return $result;
 
