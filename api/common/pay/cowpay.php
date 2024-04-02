@@ -18,7 +18,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		'order_time' => time(),							//	M	string	15	交易时间	时间戳，纯数字
 		'product_name' => $fin_paylog['osn'],				//	M	string	60	产品名称	请尽量不要传固定值，否则会影响成功率；请尽量不要带空格。
 		'notify_url' => $config['notify_url'],				//	M	string	254	异步通知地址	异步回调通知地址，不支持参数传递
-		'pay_type' => 'india-upi',							//	M	string	30	支付类型	指定支付方式，详见 [支付类型]
+		'pay_type' => 'india-upi-h5',							//	M	string	30	支付类型	指定支付方式，详见 [支付类型]
 		'return_url' => $config['returnUrl'],				//	C	string	30	成功回跳地址	提交成功后跳转的地址，非必填，但建议商户也传递该字段
 		//'payer_info' => $fin_paylog['receive_realname'],	//	C	string	30	付款人姓名	付款人姓名
 	];
