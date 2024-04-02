@@ -64,9 +64,7 @@ function balance()
 		'sign_type' => 'MD5',
 	];
 	$pdata['sign'] = paySign($pdata, 1);
-	$url = $config['balance_url'];
-
-	$result = curl_post2($url, $pdata, 30);
+	$result = curl_post2($config['balance_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
