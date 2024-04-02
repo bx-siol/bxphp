@@ -39,6 +39,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
+	writeLog("11111111111", GetPayName() . '/pay');
 	$return_data = [
 		'code' => 1,
 		'msg' => $resultArr['msg'],
