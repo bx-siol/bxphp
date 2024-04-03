@@ -238,7 +238,6 @@ function paySign($params, $type = 0)
 
 	if ($signStr == '')
 		return '';
-	writeLog($signStr, 'tppay/notify/pay');
 	$outstr = strtolower(md5($signStr));
 	return $outstr;
 }
