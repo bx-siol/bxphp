@@ -240,4 +240,18 @@ $_ENV['PAY_CONFIG']['cowpay'] = [
 	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/cowpay/cash' //代付回调
 ];
 
+$_ENV['PAY_CONFIG']['xdpay'] = [
+	'mch_id' => '48773549',
+	'mch_key' => 'd2902d76ca224fae9d2f0c50475323ed',
+	'pay_type' => '101', //通道编码
+
+	'pay_url' => 'https://apis.xdpay168.com/client/collect/create',//代收
+	'dpay_url' => 'https://apis.xdpay168.com/client/pay/create',//代付
+	'balance_url' => 'https://apis.xdpay168.com/client/order/balance',//余额
+
+	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/pay',//代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/cash'//代付回调
+];
+
 

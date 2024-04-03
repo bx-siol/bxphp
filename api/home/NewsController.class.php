@@ -4,7 +4,8 @@
 use think\facade\Db;
 
 class NewsController extends BaseController
-{
+{47.242.229.122
+	8.210.74.100
 
 	public function __construct()
 	{
@@ -207,7 +208,7 @@ class NewsController extends BaseController
 
 		$yes_or_no = getConfig('yes_or_no');
 		foreach ($list as &$item) {
-			$item['publish_time'] = date('m-d H:i', $item['publish_time']);
+			$item['publish_time'] = date('Y-m-d H:i', $item['publish_time']);
 			$item['is_recommend_flag'] = $yes_or_no[$item['is_recommend']];
 		}
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);
