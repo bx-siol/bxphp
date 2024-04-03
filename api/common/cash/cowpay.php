@@ -16,7 +16,7 @@ function CashOrder($fin_cashlog)
     $pdata = [
 		'merchant_code' => $config['mch_id'],
         'order_no' => $fin_cashlog['osn'],
-        'order_amount' => floor($fin_cashlog['real_money'] * 100),
+        'order_amount' => $fin_cashlog['real_money'],
         'pay_type' =>'india-bank-repay',
         'bank_name' => 'Canara Bank',
         'bank_card' =>	'3339997788',			// $fin_cashlog['receive_account'],   //银行卡号
