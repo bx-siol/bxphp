@@ -46,6 +46,7 @@ class CowpayController extends BaseController
 
         require_once APP_PATH . 'common/cash/cowpay.php';
         $sign = CashSign($params);
+        writeLog('sign : ' . $sign, 'cowpay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
