@@ -238,6 +238,8 @@ function paySign($params, $type = 0)
 
 	if ($signStr == '')
 		return '';
+	
+	writeLog(json_encode($signStr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$outstr = strtolower(md5($signStr));
 	return $outstr;
 }
