@@ -4,9 +4,7 @@
 use think\facade\Db;
 
 class NewsController extends BaseController
-{47.242.229.122
-	8.210.74.100
-
+{
 	public function __construct()
 	{
 		parent::__construct();
