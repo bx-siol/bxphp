@@ -11,7 +11,7 @@ function GetPayName()
 
 function CashOrder($fin_cashlog)
 {
-	writeLog("开始2", 'cowpay/cash');
+	writeLog("开始", 'cowpay/cash');
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
     $pdata = [
 		'merchant_code' => $config['mch_id'],
@@ -19,9 +19,9 @@ function CashOrder($fin_cashlog)
         'order_amount' => floor($fin_cashlog['real_money'] * 100),
         'pay_type' =>'india-bank-repay',
         'bank_name' => 'Canara Bank',
-        'bank_card' => $fin_cashlog['receive_account'],
-        'bank_branch' => $fin_cashlog['receive_ifsc'],
-        'user_name' => $fin_cashlog['receive_realname'],
+        'bank_card' =>	'3339997788',			// $fin_cashlog['receive_account'],   //银行卡号
+        'bank_branch' => 'HDFC0000961',			// $fin_cashlog['receive_ifsc'],	//ifsc
+        'user_name' => ' Michael',				// $fin_cashlog['receive_realname'], //持卡人姓名
         'notify_url' => $config['dnotify_url'],
 	];
 	$rdata['sign'] = urlencode(CashSign($pdata));
@@ -30,10 +30,12 @@ function CashOrder($fin_cashlog)
 
 	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/cash');
 	$result = curl_post($config['dpay_url'], $rdata, 30,'json');
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	if ($result['status'] != true) {
-		writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
-		return ['code' => -1, 'msg' => $result['message']];
+	writeLog("result：" .json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
+	
+	$resultArr = json_decode($result['output'], true);
+	if ($resultArr['code'] != 0) {
+		writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
+		return ['code' => -1, 'msg' => $resultArr['message']];
 	}
 
 	$return_data = [
