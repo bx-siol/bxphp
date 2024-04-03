@@ -63,6 +63,7 @@
     </div>
 
     <slot name="layer" :tdata="tableData"></slot>
+    <slot name="balance" :tdata="tableData"></slot>
 </template>
 
 <script lang="ts" setup>
