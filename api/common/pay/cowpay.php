@@ -67,7 +67,6 @@ function balance()
 
 	$resultArr = json_decode($result['output'], true);
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	writeLog(json_encode($resultArr["balance"]["merchant_code"], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($resultArr['status'] != 'true') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
@@ -77,8 +76,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['total_order_amount'],
-			'payout_balance' => $resultArr['payout_balance'],
+			'balance' => $resultArr["balance"]['balance'],
+			'payout_balance' => $resultArr["balance"]['withdraw_balance'],
 		]
 	];
 	return $return_data;
