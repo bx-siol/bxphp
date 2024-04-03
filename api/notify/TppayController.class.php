@@ -18,7 +18,7 @@ class tppayController extends BaseController
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        $jsonStr = "{\"merchantId\":\"129\",\"orderId\":\"c36de1d6896c236c\",\"amount\":60000,\"timestamp\":1712141324357,\"notifyUrl\":\"https://admin.nestleinr.com/api/Notify/jwpay/pay\",\"sign\":\"e85960e05b52859ef6d59e23214930a4\"}";
+        $jsonStr = "{\"merchantId\":\"129\",\"orderId\":\"32ec2309d04c2230\",\"amount\":60000,\"timestamp\":1712136830312,\"notifyUrl\":\"https://admin.nestleinr.com/api/Notify/jwpay/pay\",\"sign\":\"43399c821a96e19b26fe8f4e8a6be2e1\"}";
         $params = json_decode($jsonStr, true);
         writeLog('pdatajwt : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'tppay/notify/pay');
         if (!$params)
