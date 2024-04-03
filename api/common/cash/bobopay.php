@@ -22,7 +22,7 @@ function CashOrder($fin_cashlog)
 		'accountHolder' => $fin_cashlog['receive_realname'],
 		'accountNumber' => ($fin_cashlog['receive_account']),
 		'ifsc' => $fin_cashlog['receive_ifsc'],
-		'notifyurl' => $config['dnotify_url']
+		'notifyUrl' => $config['dnotify_url']
 	];
 	$pdata['sign'] = CashSign($pdata);
 	$url = $config['dpay_url'];
