@@ -44,10 +44,6 @@ class CowpayController extends BaseController
         $params = json_decode($jsonStr, true);
         writeLog('urldecode : ' . urldecode($params["transdata"]), 'cowpay/notify/cash');
         $rdata = json_decode(urldecode($params["transdata"]), true);
-
-        //$rdata["message"] = mb_convert_encoding($rdata["message"],'UTF-8','UTF-16');
-
-        writeLog('rdata : ' . $rdata["message"], 'cowpay/notify/cash');
         require_once APP_PATH . 'common/cash/cowpay.php';
         $sign = CashSign($params);
         writeLog('sign : ' . $sign, 'cowpay/notify/cash');
