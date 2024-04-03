@@ -36,7 +36,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
-	writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName().'/pay');
+	//writeLog('result : ' . json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName().'/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
@@ -238,8 +238,6 @@ function paySign($params, $type = 0)
 
 	if ($signStr == '')
 		return '';
-	
-	writeLog(json_encode($signStr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$outstr = strtolower(md5($signStr));
 	return $outstr;
 }
