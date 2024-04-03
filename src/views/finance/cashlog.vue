@@ -142,12 +142,7 @@
                     </template>
                 </el-table-column>
 
-                <el-table-column prop="pay_type_bf" :label="isTrans ? 'Channel' : '代付通道'" width="100" fixed>
-                    <!-- <template #default="{ row }">
-                        <div v-if="row.pay_type == null || row.pay_type == ''">{{row.pay_type_bf}}</div>
-                        <div v-else>{{row.pay_type}}</div>
-                    </template> -->
-                </el-table-column>
+                <el-table-column prop="pay_type_bf" :label="isTrans ? 'Channel' : '代付通道'" width="100" fixed></el-table-column>
                 <el-table-column prop="pay_status_flag" :label="isTrans ? 'Payment status' : '代付状态'" width="100" fixed>
                     <template #default="{ row }">
                         {{ row.pay_status_flag }}
