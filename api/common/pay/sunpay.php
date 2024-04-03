@@ -61,9 +61,9 @@ function balance()
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
 	$pdata = [
 		'mch_id' => $config['mch_id'],
-		'sign_type' => 'MD5',
 	];
-	$pdata['sign'] = paySign($pdata, 1);
+	$pdata['sign'] = paySign($pdata);
+	$pdata['sign_type'] = 'MD5';
 	$result = curl_post2($config['balance_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
