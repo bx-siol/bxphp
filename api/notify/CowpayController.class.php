@@ -43,7 +43,7 @@ class CowpayController extends BaseController
         //$jsonStr="{\"sign\":\"434F3DDC6AF071B83AC4DB92483CCF1D\",\"transdata\":\"%7B%22order_no%22%3A%22a4706629902b5d66%22%2C%22message%22%3A%22%E6%8F%90%E7%8E%B0%E6%88%90%E5%8A%9F%22%2C%22order_amount%22%3A%22208.000%22%2C%22resp_code%22%3A%22S%22%7D\"}";
         $params = json_decode($jsonStr, true);
         writeLog('urldecode : ' . urldecode($params["transdata"]), 'cowpay/notify/cash');
-        $rdata = json_decode($params["transdata"], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);
+        $rdata = json_decode($params["transdata"], true);
 
         $rdata["message"] = mb_convert_encoding($rdata["message"],'UTF-8','UTF-16');
 
