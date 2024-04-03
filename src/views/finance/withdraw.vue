@@ -119,7 +119,7 @@
                         <span>3: Withdrawal fee:{{ tar }} %</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>4: Withdrawal time: 1-2 days </span>
+                        <span>4: Withdrawal time: 1-3 days </span>
                     </div>
                 </div>
             </div>
