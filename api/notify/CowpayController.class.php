@@ -58,7 +58,8 @@ class CowpayController extends BaseController
     }
 
     public function _order()
-    {
+    {        
+	    writeLog("开始1", 'cowpay/cash');
         $params = $this->params;
         $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
         $pay_file = APP_PATH . 'common/cash/cowpay.php';

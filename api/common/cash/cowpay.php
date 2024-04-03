@@ -11,8 +11,8 @@ function GetPayName()
 
 function CashOrder($fin_cashlog)
 {
+	writeLog("开始2", 'cowpay/cash');
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
-
     $pdata = [
 		'merchant_code' => $config['mch_id'],
         'order_no' => $fin_cashlog['osn'],
