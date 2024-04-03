@@ -250,12 +250,13 @@ const onSubmit = () => {
         }
     }
 
-    if (dataForm.money < min.value) {
+    if (dataForm.money-0 < min.value-0) {
         isRequest = false
         _alert(' Minimum withdrawal amount is ' + min.value)
         return
     }
-    if (dataForm.money > max.value) {
+    
+    if (dataForm.money-0 > max.value-0) {
         isRequest = false
         _alert(' Maximum withdrawal amount is ' + max.value)
         return
@@ -298,6 +299,7 @@ onMounted(() => {
             })
             return
         }
+        console.log(res.data.sys_pset.cash.max);
         ptypeArr.value = res.data.ptms
         wallet.value = res.data.wallet
         banklog.value = res.data.banklog
