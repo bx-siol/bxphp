@@ -37,16 +37,14 @@ class CowpayController extends BaseController
 
     public function _cash()
     {
-        // $jsonStr = trim(file_get_contents('php://input'));
-        // $params = json_decode($jsonStr, true); 
-        // if (!$params)
-        $params = $_POST;
-        writeLog(json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/notify/cash');
-        require_once APP_PATH . 'common/cash/' . GetPayName() . '.php';
+        $jsonStr = trim(file_get_contents('php://input'));
+        writeLog('pdatajwt : ' . $jsonStr, 'cowpay/notify/cash');
+        $params = json_decode($jsonStr, true);        
+        require_once APP_PATH . 'common/cash/cowpay.php';
         $sign = CashSign($params);
-        //writeLog($sign, GetPayName().'/notify/pay');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
+
         $pdata = [
             'osn' => $params['orderId'],
             'out_osn' => $params['orderId'],
@@ -57,5 +55,14 @@ class CowpayController extends BaseController
             'failStr' => 'success'
         ];
         $this->cashAct($pdata);
+    }
+
+    public function _order()
+    {
+        $params = $this->params;
+        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+        $pay_file = APP_PATH . 'common/cash/cowpay.php';
+        require_once $pay_file;
+		$result = CashOrder($fin_cashlog);
     }
 }
