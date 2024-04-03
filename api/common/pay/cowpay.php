@@ -61,16 +61,13 @@ function balance()
 	$rdata['signtype'] = "MD5";
 	$rdata['sign'] = urlencode(paySign($pdata));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
-
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$result = curl_post($config['balance_url'], $rdata, 30,'json');
-	writeLog("result：" .$result, GetPayName() . '/balance');
-
 	if ($result['response_code'] != 200)
 		return $result;
 
 	$resultArr = json_decode($result['output'], true);
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	writeLog(json_encode($resultArr["balance"]["merchant_code"], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($resultArr['status'] != 'true') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
