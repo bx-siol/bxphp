@@ -13,7 +13,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	$pdata = [
 		'merchant_code' => $config['mch_id'],				//	M	string	20	商户编号	平台分配的唯一编号
 		'order_no' => $fin_paylog['osn'],					//	M	string	30	商户订单号	平商户订单号，不可重复，最长30位
-		'order_amount' => $fin_paylog['money'],				//	M	string		交易金额	单位：inr（只支持整数）
+		'order_amount' => strval($fin_paylog['money']),		//	M	string		交易金额	单位：inr（只支持整数）
 		'order_time' => time(),							//	M	string	15	交易时间	时间戳，纯数字
 		'product_name' => $fin_paylog['osn'],				//	M	string	60	产品名称	请尽量不要传固定值，否则会影响成功率；请尽量不要带空格。
 		'notify_url' => $config['notify_url'],				//	M	string	254	异步通知地址	异步回调通知地址，不支持参数传递
@@ -61,11 +61,7 @@ function balance()
 	$rdata['signtype'] = "MD5";
 	$rdata['sign'] = urlencode(paySign($pdata));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
-
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$result = curl_post($config['balance_url'], $rdata, 30,'json');
-	writeLog("result：" .$result, GetPayName() . '/balance');
-
 	if ($result['response_code'] != 200)
 		return $result;
 
@@ -80,8 +76,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['total_order_amount'],
-			'payout_balance' => $resultArr['payout_balance'],
+			'balance' => $resultArr["balance"]['balance'],
+			'payout_balance' => $resultArr["balance"]['withdraw_balance'],
 		]
 	];
 	return $return_data;

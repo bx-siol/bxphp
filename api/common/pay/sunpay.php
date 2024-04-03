@@ -61,9 +61,9 @@ function balance()
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
 	$pdata = [
 		'mch_id' => $config['mch_id'],
-		'sign_type' => 'MD5',
 	];
-	$pdata['sign'] = paySign($pdata, 1);
+	$pdata['sign'] = pay1Sign($pdata);
+	$pdata['sign_type'] = 'MD5';
 	$result = curl_post2($config['balance_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
@@ -92,6 +92,21 @@ function paySign($params)
     ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
+    foreach ($params as $key => $value) {
+		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type' || $key == 'signType') {
+			continue;
+		}
+		$signOriginStr .=  "$key=$value&";
+	}
+    $signOriginStr = $signOriginStr . "key=$appSecret";
+    return  md5($signOriginStr);
+}
+
+function pay1Sign($params)
+{
+    ksort($params);
+    $config = $_ENV['PAY_CONFIG'][GetPayName()];
+    $appSecret = $config['dmch_key'];
     foreach ($params as $key => $value) {
 		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type' || $key == 'signType') {
 			continue;

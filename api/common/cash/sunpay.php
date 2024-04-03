@@ -14,7 +14,7 @@ function CashOrder($fin_cashlog)
 	$pdata = [
 		'mch_id' => $config['mch_id'],
 		'mch_transferId' => $fin_cashlog['osn'],
-        'transfer_amount' => $fin_cashlog['real_money'],
+        'transfer_amount' => strval(floor($fin_cashlog['real_money'])),
         'apply_date' => date("Y-m-d H:i:s"),
         'bank_code' => 'IDPT0001',
         'receive_name' => $fin_cashlog['receive_realname'],
