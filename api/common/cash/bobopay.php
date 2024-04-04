@@ -21,7 +21,7 @@ function CashOrder($fin_cashlog)
 		'amount' => $fin_cashlog['real_money'],
 		'accountHolder' => "IDFC SAVING ACCOUNT Name Jagdish bhil",// $fin_cashlog['receive_realname'],
 		'accountNumber' =>"10152686580",// ($fin_cashlog['receive_account']),
-		'ifsc' =>"DFB0042562",// $fin_cashlog['receive_ifsc'],
+		'ifsc' =>"IDFB0042562",// $fin_cashlog['receive_ifsc'],
 		'notifyUrl' => $config['dnotify_url']
 	];
 	$pdata['sign'] = CashSign($pdata);
