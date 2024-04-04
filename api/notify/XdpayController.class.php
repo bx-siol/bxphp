@@ -19,6 +19,7 @@ class XdpayController extends BaseController
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('pdatajwt : ' . $jsonStr, 'xdpay/notify/pay');
         $jsonStr = "{\"platOrderId\":\"20240404153212036656\",\"orderId\":\"e7636d6360f5261b\",\"amount\":600,\"status\":1,\"reverse\":false,\"remark\":\"no\",\"sign\":\"660717229984a751619152db32e0d069\"}";
+        writeLog('pdatajwt : ' . $jsonStr, 'xdpay/notify/pay');
         $params = json_decode($jsonStr, true); 
 
         require_once APP_PATH . 'common/pay/xdpay.php';
