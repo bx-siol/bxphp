@@ -92,7 +92,7 @@ function paySign($params)
 		if (empty ($key) || empty ($value) || $key == 'sign') {
 			continue;
 		}
-		$signOriginStr .=  "$key=$value&";
+		$signOriginStr .=  "$key=".  strval($value)."&";
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";	
 	writeLog('signOriginStr : ' . $signOriginStr, 'xdpay/notify/pay');
