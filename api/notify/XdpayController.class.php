@@ -18,16 +18,18 @@ class XdpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('pdatajwt : ' . $jsonStr, 'xdpay/notify/pay');
-        
+        $jsonStr = "{\"platOrderId\":\"20240404153212036656\",\"orderId\":\"e7636d6360f5261b\",\"amount\":600,\"status\":1,\"reverse\":false,\"remark\":\"no\",\"sign\":\"660717229984a751619152db32e0d069\"}";
+        $params = json_decode($jsonStr, true); 
+
         require_once APP_PATH . 'common/pay/xdpay.php';
-        $sign = paySign($rdata, true);
+        $sign = paySign($params, true);
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $rdata['payment'] == '支付成功' ? 1 : -1,
-            'osn' => $rdata['order_no'],
-            'amount' => $rdata['order_amount'],
+            'code' => $params['status'] == '1' ? 1 : -1,
+            'osn' => $params['orderId'],
+            'amount' => $params['amount'],
             'successStr' => 'success'
         ];
         $this->payAct($pdata,'xdpay');
