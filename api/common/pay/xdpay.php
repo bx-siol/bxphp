@@ -62,6 +62,7 @@ function balance()
 	if ($result['code'] != 1)
 		return $result;
 
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($resultArr['code'] != '200') {
