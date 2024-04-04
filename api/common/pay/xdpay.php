@@ -94,8 +94,7 @@ function paySign($params)
 				$value = 'true';		
 			else
 				$value = 'false';
-		}
-		
+		}		
 
 		if (empty ($key) || empty ($value) || $key == 'sign') {
 			continue;
