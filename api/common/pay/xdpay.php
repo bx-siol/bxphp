@@ -94,7 +94,7 @@ function paySign($params)
 		}
 		$signOriginStr .=  "$key=$value&";
 	}
-    $signOriginStr = $signOriginStr . "key=$appSecret";
-	
+    $signOriginStr = $signOriginStr . "key=$appSecret";	
+	writeLog('signOriginStr : ' . $signOriginStr, 'xdpay/notify/pay');
     return  strtolower(md5($signOriginStr));
 }
