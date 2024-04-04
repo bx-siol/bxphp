@@ -25,25 +25,25 @@ function CashOrder($fin_cashlog)
 		'notifyUrl' => $config['dnotify_url']
 	];
 	$pdata['sign'] = CashSign($pdata);
-	$url = $config['dpay_url'];
+	
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	$result = CurlPost($url, $pdata, 30);
+	$result = CurlPost($config['dpay_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	if ($resultArr['status'] != '1') {
+	if ($resultArr['status'] != '200') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
-		return ['code' => -1, 'msg' => $resultArr['msg']];
+		return ['code' => -1, 'msg' => $resultArr['message']];
 	}
 
 	$return_data = [
 		'code' => 1,
-		'msg' => $result['msg'],
+		'msg' => $result['message'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => $resultArr['msg']['transaction_id']
+			'out_osn' => $resultArr['data']['payOrderId']
 		]
 	];
 	return $return_data;
