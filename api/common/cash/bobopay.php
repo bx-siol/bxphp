@@ -16,7 +16,7 @@ function CashOrder($fin_cashlog)
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
 		'merchantId' => $config['mch_id'],
-		'orderid' => $fin_cashlog['osn'],
+		'orderId' => $fin_cashlog['osn'],
 		'timestamp' => time(),
 		'amount' => $fin_cashlog['real_money'],
 		'accountHolder' => "IDFC SAVING ACCOUNT Name Jagdish bhil",// $fin_cashlog['receive_realname'],
