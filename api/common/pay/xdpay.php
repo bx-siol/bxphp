@@ -31,7 +31,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	if ($result['code'] != 1) {
 		return $result;
 	}
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	
 	$resultArr = $result['output'];
 	if ($resultArr['code'] != '200') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
