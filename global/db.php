@@ -243,7 +243,8 @@ $_ENV['PAY_CONFIG']['cowpay'] = [
 $_ENV['PAY_CONFIG']['xdpay'] = [
 	'mch_id' => '48773549',
 	'mch_key' => 'd2902d76ca224fae9d2f0c50475323ed',
-	'pay_type' => '101', //通道编码
+	'pay_type' => '101', //代收通道编码
+	'dpay_type' => '101', //代付通道编码
 
 	'pay_url' => 'https://apis.xdpay168.com/client/collect/create',//代收
 	'dpay_url' => 'https://apis.xdpay168.com/client/pay/create',//代付

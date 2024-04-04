@@ -5,26 +5,25 @@ use think\facade\Db;
 
 function GetPayName()
 {
-	return "sunpay";
+	return "xdpay";
 }
 
 function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
-        'merchant' => '1.0',
-		'payCode' => $config['mch_id'],
-		'amount' => $config['notify_url'],
-        'orderId'=> $config['returnUrl'],
-		'notifyUrl' => $fin_paylog['osn'],
-		'callbackUrl' => $config['pay_type'],
+        'merchant' => $config['mch_id'],
+		'payCode' => $config['pay_type'],
+		'amount' => strval($fin_paylog['money']),
+        'orderId'=> $fin_paylog['osn'],
+		'notifyUrl' => $config['notify_url'],
 	];
     $pdata['sign'] = paySign($pdata);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = [];
 	try {
-		$result = curl_post2($config['pay_url'], $pdata, 30);
+		$result = CurlPost($config['pay_url'], $pdata, 30);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => ''];
 	}
@@ -33,19 +32,19 @@ function payOrder($fin_paylog, $sub_type = '')
 		return $result;
 	}
 	$resultArr = $result['output'];
-	if ($resultArr['respCode'] != 'SUCCESS') {
+	if ($resultArr['code'] != '200') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
-		return ['code' => -1, 'msg' => 'Channel is not open'];
+		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
 	$return_data = [
 		'code' => 1,
-		'msg' => $result['message'],
+		'msg' => $resultArr['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
-			'out_osn' => $resultArr['orderNo'],
-			'pay_url' => $resultArr['payInfo'] 
+			'out_osn' => '',
+			'pay_url' => $resultArr['data']['url'] 
 		]
 	];
 	return $return_data;
@@ -56,26 +55,26 @@ function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
 	$pdata = [
-		'mch_id' => $config['mch_id'],
+		'merchant' => $config['mch_id'],
 	];
 	$pdata['sign'] = pay1Sign($pdata);
-	$pdata['sign_type'] = 'MD5';
-	$result = curl_post2($config['balance_url'], $pdata, 30);
+	$result = CurlPost($config['balance_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
+
 	$resultArr = $result['output'];
 	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	if ($resultArr['respCode'] != 'SUCCESS') {
+	if ($resultArr['code'] != '200') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
-		return ['code' => -1, 'msg' => $resultArr['errorMsg']];
+		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 	$return_data = [
 		'code' => 1,
 		'msg' => $resultArr['respCode'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['amount'],
-			'payout_balance' => $resultArr['availableAmount'],
+			'balance' => $resultArr['data']['balanceAll'],
+			'payout_balance' => $resultArr['data']['balanceUsable'],
 		]
 	];
 	return $return_data;
@@ -89,26 +88,11 @@ function paySign($params)
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
-		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type' || $key == 'signType') {
+		if (empty ($key) || empty ($value) || $key == 'sign') {
 			continue;
 		}
 		$signOriginStr .=  "$key=$value&";
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";
-    return  md5($signOriginStr);
-}
-
-function pay1Sign($params)
-{
-    ksort($params);
-    $config = $_ENV['PAY_CONFIG'][GetPayName()];
-    $appSecret = $config['dmch_key'];
-    foreach ($params as $key => $value) {
-		if (empty ($key) || empty ($value) || $key == 'sign' || $key == 'sign_type' || $key == 'signType') {
-			continue;
-		}
-		$signOriginStr .=  "$key=$value&";
-	}
-    $signOriginStr = $signOriginStr . "key=$appSecret";
-    return  md5($signOriginStr);
+    return  strtolower(md5($signOriginStr));
 }

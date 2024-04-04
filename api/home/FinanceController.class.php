@@ -126,6 +126,8 @@ class FinanceController extends BaseController
 					$file_name = 'sunpay';
 				} elseif (in_array($params['pay_type'], ['cowpay'])) {
 					$file_name = 'cowpay';
+				} elseif (in_array($params['pay_type'], ['xdpay'])) {
+					$file_name = 'xdpay';
 				} else {
 					$pay_type_arr = explode('_', $params['pay_type']);
 					$file_name = trim($pay_type_arr[0]);
@@ -147,6 +149,8 @@ class FinanceController extends BaseController
 				} elseif (($params['pay_type'] == 'sunpay')) {
 					$sub_pay_type = 1;
 				} elseif (($params['pay_type'] == 'cowpay')) {
+					$sub_pay_type = 1;
+				} elseif (($params['pay_type'] == 'xdpay')) {
 					$sub_pay_type = 1;
 				}
 
