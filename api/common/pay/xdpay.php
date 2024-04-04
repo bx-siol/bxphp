@@ -89,10 +89,15 @@ function paySign($params)
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
+		if($value == true)		
+			$value = 'true';		
+		else
+			$value = 'false';
+		
 		if (empty ($key) || empty ($value) || $key == 'sign') {
 			continue;
 		}
-		$signOriginStr .=  "$key=".  strval($value)."&";
+		$signOriginStr .=  "$key=$value&";
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";	
 	writeLog('signOriginStr : ' . $signOriginStr, 'xdpay/notify/pay');
