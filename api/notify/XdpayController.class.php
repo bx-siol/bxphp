@@ -40,7 +40,6 @@ class XdpayController extends BaseController
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('pdatajwt : ' . $jsonStr, 'xdpay/notify/cash');
         $params = json_decode($jsonStr, true);
-        $rdata = json_decode(urldecode($params["transdata"]), true);
 
         require_once APP_PATH . 'common/cash/xdpay.php';
         $sign = CashSign($rdata);
@@ -58,5 +57,16 @@ class XdpayController extends BaseController
             'failStr' => 'success'
         ];
         $this->cashAct($pdata);
+    }
+
+    
+    public function _order()
+    {
+		$params = $this->params;
+        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+        require_once APP_PATH . 'common/cash/bobopay.php';
+        $result = CashOrder($fin_cashlog);
+        
+	    return $result;
     }
 }

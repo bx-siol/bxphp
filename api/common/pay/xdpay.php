@@ -58,7 +58,7 @@ function balance()
 	$pdata = [
 		'merchant' => $config['mch_id'],
 	];
-	$pdata['sign'] = pay1Sign($pdata);
+	$pdata['sign'] = paySign($pdata);
 	$result = CurlPost($config['balance_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
