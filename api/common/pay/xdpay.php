@@ -85,7 +85,7 @@ function balance()
 //签名
 function paySign($params)
 {
-    //ksort($params);
+    ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
