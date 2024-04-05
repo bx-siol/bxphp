@@ -260,7 +260,7 @@ $_ENV['PAY_CONFIG']['lamepay'] = [
 	'mch_key' => 'OGQyMTQ1ODlmNjAxNDYwMjllYWFiZjMxYmFlNDdjZGE=',
 	'iv' => '0123456789uvwxyz',
 
-	'url' => 'http://api.d.lamepay.com',
+	'url' => 'https://api.lamepay.com',
 
 	'pay_url' => '/lametxn/gen/recharge', //代收
 	'dpay_url' => '/lametxn/gen/withdraw', //代付

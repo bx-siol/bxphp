@@ -10,7 +10,8 @@ function GetPayName()
 function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
-
+	//NjE3MGU2NzRjOWNhNDMxOGFlOTkyYjAwMmU1NTk2YTA=
+	//XjK6o8V646gv+CO8VHbePg==
 	$name = getRsn();
 	$rand_arr = [6, 7, 8, 9];
 	$phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999);
