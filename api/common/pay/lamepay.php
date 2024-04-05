@@ -27,6 +27,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	];
 	$pdata['sign'] = paySign($pdata);
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	writeLog($config['url'] . $config['pay_url'], GetPayName() . '/pay');
 	$result = CurlPost($config['url'] . $config['pay_url'], $pdata);
 	if ($result['code'] != 1)
 		return $result;
