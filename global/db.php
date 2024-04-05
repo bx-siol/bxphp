@@ -207,19 +207,19 @@ $_ENV['PAY_CONFIG']['sunpay'] = [
 	'mch_key' => 'd76276295d6f43c49d9e450327af4d2f',
 	'pay_type' => '173', //支付类型   商户后台获取商户信息-通道信息-通道代码
 
-	'pay_url' => 'https://pay.sunpayonline.xyz/pay/web',//代收
-	'dpay_url' => 'https://pay.sunpayonline.xyz/pay/transfer',//代付
-	'balance_url' => 'https://pay.sunpayonline.xyz/query/balance',//余额
+	'pay_url' => 'https://pay.sunpayonline.xyz/pay/web', //代收
+	'dpay_url' => 'https://pay.sunpayonline.xyz/pay/transfer', //代付
+	'balance_url' => 'https://pay.sunpayonline.xyz/query/balance', //余额
 
-	'payquery_url' => '',//收款查询
-	'dpayquery_url' => 'https://pay.sunpayonline.xyz/query/transfer',//代付查询
+	'payquery_url' => '', //收款查询
+	'dpayquery_url' => 'https://pay.sunpayonline.xyz/query/transfer', //代付查询
 
-	'utrorder_url' => '',//utr补单
-	'utrquery_url' => '',//utr查单
+	'utrorder_url' => '', //utr补单
+	'utrquery_url' => '', //utr查单
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/sunpay/pay',//代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/sunpay/cash'//代付回调
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/sunpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/sunpay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['cowpay'] = [
@@ -246,13 +246,27 @@ $_ENV['PAY_CONFIG']['xdpay'] = [
 	'pay_type' => '101', //代收通道编码
 	'dpay_type' => '101', //代付通道编码
 
-	'pay_url' => 'https://apis.xdpay168.com/client/collect/create',//代收
-	'dpay_url' => 'https://apis.xdpay168.com/client/pay/create',//代付
-	'balance_url' => 'https://apis.xdpay168.com/client/order/balance',//余额
+	'pay_url' => 'https://apis.xdpay168.com/client/collect/create', //代收
+	'dpay_url' => 'https://apis.xdpay168.com/client/pay/create', //代付
+	'balance_url' => 'https://apis.xdpay168.com/client/order/balance', //余额
 
-	'returnUrl' => 'https://' . PAY_BACKURL . '/',//同步回调
-	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/pay',//代收回调
-	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/cash'//代付回调
+	'returnUrl' => 'https://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
 ];
 
+$_ENV['PAY_CONFIG']['lamepay'] = [
+	'mch_id' => 'bQd137IZ/aphXzaVq3UClQ==',
+	'mch_key' => 'OGQyMTQ1ODlmNjAxNDYwMjllYWFiZjMxYmFlNDdjZGE=',
+	'iv' => '0123456789uvwxyz',
 
+	'url' => 'http://api.d.lamepay.com',
+
+	'pay_url' => '/lametxn/gen/recharge', //代收
+	'dpay_url' => '/lametxn/gen/withdraw', //代付
+	'balance_url' => '/lametxn/fetch/funds', //余额
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
+];

@@ -1,0 +1,125 @@
+<?php
+
+use Curl\Curl;
+use think\facade\Db;
+
+function GetPayName()
+{
+	return "lamepay";
+}
+function payOrder($fin_paylog, $sub_type = '')
+{
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+
+	$name = getRsn();
+	$rand_arr = [6, 7, 8, 9];
+	$phone = $rand_arr[mt_rand(0, count($rand_arr) - 1)] . mt_rand(1000, 9999) . mt_rand(10000, 99999);
+	$pdata = [
+		'authNo' => $config['mch_id'], //	是	string	支付提供给商家的唯一认证标识
+		'outTxnNo' =>	$fin_paylog['osn'], //是	string	商家充值唯一订单号，不可重复 
+		'txnAmount' => sprintf("%.2f", $fin_paylog['money']),	//是	number	交易金额(必须保留2位小数,四舍五入)
+		'txnCbUrl' => $config['notify_url'],	//是	string	回调地址
+		'txnEmail' => $phone . '@gmail.com',	//是	string	客户邮箱
+		'txnExtend' => $fin_paylog['osn'], //是	string	商家冗余字段，原样返回
+		'txnMobile' => $phone,	//是	string	充值用户手机号码(6789开头的10位数字，数字可以随机)
+		'txnName' => $name, //是	string	充值用户真实姓名
+		'txnType' => 'UPI', //是	string	充值交易类型，目前固定值 UPI 
+	];
+	$pdata['sign'] = paySign($pdata);
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	$result = CurlPost($config['url'] . $config['pay_url'], $pdata);
+	if ($result['code'] != 1)
+		return $result;
+
+	$resultArr = json_decode($result['output'], true);
+	if ($resultArr['code'] != '0000') {
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
+		return ['code' => -1, 'msg' => $resultArr['msg']];
+	}
+	$return_data = [
+		'code' => 1,
+		'msg' => $resultArr['msg'],
+		'data' => [
+			'mch_id' => $config['mch_id'],
+			'osn' => $fin_paylog['osn'],
+			'out_osn' => $resultArr['data']['txnNo'],
+			'pay_url' => $resultArr['data']['txnPayLink']
+		]
+	];
+	return $return_data;
+}
+
+//查询余额
+function balance()
+{
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+	$pdata = [
+		'authNo' => $config['mch_id'],
+		'currentTime' => time() * 1000
+	];
+	$rdata['sign'] = paySign($pdata);
+	$result = CurlPost($config['url'] . $config['balance_url'], $rdata);
+	if ($result['code'] != 1)
+		return $result;
+
+	$resultArr = json_decode($result['output'], true);
+	writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	if ($resultArr['code'] != "0000") {
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
+		return ['code' => -1, 'msg' => $resultArr['msg']];
+	}
+	$return_data = [
+		'code' => 1,
+		'msg' => $resultArr['msg'],
+		'data' => [
+			'merId' => $config['mch_id'],
+			'balance' => $resultArr["data"]['totalFunds'],
+			'payout_balance' => $resultArr["data"]['canWithdrawFunds'],
+		]
+	];
+	return $return_data;
+}
+
+
+function paySign($params)
+{
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+	$appSecret = $config['mch_key'];
+	$iv = $config['iv'];
+	ksort($params);
+	$signArr = [];
+	foreach ($params as $key => $item) {
+		if ($key != 'sign') {
+			if (in_array($key, ['txnAmount', 'txnFinalAmount'])) {
+				$signArr[] = $key . '=' . sprintf("%.2f", $item); // 保留2位小数
+			} else {
+				$signArr[] = $key . '=' . $item;
+			}
+		}
+	}
+	$signStr = implode('&', $signArr);
+	return encrypt($signStr, $appSecret, $iv);
+}
+
+function encrypt($text, $key, $iv)
+{
+	$size = 16;
+	$pad = $size - (strlen($text) % $size);
+	$padtext = $text . str_repeat(chr($pad), $pad);
+	$crypt = openssl_encrypt($padtext, "AES-256-CBC", base64_decode($key), OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
+	return base64_encode($crypt);
+}
+function decrypt($crypt, $key, $iv)
+{
+	$crypt = base64_decode($crypt);
+	$padtext = openssl_decrypt($crypt, "AES-256-CBC", base64_decode($key), OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
+	$pad = ord($padtext{
+		strlen($padtext) - 1});
+	if ($pad > strlen($padtext)) return false;
+	if (strspn($padtext, $padtext{
+		strlen($padtext) - 1}, strlen($padtext) - $pad) != $pad) {
+		$text = "Error";
+	}
+	$text = substr($padtext, 0, -1 * $pad);
+	return $text;
+}
