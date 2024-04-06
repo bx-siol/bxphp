@@ -270,3 +270,16 @@ $_ENV['PAY_CONFIG']['lamepay'] = [
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
 ];
+
+$_ENV['PAY_CONFIG']['kirinpay'] = [
+	'mch_id' => 'stage',
+	'mch_key' => 'STAGE_API_KEY',
+
+	'pay_url' => 'https://gw.kirinpayment.net/pay/unifiedorder', //代收
+	'dpay_url' => 'https://gw.kirinpayment.net', //代付
+	'balance_url' => 'https://gw.kirinpayment.net/mch/balance', //余额
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/kirinpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/kirinpay/cash' //代付回调
+];
