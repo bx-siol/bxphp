@@ -38,7 +38,6 @@ class XdpayController extends BaseController
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        $jsonStr="{\"platOrderId\":\"20240406192054985826\",\"orderId\":\"09ea7c1a8309ddc1\",\"amount\":200.22,\"status\":1,\"reverse\":false,\"remark\":\"IDFB0042562\",\"sign\":\"56a4b90ff545dd770c08826ffb07d599\"}";
         writeLog('pdatajwt : ' . $jsonStr, 'xdpay/notify/cash');
         $params = json_decode($jsonStr, true);
 
@@ -61,13 +60,13 @@ class XdpayController extends BaseController
     }
 
     
-    public function _order()
-    {
-		$params = $this->params;
-        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
-        require_once APP_PATH . 'common/cash/xdpay.php';
-        $result = CashOrder($fin_cashlog);
+    // public function _order()
+    // {
+	// 	$params = $this->params;
+    //     $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+    //     require_once APP_PATH . 'common/cash/xdpay.php';
+    //     $result = CashOrder($fin_cashlog);
         
-	    return $result;
-    }
+	//     return $result;
+    // }
 }
