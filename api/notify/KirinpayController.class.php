@@ -34,12 +34,15 @@ class KirinpayController extends BaseController
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
 
+        writeLog('rdata : ' . json_encode($rdata), 'kirinpay/notify/pay');
+
         $pdata = [
             'code' => $rdata['callbacks'] == 'CODE_SUCCESS ' ? 1 : -1,
             'osn' => $rdata['out_trade_no'],
             'amount' => $rdata['amount'],
             'successStr' => 'success'
         ];
+        writeLog('pdata : ' . json_encode($pdata), 'kirinpay/notify/pay');
         $this->payAct($pdata,'kirinpay');
     }
 
