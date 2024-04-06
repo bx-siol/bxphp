@@ -43,7 +43,7 @@ class XdpayController extends BaseController
 
         require_once APP_PATH . 'common/cash/xdpay.php';
         $sign = CashSign($params);
-        writeLog('sign : ' . $sign, 'xdpay/notify/cash');
+        //writeLog('sign : ' . $sign, 'xdpay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
