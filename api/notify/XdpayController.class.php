@@ -38,21 +38,22 @@ class XdpayController extends BaseController
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
+        $jsonStr="{\"platOrderId\":\"20240406192054985826\",\"orderId\":\"09ea7c1a8309ddc1\",\"amount\":200.22,\"status\":1,\"reverse\":false,\"remark\":\"IDFB0042562\",\"sign\":\"56a4b90ff545dd770c08826ffb07d599\"}";
         writeLog('pdatajwt : ' . $jsonStr, 'xdpay/notify/cash');
         $params = json_decode($jsonStr, true);
 
         require_once APP_PATH . 'common/cash/xdpay.php';
-        $sign = CashSign($rdata);
+        $sign = CashSign($params);
         writeLog('sign : ' . $sign, 'xdpay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $rdata['order_no'],
-            'out_osn' => $rdata['order_no'],
-            'pay_status' => $rdata['resp_code'] == 'S' ? 9 : 3,
-            'pay_msg' => $rdata['message'],
-            'amount' => $rdata['order_amount'],
+            'osn' => $params['orderId'],
+            'out_osn' => $params['platOrderId'],
+            'pay_status' => $params['status'] == 1 ? 9 : 3,
+            'pay_msg' => 'success',
+            'amount' => $params['amount'],
             'successStr' => 'success',
             'failStr' => 'success'
         ];

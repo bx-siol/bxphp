@@ -26,23 +26,23 @@ function CashOrder($fin_cashlog)
 
 	writeLog("pdata：" .json_encode($pdata), GetPayName() . '/cash');
 	$result = CurlPost($config['dpay_url'], $pdata, 30);
-	writeLog("result：" .json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');	
-	if ($result['response_code'] != 200)
+	if ($result['code'] != 1)
 		return $result;
-
+	
 	$resultArr = json_decode($result['output'], true);
-	if ($resultArr['code'] != 0) {
+	writeLog("result：" .json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
+	if ($resultArr['code'] != 200) {
 		writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
-		return ['code' => -1, 'msg' => $resultArr['message']];
+		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
 	$return_data = [
 		'code' => 1,
-		'msg' => $result['message'],
+		'msg' => $resultArr['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => ''
+			'out_osn' => $resultArr['data']['platOrderId']
 		]
 	];
 	return $return_data;
