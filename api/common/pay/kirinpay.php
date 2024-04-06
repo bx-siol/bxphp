@@ -72,7 +72,8 @@ function balance()
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
-    writeLog("data" .json_encode($resultArr['data'], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+    $data = $resultArr['data'];
+    writeLog("data" .json_encode($data), GetPayName() . '/balance');
     writeLog("balance" .strval($resultArr['data']['balance']) , GetPayName() . '/balance');
     $payout_balance = floatval($resultArr['data']['freeze_balance']) +floatval($resultArr['data']['total_money'])+floatval($resultArr['data']['use_balance']);
 	$return_data = [
