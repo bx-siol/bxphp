@@ -112,6 +112,5 @@ function encrypt($text, $key, $iv)
 	writeLog($text, GetPayName() . '/pay');
 	writeLog($padtext, GetPayName() . '/pay');
 	$crypt = openssl_encrypt($padtext, "AES-256-CBC", base64_decode($key), OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
-	writeLog($crypt, GetPayName() . '/pay');
 	return base64_encode($crypt);
 }
