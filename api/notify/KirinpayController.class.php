@@ -18,20 +18,25 @@ class KirinpayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         $jsonStr = "ext_data=123456789012&callbacks=CODE_SUCCESS&appid=stage&pay_type=upi&pay_time=1712417480&out_trade_no=db601521fb0a5563&amount=600.00&amount_true=600.00&out_uid=&sign=7C7C7ACD17D2026D1F937DE8EF4B7E7A";
-        writeLog('pdatajwt : ' . $jsonStr, 'kirinpay/notify/pay');
-        $params = json_decode($jsonStr, true); 
-        writeLog('params : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'kirinpay/notify/pay');
-        
+        $params = explode("&", $jsonStr);
+        if (!$params)
+            $params = $_POST;
+
+        foreach ($params as $k => $v) {
+            $arr = explode("=", $v);
+            $rdata[$arr[0]] = urldecode($arr[1]);
+        }
+
         require_once APP_PATH . 'common/pay/kirinpay.php';
-        $sign = paySign($params, true);
+        $sign = paySign($rdata, true);
         writeLog('sign : ' . $sign, 'kirinpay/notify/pay');
-        if ($sign != $params['sign'])
+        if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $params['callbacks'] == 'CODE_SUCCESS ' ? 1 : -1,
-            'osn' => $params['out_trade_no'],
-            'amount' => $params['amount'],
+            'code' => $rdata['callbacks'] == 'CODE_SUCCESS ' ? 1 : -1,
+            'osn' => $rdata['out_trade_no'],
+            'amount' => $rdata['amount'],
             'successStr' => 'success'
         ];
         $this->payAct($pdata,'kirinpay');
