@@ -15,7 +15,7 @@ function payOrder($fin_paylog, $sub_type = '')
         'appid' => $config['mch_id'],
 		'pay_type' => 'upi',
 		'trade_type' => 'account',
-		'amount' => strval($fin_paylog['money']),
+		'amount' => strval(number_format($fin_paylog['money'], 2, '.', '') ),
         'out_trade_no' => $fin_paylog['osn'],
         'callback_url' => $config['notify_url'],
         'version' => 'v2.0',
@@ -89,20 +89,15 @@ function balance()
 //签名
 function paySign($params)
 {
-  
+    ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
-    //去除空參數
-    $data = array_filter($params);
-    //签名步骤一：按字典序排序参数
-    ksort($data);
-    $string_a = http_build_query($data);
-    $string_a = urldecode($string_a);
-    //签名步骤二：在string后加入KEY
-    $string_sign_temp = $string_a . "&key=" . $appSecret;
-    //签名步骤三：MD5加密
-    $sign = md5($string_sign_temp);
-    //签名步骤四：所有字符转为大写
-    $result = strtoupper($sign);
-    return $result;
+    foreach ($params as $key => $value) {
+		if (empty ($key) || empty ($value) || $key == 'sign') {
+			continue;
+		}
+		$signOriginStr .=  "$key=$value&";
+	}
+    $signOriginStr = $signOriginStr . "key=$appSecret";
+    return  strtoupper(md5($signOriginStr));
 }
