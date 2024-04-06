@@ -71,16 +71,17 @@ function balance()
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
-    $data = json_decode($resultArr['data'], true);
-    writeLog("freeze_balance：" .$data['freeze_balance'] , GetPayName() . '/balance');
-    $payout_balance = floatval($data['freeze_balance']) +floatval($data['total_money'])+floatval($data['use_balance']);
+    writeLog("11111" , GetPayName() . '/balance');
+    writeLog("freeze_balance：" .$resultArr['data']['freeze_balance'] , GetPayName() . '/balance');
+    writeLog("22222" , GetPayName() . '/balance');
+    $payout_balance = floatval($resultArr['data']['freeze_balance']) +floatval($resultArr['data']['total_money'])+floatval($resultArr['data']['use_balance']);
 	$return_data = [
 		'code' => 1,
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
 			'balance' => $payout_balance,
-			'payout_balance' => $data['balance'],
+			'payout_balance' => $resultArr['data']['balance'],
 		]
 	];
 	return $return_data;
