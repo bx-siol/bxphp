@@ -50,7 +50,7 @@ function CashOrder($fin_cashlog)
 
 function CashSign($params)
 {
-	ksort($params);
+    ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
@@ -59,6 +59,6 @@ function CashSign($params)
 		}
 		$signOriginStr .=  "$key=$value&";
 	}
-    $signOriginStr = $signOriginStr . "key=$appSecret";    
-    return  md5($signOriginStr);
+    $signOriginStr = $signOriginStr . "key=$appSecret";
+    return  strtoupper(md5($signOriginStr));
 }
