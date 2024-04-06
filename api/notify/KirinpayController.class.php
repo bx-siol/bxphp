@@ -27,8 +27,8 @@ class KirinpayController extends BaseController
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $params['status'] == '1' ? 1 : -1,
-            'osn' => $params['orderId'],
+            'code' => $params['callbacks'] == 'CODE_SUCCESS ' ? 1 : -1,
+            'osn' => $params['out_trade_no'],
             'amount' => $params['amount'],
             'successStr' => 'success'
         ];
