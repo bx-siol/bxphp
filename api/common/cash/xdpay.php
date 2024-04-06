@@ -25,7 +25,7 @@ function CashOrder($fin_cashlog)
 	$rdata['sign'] = CashSign($pdata);
 
 	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/cash');
-	$result = curl_post($config['dpay_url'], $rdata, 30,'json');
+	$result = CurlPost($config['dpay_url'], $rdata, 30);
 	writeLog("result：" .json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');	
 	if ($result['response_code'] != 200)
 		return $result;
