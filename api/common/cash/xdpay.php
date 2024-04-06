@@ -29,7 +29,7 @@ function CashOrder($fin_cashlog)
 	if ($result['code'] != 1)
 		return $result;
 	
-	$resultArr = json_decode($result['output'], true);
+	$resultArr = $result['output'];
 	writeLog("result：" .json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	if ($resultArr['code'] != 200) {
 		writeLog('resultArr : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
@@ -60,7 +60,7 @@ function CashSign($params)
 			else
 				$value = 'false';
 		}
-		
+
 		if (empty ($key) || empty ($value) || $key == 'sign') {
 			continue;
 		}
