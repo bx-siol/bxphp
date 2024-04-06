@@ -27,8 +27,9 @@ function payOrder($fin_paylog, $sub_type = '')
 		'txnType' => 'UPI', //是	string	充值交易类型，目前固定值 UPI 
 	];
 	$pdata['sign'] = paySign($pdata);
-	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	writeLog($config['url'] . $config['pay_url'], GetPayName() . '/pay');
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+
 	$result = CurlPost($config['url'] . $config['pay_url'], $pdata);
 	if ($result['code'] != 1)
 		return $result;
@@ -108,6 +109,9 @@ function encrypt($text, $key, $iv)
 	$size = 16;
 	$pad = $size - (strlen($text) % $size);
 	$padtext = $text . str_repeat(chr($pad), $pad);
+	writeLog($text, GetPayName() . '/pay');
+	writeLog($padtext, GetPayName() . '/pay');
 	$crypt = openssl_encrypt($padtext, "AES-256-CBC", base64_decode($key), OPENSSL_RAW_DATA | OPENSSL_ZERO_PADDING, $iv);
+	writeLog($crypt, GetPayName() . '/pay');
 	return base64_encode($crypt);
 }
