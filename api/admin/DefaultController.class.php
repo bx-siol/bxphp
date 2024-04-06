@@ -588,7 +588,7 @@ class DefaultController extends BaseController
 		//今天会员
 		$today_member = Db::table('sys_user')->where("reg_time between {$today_start} and {$today_end} and gid=92 {$uWhere2}")->count('id');
 		//有效会员
-		$effective_member = Db::table('fin_paylog')->where("{$user_where_pay1} and is_first=1 {$uWhere22}")->count('id');
+		$effective_member = Db::table('sys_user')->where("first_pay_day > 0 and gid=92 {$uWhere2}")->count('id');
 		//无效会员
 		$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0 and gid=92 {$uWhere2} ")->count('id');
 
