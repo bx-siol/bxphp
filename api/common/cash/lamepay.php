@@ -71,7 +71,7 @@ function CashSign($params)
 		}
 	}
 	$signStr = implode('&', $signArr);
-	$signArr .= '&key=' . $appSecret;
+	$signStr .= '&key=' . $appSecret;
 	return encrypt($signStr, $appSecret, $iv);
 }
 
