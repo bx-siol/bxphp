@@ -23,7 +23,7 @@ class LamepayController extends BaseController
         if (!$params)
             $params = $_POST;
         require_once APP_PATH . 'common/pay/lamepay.php';
-        $sign = encrypt(paySign($params), $appSecret, $iv);
+        $sign = paySign($params);
         //writeLog($sign, 'lamepay/notify/pay');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
