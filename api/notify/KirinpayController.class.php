@@ -17,7 +17,7 @@ class KirinpayController extends BaseController
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        $json = "ext_data=123456789012&callbacks=CODE_SUCCESS&appid=stage&pay_type=upi&pay_time=1712418362&out_trade_no=71860be834be090c&amount=170.00&amount_true=170.00&out_uid=&sign=38EC1E37A8739122ED84F2FC790FE4EA";
+        $json = "ext_data=123456789012&callbacks=CODE_SUCCESS&appid=stage&pay_type=upi&pay_time=1712418528&out_trade_no=36dbe47d2cb7bcd4&amount=600.00&amount_true=600.00&out_uid=&sign=999B857DA7110F85A152FBA35F1B6B7A";
         writeLog('jsonStr : ' . $jsonStr, 'kirinpay/notify/pay');
         $params = explode("&", $jsonStr);
         if (!$params)
