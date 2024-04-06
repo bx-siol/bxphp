@@ -110,8 +110,7 @@ class BaseController extends CommonCtl
 				ReturnToJson(-1, 'fail1:' . $e->getMessage());
 			}
 		}
-		echo $pdata['successStr'];		
-        writeLog('jsonStr : ' . $pdata['successStr'], 'kirinpay/notify/pay');
+		echo $pdata['successStr'];
 	}
 
 	protected function cashAct($pdata = [])
