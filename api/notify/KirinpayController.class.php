@@ -45,7 +45,6 @@ class KirinpayController extends BaseController
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        $jsonStr = "{\"code\":\"CODE_FINISHED\",\"appid\":\"stage\",\"order_no\":\"STAGE-DF2885227692494426112\",\"pay_trade_no\":1712420546,\"out_trade_no\":\"97a823ede9af4ab2\",\"amount\":\"141.94\",\"fees\":\"0.00\",\"deal_time\":1712420546,\"remark\":\"STAGE\",\"utr\":\"123456789012\",\"reversal\":1,\"hold_on\":1,\"images\":[],\"err_msg\":null,\"sign\":\"C4DD0AC2B342F85319D7B4349B0A6236\"}";
         writeLog('pdatajwt : ' . $jsonStr, 'kirinpay/notify/cash');
         $params = json_decode($jsonStr, true);
         if (!$params)
@@ -53,7 +52,7 @@ class KirinpayController extends BaseController
 
         require_once APP_PATH . 'common/cash/kirinpay.php';
         $sign = CashSign($params);
-        writeLog('sign : ' . $sign, 'kirinpay/notify/cash');
+        //writeLog('sign : ' . $sign, 'kirinpay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
