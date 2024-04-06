@@ -24,13 +24,12 @@ function payOrder($fin_paylog, $sub_type = '')
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = CurlPost($config['pay_url'], $pdata, 30);
-
-    writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['code'] != 1) {
 		return $result;
 	}
 	
 	$resultArr = $result['output'];
+    writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($resultArr['code'] != '200') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
@@ -42,7 +41,7 @@ function payOrder($fin_paylog, $sub_type = '')
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
-			'out_osn' => $resultArr['url']['order_no'],
+			'out_osn' => $resultArr['data']['order_no'],
 			'pay_url' => $resultArr['url'] 
 		]
 	];
