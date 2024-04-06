@@ -94,6 +94,5 @@ function paySign($params)
 		$signOriginStr .=  "$key=$value&";
 	}
     $signOriginStr = $signOriginStr . "key=$appSecret";
-    writeLog('signOriginStr : ' . $signOriginStr, 'kirinpay/notify/pay');
     return  strtoupper(md5($signOriginStr));
 }
