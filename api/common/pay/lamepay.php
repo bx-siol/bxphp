@@ -109,6 +109,8 @@ function encrypt($text, $key, $iv)
 {
 	$size = 16;
 	$pad = $size - (strlen($text) % $size);
+	writeLog($pad, GetPayName() . '/pay');
+	writeLog(str_repeat(chr($pad), $pad), GetPayName() . '/pay');
 	$padtext = $text . str_repeat(chr($pad), $pad);
 	writeLog($text, GetPayName() . '/pay');
 	writeLog($padtext, GetPayName() . '/pay');
