@@ -64,7 +64,7 @@ class KirinpayController extends BaseController
     {
 		$params = $this->params;
         $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
-        require_once APP_PATH . 'common/cash/xdpay.php';
+        require_once APP_PATH . 'common/cash/kirinpay.php';
         $result = CashOrder($fin_cashlog);
         
 	    return $result;
