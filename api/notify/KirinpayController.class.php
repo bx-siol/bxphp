@@ -37,7 +37,7 @@ class KirinpayController extends BaseController
         writeLog('rdata : ' . json_encode($rdata), 'kirinpay/notify/pay');
 
         $pdata = [
-            'code' => $rdata['callbacks'] == 'CODE_SUCCESS ' ? 1 : -1,
+            'code' => $rdata['callbacks'] == 'CODE_SUCCESS' ? 1 : -1,
             'osn' => $rdata['out_trade_no'],
             'amount' => $rdata['amount'],
             'successStr' => 'success'
