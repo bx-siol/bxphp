@@ -101,6 +101,7 @@ function paySign($params)
 		}
 	}
 	$signStr = implode('&', $signArr);
+	$signArr .= '&key=' . $appSecret;
 	return encrypt($signStr, $appSecret, $iv);
 }
 
