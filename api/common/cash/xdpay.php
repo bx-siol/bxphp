@@ -22,10 +22,10 @@ function CashOrder($fin_cashlog)
 		'customName' => $fin_cashlog['receive_realname'],
 		'remark' => $fin_cashlog['receive_ifsc'],
 	];
-	$rdata['sign'] = CashSign($pdata);
+	$pdata['sign'] = CashSign($pdata);
 
-	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/cash');
-	$result = CurlPost($config['dpay_url'], $rdata, 30);
+	writeLog("pdata：" .json_encode($pdata), GetPayName() . '/cash');
+	$result = CurlPost($config['dpay_url'], $pdata, 30);
 	writeLog("result：" .json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');	
 	if ($result['response_code'] != 200)
 		return $result;
