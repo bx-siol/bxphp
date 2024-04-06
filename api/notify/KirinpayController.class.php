@@ -45,28 +45,24 @@ class KirinpayController extends BaseController
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
+        $jsonStr = "{\"code\":\"CODE_FINISHED\",\"appid\":\"stage\",\"order_no\":\"STAGE-DF2885227692494426112\",\"pay_trade_no\":1712420546,\"out_trade_no\":\"97a823ede9af4ab2\",\"amount\":\"141.94\",\"fees\":\"0.00\",\"deal_time\":1712420546,\"remark\":\"STAGE\",\"utr\":\"123456789012\",\"reversal\":1,\"hold_on\":1,\"images\":[],\"err_msg\":null,\"sign\":\"C4DD0AC2B342F85319D7B4349B0A6236\"}";
         writeLog('pdatajwt : ' . $jsonStr, 'kirinpay/notify/cash');
-        $params = explode("&", $jsonStr);
+        $params = json_decode($jsonStr, true);
         if (!$params)
             $params = $_POST;
 
-        foreach ($params as $k => $v) {
-            $arr = explode("=", $v);
-            $rdata[$arr[0]] = urldecode($arr[1]);
-        }
-
         require_once APP_PATH . 'common/cash/kirinpay.php';
-        $sign = CashSign($rdata);
+        $sign = CashSign($params);
         writeLog('sign : ' . $sign, 'kirinpay/notify/cash');
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $rdata['orderId'],
-            'out_osn' => $rdata['platOrderId'],
-            'pay_status' => $rdata['status'] == 1 ? 9 : 3,
+            'osn' => $params['out_trade_no'],
+            'out_osn' => $params['order_no'],
+            'pay_status' => $params['code'] == "CODE_FINISHED" ? 9 : 3,
             'pay_msg' => 'success',
-            'amount' => $rdata['amount'],
+            'amount' => $params['amount'],
             'successStr' => 'success',
             'failStr' => 'success'
         ];
