@@ -18,9 +18,9 @@ function CashOrder($fin_cashlog)
         'order_amount' => strval(floor($fin_cashlog['real_money'])),
         'pay_type' =>'india-bank-repay',
         'bank_name' => 'Canara Bank',
-        'bank_card' =>	'3339997788',			// $fin_cashlog['receive_account'],   //银行卡号
-        'bank_branch' => 'HDFC0000961',			// $fin_cashlog['receive_ifsc'],	//ifsc
-        'user_name' => ' Michael',				// $fin_cashlog['receive_realname'], //持卡人姓名
+        'bank_card' =>	$fin_cashlog['receive_account'],   //银行卡号
+        'bank_branch' => $fin_cashlog['receive_ifsc'],	//ifsc
+        'user_name' => $fin_cashlog['receive_realname'], //持卡人姓名
         'notify_url' => $config['dnotify_url'],
 	];
 	$rdata['sign'] = urlencode(CashSign($pdata));
