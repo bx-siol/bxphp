@@ -275,7 +275,7 @@ $_ENV['PAY_CONFIG']['kirinpay'] = [
 	'mch_id' => 'stage',
 	'mch_key' => 'STAGE_API_KEY',
 
-	'pay_url' => 'https://gw.kirinpayment.net/pay/unifiedorder', //代收
+	'pay_url' => 'https://gw.kirinpayment.net/pay/unifiedorder?format=json', //代收
 	'dpay_url' => 'https://gw.kirinpayment.net', //代付
 	'balance_url' => 'https://gw.kirinpayment.net/mch/balance', //余额
 

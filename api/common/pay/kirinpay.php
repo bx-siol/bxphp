@@ -23,7 +23,7 @@ function payOrder($fin_paylog, $sub_type = '')
     $pdata['sign'] = paySign($pdata);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	$result = curl_post2($config['pay_url'], $pdata, 30);
+	$result = CurlPost($config['pay_url'], $pdata, 30);
 
     writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	if ($result['code'] != 1) {
