@@ -17,6 +17,7 @@ class KirinpayController extends BaseController
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
+        writeLog('jsonStr : ' . $jsonStr, 'kirinpay/notify/pay');
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -28,11 +29,12 @@ class KirinpayController extends BaseController
 
         require_once APP_PATH . 'common/pay/kirinpay.php';
         $sign = paySign($rdata, true);
-        writeLog('sign : ' . $sign, 'kirinpay/notify/pay');
+        //writeLog('sign : ' . $sign, 'kirinpay/notify/pay');
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
 
         writeLog('rdata : ' . json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'kirinpay/notify/pay');
+        writeLog('out_trade_no : ' . $rdata['out_trade_no'], 'kirinpay/notify/pay');
         $pdata = [
             'code' => $rdata['callbacks'] == 'CODE_SUCCESS ' ? 1 : -1,
             'osn' => $rdata['out_trade_no'],
