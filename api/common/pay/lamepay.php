@@ -95,12 +95,12 @@ function paySign($params)
 	ksort($params);
 	$signArr = [];
 	foreach ($params as $key => $item) {
-		if ($key != 'sign') {
-			if (in_array($key, ['txnAmount', 'txnFinalAmount'])) {
-				$signArr[] = $key . '=' . sprintf("%.2f", $item); // 保留2位小数
-			} else {
-				$signArr[] = $key . '=' . $item;
-			}
+		if ($key == 'sign' || !$item)
+			continue;
+		if (in_array($key, ['txnAmount', 'txnFinalAmount'])) {
+			$signArr[] = $key . '=' . sprintf("%.2f", $item); // 保留2位小数
+		} else {
+			$signArr[] = $key . '=' . $item;
 		}
 	}
 	$signStr = implode('&', $signArr);
