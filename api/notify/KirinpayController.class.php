@@ -54,7 +54,7 @@ class KirinpayController extends BaseController
         require_once APP_PATH . 'common/cash/kirinpay.php';
         $sign = CashSign($params);
         writeLog('sign : ' . $sign, 'kirinpay/notify/cash');
-        if ($sign != $rdata['sign'])
+        if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
