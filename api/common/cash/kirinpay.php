@@ -42,7 +42,7 @@ function CashOrder($fin_cashlog)
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => $resultArr['data']['order_no']
+			'out_osn' => $resultArr['data']->order_no
 		]
 	];
     writeLog("return_data：" .json_encode($return_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
