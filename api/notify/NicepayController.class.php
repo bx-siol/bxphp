@@ -48,10 +48,12 @@ class NicepayController extends BaseController
 
         writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/notify/cash');
         require_once APP_PATH . 'common/cash/nicepay.php';
-        $sign = CashSign($params,true);
-        writeLog($sign, 'nicepay/notify/cash');
-        if ($sign != $params['sign'])
+        $sign_result = CashSign($params,true);
+        writeLog($sign_result, 'nicepay/notify/cash');
+        if (!$sign_result){            
             ReturnToJson(-1, 'Sign error');
+        }
+
         $pdata = [
             'osn' => $params['orderId'],
             'out_osn' => $params['orderId'],
