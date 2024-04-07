@@ -42,7 +42,10 @@ class NicepayController extends BaseController
         // $jsonStr = trim(file_get_contents('php://input'));
         // $params = json_decode($jsonStr, true); 
         // if (!$params)
+        $jsonStr = "{\"merId\":\"202403664\",\"orderId\":\"4e00ff0d133051be\",\"money\":\"172.96\",\"status\":\"1\",\"msg\":\"no\",\"nonceStr\":\"Pjg5vByNnEQJHpWtuqhZO0smaAeRL1kw\",\"sign\":\"Ju5z8QL24dF11zHicX+CPFAWq3hEBhC6ZydNSLa9s4m/PEa8+2ES5UGxxH6lzM0UedPX2vTV0lKe1jMp58A8WGlOIEfjvPGY5Ejwb1OkoZ+CoBnSXtXEPUE4u2hjXgD45XaMsYRFwnkXOtx8pCwO86M0KuxfwwZ3K0mp8IIAlmlGUW4p4KICfmG9Z1yttf/aQmcfRCNvUCU5boFuVf9KGkmYa5YXQOKhd5+o7xqBdvK+OfDX333BGPLHSXrn1uKU4sF2Tg/RYvYGeULFj8PnbydK5elOi9lNUzJ8EagfLxvEYinkDsHlMxSltm2lmyYUi9beRqqLcota40PnFIYhQA==\"}";
+        $params = json_decode($jsonStr, true); 
         $params = $_POST;
+        
         writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/notify/cash');
         require_once APP_PATH . 'common/cash/nicepay.php';
         $sign = CashSign($params);
