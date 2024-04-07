@@ -590,7 +590,10 @@ class DefaultController extends BaseController
 		//有效会员
 		$effective_member = Db::table('sys_user')->where("first_pay_day > 0 and gid=92 {$uWhere2}")->count('id');
 		//无效会员
-		$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0 and gid=92 {$uWhere2} ")->count('id');
+		//$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0 and gid=92 {$uWhere2} ")->count('id');
+		$Invalid_member = Db::query("select DISTINCT  a.id from sys_user a
+									inner join fin_paylog b on a.id = b.uid 
+									where a.first_pay_day = 0 and a.gid=92 and b.`status`=9  and a.id in ({$uid_str})");
 
 		$return_data = [
 			// 'total_lottery_money' => floatval($total_lottery_money),
@@ -601,7 +604,7 @@ class DefaultController extends BaseController
 			'total_member' => intval($total_member),
 			'today_member' => intval($today_member),
 			'effective_member' => intval($effective_member),
-			'Invalid_member' => intval($Invalid_member),
+			'Invalid_member' => count($Invalid_member),
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
