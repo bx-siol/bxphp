@@ -250,9 +250,9 @@ $_ENV['PAY_CONFIG']['xdpay'] = [
 	'dpay_url' => 'https://apis.xdpay168.com/client/pay/create', //代付
 	'balance_url' => 'https://apis.xdpay168.com/client/order/balance', //余额
 
-	'returnUrl' => 'https://' . PAY_BACKURL . '/', //同步回调
-	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
-	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['lamepay'] = [
@@ -269,4 +269,17 @@ $_ENV['PAY_CONFIG']['lamepay'] = [
 	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
+];
+
+$_ENV['PAY_CONFIG']['kirinpay'] = [
+	'mch_id' => 'stage',
+	'mch_key' => 'STAGE_API_KEY',
+
+	'pay_url' => 'https://gw.kirinpayment.net/pay/unifiedorder?format=json', //代收
+	'dpay_url' => 'https://gw.kirinpayment.net/mch/withdrawin', //代付
+	'balance_url' => 'https://gw.kirinpayment.net/mch/balance', //余额
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/kirinpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/kirinpay/cash' //代付回调
 ];

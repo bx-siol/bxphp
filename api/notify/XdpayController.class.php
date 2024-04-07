@@ -42,17 +42,17 @@ class XdpayController extends BaseController
         $params = json_decode($jsonStr, true);
 
         require_once APP_PATH . 'common/cash/xdpay.php';
-        $sign = CashSign($rdata);
-        writeLog('sign : ' . $sign, 'xdpay/notify/cash');
+        $sign = CashSign($params);
+        //writeLog('sign : ' . $sign, 'xdpay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $rdata['order_no'],
-            'out_osn' => $rdata['order_no'],
-            'pay_status' => $rdata['resp_code'] == 'S' ? 9 : 3,
-            'pay_msg' => $rdata['message'],
-            'amount' => $rdata['order_amount'],
+            'osn' => $params['orderId'],
+            'out_osn' => $params['platOrderId'],
+            'pay_status' => $params['status'] == 1 ? 9 : 3,
+            'pay_msg' => 'success',
+            'amount' => $params['amount'],
             'successStr' => 'success',
             'failStr' => 'success'
         ];
@@ -60,13 +60,13 @@ class XdpayController extends BaseController
     }
 
     
-    public function _order()
-    {
-		$params = $this->params;
-        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
-        require_once APP_PATH . 'common/cash/bobopay.php';
-        $result = CashOrder($fin_cashlog);
+    // public function _order()
+    // {
+	// 	$params = $this->params;
+    //     $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+    //     require_once APP_PATH . 'common/cash/xdpay.php';
+    //     $result = CashOrder($fin_cashlog);
         
-	    return $result;
-    }
+	//     return $result;
+    // }
 }

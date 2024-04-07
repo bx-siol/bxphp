@@ -513,7 +513,7 @@ class UserController extends BaseController
 	//转移所有下级
 	public function _transferAct()
 	{
-		$pageuser = checkPower();
+		$pageuser = checkPower('User_transfer');
 		$params = $this->params;
 
 		$from_account = $params['from_account'] ?? null;
@@ -578,7 +578,7 @@ class UserController extends BaseController
 	//转移自己及所有下级
 	public function _transferActOwn()
 	{
-		$pageuser = checkPower();
+		$pageuser = checkPower('User_transfer');
 		$params = $this->params;
 
 		$from_account = $params['from_account'] ?? null;
