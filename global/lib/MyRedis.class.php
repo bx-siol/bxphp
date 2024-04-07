@@ -175,7 +175,6 @@ class MyRedis
         } catch (\Exception $e) {
             $result = $default;
         }
-
         return $result;
     }
 
