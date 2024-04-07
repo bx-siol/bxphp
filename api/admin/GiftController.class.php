@@ -29,7 +29,7 @@ class GiftController extends BaseController
 			$prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
 			$randomNumber = mt_rand(0, count($prize_arr) - 1);
 			$prize = $prize_arr[$randomNumber];
-			if (empty ($prize)) {
+			if (empty($prize)) {
 				$prizeEmpty = array();
 				foreach ($prize_arr as $k) {
 					if ($k['type'] == 4)
@@ -90,7 +90,7 @@ class GiftController extends BaseController
 			$prize_arr = Db::query(" select * from gift_prize where probability = (select max(probability) from gift_prize)");
 			$randomNumber = mt_rand(0, count($prize_arr) - 1);
 			$prize = $prize_arr[$randomNumber];
-			if (empty ($prize)) {
+			if (empty($prize)) {
 				$prizeEmpty = array();
 				foreach ($prize_arr as $k) {
 					if ($k['type'] == 4)
@@ -318,7 +318,7 @@ class GiftController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		if ($params['s_keyword']) {
 			//$where .= " and (log.remark like '%{$params['s_keyword']}%')";
 
@@ -572,7 +572,7 @@ class GiftController extends BaseController
 		$params['s_status'] = intval($params['s_status']);
 
 		$where = "log.status<99";
-		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
@@ -798,8 +798,8 @@ class GiftController extends BaseController
 			}
 			$where .= " and log.uid in({$uid_str})";
 		}
-		$where .= empty ($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
-		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty($params['s_cid']) ? '' : " and log.cid={$params['s_cid']}";
+		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
 			$end_time = strtotime($params['s_end_time'] . ' 23:59:59');
@@ -923,8 +923,8 @@ class GiftController extends BaseController
 		if (!checkDataAction()) {
 			$where .= " and log.create_id={$pageuser['id']}";
 		}
-		$where .= empty ($params['s_status']) ? '' : " and log.status={$params['s_status']}";
-		$where .= empty ($params['s_keyword']) ? '' : " and (log.rsn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.name like '%{$params['s_keyword']}%')";
+		$where .= empty($params['s_status']) ? '' : " and log.status={$params['s_status']}";
+		$where .= empty($params['s_keyword']) ? '' : " and (log.rsn='{$params['s_keyword']}' or u.account='{$params['s_keyword']}' or log.name like '%{$params['s_keyword']}%')";
 		$count_item = Db::table('gift_redpack log')
 			->leftJoin('sys_user u', 'log.create_id=u.id')
 			->fieldRaw('count(1) as cnt,sum(log.receive_quantity) as receive_quantity,sum(log.receive_money) as receive_money')->where($where)->find();
@@ -1019,7 +1019,7 @@ class GiftController extends BaseController
 				$res = $model->insertGetId($db_data);
 				$db_data['id'] = $res;
 				//生成红包明细
-				require_once (LIB_PATH . 'Redpack.class.php');
+				require_once(LIB_PATH . 'Redpack.class.php');
 				$redpack = new Redpack($params['total_money'], $params['quantity']);
 				$resultArr = $redpack->getPack();
 				foreach ($resultArr as $mv) {
@@ -1119,7 +1119,6 @@ class GiftController extends BaseController
 			$uid_arr[] = $pageuser['id'];
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.create_id in ({$uid_str})";
-
 		}
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
