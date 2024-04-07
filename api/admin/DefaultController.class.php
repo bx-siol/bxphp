@@ -591,6 +591,7 @@ class DefaultController extends BaseController
 		$effective_member = Db::table('sys_user')->where("first_pay_day > 0 and gid=92 {$uWhere2}")->count('id');
 		//无效会员
 		//$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0 and gid=92 {$uWhere2} ")->count('id');
+		writeLog(json_encode($uid_str),'aaaa');
 		$Invalid_member = Db::query("select DISTINCT  a.id from sys_user a
 									inner join fin_paylog b on a.id = b.uid 
 									where a.first_pay_day = 0 and a.gid=92 and b.`status`=9  and a.id in ({$uid_str})");
