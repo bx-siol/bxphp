@@ -477,6 +477,7 @@ class DefaultController extends BaseController
 		$uWhere = '';
 		$uWhere2 = '';
 		$uWhere3 = '';
+		$uWhere4 = '';
 		$pidg = '1=1';
 		if (!checkDataAction()) {
 			$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
@@ -486,6 +487,7 @@ class DefaultController extends BaseController
 			$uWhere2 = " and id in ({$uid_str})";
 			$uWhere22 = " and uid in ({$uid_str})";
 			$uWhere3 = " and log.uid in ({$uid_str})";
+			$uWhere4 = " and a.id in ({$uid_str})";
 
 			if ($pageuser['gid'] == 71) {
 				$pidg = " su.pidg1 = {$pageuser['id']} ";
@@ -592,9 +594,10 @@ class DefaultController extends BaseController
 		//无效会员
 		//$Invalid_member = Db::table('sys_user')->where("first_pay_day = 0 and gid=92 {$uWhere2} ")->count('id');
 		writeLog(json_encode($uid_str),'aaaa');
+
 		$Invalid_member = Db::query("select DISTINCT  a.id from sys_user a
 									inner join fin_paylog b on a.id = b.uid 
-									where a.first_pay_day = 0 and a.gid=92 and b.`status`=9  and a.id in ({$uid_str})");
+									where a.first_pay_day = 0 and a.gid=92 and b.`status`=9  {$uWhere4} ");
 
 		$return_data = [
 			// 'total_lottery_money' => floatval($total_lottery_money),
