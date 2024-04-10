@@ -87,22 +87,28 @@ function sendbdjt($up_user, $money, $osn)
 	return curl_postd($url, $data);
 }
 
-// message 要记录的内容  logFile 文件名 只需要写文件名称，或者 目录/文件名
-function writeLog($message, $logFile = "sys")
+// 定义日志方法 自动判断文件目录是否存在，不存在则创建。并且自动检测当前文件是否存在，不存在则创建。文件路径可以自定义。如传入参数为'clisyslog/Error/'则创建日志文件为logs/clisyslog/Error/2019-08-01.log。判断文件大小，超过10M则自动分割。
+function writeLog($content, $dir = "sys")
 {
-	$time = date('Y-m-d');
-	$logFile = LOGS_PATH . $logFile . '/' . $time . '.log';
-	$timestamp = date('Y-m-d H:i:s');
-	$logContent = '[' . $timestamp . '] - ' . $message . PHP_EOL . PHP_EOL;
-	// 检查目录是否存在，不存在则创建
-	$directory = dirname($logFile);
-	if (!file_exists($directory)) {
-		mkdir($directory, 0777, true);
+	$log_file = LOGS_PATH . $dir . date('Y-m-d') . '.log';
+	$log_content = '[' . date('Y-m-d H:i:s') . '] - ' . $content .   PHP_EOL . PHP_EOL;
+	if (!file_exists($log_file)) {
+		$dir = dirname($log_file);
+		if (!file_exists($dir)) {
+			mkdir($dir, 0777, true);
+		}
+		file_put_contents($log_file, $log_content, FILE_APPEND);
+	} else {
+		$log_size = filesize($log_file);
+		if ($log_size > 10 * 1024 * 1024) {
+			$log_file_bak = $log_file . '_' . date('YmdHis') . '.bak';
+			rename($log_file, $log_file_bak); //备份日志文件
+			file_put_contents($log_file, $log_content, FILE_APPEND);
+		} else {
+			file_put_contents($log_file, $log_content, FILE_APPEND);
+		}
 	}
-	// 写入日志内容
-	file_put_contents($logFile, $logContent, FILE_APPEND | LOCK_EX);
 }
-
 
 
 
