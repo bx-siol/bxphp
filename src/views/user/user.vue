@@ -171,7 +171,7 @@
         </template>
 
         <template #summary="{ tdata }">
-            <div style="position: absolute;left: 1rem;">
+            <div style="position: absolute;width: 30px;height: 30px;bottom: 3rem;left: 0.4rem;">
                 <el-checkbox v-model="selectAll" size="large" @change="onSelectAll"></el-checkbox>
             </div>
             <span>账号数：{{ tdata.count }}</span>
