@@ -78,7 +78,7 @@
                 <span v-else class="gold">{{ t('无限制') }}</span>
               </template>
             </van-cell>
-            <van-collapse v-if="coupons != null && info.cid != 2" v-model="activeNames" class="collapse">
+            <van-collapse v-if="false" v-model="activeNames" class="collapse">
               <van-collapse-item :title="t('折扣券')" name="1">
                 <div class="Discount">
                   <div v-for="(item, index) in coupons" :key="index" :style="styles[index]"

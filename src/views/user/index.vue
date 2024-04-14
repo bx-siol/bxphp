@@ -81,7 +81,7 @@
                     <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
                     <van-cell class="financial_records" :title="t('财务记录')" :icon="financialrecords"
                         :to="{ name: 'Finance_balancelog' }"></van-cell>
-                    <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
+                    <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon" v-if="false"></van-cell>
                     <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox"
                         :to="{ name: 'Setting_bank' }"></van-cell>
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="ico_1062"
