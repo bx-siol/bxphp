@@ -9,7 +9,7 @@ function GetPayName()
 }
 function payOrder($fin_paylog, $sub_type = '')
 {
-	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
 		'merchant_code' => $config['mch_id'],				//	M	string	20	商户编号	平台分配的唯一编号
 		'order_no' => $fin_paylog['osn'],					//	M	string	30	商户订单号	平商户订单号，不可重复，最长30位
@@ -26,8 +26,8 @@ function payOrder($fin_paylog, $sub_type = '')
 	$rdata['sign'] = urlencode(paySign($pdata));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
 
-	writeLog("pdata：" .json_encode($pdata)."\r\n"."rdata：".json_encode($rdata), GetPayName() . '/pay');
-	$result = curl_post($config['pay_url'], $rdata, 30,'json');
+	writeLog(json_encode($pdata) . "\r\n" . json_encode($rdata), GetPayName() . '/pay');
+	$result = curl_post($config['pay_url'], $rdata, 30, 'json');
 	if ($result['response_code'] != 200)
 		return $result;
 
@@ -61,7 +61,7 @@ function balance()
 	$rdata['signtype'] = "MD5";
 	$rdata['sign'] = urlencode(paySign($pdata));
 	$rdata['transdata'] = urlencode(json_encode($pdata));
-	$result = curl_post($config['balance_url'], $rdata, 30,'json');
+	$result = curl_post($config['balance_url'], $rdata, 30, 'json');
 	if ($result['response_code'] != 200)
 		return $result;
 
@@ -90,9 +90,9 @@ function paySign($params, $verify = false)
 	$appSecret = $config['mch_key'];
 	$signOriginStr = '';
 	ksort($params);
-	foreach ($params as $key => $value) 
+	foreach ($params as $key => $value)
 		$signOriginStr = "$signOriginStr$key=$value&";
-	
-	$signOriginStr = $signOriginStr . "key=$appSecret";	
-    return  strtoupper(md5($signOriginStr));
+
+	$signOriginStr = $signOriginStr . "key=$appSecret";
+	return  strtoupper(md5($signOriginStr));
 }
