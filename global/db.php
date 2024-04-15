@@ -285,9 +285,9 @@ $_ENV['PAY_CONFIG']['kirinpay'] = [
 ];
 $_ENV['PAY_CONFIG']['usdtpay'] = [
 	'mch_id' => 'usdt',
-	'mch_key' => '12345678',
+	'mch_key' => '123456789',
 	'pay_url' => 'http://www.gamedreamer.in/api/v1/order/create-transaction', //代收
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/kirinpay/pay', //代收回调 
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/usdtpay/pay', //代收回调 
 ];
