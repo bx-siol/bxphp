@@ -116,7 +116,7 @@
                                 </div>
                                 <div style="position: absolute;top: 5.8rem;right: 0rem;">
                                   <span></span>
-                                  <span>{{ item.create_time.substring(0,5) }}</span>
+                                  <span>{{ item.create_time }}</span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
                                   <span>{{ t('收到的天数') }}: </span>
@@ -192,7 +192,7 @@
                                 </div>
                                 <div style="position: absolute;top: 5.8rem;right: 0rem;">
                                   <span></span>
-                                  <span>{{ item.create_time.substring(0,5) }}</span>
+                                  <span>{{ item.create_time }}</span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
                                   <span>{{ t('收到的天数') }}: </span>
