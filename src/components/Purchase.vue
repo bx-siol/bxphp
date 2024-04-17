@@ -114,6 +114,10 @@
                                     ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
                                 </div>
+                                <div style="position: absolute;top: 6.4rem;right: 1rem;">
+                                  <span></span>
+                                  <span>{{ item.create_time.substring(0,5) }}</span>
+                                </div>
                                 <div class="dailyearnings" v-if="false">
                                   <span>{{ t('收到的天数') }}: </span>
                                   <span style="color: #64503e;">{{ item.total_days }}</span>
@@ -185,6 +189,10 @@
                                   <span>
                                     ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
+                                </div>
+                                <div style="position: absolute;top: 6.4rem;right: 1rem;">
+                                  <span></span>
+                                  <span>{{ item.create_time.substring(0,5) }}</span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
                                   <span>{{ t('收到的天数') }}: </span>
