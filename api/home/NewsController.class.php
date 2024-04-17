@@ -81,7 +81,7 @@ class NewsController extends BaseController
 
 		$yes_or_no = getConfig('yes_or_no');
 		foreach ($list as &$item) {
-			$item['publish_time'] = date('m-d H:i', $item['publish_time']);
+			$item['publish_time'] = date('d/m/Y H:i', $item['publish_time']);
 			$item['is_recommend_flag'] = $yes_or_no[$item['is_recommend']];
 		}
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);
@@ -155,7 +155,7 @@ class NewsController extends BaseController
 		$cnf_problems = getConfig('cnf_problems');
 		$cnf_problem_status = getConfig('cnf_problem_status');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
 			$item['problem_flag'] = $cnf_problems[$item['problem']];
 			$item['status_flag'] = $cnf_problem_status[$item['status']];
 			$item['covers'] = json_decode($item['covers'], true);
@@ -242,7 +242,7 @@ class NewsController extends BaseController
 		if (!$item) {
 			ReturnToJson(-1, 'No corresponding record exists.');
 		}
-		$item['publish_time'] = date('m-d H:i', $item['publish_time']);
+		$item['publish_time'] = date('d/m/Y H:i', $item['publish_time']);
 		$pre = Db::table('news_article')->whereRaw("id<{$item['id']}")->field(['id', 'title'])->order(['id' => 'desc'])->limit(1)->find();
 		$next = Db::table('news_article')->whereRaw("id>{$item['id']}")->field(['id', 'title'])->order(['id' => 'asc'])->limit(1)->find();
 		$return_data = [

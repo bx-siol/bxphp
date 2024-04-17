@@ -448,8 +448,8 @@ class FinanceController extends BaseController
 		if (!$item) {
 			ReturnToJson(-1, 'No corresponding record exists.');
 		}
-		$item['create_time'] = date('m-d H:i:s', $item['create_time']);
-		$item['sub_time'] = date('m-d H:i:s', $item['sub_time']);
+		$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
+		$item['sub_time'] = date('d/m/Y H:i:s', $item['sub_time']);
 		$cnf_paylog_status = getConfig('cnf_paylog_status');
 		$cnf_protocal = getConfig('cnf_protocal');
 		$item['status_flag'] = lang($cnf_paylog_status[$item['status']]);
@@ -585,7 +585,7 @@ class FinanceController extends BaseController
 			$item['money'] = floatval($item['money']);
 			$item['rate'] = floatval($item['rate']);
 			$item['real_money'] = floatval($item['real_money']);
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['status_flag'] = $cnf_paylog_status[$item['status']];
 			$item['receive_protocol_flag'] = $cnf_protocal[$item['receive_protocol']];
 			$item['receive_type_flag'] = $cnf_banklog_type[$item['receive_type']];
@@ -807,7 +807,7 @@ class FinanceController extends BaseController
 		if (!$item) {
 			ReturnToJson(-1, 'No corresponding record exists.'); //Db::getLastSql()
 		}
-		$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+		$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 		$cnf_cashlog_status = getConfig('cnf_cashlog_status');
 		$cnf_banklog_type = getConfig('cnf_banklog_type');
 		$item['status_flag'] = $cnf_cashlog_status[$item['status']];
@@ -875,14 +875,14 @@ class FinanceController extends BaseController
 		foreach ($list as &$item) {
 			$item['money'] = floatval($item['money']);
 			$item['real_money'] = floatval($item['real_money']);
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['status_flag'] = $cnf_cashlog_status[$item['status']];
 			$item['pay_status_flag'] = $cnf_cashlog_pay_status[$item['pay_status']];
 
 			if (!$item['pay_time']) {
 				$item['pay_time'] = '/';
 			} else {
-				$item['pay_time'] = date('m-d H:i:s', $item['pay_time']);
+				$item['pay_time'] = date('d/m/Y H:i:s', $item['pay_time']);
 			}
 
 			if ($item['status'] == 9) {
@@ -967,7 +967,7 @@ class FinanceController extends BaseController
 			$item['money'] = floatval($item['money']);
 			$item['ori_balance'] = floatval($item['ori_balance']);
 			$item['new_balance'] = floatval($item['new_balance']);
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['type_flag'] = $cnf_balance_type[$item['type']];
 		}
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);
@@ -1046,7 +1046,7 @@ class FinanceController extends BaseController
 		foreach ($list as &$item) {
 			$item['money'] = floatval($item['money']);
 			$item['base_money'] = floatval($item['base_money']);
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['type_flag'] = lang($cnf_reward_type[$item['type']]);
 		}
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);

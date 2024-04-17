@@ -295,7 +295,7 @@ class GiftController extends BaseController
 
 		foreach ($list as &$item) {
 			$item['money'] = floatval($item['money']);
-			$item['receive_time'] = date('m-d H:i:s', $item['receive_time']);
+			$item['receive_time'] = date('d/m/Y H:i:s', $item['receive_time']);
 		}
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);
 		$return_data = [

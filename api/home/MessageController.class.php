@@ -33,7 +33,7 @@ class MessageController extends BaseController{
 		
 		$yes_or_no=getConfig('yes_or_no');
 		foreach($list as &$item){
-			$item['create_time']=date('m-d H:i',$item['create_time']);
+			$item['create_time']=date('d/m/Y H:i',$item['create_time']);
 			unset($item['id']);
 		}
 		$total_page=ceil($count_item['cnt']/$this->pageSize);
@@ -57,7 +57,7 @@ class MessageController extends BaseController{
 		if(!$item){
 			ReturnToJson(-1,'No corresponding record exists.');
 		}
-		$item['create_time']=date('m-d H:i',$item['create_time']);
+		$item['create_time']=date('d/m/Y H:i',$item['create_time']);
 		$item['content']=nl2br($item['content']);
 		$item['covers']=json_decode($item['covers'],true);
 		unset($item['id']);
@@ -147,7 +147,7 @@ class MessageController extends BaseController{
 		->toArray();
 		
 		foreach($list as &$item){
-			$item['create_time']=date('m-d H:i',$item['create_time']);
+			$item['create_time']=date('d/m/Y H:i',$item['create_time']);
 			if($item['fuid']==$pageuser['id']){
 				$item['from']='我';
 			}else{

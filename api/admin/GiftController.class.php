@@ -160,7 +160,7 @@ class GiftController extends BaseController
 		$cnf_prize_type = getConfig('cnf_prize_type');
 		$coupon_arr = rows2arr(Db::table('coupon_list')->where("status<99")->field(['id', 'name'])->select()->toArray());
 		foreach ($list as &$item) {
-			//$item['create_time']=date('m-d H:i:s',$item['create_time']);
+			//$item['create_time']=date('d/m/Y H:i:s',$item['create_time']);
 			$item['type_flag'] = $cnf_prize_type[$item['type']];
 			$item['probability'] = floatval($item['probability']);
 			$item['goods_name'] = '';
@@ -344,7 +344,7 @@ class GiftController extends BaseController
 		//$coupon_arr=rows2arr(Db::table('coupon_list')->where("status<99")->field(['id','name'])->select()->toArray());
 		$coupon_arr = [];
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['type_flag'] = $cnf_prize_type[$item['type']];
 			$user = getUserinfo($item['uid']);
 			$item['account'] = $user['account'];
@@ -540,7 +540,7 @@ class GiftController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['is_user_flag'] = $item['is_user'] == 0 ? '未抽奖' : '已抽奖';
 			if ($item['type'] == 1)
 				$item['typename'] = "余额";
@@ -740,7 +740,7 @@ class GiftController extends BaseController
 		}
 		$return_data = [
 			'effective_time' => $db_item['effective_time'],
-			'effective_time_flag' => date('m-d H:i:s', $db_item['effective_time']),
+			'effective_time_flag' => date('d/m/Y H:i:s', $db_item['effective_time']),
 			'gids' => $gids,
 			'goods' => $goods,
 			'type' => $db_item['type'],
@@ -835,9 +835,9 @@ class GiftController extends BaseController
 
 		$cnf_coupon_type = getConfig('cnf_coupon_type');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			if ($item['effective_time'] > 0) {
-				$item['effective_time_flag'] = date('m-d H:i:s', $item['effective_time']);
+				$item['effective_time_flag'] = date('d/m/Y H:i:s', $item['effective_time']);
 			} else {
 				$item['effective_time_flag'] = '永久有效';
 			}
@@ -938,7 +938,7 @@ class GiftController extends BaseController
 
 		$cnf_redpack_status = getConfig('cnf_redpack_status');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['status_flag'] = $cnf_redpack_status[$item['status']];
 		}
 		$return_data = [
@@ -1156,8 +1156,8 @@ class GiftController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
-			$item['receive_time'] = date('m-d H:i:s', $item['receive_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
+			$item['receive_time'] = date('d/m/Y H:i:s', $item['receive_time']);
 
 			// $user = getUserinfo($item['uid']);
 			// $item['account'] = $user['account'];

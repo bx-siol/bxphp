@@ -55,9 +55,9 @@ class CouponController extends BaseController
 		foreach ($list as &$item) {
 			$item['discount'] = floatval($item['discount']);
 			$item['money'] = floatval($item['money']);
-			$item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			if ($item['effective_time'] > 0) {
-				$item['effective_time'] = date('m-d H:i:s', $item['effective_time']);
+				$item['effective_time'] = date('d/m/Y H:i:s', $item['effective_time']);
 			} else {
 				$item['effective_time'] = 'Permanent';
 			}

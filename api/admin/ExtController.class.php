@@ -35,7 +35,7 @@ class ExtController extends BaseController
 
 		$cnf_service_type = getConfig('cnf_service_type');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['type_flag'] = $cnf_service_type[$item['type']];
 		}
 		$return_data = [
@@ -319,17 +319,17 @@ class ExtController extends BaseController
 			->toArray();
 		$cnf_task_status = getConfig('cnf_task_status');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['status_flag'] = $cnf_task_status[$item['status']];
 			if (!$item['submit_time']) {
 				$item['submit_time'] = '/';
 			} else {
-				$item['submit_time'] = date('m-d H:i:s', $item['submit_time']);
+				$item['submit_time'] = date('d/m/Y H:i:s', $item['submit_time']);
 			}
 			if (!$item['check_time']) {
 				$item['check_time'] = '/';
 			} else {
-				$item['check_time'] = date('m-d H:i:s', $item['check_time']);
+				$item['check_time'] = date('d/m/Y H:i:s', $item['check_time']);
 			}
 			$item['voucher'] = json_decode($item['voucher'], true);
 			if (!$item['voucher']) {
@@ -435,7 +435,7 @@ class ExtController extends BaseController
 		$cnf_task_status = getConfig('cnf_task_status');
 		$return_data = [
 			'status_flag' => $cnf_task_status[$db_data['status']],
-			'check_time' => date('m-d H:i:s', NOW_TIME)
+			'check_time' => date('d/m/Y H:i:s', NOW_TIME)
 		];
 		ReturnToJson(1, '操作成功', $return_data);
 	}

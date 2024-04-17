@@ -772,10 +772,10 @@ class UserController extends BaseController
 
 		$cnf_rauth_status = getConfig('cnf_rauth_status');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
-			$item['update_time'] = date('m-d H:i', $item['update_time']);
+			$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
+			$item['update_time'] = date('d/m/Y H:i', $item['update_time']);
 			if ($item['check_time']) {
-				$item['check_time'] = date('m-d H:i', $item['check_time']);
+				$item['check_time'] = date('d/m/Y H:i', $item['check_time']);
 			} else {
 				$item['check_time'] = '/';
 			}
@@ -834,7 +834,7 @@ class UserController extends BaseController
 		$return_data = [
 			'status' => $db_data['status'],
 			'status_flag' => $cnf_rauth_status[$db_data['status']],
-			'check_time' => date('m-d H:i', $db_data['check_time'])
+			'check_time' => date('d/m/Y H:i', $db_data['check_time'])
 		];
 		ReturnToJson(1, '操作成功', $return_data);
 	}
@@ -864,7 +864,7 @@ class UserController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
 		}
 		$data = [
 			'list' => $list,
@@ -992,7 +992,7 @@ class UserController extends BaseController
 			->select()->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['covers'] = json_decode($item['covers'], true);
 			if (!$item['covers']) {
 				$item['covers'] = [];
@@ -1058,7 +1058,7 @@ class UserController extends BaseController
 			->select()->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 		}
 		$data = [
 			'list' => $list,
@@ -1335,7 +1335,7 @@ class UserController extends BaseController
 		$zcz = $ztx = $jrcz = $jrtx = $jrcj = $jrhb = $yxhy = $jrsc = $jrzc = 0;
 
 		foreach ($list as &$itme) {
-			$itme['reg_time'] = date('m-d H:i:s', $itme['reg_time']);
+			$itme['reg_time'] = date('d/m/Y H:i:s', $itme['reg_time']);
 			$itme['gname'] = $sys_group[$itme['gid']];
 			$down_arr = getDownUser($itme['id'], false, $itme);
 			$down_arr[] = 0;

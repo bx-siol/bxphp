@@ -168,7 +168,7 @@ class SysController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['nickname'] = $item['account'];
 			$item['sql_str'] = stripslashes($item['sql_str']);
 		}
@@ -218,7 +218,7 @@ class SysController extends BaseController
 		$yes_no = getConfig('yes_or_no');
 		foreach ($list as &$item) {
 			if ($item['create_time']) {
-				$item['create_time'] = date('m-d H:i', $item['create_time']);
+				$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
 			}
 			$item['pname'] = $top_node[$item['pid']]['name'];
 			$item['type_flag'] = $yes_no[$item['type']];
@@ -802,7 +802,7 @@ class SysController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
 		}
 		$data = [
 			'list' => $list,
