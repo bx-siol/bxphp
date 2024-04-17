@@ -903,7 +903,6 @@ class ProductController extends BaseController
 			'is_exchange' => 0,
 			// 'err' => $err,
 		];
-
 	}
 
 	//积分商品
@@ -1099,7 +1098,7 @@ class ProductController extends BaseController
 			} else if (count($prizeArr) == 1)
 				$prize = $prizeArr[0];
 
-			if (empty ($prize)) {
+			if (empty($prize)) {
 				//查询除概率大于0的奖品
 				foreach ($prize_arr as $item)
 					$total += $item['probability'] * 100;
@@ -1113,7 +1112,7 @@ class ProductController extends BaseController
 					}
 				}
 			}
-			if (empty ($prize))
+			if (empty($prize))
 				$prize = $prizeEmpty;
 
 			Db::table('gift_prize_log')->insertGetId([
@@ -1137,7 +1136,7 @@ class ProductController extends BaseController
 
 		//检测当前用户是否是首次购买 
 		if ($check_num <= 0) {
-			$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->find();//送上级抽奖次数
+			$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->find(); //送上级抽奖次数
 			Db::table('sys_user')->where("id=" . $puser['id'])->update(['lottery' => $puser['lottery'] + intval($item['sjcjcs'])]);
 
 			//赠送上级最低奖项
@@ -1152,13 +1151,13 @@ class ProductController extends BaseController
 			} else if (count($sjprizeArr) == 1)
 				$prizeInfo = $sjprizeArr[0];
 
-			if (empty ($prizeInfo)) {
+			if (empty($prizeInfo)) {
 				usort($prize_arr, function (array $a, array $b) {
 					return $a['probability'] < $b['probability'];
 				});
 				$prizeInfo = $prize_arr[0];
 			}
-			if (empty ($prizeInfo))
+			if (empty($prizeInfo))
 				$prizeInfo = $prizeEmpty;
 
 			for ($i = 1; $i <= $item['sjcjcs']; $i++) {
@@ -1219,7 +1218,7 @@ class ProductController extends BaseController
 			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 
 		} else {
-			if ($item['price0'] > 0)//复购送自己
+			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'], 2, 10, 'Repeat purchase:' . $pro_order['osn']);
 		}
 
@@ -1256,8 +1255,6 @@ class ProductController extends BaseController
 		if ($item['selfbg'] > 0)  //送自己余额 不管什么情况都送
 			updateWalletBalanceAndLog($pageuser['id'], $item['selfbg'], 2, 10, 'Buy:' . $pro_order['osn']);
 		$this->afterPurchase($pageuser, $item);
-
-
 	}
 
 	//循环奖励
@@ -1266,7 +1263,7 @@ class ProductController extends BaseController
 		// 确定今天日期，用于每天重置奖励
 		$today = date("Y-m-d");
 		// 如果没有推荐人，不进行操作
-		if (empty ($user['pid']))
+		if (empty($user['pid']))
 			return;
 		$pid = $user['pid'];
 		// 当天推荐人数，使用Redis记录，可以快速读写，同时方便每天重置
@@ -1296,8 +1293,8 @@ class ProductController extends BaseController
 	public function auditReward($rewardAmount, $user)
 	{
 		Db::table('pro_audit')->insertGetId([
-			'user_id' => $user['id'],//发起人
-			'touser_id' => $user['pid'],//受益人
+			'user_id' => $user['id'], //发起人
+			'touser_id' => $user['pid'], //受益人
 			'status' => 0,
 			'time' => time(),
 			'remark' => "",
@@ -1347,7 +1344,7 @@ class ProductController extends BaseController
 
 		$now_day = date('Ymd');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
+			$item['create_time'] = date('y/d/m', $item['create_time']);
 			$item['money'] = floatval($item['money']);
 			$item['receive'] = 0;
 			if ($item['reward_day']) {
