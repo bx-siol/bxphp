@@ -1344,7 +1344,7 @@ class ProductController extends BaseController
 
 		$now_day = date('Ymd');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('y/d/m', $item['create_time']);
+			$item['create_time'] = date('d/m/Y', $item['create_time']);
 			$item['money'] = floatval($item['money']);
 			$item['receive'] = 0;
 			if ($item['reward_day']) {
