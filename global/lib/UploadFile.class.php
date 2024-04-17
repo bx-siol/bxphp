@@ -90,19 +90,19 @@ class UploadFile {
         $filename = $file['savepath'].$file['savename'];
         if(!$this->uploadReplace && is_file($filename)) {
             // 不覆盖同名文件
-            $this->error	=	'文件已经存在';//.$filename;
+            $this->error	=	'The file already exists';//.$filename;
             return false;
         }
         // 如果是图像文件 检测文件格式
         if( in_array(strtolower($file['extension']),array('gif','jpg','jpeg','bmp','png','swf'))) {
             $info   = getimagesize($file['tmp_name']);
             if(false === $info || ('gif' == strtolower($file['extension']) && empty($info['bits']))){
-                $this->error = '非法图像文件';
+                $this->error = 'Illegal image files';
                 return false;                
             }
         }
         if(!move_uploaded_file($file['tmp_name'], $this->autoCharset($filename,'utf-8','gbk'))) {
-            $this->error = '文件上传保存错误';
+            $this->error = 'File upload save error';
             return false;
         }
         if($this->thumb && in_array(strtolower($file['extension']),array('gif','jpg','jpeg','bmp','png'))) {
@@ -161,14 +161,14 @@ class UploadFile {
                 // 尝试创建目录
                 if(!mkdir($savePath)){
                     //$this->error  =  '上传目录'.$savePath.'不存在';
-                    $this->error  =  '上传目录不存在';
+                    $this->error  =  'The upload directory does not exist';
                     return false;
                 }
             }
         }else {
             if(!is_writeable($savePath)) {
                 //$this->error  =  '上传目录'.$savePath.'不可写';
-                $this->error  =  '上传目录不可写';
+                $this->error  =  'The upload directory is not writable';
                 return false;
             }
         }
@@ -209,7 +209,7 @@ class UploadFile {
             $this->uploadFileInfo = $fileInfo;
             return true;
         }else {
-            $this->error  =  '没有选择上传文件';
+            $this->error  =  'No option to upload file';
             return false;
         }
     }
@@ -230,13 +230,13 @@ class UploadFile {
             // 尝试创建目录
             if(!mkdir($savePath,0777,true)){
                 //$this->error  =  '上传目录'.$savePath.'不存在';
-                $this->error  =  '上传目录不存在';
+                $this->error  =  'The upload directory does not exist';
                 return false;
             }
         }else {
             if(!is_writeable($savePath)) {
                 //$this->error  =  '上传目录'.$savePath.'不可写';
-                $this->error  =  '上传目录不可写';
+                $this->error  =  'The upload directory is not writable';
                 return false;
             }
         }
@@ -276,7 +276,7 @@ class UploadFile {
             // 返回上传的文件信息
             return $info;
         }else {
-            $this->error  =  '没有选择上传文件';
+            $this->error  =  'No option to upload file';
             return false;
         }
     }
@@ -317,25 +317,25 @@ class UploadFile {
     protected function error($errorNo) {
          switch($errorNo) {
             case 1:
-                $this->error = '上传文件超过了upload_max_filesize限制';
+                $this->error = 'The uploaded file exceeds the upload_max_filesize limit';
                 break;
             case 2:
-                $this->error = '上传文件超过了max_file_size限制';
+                $this->error = 'The uploaded file exceeds the max_file_size limit';
                 break;
             case 3:
-                $this->error = '文件只有部分被上传';
+                $this->error = 'Only part of the file was uploaded';
                 break;
             case 4:
-                $this->error = '没有文件被上传';
+                $this->error = 'No files were uploaded';
                 break;
             case 6:
-                $this->error = '找不到临时文件夹';
+                $this->error = 'Temp folder not found';
                 break;
             case 7:
-                $this->error = '文件写入失败';
+                $this->error = 'File write failed';
                 break;
             default:
-                $this->error = '未知上传错误';
+                $this->error = 'Unknown upload error';
         }
         return ;
     }
@@ -412,25 +412,25 @@ class UploadFile {
         //文件上传成功，进行自定义规则检查
         //检查文件大小
         if(!$this->checkSize($file['size'])) {
-            $this->error = '上传文件大小不符';
+            $this->error = 'Uploaded file size does not match';
             return false;
         }
 
         //检查文件Mime类型
         if(!$this->checkType($file['type'])) {
             //$this->error = '上传文件MIME类型不允许！'.strtolower($file['type']);
-            $this->error = '上传文件MIME类型不允许';
+            $this->error = 'Upload file MIME type not allowed';
             return false;
         }
         //检查文件类型
         if(!$this->checkExt($file['extension'])) {
-            $this->error ='上传文件类型不允许';
+            $this->error ='Upload file type not allowed';
             return false;
         }
 
         //检查是否合法上传
         if(!$this->checkUpload($file['tmp_name'])) {
-            $this->error = '非法上传文件';
+            $this->error = 'Illegal file upload';
             return false;
         }
         return true;
