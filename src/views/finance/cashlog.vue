@@ -723,7 +723,7 @@ const onPlAction = (status: number) => {
             type: 'success',
             message: res.msg,
             onClose: () => {
-                // pageRef.value.doSearch()
+                pageRef.value.doSearch()
                 for (let i in res.data.list) {
                     let resItem = res.data.list[i]
                     let index = getActionIdxById(resItem.id)
