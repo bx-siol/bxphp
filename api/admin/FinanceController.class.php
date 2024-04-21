@@ -1093,7 +1093,7 @@ class FinanceController extends BaseController
 		} else {
 			foreach ($ids as $item_id) {
 				$result = $this->cashlogCheckAct($pageuser, $item_id, $params['status'], $params['s_paytype'], '', $params['s_paytype']);
-				writeLog(json_encode($result),'111111');
+				writeLog(json_encode($result),'aaa');
 				if ($result['code'] == 1) {
 					Db::commit();
 					$list[] = [
