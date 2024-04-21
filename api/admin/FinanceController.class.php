@@ -1048,7 +1048,6 @@ class FinanceController extends BaseController
 	//一键审核
 	public function _cashlog_check_all()
 	{
-		writeLog("一键审核","aaa");
 		$pageuser = checkPower();
 		$params = $this->params;
 		$params['status'] = intval($params['status']);
@@ -1077,7 +1076,6 @@ class FinanceController extends BaseController
 		}
 
 		if ($params['status'] == 9 && $params['falseflg'] == '0') {
-			writeLog("111","aaa");
 			//批量修改 fin_cashlog 的记录
 			$fin_cashlog = [
 				'status' => $params['status'],
@@ -1092,8 +1090,8 @@ class FinanceController extends BaseController
 			if ($res === false) {
 				ReturnToJson(-1, '系统繁忙请稍后再试');
 			}
+			$list =  Db::table('fin_cashlog')->where("id in(" . implode(',', $ids) . ")")->select();
 		} else {
-			writeLog("2222","aaa");
 			foreach ($ids as $item_id) {
 				$result = $this->cashlogCheckAct($pageuser, $item_id, $params['status'], $params['s_paytype'], '', $params['s_paytype']);
 				writeLog(json_encode($result),'aaa');
@@ -1110,10 +1108,6 @@ class FinanceController extends BaseController
 						'msg' => $result['msg']
 					];
 				}
-				$list[] = [
-					'id' => $item_id,
-					'data' => $result
-				];
 			}
 		}
 
