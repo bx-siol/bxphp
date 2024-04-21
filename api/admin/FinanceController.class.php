@@ -1048,6 +1048,7 @@ class FinanceController extends BaseController
 	//一键审核
 	public function _cashlog_check_all()
 	{
+		writeLog("一键审核",'aaa');
 		$pageuser = checkPower();
 		$params = $this->params;
 		$params['status'] = intval($params['status']);
