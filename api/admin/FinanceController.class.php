@@ -1103,11 +1103,11 @@ class FinanceController extends BaseController
 				];
 				if (isset ($v['pay_status'])) {
 					$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
-					$return_data['pay_status'] = $v['pay_status'];
-					$return_data['pay_status_flag'] = $cnf_cashlog_pay_status[$v['pay_status']];
+					$list[$k]['pay_status'] = $v['pay_status'];
+					$list[$k]['pay_status_flag'] = $cnf_cashlog_pay_status[$v['pay_status']];
 				}
 				if (isset ($fin_cashlog['pay_type'])) {
-					$return_data['pay_type'] = $fin_cashlog['pay_type'];
+					$list[$k]['pay_type'] = $fin_cashlog['pay_type'];
 				}
 			}
 		} else {
