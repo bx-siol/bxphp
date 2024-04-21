@@ -1095,6 +1095,7 @@ class FinanceController extends BaseController
 			foreach($list_All as $k =>$v)
 			{
 				$list[$k] = [
+					'id' =>$v['id'],
 					'status' => $fin_cashlog['status'],
 					'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
 					'check_remark' => $fin_cashlog['check_remark'],
