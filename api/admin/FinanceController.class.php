@@ -1110,7 +1110,7 @@ class FinanceController extends BaseController
 				}
 				$list[] = [
 					'id' => $item_id,
-					'data' => $result['data']
+					'data' => $result
 				];
 			}
 		}
