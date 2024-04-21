@@ -1098,7 +1098,7 @@ class FinanceController extends BaseController
 					'id' =>$v['id'],
 					'status' => $fin_cashlog['status'],
 					'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
-					'check_remark' => $fin_cashlog['check_remark'],
+					'pay_type_bf' => $fin_cashlog['check_remark'],
 					'check_time' => date('d/m/Y H:i', $fin_cashlog['check_time']),
 					'pay_time' => '/',
 				];
