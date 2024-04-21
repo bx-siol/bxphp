@@ -428,7 +428,6 @@ const update = (item: any,) => {
     actItem.value = item;
     configForm.value.visible = true;
     checkForm.value.id = item.id;
-    console.log(item);
 }
 const urlifsc = ref('')
 const ifsckey = ref(0)
@@ -643,7 +642,6 @@ const onSelectItem = (idx: number, ev: Boolean) => {
 
 const initSelectAll = () => {
     let isAll = true
-    console.log(selectAllArr.value)
     if (selectAllArr.value.length < 1) {
         isAll = false
     } else {
@@ -723,14 +721,16 @@ const onPlAction = (status: number) => {
             type: 'success',
             message: res.msg,
             onClose: () => {
-                pageRef.value.doSearch()
+                //pageRef.value.doSearch()
                 for (let i in res.data.list) {
                     let resItem = res.data.list[i]
                     let index = getActionIdxById(resItem.id)
-                    for (let j in resItem.data) {
-                        pageRef.value.tableData.list[index][j] = resItem.data[j]
+                    for (let j in resItem) {
+                        pageRef.value.tableData.list[index][j] = resItem[j]
                     }
                 }
+
+                
 
                 selectAll.value = false
                 selectAllArr.value = []
