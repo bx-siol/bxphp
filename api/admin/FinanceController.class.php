@@ -1100,6 +1100,7 @@ class FinanceController extends BaseController
 					'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
 					'pay_type_bf' => $fin_cashlog['check_remark'],
 					'check_time' => date('d/m/Y H:i', $fin_cashlog['check_time']),
+					'check_remark' => $fin_cashlog['check_remark'],
 					'pay_time' => '/',
 				];
 				if (isset ($v['pay_status'])) {
