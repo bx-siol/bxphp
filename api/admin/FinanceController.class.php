@@ -1090,7 +1090,26 @@ class FinanceController extends BaseController
 			if ($res === false) {
 				ReturnToJson(-1, '系统繁忙请稍后再试');
 			}
-			$list =  Db::table('fin_cashlog')->where("id in(" . implode(',', $ids) . ")")->select();
+			$list_All =  Db::table('fin_cashlog')->where("id in(" . implode(',', $ids) . ")")->select();
+			$cnf_cashlog_status = getConfig('cnf_cashlog_status');
+			foreach($list_All as $k =>$v)
+			{
+				$list[$k] = [
+					'status' => $fin_cashlog['status'],
+					'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
+					'check_remark' => $fin_cashlog['check_remark'],
+					'check_time' => date('d/m/Y H:i', $fin_cashlog['check_time']),
+					'pay_time' => date('d/m/Y H:i', $fin_cashlog['pay_time']),
+				];
+				if (isset ($v['pay_status'])) {
+					$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
+					$return_data['pay_status'] = $v['pay_status'];
+					$return_data['pay_status_flag'] = $cnf_cashlog_pay_status[$v['pay_status']];
+				}
+				if (isset ($fin_cashlog['pay_type'])) {
+					$return_data['pay_type'] = $fin_cashlog['pay_type'];
+				}
+			}
 		} else {
 			foreach ($ids as $item_id) {
 				$result = $this->cashlogCheckAct($pageuser, $item_id, $params['status'], $params['s_paytype'], '', $params['s_paytype']);
