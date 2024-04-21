@@ -1077,6 +1077,7 @@ class FinanceController extends BaseController
 		}
 
 		if ($params['status'] == 9 && $params['falseflg'] == '0') {
+			writeLog("111","aaa");
 			//批量修改 fin_cashlog 的记录
 			$fin_cashlog = [
 				'status' => $params['status'],
@@ -1092,6 +1093,7 @@ class FinanceController extends BaseController
 				ReturnToJson(-1, '系统繁忙请稍后再试');
 			}
 		} else {
+			writeLog("2222","aaa");
 			foreach ($ids as $item_id) {
 				$result = $this->cashlogCheckAct($pageuser, $item_id, $params['status'], $params['s_paytype'], '', $params['s_paytype']);
 				writeLog(json_encode($result),'aaa');
