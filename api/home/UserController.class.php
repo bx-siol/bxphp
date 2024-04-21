@@ -287,7 +287,7 @@ class UserController extends BaseController
 					if ($item["id"] == $v["uid"])
 						$item["assets"] = $v['assets'];
 
-				$item['reg_time'] = date('m-d H:i', $item['reg_time']);
+				$item['reg_time'] = date('d/m/Y H:i', $item['reg_time']);
 				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C' : 'D');
 				$item['first_pay_day_flag'] = $item['first_pay_day'] > 0 ? 'yes' : 'no';
 			}

@@ -352,11 +352,11 @@ class FinanceController extends BaseController
 			$item['money'] = floatval($item['money']);
 			$item['real_money'] = floatval($item['real_money']);
 			$item['rate'] = floatval($item['rate']);
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			if (!$item['pay_time']) {
 				$item['pay_time'] = '/';
 			} else {
-				$item['pay_time'] = date('m-d H:i:s', $item['pay_time']);
+				$item['pay_time'] = date('d/m/Y H:i:s', $item['pay_time']);
 			}
 			$item['is_first_flag'] = $yes_or_no[$item['is_first']];
 			$item['status_flag'] = $cnf_paylog_status[$item['status']];
@@ -514,7 +514,7 @@ class FinanceController extends BaseController
 				'status' => $fin_paylog['status'],
 				'status_flag' => $cnf_paylog_status[$fin_paylog['status']],
 				'check_remark' => $fin_paylog['check_remark'],
-				'pay_time' => empty ($fin_paylog['pay_time']) ? '/' : date('m-d H:i:s', $fin_paylog['pay_time'])
+				'pay_time' => empty ($fin_paylog['pay_time']) ? '/' : date('d/m/Y H:i:s', $fin_paylog['pay_time'])
 			];
 			if (isset ($fin_paylog['is_first'])) {
 				$yes_or_no = getConfig('yes_or_no');
@@ -758,16 +758,16 @@ class FinanceController extends BaseController
 			$item['money'] = floatval($item['money']);
 			$item['real_money'] = floatval($item['real_money']);
 			$item['fee'] = floatval($item['fee']);
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			if (!$item['check_time']) {
 				$item['check_time'] = '/';
 			} else {
-				$item['check_time'] = date('m-d H:i:s', $item['check_time']);
+				$item['check_time'] = date('d/m/Y H:i:s', $item['check_time']);
 			}
 			if (!$item['pay_time']) {
 				$item['pay_time'] = '/';
 			} else {
-				$item['pay_time'] = date('m-d H:i:s', $item['pay_time']);
+				$item['pay_time'] = date('d/m/Y H:i:s', $item['pay_time']);
 			}
 			$item['status_flag'] = $cnf_cashlog_status[$item['status']];
 			$item['pay_status_flag'] = $cnf_cashlog_pay_status[$item['pay_status']];
@@ -920,7 +920,7 @@ class FinanceController extends BaseController
 				'status' => $fin_cashlog['status'],
 				'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
 				'check_remark' => $fin_cashlog['check_remark'],
-				'check_time' => date('m-d H:i', $fin_cashlog['check_time'])
+				'check_time' => date('d/m/Y H:i', $fin_cashlog['check_time'])
 			];
 			if (isset ($fin_cashlog['pay_status'])) {
 				$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
@@ -999,8 +999,8 @@ class FinanceController extends BaseController
 				'status' => $fin_cashlog['status'],
 				'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
 				'check_remark' => $fin_cashlog['check_remark'],
-				'check_time' => date('m-d H:i', $fin_cashlog['check_time']),
-				'pay_time' => date('m-d H:i', $fin_cashlog['pay_time']),
+				'check_time' => date('d/m/Y H:i', $fin_cashlog['check_time']),
+				'pay_time' => date('d/m/Y H:i', $fin_cashlog['pay_time']),
 			];
 			if (isset ($fin_cashlog['pay_status'])) {
 				$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
@@ -1423,7 +1423,7 @@ class FinanceController extends BaseController
 		$cnf_banklog_status = getConfig('cnf_banklog_status');
 		$cnf_protocal = getConfig('cnf_protocal');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 			$item['type_flag'] = $cnf_banklog_type[$item['type']];
 			$item['status_flag'] = $cnf_banklog_status[$item['status']];
 			$item['protocal_flag'] = $cnf_protocal[$item['protocal']];
@@ -1641,8 +1641,8 @@ class FinanceController extends BaseController
 
 		$cnf_online_switch = getConfig('cnf_online_switch');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
-			$item['update_time'] = date('m-d H:i:s', $item['update_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
+			$item['update_time'] = date('d/m/Y H:i:s', $item['update_time']);
 			$item['status_flag'] = $cnf_online_switch[$item['status']];
 			if ($item['status'] == 3) {
 				$item['status_switch'] = true;
@@ -1771,8 +1771,8 @@ class FinanceController extends BaseController
 
 		$cnf_online_switch = getConfig('cnf_online_switch');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
-			$item['update_time'] = date('m-d H:i:s', $item['update_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
+			$item['update_time'] = date('d/m/Y H:i:s', $item['update_time']);
 			$item['status_flag'] = $cnf_online_switch[$item['status']];
 			if ($item['status'] == 3) {
 				$item['status_switch'] = true;

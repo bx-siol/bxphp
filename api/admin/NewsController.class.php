@@ -119,7 +119,7 @@ class NewsController extends BaseController
 		$sys_arc_status = getConfig('sys_arc_status');
 		$yes_or_no = getConfig('yes_or_no');
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
 			$item['publish_time_flag'] = date('Y-m-d H:i:s', $item['publish_time']);
 			$item['status_flag'] = $sys_arc_status[$item['status']];
 			$item['is_recommend_flag'] = $yes_or_no[$item['is_recommend']];
@@ -247,7 +247,7 @@ class NewsController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i', $item['create_time']);
 		}
 		$data = [
 			'list' => $list,

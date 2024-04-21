@@ -590,7 +590,7 @@ class SettingController extends BaseController
 
 	private function parseBanklog(&$item)
 	{
-		$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+		$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 		$cnf_banklog_type = getConfig('cnf_banklog_type');
 		$item['type_flag'] = $cnf_banklog_type[$item['type']];
 		if ($item['protocal']) {

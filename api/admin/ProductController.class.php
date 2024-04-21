@@ -1051,7 +1051,7 @@ class ProductController extends BaseController
 			->toArray();
 
 		foreach ($list as &$item) {
-			$item['create_time'] = date('m-d H:i:s', $item['create_time']);
+			$item['create_time'] = date('d/m/Y H:i:s', $item['create_time']);
 		}
 		$return_data = [
 			'list' => $list,
