@@ -62,9 +62,12 @@ function balance()
 		'authNo' => $config['mch_id'],
 		'currentTime' => time() * 1000
 	];
-	$rdata['sign'] = paySign($pdata);
-	$result = CurlPost($config['url'] . $config['balance_url'], $rdata);
-
+	$pdata['sign'] = paySign($pdata);
+	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
+	$url = $config['url'] . $config['balance_url'];
+	$result = CurlPost($url, $pdata);
+	writeLog("url" .$url, GetPayName() . '/balance');
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($result['code'] != 1)
 		return $result;
 

@@ -1090,9 +1090,32 @@ class FinanceController extends BaseController
 			if ($res === false) {
 				ReturnToJson(-1, '系统繁忙请稍后再试');
 			}
+			$list_All =  Db::table('fin_cashlog')->where("id in(" . implode(',', $ids) . ")")->select();
+			$cnf_cashlog_status = getConfig('cnf_cashlog_status');
+			foreach($list_All as $k =>$v)
+			{
+				$list[$k] = [
+					'id' =>$v['id'],
+					'status' => $fin_cashlog['status'],
+					'status_flag' => $cnf_cashlog_status[$fin_cashlog['status']],
+					'pay_type_bf' => $fin_cashlog['check_remark'],
+					'check_time' => date('d/m/Y H:i', $fin_cashlog['check_time']),
+					'check_remark' => $fin_cashlog['check_remark'],
+					'pay_time' => '/',
+				];
+				if (isset ($v['pay_status'])) {
+					$cnf_cashlog_pay_status = getConfig('cnf_cashlog_pay_status');
+					$list[$k]['pay_status'] = $v['pay_status'];
+					$list[$k]['pay_status_flag'] = $cnf_cashlog_pay_status[$v['pay_status']];
+				}
+				if (isset ($fin_cashlog['pay_type'])) {
+					$list[$k]['pay_type'] = $fin_cashlog['pay_type'];
+				}
+			}
 		} else {
 			foreach ($ids as $item_id) {
 				$result = $this->cashlogCheckAct($pageuser, $item_id, $params['status'], $params['s_paytype'], '', $params['s_paytype']);
+				writeLog(json_encode($result),'aaa');
 				if ($result['code'] == 1) {
 					Db::commit();
 					$list[] = [
