@@ -63,6 +63,7 @@ function balance()
 		'currentTime' => time() * 1000
 	];
 	$rdata['sign'] = paySign($pdata);
+	writeLog(json_encode($rdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$result = CurlPost($config['url'] . $config['balance_url'], $rdata);
 
 	if ($result['code'] != 1)
