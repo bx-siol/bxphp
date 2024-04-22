@@ -64,7 +64,7 @@ function balance()
 	];
 	$pdata['sign'] = paySign($pdata);
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	$result = CurlPost($config['url'] . $config['balance_url'], $pdata);
+	$result = curl_post($config['url'] . $config['balance_url'], $pdata);
 
 	if ($result['code'] != 1)
 		return $result;
