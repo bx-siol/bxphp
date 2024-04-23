@@ -196,7 +196,7 @@ class NewsController extends BaseController
 			[
 				'id', 'title', 'publish_time', 'is_recommend', 'author', 'cover', 'ndesc', 'content'
 			]
-		)
+		) 
 			->view(['news_category' => 'c'], ['name' => 'cat_name'], 'log.cid=c.id', 'LEFT')
 			->where($where)
 			->order(['log.id' => 'desc'])
