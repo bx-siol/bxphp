@@ -75,6 +75,7 @@ class BaseController extends CommonCtl
 				'fkey' => $order['osn'],
 				'remark' => 'Recharge:' . $pdata['amount']
 			], 1);
+			//LOGS_PATH
 			//writeLog("payAct:6" . $paytype . json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), $paytype . '/notify/pay');
 			if (!$result) {
 				throw new \Exception('流水记录写入失败');
