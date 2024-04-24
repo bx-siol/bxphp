@@ -439,4 +439,65 @@ class ExtController extends BaseController
 		];
 		ReturnToJson(1, '操作成功', $return_data);
 	}
+
+	////////////////////////////////////////////////////////////////////////////////
+	//银行卡
+	public function _bank()
+	{
+		$params = $this->params;
+		$where = "1=1";
+		$where .= empty ($params['s_keyword']) ? '' : " and (log.code='{$params['s_keyword']}' or log.name like'{$params['s_keyword']}')";
+		$count_item = Db::table('cnf_bank log')
+			->fieldRaw('count(1) as cnt')->where($where)->find();
+		$list = Db::view(['cnf_bank' => 'log'], ['*'])
+			->where($where)
+			->order(['log.id' => 'desc'])
+			->page($params['page'], $this->pageSize)
+			->select()
+			->toArray();
+		$return_data = [
+			'list' => $list,
+			'count' => $count_item['cnt'],
+			'limit' => $this->pageSize
+		];
+		if ($params['page'] < 2) {
+		}
+		ReturnToJson(1, 'ok', $return_data);
+	}
+
+	public function _bank_update()
+	{
+		$pageuser = checkPower();
+		$params = $this->params;
+		$item_id = intval($params['id']);
+		if (!$params['code']) {
+			ReturnToJson(-1, '请填写编号');
+		}
+		if (!$_POST['name']) {
+			ReturnToJson(-1, '请填写名称');
+		}
+		$db_data = [
+			'code' => $params['code'],
+			'name' => $params['name'],
+			'status' => 2,
+		];
+		try {
+			$model = Db::table('cnf_bank');
+			if ($item_id) {
+				$item = $model->where("id={$item_id}")->find();
+				if (!$item) {
+					ReturnToJson(-1, '不存在相应的记录');
+				}
+				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
+				$db_data['id'] = $item_id;
+			} else {
+				$res = $model->insertGetId($db_data);
+				$db_data['id'] = $res;
+			}
+		} catch (\Exception $e) {
+			ReturnToJson(-1, '系统繁忙请稍后再试' . $e->getMessage());
+		}
+		$return_data = [];
+		ReturnToJson(1, '操作成功', $return_data);
+	}
 }
