@@ -22,7 +22,7 @@ if ($lonflg <= 0) {
 while (true) {
 	$now_time = time();
 	$now_day = date('Ymd', $now_time);
-	$list = Db::table('sys_user')->where("first_pay_day >0 and teamcount >0 and lonflg=" . $lonflg)->order(['teamcount' => 'desc'])->limit(5)->select()->toArray();
+	$list = Db::table('sys_user')->where("first_pay_day >0 and teamcount >=0 and lonflg<=" . $lonflg)->order(['teamcount' => 'desc'])->limit(5)->select()->toArray();
 	if (!$list) {
 		output('没有数据暂停5秒');
 		sleep(5);
