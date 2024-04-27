@@ -118,7 +118,7 @@
                                   <span>{{ t('收到的天数') }}</span>
                                   <span style="color: #64503e;">{{ item.total_days }}</span>
                                 </div>
-                                <div class="dailyearnings" v-if="false">
+                                <div class="dailyearnings">
                                   <span>{{ t('数量') }}</span>
                                   <span style="color: #64503e;">{{ item.num }}</span>
                                 </div>
@@ -195,7 +195,7 @@
                                   <span>{{ t('收到的天数') }}</span>
                                   <span style="color: #64503e;">{{ item.total_days }}</span>
                                 </div>
-                                <div class="dailyearnings" v-if="false">
+                                <div class="dailyearnings">
                                   <span>{{ t('数量') }}</span>
                                   <span style="color: #64503e;">{{ item.num }}</span>
                                 </div>
@@ -336,8 +336,9 @@ const onPageSuccesso = (res: any) => {
   loadingShow.value = false;
   basicProjectsd.value.list = res.data
   var price = 0;
+  console.log(res.data)
   for (var i = 0; i < tableDatao.value.list.length; i++) {
-    price += tableDatao.value.list[i].price - 0
+    price += (tableDatao.value.list[i].price - 0)*tableDatao.value.list[i].num
   }
   t_investment.value = price;
 };
