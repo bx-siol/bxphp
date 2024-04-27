@@ -51,4 +51,9 @@ while (true) {
 			Db::rollback();
 		}
 	}
+	if (!$list) {
+		output('执行了一批，暂停3秒');
+		sleep(3);
+		continue;
+	}
 }
