@@ -160,6 +160,7 @@ const onclickPayItem = (idx: number, mval: any) => {
 }
 
 const onKyupAmount = () => {
+    money.value = money.value.replace(/\D/g, '');
     itemIdx.value = -1
 }
 const store = useStore()
