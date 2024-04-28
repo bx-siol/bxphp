@@ -328,6 +328,7 @@ class UserController extends BaseController
 			$where .= " and first_pay_day =0 ";
 
 		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' {$where} ")->field('id,pids,reg_time,account')->order("reg_time")->select()->toArray();
+		$newmember = Db::table('sys_user')->where(" pids like '%{$pageuser['id']}%' and DATE(FROM_UNIXTIME(reg_time)) = CURDATE() ")->count();
 
 		$today = date('Ymd');
 		foreach ($list as &$item) {
@@ -345,6 +346,7 @@ class UserController extends BaseController
 		}
 		$return_data = [
 			'list' => $list,
+			'newmember' => $newmember,
 			'fy' => getConfig('FYSZ'),
 		];
 		ReturnToJson(1, 'ok', $return_data);
