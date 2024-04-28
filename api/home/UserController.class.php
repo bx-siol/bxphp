@@ -334,6 +334,7 @@ class UserController extends BaseController
 			$pidsArr = explode(",", $item["pids"]);
 			$item["level"] = array_search($pageuser['id'], $pidsArr) + 1;
 			$item['reg_time_day'] = date('Ymd', $item['reg_time']);
+			$item['account'] = $item['account'];
 
 			if($item['reg_time_day'] == $today)
 				if($item["level"] == 1)
