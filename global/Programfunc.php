@@ -145,10 +145,10 @@ function updateUserTeamCount($uid)
 {
 	$uid = intval($uid);
 	$sql = " UPDATE sys_user
-	inner join  (select {$uid} as id, COUNT(1) as counts from sys_user  where  pids like '%{$uid}%') as b
+	inner join  (select {$uid} as id, COUNT(1) as counts from sys_user  where  pids like '%{$uid}%' and first_pay_day >0) as b
 	on sys_user.id=b.id
 	SET teamcount = b.counts
-	WHERE sys_user.id ={$uid} and b.first_pay_day >0";
+	WHERE sys_user.id ={$uid}";
 	$down_arr = Db::execute($sql);
 	return $down_arr;
 }
