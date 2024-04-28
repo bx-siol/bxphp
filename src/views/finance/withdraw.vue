@@ -241,12 +241,12 @@ const onSubmit = () => {
         }
     }
 
-    if (dataForm.money < min.value) {
+    if (Number(dataForm.money ) < min.value) {
         isRequest = false
         _alert('Minimum withdrawal amount is ' + min.value)
         return
     }
-    if (dataForm.money > max.value) {
+    if (Number(dataForm.money ) > max.value) {
         isRequest = false
         _alert('Maximum withdrawal amount is ' + max.value)
         return
