@@ -2,7 +2,7 @@
     <div class="paylogBox" style="height: 100%;overflow-y: auto;">
         <Nav leftText=''></Nav>
         <!-- <div class="addnumber">Add members</div>-->
-        <div style="width: 3rem;height: 3rem;background-color: #fff;border-radius: 3rem;text-align: center;line-height: 3rem;margin: 0 auto;color: red;">
+        <div style="width: 2.5rem;height: 1.7rem;background-color: #fff;border-radius: 100%;text-align: center;line-height: 1.7rem;margin: 0 auto;color: #84973b; font-weight: bold;">
             {{fy.newmember}}
         </div> 
         <div class="will">
@@ -459,7 +459,7 @@ const reload = () =>
     .will {
         margin: 1rem;
         border-radius: 10px;
-        margin-top: 4rem;
+        margin-top: 5rem;
         width: 88%;
 
         .card {
@@ -560,7 +560,7 @@ const reload = () =>
                     height: 3rem;
                     font-size: 0.8rem;
                     position: absolute;
-                    top: -5.5rem;
+                    top: -7rem;
                     display: flex;
                     justify-content: space-evenly;
                     align-items: center;
@@ -568,7 +568,7 @@ const reload = () =>
                     flex-direction: row-reverse;
 
                     .levelTabValidMember {
-                        width: 48%;
+                        width: 42%;
                         height: 2rem;
                         line-height: 2rem;
                         float: left;
@@ -581,7 +581,7 @@ const reload = () =>
                     }
 
                     .levelTabInactiveMember {
-                        width: 48%;
+                        width: 42%;
                         height: 2rem;
                         line-height: 2rem;
                         float: right;
