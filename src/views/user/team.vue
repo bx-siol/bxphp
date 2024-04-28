@@ -1,11 +1,11 @@
 <template>
     <div class="paylogBox" style="height: 100%;overflow-y: auto;">
         <Nav leftText=''></Nav>
-        <!-- <div class="addnumber">Add members</div>
+        <!-- <div class="addnumber">Add members</div>-->
         <div style="width: 3rem;height: 3rem;background-color: #fff;border-radius: 3rem;text-align: center;line-height: 3rem;margin: 0 auto;color: red;">
             {{fy.newmember}}
-        </div> -->
-        <!-- <div class="will">
+        </div> 
+        <div class="will">
             <div class="card">
                 <div class="item">
                     <p class="p1"> {{ effective }}</p>
@@ -14,27 +14,27 @@
                     <p class="p1">{{ invalid }}</p>
                 </div>
             </div>
-        </div> -->
+        </div>
 
         <div class="paylogBoxWrapper">
             <div class="list-box">
                 <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
-                    <div v-if="fy.newmember1" class="reddot" style="position: absolute;top:0.5rem;left: 6rem;"></div>
+                    <!-- <div v-if="fy.newmember1" class="reddot" style="position: absolute;top:0.5rem;left: 6rem;"></div>
                     <div v-if="fy.newmember2" class="reddot" style="position: absolute;top:0.5rem;left: 13.2rem;"></div>
-                    <div v-if="fy.newmember3" class="reddot" style="position: absolute;top:0.5rem;left: 20.7rem;"></div>
+                    <div v-if="fy.newmember3" class="reddot" style="position: absolute;top:0.5rem;left: 20.7rem;"></div> -->
                     <van-tab :title="fy.lv1">
                         <div class="levelTabMember">
                             <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">
                                 {{ t('Invalid Member') }}
-                                <p>{{ invalid }}</p>
+                                <!-- <p>{{ invalid }}</p> -->
                             </div>
-                            <div class="levelTabInactiveMember" @click="reload()" >
+                            <!-- <div class="levelTabInactiveMember" @click="reload()" >
                                 {{ t('Add members') }}
                                 <p> {{ fy.newmember }}</p>
-                            </div>
+                            </div> -->
                             <div class="levelTabValidMember" @click="SwitchMembers(1, 0)">
                                 {{ t('Active Member') }}
-                                <p> {{ effective }}</p>
+                                <!-- <p> {{ effective }}</p> -->
                             </div>
                         </div>
                         <MyListBase :url="requesturl1" ref="pageRef" @success="onPageSuccess">
@@ -45,7 +45,8 @@
                                     <p>{{ t('资产') }}</p>
                                     <p>{{ t('Is Get') }}</p>
                                 </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index" :style="item.reg_time_day== item.today?'color:red' : ''">
+                                <!-- :style="item.reg_time_day== item.today?'color:red' : ''" -->
+                                <div class="listitem" v-for="(item, index) in list" :key="index" > 
                                     <!-- <img :src="nestie"> -->
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
@@ -61,15 +62,15 @@
                         <div class="levelTabMember">
                             <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">
                                 {{ t('Invalid Member') }}
-                                <p>{{ invalid }}</p>
+                                <!-- <p>{{ invalid }}</p> -->
                             </div>
-                            <div class="levelTabInactiveMember" @click="reload()" >
+                            <!-- <div class="levelTabInactiveMember" @click="reload()" >
                                 {{ t('Add members') }}
                                 <p> {{ fy.newmember }}</p>
-                            </div>
+                            </div> -->
                             <div class="levelTabValidMember" @click="SwitchMembers(2, 0)">
                                 {{ t('Active Member') }}
-                                <p> {{ effective }}</p>
+                                <!-- <p> {{ effective }}</p> -->
                             </div>
                         </div>
                         <MyListBase :url="requesturl2" ref="pageRef1" @success="onPageSuccess">
@@ -80,7 +81,7 @@
                                     <p>{{ t('资产') }}</p>
                                     <p>{{ t('Is Get') }}</p>
                                 </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index" :style="item.reg_time_day== item.today?'color:red' : ''">
+                                <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
@@ -95,15 +96,15 @@
                         <div class="levelTabMember">
                             <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">
                                 {{ t('Invalid Member') }}
-                                <p>{{ invalid }}</p>
+                                <!-- <p>{{ invalid }}</p> -->
                             </div>
-                            <div class="levelTabInactiveMember" @click="reload()" >
+                            <!-- <div class="levelTabInactiveMember" @click="reload()" >
                                 {{ t('Add members') }}
                                 <p> {{ fy.newmember }}</p>
-                            </div>
+                            </div> -->
                             <div class="levelTabValidMember" @click="SwitchMembers(3, 0)">
                                 {{ t('Active Member') }}
-                                <p> {{ effective }}</p>
+                                <!-- <p> {{ effective }}</p> -->
                             </div>
                         </div>
                         <MyListBase :url="requesturl3" ref="pageRef2" @success="onPageSuccess">
@@ -114,7 +115,7 @@
                                     <p>{{ t('资产') }}</p>
                                     <p>{{ t('Is Get') }}</p>
                                 </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index" :style="item.reg_time_day== item.today?'color:red' : ''">
+                                <div class="listitem" v-for="(item, index) in list" :key="index">
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
@@ -491,7 +492,7 @@ const reload = () =>
     }
 
     .paylogBoxWrapper {
-        margin-top: 6rem;
+        // margin-top: 6rem;
         padding: 0 1rem;
         box-sizing: border-box;
 
@@ -556,7 +557,7 @@ const reload = () =>
                 }
 
                 .levelTabMember {
-                    height: 5rem;
+                    height: 3rem;
                     font-size: 0.8rem;
                     position: absolute;
                     top: -5.5rem;
@@ -567,8 +568,8 @@ const reload = () =>
                     flex-direction: row-reverse;
 
                     .levelTabValidMember {
-                        width: 30%;
-                        height: 4rem;
+                        width: 48%;
+                        height: 2rem;
                         line-height: 2rem;
                         float: left;
                         white-space: nowrap;
@@ -580,8 +581,8 @@ const reload = () =>
                     }
 
                     .levelTabInactiveMember {
-                        width: 30%;
-                        height: 4rem;
+                        width: 48%;
+                        height: 2rem;
                         line-height: 2rem;
                         float: right;
                         white-space: nowrap;

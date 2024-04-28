@@ -87,7 +87,7 @@
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="ico_1062"
                         v-if="false"></van-cell>
                     <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }">
-                    <div>join today：{{newmember}}</div>
+                        <!-- <div>join today：{{newmember}}</div> -->
                     </van-cell>
                     <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }" v-if="false"></van-cell>
                     <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
