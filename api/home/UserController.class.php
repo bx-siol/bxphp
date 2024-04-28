@@ -64,6 +64,8 @@ class UserController extends BaseController
 		->where("uid={$pageuser['id']} and create_day={$now_day} and (type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45)")
 		->sum('money');
 
+		$newmember = Db::table('sys_user')->where(" pids like '%{$pageuser['id']}%' and DATE(FROM_UNIXTIME(reg_time)) = CURDATE() ")->count();
+
 		$service_arr = [];
 		$up_users = getUpUser($pageuser['id'], true);
 		foreach ($up_users as $uv) {
@@ -108,6 +110,7 @@ class UserController extends BaseController
 			//'tprofit' => round(floatval($today_profit + $jrhb_money + $today_jfdh_money), 2),
 			'tprofit' => round(floatval($today_profit), 2),
 			'service_arr' => $service_arr,
+			'newmember' =>$newmember,
 			//'pidg1' => $ccth
 		];
 		ReturnToJson(1, 'ok', $return_data);
