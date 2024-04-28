@@ -328,9 +328,20 @@ class UserController extends BaseController
 			$where .= " and first_pay_day =0 ";
 
 		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' {$where} ")->field('id,pids')->order("reg_time")->select()->toArray();
+
+		$today = date('Ymd');
 		foreach ($list as &$item) {
 			$pidsArr = explode(",", $item["pids"]);
 			$item["level"] = array_search($pageuser['id'], $pidsArr) + 1;
+			$item['reg_time_day'] = date('Ymd', $item['reg_time']);
+
+			if($item['reg_time_day'] == $today)
+				if($item["level"] == 1)
+					$item["newmember1"] = true;
+				if($item["level"] == 2)
+					$item["newmember2"] = true;
+				if($item["level"] == 3)
+					$item["newmember3"] = true;
 		}
 		$return_data = [
 			'list' => $list,
