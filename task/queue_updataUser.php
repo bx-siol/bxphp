@@ -10,7 +10,7 @@ error_reporting(7);
 while (true) {
 	$now_time = time();
 	$now_day = date('Ymd', $now_time);
-	$list = Db::table('sys_user')->where(" first_pay_day >0 and lonflg=0")->order(['id' ])->page(1, 1)->select()->toArray();
+	$list = Db::table('sys_user')->where(" first_pay_day >0 and lonflg=0")->order(['id'])->page(1, 1)->select()->toArray();
 	if (!$list) {
 		output('没有数据暂停5秒');
 		sleep(5);
@@ -24,7 +24,7 @@ while (true) {
 			// $pidg2 = 0;
 			$teamcount = 0;
 			//更新用户的一级代理
-            
+
 			// //更新用户的团队人数
 			// if (!$user['teamcount']) {
 			$teamcount = updateUserTeamCount($user['id']);
@@ -34,8 +34,8 @@ while (true) {
 			$teamcount .= updateUserTeamCount($upuser['pid']);
 			$upuser1 = Db::table('sys_user')->where(" id=" . $upuser['pid'])->find();
 			$teamcount .= updateUserTeamCount($upuser1['pid']);
-            $config = $_ENV['PAY_CONFIG']['looplonflg'];
-            $lonflg=$config['lonflg']??1;
+			$config = $_ENV['PAY_CONFIG']['looplonflg'];
+			$lonflg = $config['lonflg'] ?? 1;
 			Db::table('sys_user')->where(' id=' . $user['id'] . ' or id=' . $user['pid'] . ' or id=' . $upuser['pid'], ' or id=' . $upuser1['pid'])->update(['lonflg' => $lonflg]);
 
 			Db::commit();

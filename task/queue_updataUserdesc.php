@@ -19,16 +19,16 @@ while (true) {
 
 	foreach ($list as $user) {
 		Db::startTrans();
-		try { 
-			$teamcount = 0; 
-			$teamcount = updateUserTeamCount($user['id']); 
+		try {
+			$teamcount = 0;
+			$teamcount = updateUserTeamCount($user['id']);
 			$teamcount .= updateUserTeamCount($user['pid']);
 			$upuser = Db::table('sys_user')->where(" id=" . $user['pid'])->find();
 			$teamcount .= updateUserTeamCount($upuser['pid']);
 			$upuser1 = Db::table('sys_user')->where(" id=" . $upuser['pid'])->find();
 			$teamcount .= updateUserTeamCount($upuser1['pid']);
 			$config = $_ENV['PAY_CONFIG']['looplonflg'];
-            $lonflg=$config['lonflg']??1;
+			$lonflg = $config['lonflg'] ?? 1;
 			Db::table('sys_user')->where(' id=' . $user['id'] . ' or id=' . $user['pid'] . ' or id=' . $upuser['pid'], ' or id=' . $upuser1['pid'])->update(['lonflg' => $lonflg]);
 
 			Db::commit();
@@ -36,5 +36,5 @@ while (true) {
 		} catch (\Exception $e) {
 			Db::rollback();
 		}
-	} 
+	}
 }

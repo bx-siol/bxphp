@@ -75,7 +75,7 @@ function sendbdjt($up_user, $money, $osn)
 		}
 	}
 	$account = rand(0, count($strarr) - 1);
-	$str = "订单号：{$osn}\n二级代理：{$pdig2}\n推荐人：{$tjr}\n订单金额：{$money}\n{$strarr[$account]}";
+	$str = "二级代理：{$pdig2}\n推荐人：{$tjr}\n订单号：{$osn}\n订单金额：{$money}\n{$strarr[$account]}";
 	$fileids = $_ENV['fileids'];
 	$fileid = $fileids[array_rand($fileids)];
 	$url = 'https://api.telegram.org/bot' . $token . '/sendAnimation';
