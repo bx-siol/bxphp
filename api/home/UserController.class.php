@@ -283,10 +283,11 @@ class UserController extends BaseController
 				// }
 
 				if(count($orderDate) > 0)
-				foreach ($orderDate as &$v)
-					if ($item["id"] == $v["uid"])
-						$item["assets"] = $v['assets'];
+					foreach ($orderDate as &$v)
+						if ($item["id"] == $v["uid"])
+							$item["assets"] = $v['assets'];
 
+				$item['regtime'] = $item['reg_time'];
 				$item['reg_time'] = date('d/m/Y H:i', $item['reg_time']);
 				$item['reg_time_day'] = date('Y-m-d', $item['reg_time']);
 				$item['today'] = date('Y-m-d');
