@@ -86,7 +86,9 @@
                         :to="{ name: 'Setting_bank' }"></van-cell>
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="ico_1062"
                         v-if="false"></van-cell>
-                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
+                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }">
+                    <div>join today：{{newmember}}</div>
+                    </van-cell>
                     <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }" v-if="false"></van-cell>
                     <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
                     <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
@@ -184,6 +186,7 @@ const wallet = ref({})
 const wallet2 = ref({})
 const wallet3 = ref({})
 const avatarRef = ref()
+const newmember = ref(0)
 
 const onAvatarChose = () => {
     avatarRef.value.chooseFile()
@@ -280,6 +283,7 @@ onMounted(() => {
             t_investment.value = res.data.investment
             t_recharge.value = res.data.recharge
             t_withdraw.value = res.data.withdraw
+            newmember.value = res.data.newmember
 
             t_reward.value = res.data.reward
             t_rebate.value = res.data.rebate

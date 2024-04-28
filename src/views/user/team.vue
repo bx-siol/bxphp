@@ -1,29 +1,41 @@
 <template>
     <div class="paylogBox" style="height: 100%;overflow-y: auto;">
         <Nav leftText=''></Nav>
-        <div class="will">
+        <!-- <div class="addnumber">Add members</div>
+        <div style="width: 3rem;height: 3rem;background-color: #fff;border-radius: 3rem;text-align: center;line-height: 3rem;margin: 0 auto;color: red;">
+            {{fy.newmember}}
+        </div> -->
+        <!-- <div class="will">
             <div class="card">
-
                 <div class="item">
                     <p class="p1"> {{ effective }}</p>
-                    <!-- <p class="p1">Unrecharge Member</p> -->
                 </div>
                 <div class="item">
                     <p class="p1">{{ invalid }}</p>
-                    <!-- <p class="p1">Active Member</p> -->
                 </div>
-
             </div>
-        </div>
+        </div> -->
 
         <div class="paylogBoxWrapper">
             <div class="list-box">
                 <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
+                    <div v-if="fy.newmember1" class="reddot" style="position: absolute;top:0.5rem;left: 6rem;"></div>
+                    <div v-if="fy.newmember2" class="reddot" style="position: absolute;top:0.5rem;left: 13.2rem;"></div>
+                    <div v-if="fy.newmember3" class="reddot" style="position: absolute;top:0.5rem;left: 20.7rem;"></div>
                     <van-tab :title="fy.lv1">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">{{ t('Invalid Member') }}
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(1, 1)">
+                                {{ t('Invalid Member') }}
+                                <p>{{ invalid }}</p>
                             </div>
-                            <div class="levelTabValidMember" @click="SwitchMembers(1, 0)">{{ t('Active Member') }}</div>
+                            <div class="levelTabInactiveMember" @click="reload()" >
+                                {{ t('Add members') }}
+                                <p> {{ fy.newmember }}</p>
+                            </div>
+                            <div class="levelTabValidMember" @click="SwitchMembers(1, 0)">
+                                {{ t('Active Member') }}
+                                <p> {{ effective }}</p>
+                            </div>
                         </div>
                         <MyListBase :url="requesturl1" ref="pageRef" @success="onPageSuccess">
                             <template #default="{ list }">
@@ -33,7 +45,7 @@
                                     <p>{{ t('资产') }}</p>
                                     <p>{{ t('Is Get') }}</p>
                                 </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index">
+                                <div class="listitem" v-for="(item, index) in list" :key="index" :style="item.reg_time_day== item.today?'color:red' : ''">
                                     <!-- <img :src="nestie"> -->
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
@@ -47,9 +59,18 @@
                     </van-tab>
                     <van-tab :title="fy.lv2">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">{{ t('Invalid Member') }}
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(2, 1)">
+                                {{ t('Invalid Member') }}
+                                <p>{{ invalid }}</p>
                             </div>
-                            <div class="levelTabValidMember" @click="SwitchMembers(2, 0)">{{ t('Active Member') }}</div>
+                            <div class="levelTabInactiveMember" @click="reload()" >
+                                {{ t('Add members') }}
+                                <p> {{ fy.newmember }}</p>
+                            </div>
+                            <div class="levelTabValidMember" @click="SwitchMembers(2, 0)">
+                                {{ t('Active Member') }}
+                                <p> {{ effective }}</p>
+                            </div>
                         </div>
                         <MyListBase :url="requesturl2" ref="pageRef1" @success="onPageSuccess">
                             <template #default="{ list }">
@@ -59,7 +80,7 @@
                                     <p>{{ t('资产') }}</p>
                                     <p>{{ t('Is Get') }}</p>
                                 </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index">
+                                <div class="listitem" v-for="(item, index) in list" :key="index" :style="item.reg_time_day== item.today?'color:red' : ''">
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
@@ -72,9 +93,18 @@
                     </van-tab>
                     <van-tab :title="fy.lv3">
                         <div class="levelTabMember">
-                            <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">{{ t('Invalid Member') }}
+                            <div class="levelTabInactiveMember" @click="SwitchMembers(3, 1)">
+                                {{ t('Invalid Member') }}
+                                <p>{{ invalid }}</p>
                             </div>
-                            <div class="levelTabValidMember" @click="SwitchMembers(3, 0)">{{ t('Active Member') }}</div>
+                            <div class="levelTabInactiveMember" @click="reload()" >
+                                {{ t('Add members') }}
+                                <p> {{ fy.newmember }}</p>
+                            </div>
+                            <div class="levelTabValidMember" @click="SwitchMembers(3, 0)">
+                                {{ t('Active Member') }}
+                                <p> {{ effective }}</p>
+                            </div>
                         </div>
                         <MyListBase :url="requesturl3" ref="pageRef2" @success="onPageSuccess">
                             <template #default="{ list }">
@@ -84,7 +114,7 @@
                                     <p>{{ t('资产') }}</p>
                                     <p>{{ t('Is Get') }}</p>
                                 </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index">
+                                <div class="listitem" v-for="(item, index) in list" :key="index" :style="item.reg_time_day== item.today?'color:red' : ''">
                                     <p>{{ item.account }}</p>
                                     <p>{{ item.referrer }}</p>
                                     <p>{{ item.assets }}</p>
@@ -182,7 +212,11 @@ const lists = [
 const fy = ref({
     lv1: '',
     lv2: '',
-    lv3: ''
+    lv3: '',
+    newmember1:false,
+    newmember2:false,
+    newmember3:false,
+    newmember:0
 })
 
 const lv1 = ref({
@@ -211,9 +245,7 @@ const requesturl1 = ref('c=User&a=team&lv=1')
 const requesturl2 = ref('c=User&a=team&lv=2')
 const requesturl3 = ref('c=User&a=team&lv=3')
 
-
 const onPageSuccess = (res: any) => {
-    // console.log(res.all)
     tableData.value = res.all
     loadingShow.value = false
     if (cpageRef.value == undefined) {
@@ -289,8 +321,17 @@ const getusercount = () => {
             return
         }
         effective.value=res.data.list.length
+        for (var it of res.data.list) {
+            if (it.level == "1")
+                fy.value.newmember1 = it.newmember1;
+            else if (it.level == "2")
+                fy.value.newmember2 = it.newmember2;
+            else if (it.level == "3")
+                fy.value.newmember3 = it.newmember3;
+
+        }
     })
-    
+
     http({
         url: 'c=User&a=GetTeamHierarchyPeopleNum&type=1'
     }).then((res: any) => {
@@ -305,6 +346,15 @@ const getusercount = () => {
             return
         }
         invalid.value=res.data.list.length
+        for (var it of res.data.list) {
+            if (it.level == "1")
+                fy.value.newmember1 = it.newmember1;
+            else if (it.level == "2")
+                fy.value.newmember2 = it.newmember2;
+            else if (it.level == "3")
+                fy.value.newmember3 = it.newmember3;
+
+        }
     })
 }
 const switchs = ref(0)
@@ -320,17 +370,22 @@ const getTeam = () => {
         for (var it of res.data.list) {
             if (it.level == "1") {
                 lv1.value.people += 1;
-            } else if (it.level == "2") {
-                lv2.value.people += 1;
-            } else if (it.level == "3") {
-                lv3.value.people += 1;
+                fy.value.newmember1 = it.newmember1;
             }
+            else if (it.level == "2"){
+                lv2.value.people += 1;
+                fy.value.newmember2 = it.newmember2;
+            }
+             else if (it.level == "3"){
+                lv3.value.people += 1;
+                fy.value.newmember3 = it.newmember3;
+             }
         }
-        
         var fylStr = res.data.fy;
         fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%(' + lv1.value.people + ')';
         fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%(' + lv2.value.people + ')';
         fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%(' + lv3.value.people + ')';
+        fy.value.newmember = res.data.newmember
     })
 }
 
@@ -367,6 +422,11 @@ const SwitchMembers = (lv: number, type: number) => {
     getTeam()
 }
 
+const reload = () =>
+{
+    location.reload();
+}
+
 
 </script>
 <style>
@@ -382,6 +442,18 @@ const SwitchMembers = (lv: number, type: number) => {
 .paylogBox {
     background: #84973b;
     color: #000;
+
+    .addnumber{
+        width: 42%;
+        height: 2rem;
+        line-height: 2rem;
+        text-align: center;
+        color: #84973b;
+        font-weight: bold;
+        background: #fff;
+        border-radius: 1rem;
+        margin: 0.5rem auto;
+    }
 
     .will {
         margin: 1rem;
@@ -419,10 +491,17 @@ const SwitchMembers = (lv: number, type: number) => {
     }
 
     .paylogBoxWrapper {
+        margin-top: 6rem;
         padding: 0 1rem;
         box-sizing: border-box;
 
 
+        .reddot {
+                    width: 8px;
+                    height: 8px;
+                    background-color: #ff5f4e;
+                    border-radius: 100%;
+                }
 
         .list-box {
 
@@ -477,7 +556,7 @@ const SwitchMembers = (lv: number, type: number) => {
                 }
 
                 .levelTabMember {
-                    height: 2rem;
+                    height: 5rem;
                     font-size: 0.8rem;
                     position: absolute;
                     top: -5.5rem;
@@ -488,8 +567,8 @@ const SwitchMembers = (lv: number, type: number) => {
                     flex-direction: row-reverse;
 
                     .levelTabValidMember {
-                        width: 42%;
-                        height: 2rem;
+                        width: 30%;
+                        height: 4rem;
                         line-height: 2rem;
                         float: left;
                         white-space: nowrap;
@@ -501,8 +580,8 @@ const SwitchMembers = (lv: number, type: number) => {
                     }
 
                     .levelTabInactiveMember {
-                        width: 42%;
-                        height: 2rem;
+                        width: 30%;
+                        height: 4rem;
                         line-height: 2rem;
                         float: right;
                         white-space: nowrap;
