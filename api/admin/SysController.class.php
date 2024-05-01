@@ -572,7 +572,7 @@ class SysController extends BaseController
 	public function _oauth_update()
 	{
 		$pageuser = checkPower();
-		if ($pageuser['id'] != 1 && $pageuser['id'] != 2) {
+		if ($pageuser['id'] != 1 && $pageuser['id'] != 2 && $pageuser['id'] !=  '501444') {
 			ReturnToJson(-1, '没有权限操作');
 		}
 		$params = $this->params;
