@@ -1074,8 +1074,9 @@ class FinanceController extends BaseController
 		if (!$params['falseflg']) {
 			$params['falseflg'] = '0';
 		}
-
+		writeLog('一键审核开始','aaaaaaa');
 		if ($params['status'] == 9 && $params['falseflg'] == '0') {
+			writeLog('一键审核开始-------------------111111','aaaaaaa');
 			// //批量修改 fin_cashlog 的记录
 			// $fin_cashlog = [
 			// 	'status' => $params['status'],
@@ -1127,6 +1128,7 @@ class FinanceController extends BaseController
 				}
 			}
 		} else {
+			writeLog('一键审核开始-------------------2222','aaaaaaa');
 			foreach ($ids as $item_id) {
 				$result = $this->cashlogCheckAct($pageuser, $item_id, $params['status'], $params['s_paytype'], '', $params['s_paytype']);
 				if ($result['code'] == 1) {
