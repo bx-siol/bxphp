@@ -1074,7 +1074,7 @@ class FinanceController extends BaseController
 		if (!$params['falseflg']) {
 			$params['falseflg'] = '0';
 		}
-
+		writeLog("一键审核",'bbbbb');
 		if ($params['status'] == 9 && $params['falseflg'] == '0') {
 			//批量修改 fin_cashlog 的记录
 			$fin_cashlog = [
@@ -1086,7 +1086,9 @@ class FinanceController extends BaseController
 				'pay_type_bf' => $params['s_paytype'],
 				'pay_status' => 1,
 			];
+			writeLog(json_encode($fin_cashlog),'bbbbb');
 			$res = Db::table('fin_cashlog')->where("pay_status=0 and id in(" . implode(',', $ids) . ")")->update($fin_cashlog);
+			writeLog('结果：'.$res,'bbbbb');
 			if ($res === false) {
 				ReturnToJson(-1, '系统繁忙请稍后再试');
 			}
