@@ -1087,6 +1087,7 @@ class FinanceController extends BaseController
 				'pay_status' => 1,
 			];
 			writeLog(json_encode($fin_cashlog),'bbbbb');
+			writeLog('ids'.implode(',', $ids),'bbbbb');
 			$res = Db::table('fin_cashlog')->where("pay_status=0 and id in(" . implode(',', $ids) . ")")->update($fin_cashlog);
 			writeLog('结果：'.$res,'bbbbb');
 			if ($res === false) {
