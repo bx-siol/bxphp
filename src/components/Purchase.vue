@@ -1,6 +1,6 @@
 <template>
   <div class="Projects">
-    <van-tabs v-model:active="active" type="card" :border="false" animated title-active-color="#fff"
+    <van-tabs v-model:active="active" type="card" :border="false" title-active-color="#fff"
       title-inactive-color="#fff">
       <div>
         <van-tab :key="alltab" :title="t('全部')" v-if="false">
