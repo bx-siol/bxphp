@@ -1324,10 +1324,10 @@ class ProductController extends BaseController
 			$key .= "{$params['status']}";
 			$where .= ' and log.status=' . $params['status'];
 		}
-		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_{$params['page']}";
+		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_{$params['page']}" .$params['status'];
 		$list = $this->redis->get($key);
-		if ($list != false)
-			ReturnToJson(1, 'ok1', $list);
+		// if ($list != false)
+		// 	ReturnToJson(1, 'ok1', $list);
 
 		$count_item = Db::table('pro_order log')
 			->leftJoin('pro_goods g', 'log.gid=g.id')
