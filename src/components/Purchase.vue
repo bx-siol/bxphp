@@ -1,26 +1,19 @@
 <template>
   <div class="Projects">
-    <van-tabs v-model:active="active" type="card" :border="false" background="" title-active-color="#fff"
-      title-inactive-color="#fff" animated>
+    <van-tabs v-model:active="active" type="card" :border="false" background="" title-active-color="#fff" title-inactive-color="#fff">
       <div>
         <van-tab :key="alltab" :title="t('全部')" v-if="false">
           <MyListBase :url="pageUrlAll" ref="pageRefAll" @success="onPageSuccess">
             <template #default="{ list }">
               <div class="basicProjects">
-                <!-- <div class="index_cer_title" style="color: #fff">All</div> -->
                 <div class="projectList">
                   <div v-for="(item, index) in tableData.list" :key="index">
                     <div class="back">
-                      <!-- <div class="title">
-                        <img :src="fire">
-                        {{ item.goods_name }}
-                        <p>Investment Cycle: {{ item.days }} day</p>
-                      </div> -->
                       <div class="projectItem">
                         <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;">
                           <div class="head">
                             <img :src="imgFlag(item.icon)" class="productImg" />
-                            <div class="addRs" v-if="false">₹{{ cutOutNum(item.price) }}</div>
+                            <div class="addRs" v-if="false">₹{{ cutOutNum(item.price,2) }}</div>
                           </div>
                           <div class="basicItemRight info">
                             <div class="detail">
@@ -29,8 +22,7 @@
                               <div class="detailLeft">
                                 <div class="unitprice">
                                   <span>{{ t('小时收益') }}</span>
-                                  <span>₹{{ cutOutNum(((item.rate / 100) *
-                                    item.price * item.num) / 24, 2) }}</span>
+                                  <span>₹{{ cutOutNum(((item.rate / 100) * item.price * item.num) / 24, 2) }}</span>
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('每日收入') }}</span>
@@ -83,9 +75,8 @@
         <van-tab :title="t('进行中')">
           <MyListBase :url="pageUrlOnGoing" ref="pageRefOnGoing" @success="onPageSuccesso">
             <template #default="{ list }">
-              <span class="total">{{ t('总计') }}: {{ cutOutNum(t_investment) }}RS</span>
+              <span class="total">{{ t('总计') }}: {{ cutOutNum(t_investment,2) }}RS</span>
               <div class="basicProjects">
-                <!-- <div class="index_cer_title" style="color: #fff">OnGoing</div> -->
                 <div class="projectList">
                   <div v-for="(item, index) in tableDatao.list" :key="index">
                     <div class="back">
@@ -93,7 +84,7 @@
                         <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;">
                           <div class="head">
                             <img :src="imgFlag(item.icon)" class="productImg" />
-                            <div class="addRs" v-if="false">₹{{ cutOutNum(item.price) }}</div>
+                            <div class="addRs" v-if="false">₹{{ cutOutNum(item.price,2) }}</div>
                           </div>
                           <div class="basicItemRight info">
                             <div class="detail">
@@ -102,7 +93,7 @@
                               <div class="detailLeft">
                                 <div class="unitprice">
                                   <span>{{ t('价格') }}</span>
-                                  <span>₹{{ cutOutNum(item.price) }}</span>
+                                  <span>₹{{ cutOutNum(item.price,2) }}</span>
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('周期') }}</span>
@@ -123,11 +114,9 @@
                                   <span style="color: #64503e;">{{ item.num }}</span>
                                 </div>
                               </div>
-
                             </div>
                           </div>
                         </div>
-
                         <div class="receive">
                           <template v-if="item.status == 1">
                             <template v-if="item.receive == 1">
@@ -151,26 +140,19 @@
               </div>
             </template>
           </MyListBase>
-
         </van-tab>
-        <van-tab :title="t('结束')" v-show="false">
+        <van-tab :title="t('结束')">
           <MyListBase :url="pageUrlFinish" ref="pageRefFinish" @success="onPageSuccessf">
             <template #default="{ list }">
               <div class="basicProjects" style="margin-top: 1rem;">
-                <!-- <div class="index_cer_title" style="color: #fff">Finish</div> -->
                 <div class="projectList">
                   <div v-for="(item, index) in tableDataf.list" :key="index">
                     <div class="back">
-                      <!-- <div class="title">
-                        <img :src="fire">
-                        {{ item.goods_name }}
-                        <p>Investment Cycle: {{ item.days }} day</p>
-                      </div> -->
                       <div class="projectItem">
                         <div style="display: flex;align-items: center;width: 100%;justify-content: space-between;">
                           <div class="head">
                             <img :src="imgFlag(item.icon)" class="productImg" />
-                            <div class="addRs" v-if="false">₹{{ cutOutNum(item.price) }}</div>
+                            <div class="addRs" v-if="false">₹{{ cutOutNum(item.price,2) }}</div>
                           </div>
                           <div class="basicItemRight info">
                             <div class="detail">
@@ -179,7 +161,7 @@
                               <div class="detailLeft">
                                 <div class="unitprice">
                                   <span>{{ t('价格') }}</span>
-                                  <span>₹{{ cutOutNum(item.price) }}</span>
+                                  <span>₹{{ cutOutNum(item.price,2) }}</span>
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('周期') }}</span>
@@ -200,12 +182,10 @@
                                   <span style="color: #64503e;">{{ item.num }}</span>
                                 </div>
                               </div>
-
                             </div>
                           </div>
                         </div>
                         <div class="receive">
-
                           <template v-if="item.status == 1">
                             <template v-if="item.receive == 1">
                               <van-button @click="onReceive(item)" round size="mini" class="receiveBtn" style=""
@@ -228,17 +208,9 @@
               </div>
             </template>
           </MyListBase>
-
         </van-tab>
       </div>
-      <!-- <div class="receives" v-show="active != '2'">
-        <van-button @click="ReceiveProfitAll()" size="mini" class="receiveBtns w100" style="" type="success">
-        </van-button>
-        <van-image :src="receiveall" style="width: 2.2rem"></van-image>
-        <div></div>
-      </div> -->
     </van-tabs>
-    <!-- <MyTab></MyTab> -->
   </div>
   <MyLoading :show="loadingShow2" :title="loadtitle"></MyLoading>
 </template>
@@ -251,7 +223,6 @@ import {
 import { useRoute, useRouter } from "vue-router";
 import MyListBase from "./ListBase.vue";
 import MyLoading from "../components/Loading.vue";
-import MyTab from "./Tab.vue";
 import http from "../global/network/http";
 import receiveall from '../assets/img/home/receiveall.png'
 import fire from "../assets/ico/fire.png";
@@ -263,7 +234,8 @@ import { number, time } from "echarts";
 
 export default defineComponent({
   components: {
-    MyListBase, MyTab, MyLoading,
+    MyListBase,
+    MyLoading,
     [Image.name]: Image,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
@@ -289,7 +261,7 @@ const loadtitle = ref("Loading...")
 const loadingShow2 = ref(false);
 const pageRefAll = ref()
 
-const pageUrlAll = ref('c=Product&a=receiveProfit');
+const pageUrlAll = ref('c=Product&a=order');
 const pageUrlOnGoing = ref('c=Product&a=order&status=1');
 const pageUrlFinish = ref('c=Product&a=order&status=9');
 
@@ -302,7 +274,6 @@ const router = useRouter();
 const loadingShow = ref(true);
 const newsdata = ref<any>([]);
 const tableData = ref<any>({});
-
 const tableDatao = ref<any>({});
 const tableDataf = ref<any>({});
 const active = ref("0");
@@ -381,9 +352,6 @@ const onReceivehttp = () => {
       isRequest = false;
       loadingShow2.value = false;
       if (res.code != 1) {
-        // toast.clear()
-        // tipShow.value = false;
-        // qdtxt.value = lang('收到');
         _alert(res.msg)
         return
       }
@@ -393,59 +361,9 @@ const onReceivehttp = () => {
     })
   }, delayTime)
 }
-const ReceiveProfitAll = () => {
-
-  if (isRequest) {
-    return
-  } else {
-    isRequest = true
-  }
-  loadingShow2.value = true;
-  const delayTime = Math.floor(Math.random() * 1000);
-  setTimeout(() => {
-    http({
-      url: 'order/ReceiveProfitAll',
-      data: { osn: "0" }
-    }).then((res: any) => {
-      isRequest = false;
-      loadingShow2.value = false;
-      if (res.code != 200) {
-        // toast.clear()
-        // tipShow.value = false;
-        // qdtxt.value = lang('收到');
-        _alert(res.message)
-        return
-      }
-      _alert(res.message, function () {
-        Receiveh.value.receive = 0;
-        window.location.reload();
-      })
-    })
-  }, delayTime)
-}
 
 onMounted(() => {
-  //自己封装的接口请求方法 aiox
-  // http({
-  //   //url 就是请求的地址
-  //   url: "order/IndexPurchased",
-  //   data: { page: 1, size: 1000 },
-  // }).then((res: any) => {
-  //   if (res.code != 200) {
-  //     _alert({
-  //       type: "error",
-  //       message: res.msg,
-  //       onClose: () => {
-  //         router.go(-1);
-  //       },
-  //     });
-  //     return;
-  //   }
 
-  //   newsdata.value = res.data.category_arr;
-  //   tableData.value = res.data.list;
-  //   loadingShow.value = false;
-  // });
 });
 </script>
 <style scoped>
