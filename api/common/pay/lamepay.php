@@ -65,25 +65,7 @@ function balance()
 	$pdata['sign'] = paySign($pdata);
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$url = $config['url'] . $config['balance_url'];
-
-	writeLog("url" .$url, GetPayName() . '/balance');
-	$jsonData = json_encode($pdata); 
-	// 初始化cURL会话
-	$ch = curl_init($url);	
-	// 设置cURL选项
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	curl_setopt($ch, CURLOPT_POST, true);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
-	curl_setopt($ch, CURLOPT_HTTPHEADER, [
-		'Content-Type: application/json',
-		'Content-Length: ' . strlen($jsonData)
-	]);	
-	// 执行cURL会话
-	$response = curl_exec($ch);	
-	// 关闭cURL会话
-	curl_close($ch);
-	writeLog("response" .json_encode($response), GetPayName() . '/balance');
-
+	
 	$result = CurlPost($url, $pdata);
 	writeLog("url" .$url, GetPayName() . '/balance');
 	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
