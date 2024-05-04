@@ -66,23 +66,21 @@ function balance()
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$url = $config['url'] . $config['balance_url'];
 
-	
-	$payload = json_encode($pdata);
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_URL, $url);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-
-	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-		'X-AjaxPro-Method:ShowList',
-		'Content-Type: application/json; charset=utf-8',
-		'Content-Length: ' . strlen($payload))
-	);
-	curl_setopt($ch, CURLOPT_POST, 1);
-	curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-	$response = curl_exec($ch);
+	$jsonData = json_encode($pdata); 
+	// 初始化cURL会话
+	$ch = curl_init($url);	
+	// 设置cURL选项
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+	curl_setopt($ch, CURLOPT_POST, true);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+	curl_setopt($ch, CURLOPT_HTTPHEADER, [
+		'Content-Type: application/json',
+		'Content-Length: ' . strlen($jsonData)
+	]);	
+	// 执行cURL会话
+	$response = curl_exec($ch);	
+	// 关闭cURL会话
 	curl_close($ch);
-
-
 	writeLog("response" .json_encode($response), GetPayName() . '/balance');
 
 	$result = CurlPost($url, $pdata);
