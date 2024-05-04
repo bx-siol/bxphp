@@ -66,6 +66,7 @@ function balance()
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$url = $config['url'] . $config['balance_url'];
 
+	writeLog("url" .$url, GetPayName() . '/balance');
 	$jsonData = json_encode($pdata); 
 	// 初始化cURL会话
 	$ch = curl_init($url);	
