@@ -66,21 +66,20 @@ function balance()
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$url = $config['url'] . $config['balance_url'];
 
+	
 	$payload = json_encode($pdata);
-	$headers = array('Content-Type: application/json');  // 设置请求头为JSON格式
-	// 初始化cURL
-	$ch = curl_init($url);
-	// 设置请求方法为POST
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, $url);
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+		'X-AjaxPro-Method:ShowList',
+		'Content-Type: application/json; charset=utf-8',
+		'Content-Length: ' . strlen($payload))
+	);
 	curl_setopt($ch, CURLOPT_POST, 1);
-	// 设置请求体数据
 	curl_setopt($ch, CURLOPT_POSTFIELDS, $payload);
-	// 设置请求头
-	curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-	// 设置返回结果作为字符串而不是直接输出
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-	// 执行请求并获取返回结果
 	$response = curl_exec($ch);
-	// 关闭cURL资源
 	curl_close($ch);
 
 
