@@ -256,19 +256,19 @@ $_ENV['PAY_CONFIG']['xdpay'] = [
 ];
 
 $_ENV['PAY_CONFIG']['lamepay'] = [
-	'mch_id' => 'bQd137IZ/aphXzaVq3UClQ==',
-	'mch_key' => 'OGQyMTQ1ODlmNjAxNDYwMjllYWFiZjMxYmFlNDdjZGE=',
+	'mch_id' => 'XjK6o8V646gv+CO8VHbePg==',
+	'mch_key' => 'NjE3MGU2NzRjOWNhNDMxOGFlOTkyYjAwMmU1NTk2YTA=',
 	'iv' => '0123456789uvwxyz',
 
-	'url' => 'https://api.lamepay.com',
+	'url' => 'http://api.lamepay.com',
 
 	'pay_url' => '/lametxn/gen/recharge', //代收
 	'dpay_url' => '/lametxn/gen/withdraw', //代付
 	'balance_url' => '/lametxn/fetch/funds', //余额
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/pay', //代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/xdpay/cash' //代付回调
+	'returnUrl' => 'https://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'https://' . PAY_BACKURL . '/api/Notify/lamepay/pay', //代收回调
+	'dnotify_url' => 'https://' . PAY_BACKURL . '/api/Notify/lamepay/cash' //代付回调
 ];
 
 $_ENV['PAY_CONFIG']['kirinpay'] = [
