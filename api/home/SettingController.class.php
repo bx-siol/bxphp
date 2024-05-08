@@ -398,7 +398,7 @@ class SettingController extends BaseController
 				Db::table('cnf_banklog')->where("id={$bank['id']}")->update($banklog);
 			}
 			//不更新用户的银行卡更改权限
-			//Db::table('sys_user')->where("id={$pageuser['id']}")->update(['cbank' => 1]); 
+			Db::table('sys_user')->where("id={$pageuser['id']}")->update(['cbank' => 0]); 
 		} catch (\Exception $e) {
 			ReturnToJson(-1, 'The system is busy, please try again later.');
 		}
