@@ -104,6 +104,7 @@ const bankArr = ref([])
 const banks = ref([])
 const bankIdx = ref(0)
 const cbank = ref(0)
+const userinfo = ref([])
 
 const onBankConfirm = (name: any, idx: number) => {
     popShowBank.value = true
@@ -166,6 +167,11 @@ const onSubmit = () => {
     //     _alert('You are not authorized to perform this operation, please contact your superior manager')
     //     return;
     // }
+    if(userinfo.value.cbank == 0){
+        _alert('Please contact your customer service manager to modify your bank card.')
+        return;
+    }
+
 
     if (isRequest) {
         return
@@ -224,6 +230,7 @@ onMounted(() => {
             }
         }
         cbank.value = res.data.user.cbank
+        userinfo.value = res.data.user
         bankArr.value = res.data.bank_arr
         for (let i in res.data.bank_arr) {
             banks.value.push(res.data.bank_arr[i].name)
