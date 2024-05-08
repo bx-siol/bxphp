@@ -1,10 +1,10 @@
 <template>
     <Page ref="pageRef" XLSXname="用户管理" url="c=User&a=user" @success="onPageSuccess">
         <template #btn="myScope">
-            <el-button type="danger" size="small" @click="DisableStatus(1, 'status')">禁用</el-button>
-            <el-button size="small" @click="DisableStatus(2, 'status')">解禁</el-button>
-            <el-button type="danger" size="small" @click="DisableStatus(1, 'icode_status')">邀请码禁用</el-button>
-            <el-button size="small" @click="DisableStatus(0, 'icode_status')">邀请码解禁</el-button>
+            <el-button type="danger" v-if="power.yhzt" size="small" @click="DisableStatus(1, 'status')">禁用</el-button>
+            <el-button size="small" v-if="power.yhzt" @click="DisableStatus(2, 'status')">解禁</el-button>
+            <el-button type="danger" v-if="power.yhyqmzt" size="small" @click="DisableStatus(1, 'icode_status')">邀请码禁用</el-button>
+            <el-button size="small" v-if="power.yhyqmzt" @click="DisableStatus(0, 'icode_status')">邀请码解禁</el-button>
             <el-button type="danger" v-if="power.yxupdata" @click="DisableStatus(0, 'first_pay_day', 'first_pay_day')"
                 size="small">无效</el-button>
             <el-button size="small" v-if="power.yxupdata"
@@ -408,6 +408,8 @@ const power = reactive({
     wallet: checkPower('Finance_wallet'),
     transfer: checkPower('User_transfer'),
     yxupdata: checkPower('User_user_update_yx'),
+    yhzt: checkPower('User_status'),
+    yhyqmzt: checkPower('User_iconstatus'),
 })
 
 const configForm = reactive({
