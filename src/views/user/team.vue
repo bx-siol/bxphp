@@ -24,22 +24,30 @@
                         </div>
                         <MyListBase :url="requesturl1" ref="pageRef" @success="onPageSuccess">
                             <template #default="{ list }">
-                                <div class="listHead">
-                                    <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('等级') }}</p>
-                                    <p>{{ t('时间') }}</p>
-                                    <p>{{ t('资产') }}</p>
-                                </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index">
-                                    <p>{{ item.account }}</p>
-                                    <p>{{ item.level }}</p>
-                                    <p>{{ item.reg_time }}</p>
-                                    <p>{{ item.assets }}RS
-                                        <span class="plus">
-                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
-                                        </span>
-                                    </p>
-                                </div>
+                                <table>
+                                    <thead>
+                                        <tr class="listHead">
+                                            <th>{{ t('用户名') }}</th>
+                                            <th>{{ t('等级') }}</th>
+                                            <th>{{ t('时间') }}</th>
+                                            <th>{{ t('资产') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="listitem" v-for="(item, index) in list" :key="index">
+                                            <td>{{ item.account }}</td>
+                                            <td>{{ item.level }}</td>
+                                            <td>{{ item.reg_time }}</td>
+                                            <td>{{ item.assets }}RS
+                                                <span class="plus">
+                                                    <van-icon
+                                                        @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
+                                                        name="arrow"></van-icon>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </template>
                         </MyListBase>
                     </van-tab>
@@ -50,22 +58,30 @@
                         </div>
                         <MyListBase :url="requesturl2" ref="pageRef1" @success="onPageSuccess">
                             <template #default="{ list }">
-                                <div class="listHead">
-                                    <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('等级') }}</p>
-                                    <p>{{ t('时间') }}</p>
-                                    <p>{{ t('资产') }}</p>
-                                </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index">
-                                    <p>{{ item.account }}</p>
-                                    <p>{{ item.level }}</p>
-                                    <p>{{ item.reg_time }}</p>
-                                    <p>{{ item.assets }}RS
-                                        <span class="plus">
-                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
-                                        </span>
-                                    </p>
-                                </div>
+                                <table>
+                                    <thead>
+                                        <tr class="listHead">
+                                            <th>{{ t('用户名') }}</th>
+                                            <th>{{ t('等级') }}</th>
+                                            <th>{{ t('时间') }}</th>
+                                            <th>{{ t('资产') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="listitem" v-for="(item, index) in list" :key="index">
+                                            <td>{{ item.account }}</td>
+                                            <td>{{ item.level }}</td>
+                                            <td>{{ item.reg_time }}</td>
+                                            <td>{{ item.assets }}RS
+                                                <span class="plus">
+                                                    <van-icon
+                                                        @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
+                                                        name="arrow"></van-icon>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </template>
                         </MyListBase>
                     </van-tab>
@@ -76,22 +92,30 @@
                         </div>
                         <MyListBase :url="requesturl3" ref="pageRef2" @success="onPageSuccess">
                             <template #default="{ list }">
-                                <div class="listHead">
-                                    <p>{{ t('用户名') }}</p>
-                                    <p>{{ t('等级') }}</p>
-                                    <p>{{ t('时间') }}</p>
-                                    <p>{{ t('资产') }}</p>
-                                </div>
-                                <div class="listitem" v-for="(item, index) in list" :key="index">
-                                    <p>{{ item.account }}</p>
-                                    <p>{{ item.level }}</p>
-                                    <p>{{ item.reg_time }}</p>
-                                    <p>{{ item.assets }}RS
-                                        <span class="plus">
-                                            <van-icon @click="onLink({ name: 'User_teamlist', params: { id: item.id } })" name="arrow"></van-icon>
-                                        </span>
-                                    </p>
-                                </div>
+                                <table>
+                                    <thead>
+                                        <tr class="listHead">
+                                            <th>{{ t('用户名') }}</th>
+                                            <th>{{ t('等级') }}</th>
+                                            <th>{{ t('时间') }}</th>
+                                            <th>{{ t('资产') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class="listitem" v-for="(item, index) in list" :key="index">
+                                            <td>{{ item.account }}</td>
+                                            <td>{{ item.level }}</td>
+                                            <td>{{ item.reg_time }}</td>
+                                            <td>{{ item.assets }}RS
+                                                <span class="plus">
+                                                    <van-icon
+                                                        @click="onLink({ name: 'User_teamlist', params: { id: item.id } })"
+                                                        name="arrow"></van-icon>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </template>
                         </MyListBase>
                     </van-tab>
@@ -116,7 +140,7 @@ import { Button, Tab, Tabs, Grid, GridItem, Cell, Field, Icon } from "vant";
 import { type } from 'os';
 export default defineComponent({
     components: {
-        Nav, MyTab, MyListBase,MyLoading,
+        Nav, MyTab, MyListBase, MyLoading,
         [Button.name]: Button,
         [Image.name]: Image,
         [Tab.name]: Tab,
@@ -242,26 +266,26 @@ const onLinkc = (type: string) => {
 const getTeam = () => {
     var delayTime = Math.floor(Math.random() * 1000);
     // setTimeout(() => {
-        http({
-            url: 'c=User&a=GetTeamHierarchyPeopleNum'
-        }).then((res: any) => {
-            for (var it of res.data.list) {
-                if (it.level == "1") {
-                    lv1.value.people += 1;
-                } else if (it.level == "2") {
-                    lv2.value.people += 1;
-                } else if (it.level == "3") {
-                    lv3.value.people += 1;
-                }
+    http({
+        url: 'c=User&a=GetTeamHierarchyPeopleNum'
+    }).then((res: any) => {
+        for (var it of res.data.list) {
+            if (it.level == "1") {
+                lv1.value.people += 1;
+            } else if (it.level == "2") {
+                lv2.value.people += 1;
+            } else if (it.level == "3") {
+                lv3.value.people += 1;
             }
+        }
 
-            var fylStr = res.data.fy;
-            fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%-(' + lv1.value.people + ')';
-            fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%-(' + lv2.value.people + ')';
-            fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%-(' + lv3.value.people + ')';
-            teamcount.value = lv1.value.people + lv2.value.people + lv3.value.people;
+        var fylStr = res.data.fy;
+        fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%-(' + lv1.value.people + ')';
+        fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%-(' + lv2.value.people + ')';
+        fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%-(' + lv3.value.people + ')';
+        teamcount.value = lv1.value.people + lv2.value.people + lv3.value.people;
 
-        })
+    })
     // }, delayTime)
 }
 
@@ -453,7 +477,7 @@ const getusercount = () => {
             .levelTabMember {
                 width: 90%;
                 height: 2rem;
-                margin: 1rem 0 1rem 5%;
+                margin: 1rem 0 0.6rem 5%;
                 font-size: 0.8rem;
 
                 .levelTabValidMember {
@@ -522,72 +546,32 @@ const getusercount = () => {
             width: 100%;
         }
 
-        .listHead {
+        .myListBox {
             display: flex;
-            justify-content: space-between;
-            color: #333;
+            flex-direction: column;
 
-
-            p {
-                text-align: center;
-                font: bold 14px/16px '微软雅黑';
-
-                &:nth-child(1) {
-                    width: 30%;
-                }
-
-                &:nth-child(2) {
-                    width: 30%;
-                }
-
-                &:nth-child(3) {
-                    width: 30%;
-                }
-
-                &:nth-child(4) {
-                    width: 35%;
-                }
+            .listHead {
+                font: bold 14px/20px 'Rotobo';
             }
-        }
 
-        .listitem {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 1rem;
+            .listitem {
+                font: bold 12px/32px 'Rotobo';
 
-            p {
-                text-align: center;
-                font: bold 12px/16px 'Rotobo';
-
-                &:nth-child(1) {
-                    width: 28%;
-                }
-
-                &:nth-child(2) {
-                    width: 10%;
-                }
-
-                &:nth-child(3) {
-                    width: 35%;
+                td {
                     text-align: center;
                 }
 
-                &:nth-child(4) {
-                    width: 18%;
-                    text-align: right;
+                .plus {
+                    display: inline-block;
+                    background: #A2754C;
+                    color: #fff;
+                    padding: 0 4px;
+                    font: normal 10px/16px '微软雅黑';
+                    border-radius: 10px;
                 }
             }
-
-            .plus {
-                display: inline-block;
-                background: #A2754C;
-                color: #fff;
-                padding: 0 4px;
-                font: normal 10px/16px '微软雅黑';
-                border-radius: 10px;
-                margin-left: 2px;
-            }
         }
+
     }
 
     :deep(.van-field__control::-webkit-input-placeholder) {
