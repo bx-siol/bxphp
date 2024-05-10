@@ -568,12 +568,12 @@ const getusercount = () => {
                 }
 
                 &:nth-child(3) {
-                    width: 28%;
-                    text-align: right;
+                    width: 35%;
+                    text-align: center;
                 }
 
                 &:nth-child(4) {
-                    width: 32%;
+                    width: 18%;
                     text-align: right;
                 }
             }

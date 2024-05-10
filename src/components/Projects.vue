@@ -37,7 +37,7 @@
                           </div>
                           <div class="dailyearnings">
                             <span>Daily earnings</span>
-                            <span style="color:#64503e">₹{{ cutOutNum(item.rate / 100 * item.price) }}</span>
+                            <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price/100) }}</span>
                           </div>
                           <div class="totalrevenue">
                             <span>Total revenue</span>
