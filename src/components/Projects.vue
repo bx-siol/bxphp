@@ -41,7 +41,7 @@
                           </div>
                           <div class="totalrevenue">
                             <span>Total revenue</span>
-                            <span style="color:#64503e">₹{{ cutOutNum(item.rate / 100 * item.price * item.days)
+                            <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price * item.days/100)
                             }}</span>
                           </div>
                           <div v-if="false" class="totalrevenue">
