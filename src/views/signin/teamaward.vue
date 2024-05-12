@@ -8,7 +8,7 @@
         <div class="content_top">
             <div class="content_top_up">
                 <swiper :slidesPerView="5" :spaceBetween="30" :loop="true" :autoplay="{delay: 1500}" 
-                :effect="'coverflow'" :coverflowEffect="{depth: 80,modifier: 2,rotate: 10,slideShadows: false,stretch: -10}"  class="swiper">
+                :effect="'coverflow'" :coverflowEffect="{depth: 80,modifier: 2,rotate: 10,slideShadows: false,stretch: -20}"  class="swiper">
                     <swiper-slide>
                         <van-image :src="gift1" class="swiper_img"></van-image>
                     </swiper-slide>
@@ -32,7 +32,7 @@
             <div class="content_top_down">Develop into the best version of yourself</div>
         </div>
         <div class="content_content">
-            <div class="content_content_item">
+            <div class="content_content_item" style="margin-bottom: 0.5rem;">
                 <div class="content_content_item_top">LUXURY GIF 1</div>
                 <P class="content_content_item_first">BCD TEAM MEMBERS ARRIVE AT <span style="color: #cf1c17;font-weight: bold;font-size: 0.6rem;">10</span></P>
                 <P class="content_content_item_second">REWARD A PIECE OF WORK CLOTHES</P>
@@ -43,7 +43,7 @@
                     <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
-            <div class="content_content_item">
+            <div class="content_content_item" style="margin-bottom: 0.5rem;">
                 <div class="content_content_item_top">LUXURY GIF 2</div>
                 <P class="content_content_item_first">BCD TEAM MEMBERS ARRIVE AT <span style="color: #cf1c17;font-weight: bold;font-size: 0.6rem;">100</span></P>
                 <P class="content_content_item_second">REWARD WITH A BEAUTIFUL GIFT</P>
@@ -54,7 +54,7 @@
                     <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
-            <div class="content_content_item">
+            <div class="content_content_item" style="margin-bottom: 0.5rem;">
                 <div class="content_content_item_top">LUXURY GIF 3</div>
                 <P class="content_content_item_first">BCD TEAM MEMBERS ARRIVE AT <span style="color: #cf1c17;font-weight: bold;font-size: 0.6rem;">300</span></P>
                 <P class="content_content_item_second">REWARD WITH A BEAUTIFUL GIFT</P>
@@ -65,7 +65,7 @@
                     <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
-            <div class="content_content_item">
+            <div class="content_content_item" style="margin-bottom: 0.5rem;">
                 <div class="content_content_item_top">LUXURY GIF 4</div>
                 <P class="content_content_item_first">BCD TEAM MEMBERS ARRIVE AT <span style="color: #cf1c17;font-weight: bold;font-size: 0.6rem;">700</span></P>
                 <P class="content_content_item_second">REWARD AN APPLE MOBILE PHONE</P>
@@ -286,7 +286,7 @@ export default defineComponent({
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-evenly;
-        align-content: space-between;
+        align-content: space-around;
 
         .content_content_item{
             width: 43%;
@@ -371,7 +371,7 @@ export default defineComponent({
                     background: url(../../assets/img/signin/gift2.png);
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
-                    width: 25%;
+                    width: 23%;
                     margin-right: -1%;
                     height: 2.3rem;
                 }
@@ -379,7 +379,7 @@ export default defineComponent({
                     background: url(../../assets/img/signin/gift3.png);
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
-                    width: 26%;
+                    width: 24%;
                     margin-right: -2%;
                     height: 2.3rem;
                 }
@@ -404,7 +404,7 @@ export default defineComponent({
                     background: url(../../assets/img/signin/gift6.png);
                     background-repeat: no-repeat;
                     background-size: 100% 100%;
-                    width: 31%;
+                    width: 28%;
                     margin-right: -4%;
                     margin-left: -3%;
                     height: 2.3rem;
