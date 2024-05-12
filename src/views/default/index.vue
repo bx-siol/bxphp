@@ -18,11 +18,11 @@
           </div>
         </div>
 
-        <div class="backg" style="padding: 1rem">
+        <div class="backg" style="padding: 1rem" >
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
           </div>
-          <div class="money">
+          <div class="money" v-if="false">
             <div class="moneys">
               <div class="money-top">
                 <img :src="Balance">
@@ -31,28 +31,24 @@
                   <p>{{ cutOutNum(wallet.balance, 2) }} RS</p>
                 </div>
               </div>
-
               <div @click="onLink({ name: 'Finance_recharge' })" class="recharge">
                 {{ t('充值') }}
               </div>
             </div>
           </div>
 
-          <div class="malls u-flex u-bet" v-if="false">
-            <div @click="onLink({ name: 'Finance_recharge' })" style="width: 48%;">
-              <van-image :src="chance"></van-image>
-            </div>
-            <div @click="onLink({ name: 'Finance_withdraw' })" style="width: 48%;">
-              <van-image :src="integral"></van-image>
+          <div class="malls u-flex u-bet">
+            <div @click="onLink({ name: 'TeamAward' })">
+              <van-image :src="teamawardbg1"></van-image>
             </div>
           </div>
           <div class="index_cer">
             <div class="menubox">
               <div
                 style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_withdraw' })">
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_recharge' })">
                   <van-image :src="m1"></van-image>
-                  <p>{{ t('提现') }}</p>
+                  <p>{{ t('充值') }}</p>
                 </a>
                 <!-- <span class="line"></span> -->
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
@@ -210,6 +206,8 @@ import m7s from '../../assets/img/home/home-icon-1-7s.png'
 import m8 from '../../assets/img/home/home-icon-1-8.png'
 import chance from '../../assets/img/home/home-banner-3-1.png'
 import integral from '../../assets/img/home/home-banner-3-2.png'
+import teamawardbg1 from '../../assets/img/home/home-banner-4.png'
+import teamawardbg2 from '../../assets/img/home/home-banner-5.png'
 import videosrc from '../../assets/video/video.mp4'
 import { Card, Button, Tag, Tab, Tabs, Swipe, SwipeItem, Icon } from 'vant';
 import Nav from '../../components/Nav.vue';

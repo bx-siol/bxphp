@@ -408,6 +408,15 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('../views/ext/task.vue')
     },
+    {
+        path: '/teamaward',
+        name: 'TeamAward',
+        meta: {
+            title: 'teamaward',
+            needLogin: true
+        },
+        component: () => import('../views/signin/teamaward.vue')
+    },
 ]
 
 const router = createRouter({
