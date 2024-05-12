@@ -40,6 +40,7 @@
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv1}}/10</div>
                     <div class="content_content_item_third_img img1"></div>
+                    <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
             <div class="content_content_item">
@@ -50,6 +51,7 @@
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv2}}/100</div>
                     <div class="content_content_item_third_img img2"></div>
+                    <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
             <div class="content_content_item">
@@ -60,6 +62,7 @@
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv3}}/300</div>
                     <div class="content_content_item_third_img img3"></div>
+                    <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
             <div class="content_content_item">
@@ -70,6 +73,7 @@
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv4}}/700</div>
                     <div class="content_content_item_third_img img4"></div>
+                    <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
             <div class="content_content_item">
@@ -79,7 +83,8 @@
                 <P class="content_content_item_second">(WORTH RS 200,000)</P>
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv5}}/1500</div>
-                    <div class="content_content_item_third_img img5"></div>
+                    <div class="content_content_item_third_img img5"></div>                    
+                    <div class="content_content_item_third_img_hot"></div>
                 </div></div>
             <div class="content_content_item">
                 <div class="content_content_item_top">LUXURY GIF 6</div>
@@ -88,7 +93,8 @@
                 <P class="content_content_item_second">(WORTH RS 1,299,999)</P>
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv6}}/3000</div>
-                    <div class="content_content_item_third_img img6"></div>
+                    <div class="content_content_item_third_img img6"></div>                    
+                    <div class="content_content_item_third_img_hot"></div>
                 </div>
             </div>
         </div>
@@ -242,14 +248,14 @@ export default defineComponent({
             overflow: hidden;
 
             .swiper{
-                padding-top: 0.4rem;
+                padding-top: 0.5rem;
                 margin-left: -2rem;
 
                 .swiper_img{
                     height: 4.2rem;
                     width: 5.5rem;
-                    background-color: #fff;
-                    border: 3px #51c2f9 solid;
+                    background-color: #fff;                    
+                    box-shadow: 2px 3px 3px 1px #39b1f7;
                     border-radius: 10px;
                 }
             }
@@ -342,8 +348,19 @@ export default defineComponent({
                     height: 5vh;
                     float: right;
                     margin-top: -0.7rem;
-                    margin-right: 3%;
+                    margin-right: 3%;                    
                 }
+
+                .content_content_item_third_img_hot{
+                        background: url(../../assets/img/signin/hot.png);
+                        background-repeat: no-repeat;
+                        background-size: 100% 100%;
+                        width: 1.2rem;
+                        height: 1.2rem;
+                        position: relative;
+                        right: -8.8rem;
+                        top: -0.9rem;
+                    }
 
                 .img1{
                     background: url(../../assets/img/signin/gift1.png);
