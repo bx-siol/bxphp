@@ -437,7 +437,7 @@ class ProductController extends BaseController
 			$goods_arr = [];
 			if ($params['s_cid']) {
 
-				$goods_where .= "id in (111)";
+				$goods_where .=  "1=1" ; //"id in (111)";
 
 				$goods_arr = Db::table('pro_goods')->where($goods_where)->field(['id', 'name', 'price'])->select()->toArray();
 				if (!$goods_arr) {
