@@ -25,7 +25,7 @@
             <div class="streamer"></div>
 
             <div class="article" style="display: block; padding: 0.8rem 0; font-size: 12px;">
-                <p>Important tips:</p>
+                <p>Kind Tips:</p>
                 <p>1. Please fill in your real name</p>
                 <p>2. The bank card number cannot contain letters</p>
                 <p>3. Please fill in your payment account information correctly, among which IFSC must
