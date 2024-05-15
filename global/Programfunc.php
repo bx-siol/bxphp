@@ -26,7 +26,7 @@ function sendbdjt($up_user, $money, $osn)
 	$tokens = [
 		'0' => ['id' => '-4165632848', 'tk' => '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'],
 		'1' => ['id' => '-4181160027', 'tk' => '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'],
-		'2' => ['id' => '-4187588847', 'tk' => '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'],
+		'2' => ['id' => '-1002122713095', 'tk' => '6765233252:AAHGBp9KbsrmJr9_-W1Bm_MqdQCsxxLkSEA'],
 	];
 	$strarr = [
 		'🗣恭喜出单，业绩长虹，蒸蒸日上，大吉大利❤️🤏',
