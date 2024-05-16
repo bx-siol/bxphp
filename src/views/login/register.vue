@@ -32,7 +32,7 @@
                     </template>
                 </van-field>
 
-                <van-field v-model="dataForm.nickname" :left-icon="useractive" :placeholder="t('请填写昵称')" v-if="false"></van-field>
+                <van-field v-model="dataForm.nickname" :left-icon="useractive" :placeholder="t('请填写昵称')"></van-field>
                 
                 <van-field v-model="dataForm.password_flag" type="password" :left-icon="key"
                     :placeholder="t('请填写登录密码')"></van-field>
@@ -127,7 +127,7 @@ const dataForm = reactive({
     scode: '',
     imgcode: '',
     imgcode_url: '',
-    // nickname: ''
+    nickname: ''
 })
 
 const sendLoading = ref(false)
