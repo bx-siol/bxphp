@@ -33,7 +33,7 @@
                         </li>
                         <li><span style="color:#6e523e;">{{ t('Quantity') }}: </span>
                             <span style="font-size: 12px;">Withdrawal Handling Fee({{ tar }}%):
-                                {{ dataForm.money * tar / 100 }} RS</span>
+                                {{ (dataForm.money * tar / 100).toFixed(2) }} RS</span>
                         </li>
                     </ul>
                 </div>
