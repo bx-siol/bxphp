@@ -253,6 +253,7 @@ export default {
     每日收入: 'Daily earnings',
     总收入: 'Total revenue',
     收到的天数: 'Days Received',
+    剩余天数: 'Days Remaining',
     日产量: 'Daily output',
     周期: 'cycle',
     天: 'day',

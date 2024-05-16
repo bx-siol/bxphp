@@ -98,16 +98,16 @@
                                 <div class="dailyearnings">
                                   <span>{{ t('周期') }}</span>
                                   <span>{{ item.total_days }}</span>
+                                </div>      
+                                <div class="dailyearnings">
+                                  <span>{{ t('剩余天数') }}</span>
+                                  <span style="color: #64503e;">{{ item.days-item.total_days }}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
                                   <span>
                                     ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
-                                </div>
-                                <div class="dailyearnings" v-if="false">
-                                  <span>{{ t('收到的天数') }}</span>
-                                  <span style="color: #64503e;">{{ item.total_days }}</span>
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('数量') }}</span>
@@ -412,7 +412,7 @@ onMounted(() => {
     position: absolute;
     width: 100%;
     text-align: center;
-    top: -2.2rem;
+    top: 3.6rem;
     left: 50%;
     transform: translateX(-50%);
     padding-bottom: 1rem;
