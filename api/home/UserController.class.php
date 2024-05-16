@@ -416,4 +416,38 @@ class UserController extends BaseController
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
+
+	//syngent vip等级
+	/*
+		B+C+D 达到30人+8名B级会员——VIP1
+		B+C+D 达到80人+15名B级会员——VIP2
+		B+C+D 达到200人+20名B级会员——VIP3
+		B+C+D 达到500人+30名B级会员——VIP4
+		B+C+D 达到1,000人+40名B级会员——VIP5
+		B+C+D 达到2,000人+60名B级会员——VIP6
+	*/
+	public function _vip()
+	{
+		$pageuser = checkLogin();
+		$team = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where("pids like '%{$pageuser['id']}%'")->find();
+		$team_B_num = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where("pids like '%{$pageuser['id']},%'")->find();
+		$vip = 0;
+		if($team >= 30 && $team_B_num >= 8)
+			$vip = 1;
+		if($team >= 80 && $team_B_num >= 15)
+			$vip = 2;
+		if($team >= 200 && $team_B_num >= 20)
+			$vip = 3;
+		if($team >= 500 && $team_B_num >= 30)
+			$vip = 4;
+		if($team >= 1000 && $team_B_num >= 40)
+			$vip = 5;
+		if($team >= 2000 && $team_B_num >= 60)
+			$vip = 6;
+		
+		$return_data = [
+			'vip' => $vip,
+		];
+		ReturnToJson(1, 'ok', $return_data);
+	}
 }
