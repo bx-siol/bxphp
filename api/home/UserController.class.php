@@ -430,7 +430,7 @@ class UserController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$team = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where("pids like '%{$pageuser['id']}%'")->find();
-		$team_B_num = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where("pids like '%{$pageuser['id']},%'")->find();
+		$team_B_num = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where("pids like '{$pageuser['id']},%'")->find();
 		$vip = 0;
 		if($team >= 30 && $team_B_num >= 8)
 			$vip = 1;
@@ -447,6 +447,8 @@ class UserController extends BaseController
 		
 		$return_data = [
 			'vip' => $vip,
+			'team' => $team,
+			'team_B_num' => $team_B_num,
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
