@@ -815,9 +815,9 @@ class ProductController extends BaseController
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_ORDER . $pageuser['id']);
 			$return_data['osn'] = $pro_order['osn'];
-		} catch (\Exception $e) {
+		} catch (Exception $e) {
 			Db::rollback();
-			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e)]);
+			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e->getMessage())]);
 		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
 	}
