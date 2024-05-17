@@ -17,9 +17,17 @@ class ExtController extends BaseController
 		$pageuser = checkPower();
 		$params = $this->params;
 		$where = "1=1";
-		if (!checkDataAction()) {
-			$where .= " and log.uid={$pageuser['id']}";
+		// if (!checkDataAction()) {
+		// 	$where .= " and log.uid={$pageuser['id']}";
+		// }
+
+		$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
+		$uid_str = implode(',', $uid_arr);
+		if (!$uid_str) {
+			$uid_str = '0';
 		}
+		$where .= " and log.uid in({$uid_str})";
+
 		//$where.=empty($params['s_status'])?'':" and log.status={$params['s_status']}";
 		$where .= empty ($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
 		$count_item = Db::table('ext_service log')
