@@ -28,6 +28,7 @@ class ExtController extends BaseController
 			if (!$uid_str) {
 				$uid_str = '0';
 			}
+			$uid_str .= ",{$pageuser['id']}";
 			$where .= " and log.uid in({$uid_str})";
 		}
 
