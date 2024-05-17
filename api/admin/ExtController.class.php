@@ -21,7 +21,7 @@ class ExtController extends BaseController
 		// 	$where .= " and log.uid={$pageuser['id']}";
 		// }
 
-		$uid_arr = getDownUser($pageuser['id'], false, $pageuser);
+		$uid_arr = getDownUser($pageuser['id']);
 		$uid_str = implode(',', $uid_arr);
 		if (!$uid_str) {
 			$uid_str = '0';
