@@ -21,12 +21,15 @@ class ExtController extends BaseController
 		// 	$where .= " and log.uid={$pageuser['id']}";
 		// }
 
-		$uid_arr = getDownUser($pageuser['id']);
-		$uid_str = implode(',', $uid_arr);
-		if (!$uid_str) {
-			$uid_str = '0';
+		if($pageuser['id'] != 1)
+		{
+			$uid_arr = getDownUser($pageuser['id']);
+			$uid_str = implode(',', $uid_arr);
+			if (!$uid_str) {
+				$uid_str = '0';
+			}
+			$where .= " and log.uid in({$uid_str})";
 		}
-		$where .= " and log.uid in({$uid_str})";
 
 		//$where.=empty($params['s_status'])?'':" and log.status={$params['s_status']}";
 		$where .= empty ($params['s_keyword']) ? '' : " and (log.account='{$params['s_keyword']}' or u.account='{$params['s_keyword']}')";
