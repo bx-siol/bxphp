@@ -9,12 +9,19 @@
                             <van-image :src="imgFlag(user.headimgurl)" @error="onError" width="4.125rem" height="4.125rem"></van-image>
                         </div>
                         <div class="info" :style="{ color: '#000' }" @click="onLink({ name: 'Setting_uinfo' })">
-                            <div class="vip" v-if="false"><span class="vip_level">{{ 10 }}</span></div>
                             <p class="username">{{ user.account }}</p>
                             <div class="yield">
                                 <p>12%</p>
                                 <p>6%</p>
                                 <p>3%</p>
+                            </div>
+                            <div class="vip">
+                                <div class="vip1_1">
+                                    <div class="vip1_2"></div>
+                                </div>
+                                <div class="vip2_1">
+                                    <div class="vip2_2"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -376,25 +383,6 @@ onMounted(() => {
                 flex-direction: column;
                 line-height: 26px;
 
-                .vip {
-                    width: 3rem;
-                    height: 1.5rem;
-                    background-image: url("../../assets/img/user/vip.png");
-                    background-size: 100% 100%;
-                    background-repeat: no-repeat;
-                    color: #000;
-                    position: relative;
-                    margin-bottom: 0.235rem;
-
-                    .vip_level {
-                        font-size: 0.3rem;
-                        position: absolute;
-                        right: 0.3rem;
-                        bottom: 0.3rem;
-                        font-weight: bold;
-                    }
-                }
-
                 .yield {
                     font-size: 14px;
                     color: #fff;
@@ -409,6 +397,61 @@ onMounted(() => {
                         padding: 0 0.2rem;
                         border-radius: 0.2rem;
                     }
+                }
+
+                .vip{
+                    height: 4rem;
+                    width: 100%;
+                    margin-top: 1.6rem;
+
+                    .vip1_1{
+                        background-image: url("../../assets/img/user/vip/1.png");
+                        background-size: 100% 100%;
+                        background-repeat: no-repeat;
+                        height: 2rem;
+                        width: 6rem;
+
+                        .vip1_2{
+                            background-image: url("../../assets/img/user/vip/2.png");
+                            background-size: 100% 100%;
+                            background-repeat: no-repeat;
+                            height: 1.6rem;
+                            width: 1.6rem;
+                            position: relative;
+                            top: 0.2rem;
+                            left: 0.5rem;
+                            animation: rotate 2s linear infinite;
+                        }
+                    }
+
+                    .vip2_1{
+                        margin-top: 1rem;
+                        background-image: url("../../assets/img/user/vip/3.png");
+                        background-size: 100% 100%;
+                        background-repeat: no-repeat;
+                        height: 2rem;
+                        width: 6rem;
+
+                        .vip2_2{
+                            background-image: url("../../assets/img/user/vip/4.png");
+                            background-size: 100% 100%;
+                            background-repeat: no-repeat;
+                            height: 1rem;
+                            width: 1rem;
+                            position: relative;
+                            top: 0.4rem;
+                            left: 0.9rem;
+                            animation: rotate 2s linear infinite;
+                        }
+                    }
+
+
+                    @keyframes rotate {
+                        0% { transform: rotate(0deg); }
+                        100% { transform: rotate(360deg); }
+                    }
+                    
+                    
                 }
             }
 
