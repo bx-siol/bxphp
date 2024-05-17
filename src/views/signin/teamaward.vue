@@ -69,7 +69,7 @@
                 <div class="content_content_item_top">LUXURY GIF 4</div>
                 <P class="content_content_item_first">BCD TEAM MEMBERS ARRIVE AT <span style="color: #cf1c17;font-weight: bold;font-size: 0.6rem;">700</span></P>
                 <P class="content_content_item_second">REWARD AN APPLE MOBILE PHONE</P>
-                <P class="content_content_item_second">(WORTH RS 7,000)</P>
+                <P class="content_content_item_second">(WORTH RS 70,000)</P>
                 <div class="content_content_item_third">
                     <div class="content_content_item_third_text">Current progress: {{hy.lv4}}/700</div>
                     <div class="content_content_item_third_img img4"></div>
