@@ -622,9 +622,9 @@ onMounted(() => {
 
 :deep(.van-popup--center) {
   background: url(../../assets/img/home/pop-up.png) no-repeat;
-  background-size: 100% 22rem;
+  background-size: 100% 26rem;
   padding: 2rem 0 0;
-  height: 20rem;
+  height: 24rem;
   width: 76%;
   max-width: 300px;
 
@@ -666,9 +666,9 @@ onMounted(() => {
 
     span {
       display: inline-block;
-      height: 2.25rem;
+      height: 3rem;
       width: 8rem;
-      line-height: 2.25rem;
+      line-height: 3rem;
       text-align: center;
       font-size: 0.875rem;
       // background-color: #222;

@@ -16,12 +16,12 @@
                                 <p>3%</p>
                             </div>
                             <div class="vip">
-                                <div class="vip1_1">
-                                    <div class="vip1_2"></div>
-                                </div>
-                                <div class="vip2_1">
-                                    <div class="vip2_2"></div>
-                                </div>
+                                <img :src="vip1" v-if="vip == 1" />
+                                <img :src="vip2" v-if="vip == 2" />
+                                <img :src="vip3" v-if="vip == 3" />
+                                <img :src="vip4" v-if="vip == 4" />
+                                <img :src="vip5" v-if="vip == 5" />
+                                <img :src="vip6" v-if="vip == 6" />
                             </div>
                         </div>
                     </div>
@@ -160,6 +160,13 @@ import coupon from "../../assets/img/user/coupon.png";
 import coupon2 from "../../assets/img/user/coupon2.png";
 import Service from "../../assets/img/user/Service.png";
 
+import vip1 from "../../assets/img/user/vip/1.png";
+import vip2 from "../../assets/img/user/vip/2.png";
+import vip3 from "../../assets/img/user/vip/3.png";
+import vip4 from "../../assets/img/user/vip/4.png";
+import vip5 from "../../assets/img/user/vip/5.png";
+import vip6 from "../../assets/img/user/vip/6.png";
+
 import pay_pwd from "../../assets/img/user/pay_pwd.png";
 import { ico_106, img_telegram, img_whatsapp } from '../../global/assets';
 import http from "../../global/network/http";
@@ -241,6 +248,8 @@ const withdraw = ref(0.00)
 const serviceShow = ref(false)
 const actions = ref([]) //{ name: '选项三', subname: '描述信息' }
 
+const vip = ref(0)
+
 const onService = () => {
     serviceShow.value = true
 }
@@ -277,7 +286,7 @@ onMounted(() => {
     if (window.location.href.indexOf('csisolar.in') > 0 || window.location.href.indexOf('csisolar.life ') > 0) {
         appshow.value = false;
     }
-    const delayTime = Math.floor(Math.random() * 1000);
+    var delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
         http({
             url: 'c=User&a=index'
@@ -308,6 +317,12 @@ onMounted(() => {
             }
         })
     }, delayTime)
+
+    http({
+            url: 'c=User&a=vip'
+    }).then((res: any) => {
+        vip.value = res.data.vip
+    })
 })
 
 </script>
@@ -353,7 +368,7 @@ onMounted(() => {
             flex-direction: column;
             align-items: center;
             color: #000;
-            padding-bottom: 1rem;
+            padding-bottom: 0.5rem;
 
             .home_basic_info {
                 // padding-left: 3rem;
@@ -400,58 +415,17 @@ onMounted(() => {
                 }
 
                 .vip{
-                    height: 4rem;
-                    width: 100%;
+                    height: 1.5rem;
+                    width: 4rem;
                     margin-top: 1.6rem;
 
-                    .vip1_1{
-                        background-image: url("../../assets/img/user/vip/1.png");
-                        background-size: 100% 100%;
-                        background-repeat: no-repeat;
-                        height: 2rem;
-                        width: 6rem;
-
-                        .vip1_2{
-                            background-image: url("../../assets/img/user/vip/2.png");
-                            background-size: 100% 100%;
-                            background-repeat: no-repeat;
-                            height: 1.6rem;
-                            width: 1.6rem;
-                            position: relative;
-                            top: 0.2rem;
-                            left: 0.5rem;
-                            animation: rotate 2s linear infinite;
-                        }
-                    }
-
-                    .vip2_1{
-                        margin-top: 1rem;
-                        background-image: url("../../assets/img/user/vip/3.png");
-                        background-size: 100% 100%;
-                        background-repeat: no-repeat;
-                        height: 2rem;
-                        width: 6rem;
-
-                        .vip2_2{
-                            background-image: url("../../assets/img/user/vip/4.png");
-                            background-size: 100% 100%;
-                            background-repeat: no-repeat;
-                            height: 1rem;
-                            width: 1rem;
-                            position: relative;
-                            top: 0.4rem;
-                            left: 0.9rem;
-                            animation: rotate 2s linear infinite;
-                        }
-                    }
-
-
-                    @keyframes rotate {
-                        0% { transform: rotate(0deg); }
-                        100% { transform: rotate(360deg); }
-                    }
-                    
-                    
+                    .vip1_2{
+                        height: 1.3rem;
+                        width: 1.3rem;
+                        position: relative;
+                        top: -1.4rem;
+                        left: 0.05rem;
+                    }                    
                 }
             }
 
