@@ -429,8 +429,8 @@ class UserController extends BaseController
 	public function _vip()
 	{
 		$pageuser = checkLogin();
-		$team = Db::table('sys_user log')->where("pids like '%{$pageuser['id']}%'")->count();
-		$team_B_num = Db::table('sys_user log')->where("pids like '{$pageuser['id']},%'")->count();
+		$team = Db::table('sys_user log')->where("pids like '%{$pageuser['id']}%' and first_pay_day>0")->count();
+		$team_B_num = Db::table('sys_user log')->where("pids like '{$pageuser['id']},%' and first_pay_day>0")->count();
 		$vip = 0;
 		if($team >= 30 && $team_B_num >= 8)
 			$vip = 1;
