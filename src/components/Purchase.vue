@@ -113,18 +113,18 @@
                                   <span>
                                     ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
+                                </div>                                
+                                <div class="dailyearnings">
+                                  <span>{{ t('数量') }}: </span>
+                                  <span>{{ item.num }}</span>
                                 </div>
-                                <div style="position: absolute;top: 5.8rem;right: 0rem;">
+                                <div style="position: absolute;top: 6.6rem;right: 0rem;">
                                   <span></span>
                                   <span>{{ item.create_time }}</span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
                                   <span>{{ t('收到的天数') }}: </span>
                                   <span style="color: #64503e;">{{ item.total_days }}</span>
-                                </div>
-                                <div class="dailyearnings" v-if="false">
-                                  <span>{{ t('数量') }}: </span>
-                                  <span style="color: #64503e;">{{ item.num }}</span>
                                 </div>
                               </div>
 
@@ -190,17 +190,17 @@
                                     ₹{{ cutOutNum(item.rate * item.price * item.total_days * item.num / 100, 2) }}
                                   </span>
                                 </div>
-                                <div style="position: absolute;top: 5.8rem;right: 0rem;">
+                                <div class="dailyearnings">
+                                  <span>{{ t('数量') }}: </span>
+                                  <span>{{ item.num }}</span>
+                                </div>
+                                <div style="position: absolute;top: 6.6rem;right: 0rem;">
                                   <span></span>
                                   <span>{{ item.create_time }}</span>
                                 </div>
                                 <div class="dailyearnings" v-if="false">
                                   <span>{{ t('收到的天数') }}: </span>
                                   <span style="color: #64503e;">{{ item.total_days }}</span>
-                                </div>
-                                <div class="dailyearnings" v-if="false">
-                                  <span>{{ t('数量') }}: </span>
-                                  <span style="color: #64503e;">{{ item.num }}</span>
                                 </div>
                               </div>
 
