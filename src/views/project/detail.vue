@@ -42,11 +42,11 @@
         </div>
         <div class="totalrevenue">
           <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-            100, 1) }}%</span>
+            100, 1).toFixed(2) }}%</span>
           <span>{{ t('利润回报') }} </span>
         </div>
         <div class="totalrevenue">
-          <span v-if="info.invest_limit > 0" class="bold">{{ info.invest_limit }}</span>
+          <span v-if="info.invest_limit > 0" class="bold">{{ (info.invest_limit) }}</span>
           <span v-else class="bold">{{ t('无限制') }}</span>
           <span>{{ t('数量限制') }}</span>
         </div>
