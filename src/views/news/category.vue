@@ -1,6 +1,5 @@
 <template>
     <div class="conbar">
-        
         <div style="float: right;padding-top: 7px;padding-right: 12px;" v-if="power.update">
             <el-button type="success" size="small" icon="el-icon-plus" @click="add">添加分类</el-button>
         </div>
