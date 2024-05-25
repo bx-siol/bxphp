@@ -41,8 +41,7 @@
           <span style="white-space: nowrap;">{{ t('总收益') }} </span>
         </div>
         <div class="totalrevenue">
-          <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-            100, 1).toFixed(2) }}%</span>
+          <span class="bold">{{ (info.price * info.rate * info.days / info.price ).toFixed(2) }}%</span>
           <span>{{ t('利润回报') }} </span>
         </div>
         <div class="totalrevenue">
