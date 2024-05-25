@@ -350,15 +350,14 @@ const onSubmit = () => {
   } else {
     isRequest = true
   }
-  loadingShow.value = true;
-  const delayTime = Math.floor(Math.random() * 1000);
   if(info.value.gift == 1)
   {    
     isRequest = false
     _alert("Please invite members to join and contact customer service manager to redeem.");
     return
   }
-
+  loadingShow.value = true;
+  const delayTime = Math.floor(Math.random() * 1000);
   setTimeout(() => {
     http({
       url: 'c=Product&a=invest',
