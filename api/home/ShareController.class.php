@@ -179,7 +179,7 @@ class ShareController extends BaseController
 	{
 		$pageuser = checkLogin(); //isLogin
 		$params = $this->params;
-		$list = Db::table('pro_goods')->where("cid={{$params['cid']}}}")->select();
+		$list = Db::table('pro_goods')->where("cid={$params['cid']}")->select();
 
 		$return_data = [
 			'list' => $list
