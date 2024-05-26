@@ -178,8 +178,8 @@ class ShareController extends BaseController
 	public function _giftproject()
 	{
 		$pageuser = checkLogin(); //isLogin
-
-		$list = Db::table('pro_goods')->where("cid=1020")->select();
+		$params = $this->params;
+		$list = Db::table('pro_goods')->where("cid={{$params['cid']}}}")->select();
 
 		$return_data = [
 			'list' => $list
