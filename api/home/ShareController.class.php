@@ -208,7 +208,7 @@ class ShareController extends BaseController
 
 
 		$return_data = [
-			'SubordinateBuy' => $SubordinateBuy
+			'SubordinateBuy' => $SubordinateBuy,
 			'MyReceive' => $MyReceive
 		];
 		ReturnToJson(1, 'Received successfully', $return_data);
