@@ -117,10 +117,10 @@
             loadingShow.value = false;
             if (res.code != 200) {
                 isRequest = false
-                _alert(res.message)
+                _alert(res.msg)
                 return
             }
-            _alert(res.message)
+            _alert(res.msg)
             isRequest = false
         })
     }
