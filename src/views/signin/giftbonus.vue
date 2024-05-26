@@ -11,25 +11,25 @@
             <h6 style="color: #724031;margin-top: 0.3rem;">projext,you can get a corresponding goft for free</h6>
         </div>
         <div class="projects">
-            <div v-for="(itemc, indexc) in tableData" style="margin-top: 0.8rem;">
+            <div v-for="(itemc, indexc) in tableData" :style=" indexc !==0 ?'margin-top: 2vh;':'margin-top: 1.5vh;' ">
                 <div class="projects_top">
                     <div>
-                        <p style="margin-top: 0.5rem;">PRODUCT</p>
+                        <p style="margin-top: 1vh;">PRODUCT</p>
                     </div>
                     <div>
-                        <p style="margin-top: 0.2rem;">FRIENDS</p>
+                        <p style="margin-top: 0.8vh;">FRIENDS</p>
                         <p>BUY</p>
                     </div>
                     <div>
-                        <p style="margin-top: 0.2rem;">DAILY</p>
+                        <p style="margin-top: 0.8vh;">DAILY</p>
                         <p>INCOME</p>
                     </div>
                     <div>
-                        <p style="margin-top: 0.2rem;">INVESTMENT</p>
+                        <p style="margin-top: 0.8vh;">INVESTMENT</p>
                         <p>CYCLE</p>
                     </div>
                     <div>
-                        <p style="margin-top: 0.2rem;">TOTAL</p>
+                        <p style="margin-top: 0.8vh;">TOTAL</p>
                         <p>REVENUE</p>
                     </div>
                 </div>
@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                <div v-if="indexc !== tableData.length - 1" style="border-top: 1px dashed #b6aeae;height: 0;width: 100%;position: relative;top: 4px;"></div>
+                <!-- <div v-if="indexc !== tableData.length - 1" style="border-top: 1px dashed #b6aeae;height: 0;width: 100%;position: relative;top: 4px;"></div> -->
             </div>            
         </div>
         <div style="text-align: center;color: #7c4d3d;margin-top: 0.4rem;">
@@ -147,18 +147,19 @@
         }
 
         .projects{
-            height: calc(100% - 13rem);
+            height: calc(100% - 17rem);
             width: 100%;
+            margin-top:calc(100% - 21rem) ;
 
             .projects_top{
-                height: 1.5rem;
+                height: 4vh;
                 font-size: 0.5rem;
                 display: flex;
                 justify-content: space-between;
 
                 div{
                     width: 17%;
-                    height: 1.5rem;
+                    height: 4vh;
                     background-color: #305753;
                     color: #f3e5c0;
                     text-align: center;
@@ -167,18 +168,18 @@
             }
 
             .projects_content{
-                height: 4rem;
-                margin-top: 0.2rem;
+                height: 9.2vh;
+                margin-top: 1vh;
 
                 .projects_content_left{
                     width: 18%;
-                    height: 4rem;
+                    height: 10vh;
                     float: left;
                 }
 
                 .projects_content_right{
                     width: 79.5%;
-                    height: 4rem;
+                    height: 10vh;
                     float: right;
 
                     div{
@@ -186,11 +187,11 @@
                         justify-content: space-around;
 
                         div{
-                            height: 1.5rem;
+                            height: 4vh;
                             width: 22%;
                             background-color: #fefefe;
                             font-size: 0.55rem;
-                            line-height: 1.5rem;
+                            line-height: 4vh;
                             border:  1px solid #305753;
                             border-radius: 5px;
                             font-weight: bold;
@@ -202,8 +203,8 @@
                         width: 100%;
                         margin-top: 0.5rem;
                         background-color: #703e2f;
-                        height: 1.7rem;
-                        line-height: 1.7rem;
+                        height: 3.5vh;
+                        line-height: 3.5vh;
                         color: #e6d7c2;
                         border-radius: 10px;
                         font-size: 0.8rem;
