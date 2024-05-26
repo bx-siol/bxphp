@@ -172,4 +172,18 @@ class ShareController extends BaseController
 		$qrcode_str = REQUEST_SCHEME . '://' . HTTP_HOST . "/h5/#/register?icode={$icode}";
 		return $qrcode_str;
 	}
+
+	//---------------------礼品活动-----------------------------------
+	//雀巢礼品活动
+	public function _giftproject()
+	{
+		$pageuser = checkLogin(); //isLogin
+
+		$list = Db::table('pro_goods')->where("cid=1020")->select();
+
+		$return_data = [
+			'list' => $list
+		];
+		ReturnToJson(1, 'ok', $return_data);
+	}
 }
