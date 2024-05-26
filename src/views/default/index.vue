@@ -631,7 +631,6 @@ onMounted(() => {
   .giftbonus{
     width: 100%;
     height: 6rem;
-    background-color: red;
     margin-top: 1rem;
     background-image: url('../../assets/img/home/giftbonus.png'); /* 设置图片路径 */
     background-size: 100% 100%; /* 背景图片覆盖整个元素 */
