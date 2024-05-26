@@ -199,10 +199,12 @@ class ShareController extends BaseController
 		$params = $this->params;
 		//and reg_time>1716748200
 		//下级购买
-		$SubordinateBuy = Db::query("select gid,count(*) totalnum from pro_order where  uid in (select id from sys_user where pid={$params['id']} and first_pay_day >0 )  group by gid");
+		$SubordinateBuy = Db::query("select gid,count(*) totalnum from pro_order where  uid in 
+		(select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 )  group by gid")->toArray();
 
 		//自己领取
-		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} and gid in (225,226,227,228) group by gid");
+		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} 
+		and gid in (225,226,227,228) group by gid")->toArray();
 
 
 		$return_data = [
