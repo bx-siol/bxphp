@@ -41,12 +41,12 @@
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
           </div>
+          <div class="giftbonus" @click="onLink({ name: 'giftbonus' })" ></div>
           <div class="index_cer">
             <div class="menubox">
               <div
                 style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;"
-                  @click="onLink({ name: 'Finance_recharge' })">
+                <a class="divs" href="javascript:;" style="justify-content: flex-end;" @click="onLink({ name: 'Finance_recharge' })">
                   <van-image :src="m1"></van-image>
                 </a>
                 <!-- <span class="line"></span> -->
@@ -62,10 +62,8 @@
                 </a>
               </div>
 
-              <div
-                style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;"
-                  @click="onLink({ name: 'Gift_lottery' })">
+              <div style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
+                <a class="divs" href="javascript:;" style="justify-content: flex-end;" @click="onLink({ name: 'Gift_lottery' })">
                   <van-image :src="m5"></van-image>
                 </a>
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Purchase' })">
@@ -81,8 +79,7 @@
             </div>
 
             <div class="videobox">
-              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc"
-                style="width: 100%;border-radius: 8px;"></video>
+              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc" style="width: 100%;border-radius: 8px;"></video>
             </div>
 
             <div>
@@ -628,6 +625,17 @@ onMounted(() => {
       // top: -2.25rem;
       // left: 0.75rem;
     }
+    
+  }
+
+  .giftbonus{
+    width: 100%;
+    height: 6rem;
+    background-color: red;
+    margin-top: 1rem;
+    background-image: url('../../assets/img/home/giftbonus.png'); /* 设置图片路径 */
+    background-size: 100% 100%; /* 背景图片覆盖整个元素 */
+    background-repeat: no-repeat; /* 背景图片不重复 */
   }
 
   .invite_icon:before,

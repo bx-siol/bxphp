@@ -444,6 +444,15 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('../views/user/monthlypay.vue')
     },
+    {
+        path: '/giftbonus',
+        name: 'giftbonus',
+        meta: {
+            title: 'Gift',
+            needLogin: false
+        },
+        component: () => import('../views/signin/giftbonus.vue')
+    },
 ]
 
 const router = createRouter({

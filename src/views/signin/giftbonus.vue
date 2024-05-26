@@ -1,45 +1,69 @@
 ﻿<template>
+    <MyNav leftText=""></MyNav>
     <div class="mission">
-        <MyNav leftText="">
-        </MyNav>
-        <div class="tasktent">
-            <div class="invites">
-                <img :src="taskinvite" class="inviteimg" @click="onLink({name:'User_team'})">
-            </div>
-            <div class="invition">
-                <div class="tasklisk" v-for="(item, index) in tableData" :key="index">
-                    <div class="lisks">
-                        <div style="height:6rem;">
-                            <div style="width:30%;float:left;height:5.5rem;">
-                                <img :src="imgFlag1(item.icon)" style="height: 4.8rem;margin:0.3rem auto;width:75%;">
-                            </div>
-                            <div style="width: 70%; float: right; height: 4rem;">
-                                <div style="font-size: 0.85rem; font-weight: bold;" v-if="item.id == 33">Invite 2 people join 【{{item.name}}】</div>
-                                <div style="font-size: 0.85rem; font-weight: bold;" v-else>Invite 1 people join 【{{item.name}}】</div>
-                                <div style="margin-top:0.5rem;">
-                                    <div style="width: 55%; float: left; color: #7b7b7b;font-size:0.8rem;">Daily Earnings</div>
-                                    <div style="width: 45%; float: right; color: #008260; text-align: right; font-size: 0.8rem;">{{ cutOutNum((item.rate / 100) * item.price) }} RS</div>
-                                </div>
-                                <div style="margin-top:0.5rem;">
-                                    <div style="width: 55%; float: left; color: #7b7b7b; font-size: 0.8rem;">Total Revenue</div>
-                                    <div style="width: 45%; float: right; color: #008260; text-align: right; font-size: 0.8rem;">{{ cutOutNum((item.rate / 100) * item.price * item.days) }} RS</div>
-                                </div>
-                                <div style="margin-top:0.5rem;">
-                                    <div style="width: 55%; float: left; color: #7b7b7b; font-size: 0.8rem;">Revenue Cycle</div>
-                                    <div style="width: 45%; float: right; color: #008260; text-align: right; font-size: 0.8rem;">{{item.days}} Day</div>
-                                </div>
-                            </div>
-                        </div>                       
-                        <div class="lisks_save" @click="Receive_Save(item.id)">Receive</div>
+        <div class="introduce">
+            <h1 style="padding-top: 0.7rem;color: #703e2f;display: flex;justify-content: center;align-items: center;">
+                <img :src="h1" style="width: 1rem;height: 1rem;margin-right: 1.5rem;" />
+                NESTLE GIFTS
+                <img :src="h1" style="width: 1rem;height: 1rem;margin-left: 1.5rem;" />
+            </h1>
+            <h6 style="color: #724031;margin-top: 0.3rem;">Every time you invite a friend to join the corresponding Nestle </h6>
+            <h6 style="color: #724031;margin-top: 0.3rem;">projext,you can get a corresponding goft for free</h6>
+        </div>
+        <div class="projects">
+            <div v-for="(itemc, indexc) in tableData" style="margin-top: 0.8rem;">
+                <div class="projects_top">
+                    <div>
+                        <p style="margin-top: 0.5rem;">PRODUCT</p>
+                    </div>
+                    <div>
+                        <p style="margin-top: 0.2rem;">FRIENDS</p>
+                        <p>BUY</p>
+                    </div>
+                    <div>
+                        <p style="margin-top: 0.2rem;">DAILY</p>
+                        <p>INCOME</p>
+                    </div>
+                    <div>
+                        <p style="margin-top: 0.2rem;">INVESTMENT</p>
+                        <p>CYCLE</p>
+                    </div>
+                    <div>
+                        <p style="margin-top: 0.2rem;">TOTAL</p>
+                        <p>REVENUE</p>
                     </div>
                 </div>
-            </div>
+                <div class="projects_content">
+                    <div class="projects_content_left">
+                        <img :src="imgFlag(itemc.icon)">
+                    </div>
+                    <div class="projects_content_right">
+                        <div>
+                            <div>{{itemc.name}}</div>
+                            <div>{{itemc.price *itemc.rate /100}}</div>
+                            <div>{{itemc.days}} Days</div>
+                            <div>{{itemc.price *itemc.rate*itemc.days /100}} RS</div>
+                        </div>
+                        <div class="projects_content_right_save" @click="Receive_Save(itemc.id)">
+                            <img :src="h2" style="width: 1rem;height: 1rem;" />
+                            RECEIVE GIFTS
+                            <img :src="h2" style="width: 1rem;height: 1rem;" />
+                        </div>
+                    </div>
+                </div>
+                <div v-if="indexc !== tableData.length - 1" style="border-top: 1px dashed #b6aeae;height: 0;width: 100%;position: relative;top: 4px;"></div>
+            </div>            
         </div>
+        <div style="text-align: center;color: #7c4d3d;margin-top: 0.4rem;">
+            <h6>Nestle gift can be obtained repeatedly.The more</h6>
+            <h6 style="margin-top: 0.3rem;">members you invute to join,the more gifts you will get.</h6>
+            <h4 style="margin-top: 0.6rem;">Gift deadline：June 5,2024</h4>
+        </div>
+        <div class="bottom"></div>
     </div>
     <MyLoading :show="loadingShow" :title="loadtitle"></MyLoading>
 </template>
 <script lang="ts">
-    //import { alert, lang } from "../../global/common";
     import { defineComponent, ref, reactive, onMounted, computed, toRaw, toRefs } from 'vue'
     import { Button, Form, Field, CellGroup } from 'vant'
     import { Icon, Calendar } from 'vant'
@@ -63,37 +87,18 @@
 </script>
   
 <script lang="ts" setup>
-    import taskinvite from '../../assets/img/signin/taskinvite.png'
-    import gift from '../../assets/img/signin/gift.png'
+    import h1 from '../../assets/img/signin/h1.png'    
+    import h2 from '../../assets/img/signin/h2.png'
     import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
-    const filteredDate = (date: number) => {
-        return date > 0 ? date : ""
-    }
     const imgFlag = (src: string) => {
         return getSrcUrl(src, 1);
     }
-    const onLink = (to: any) => {
-        goRoute(to)
-    }
-
-    //h5 本地资源
-    const imgFlag1 = (src: string) => {
-        return getSrcUrl(src, 1);
-    };
 
     const loadtitle = ref("Loading...")
     const loadingShow = ref(false);
-
     const router = useRouter()
     const tableData = ref<any>({})
-    const detailData = ref<any>({})
-    const Details = () => {
-        router.push({ path: '/balancelog/1019' })
-    }
-    const linkback = () => {
-        router.push({ path: '/' })
-    }
 
     const pageData = ref(null)
     let isRequest = false
@@ -105,194 +110,122 @@
             isRequest = true
         }
         loadingShow.value = true;
-        const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
-            http({
-                    url: 'giftbonussave',
-                    data: {
-                        GoodId: id,
-                    }
-                }).then((res: any) => {
-                    loadingShow.value = false;
-                    if (res.code != 200) {
-                        isRequest = false
-                        _alert(res.message)
-                        return
-                    }
-                    _alert(res.message)
-                    isRequest = false
-                })
-            
-        },delayTime)
+        http({
+            url: 'c=Share&a=giftreceive',
+            data: { goodsid: id }
+        }).then((res: any) => {
+            loadingShow.value = false;
+            if (res.code != 200) {
+                isRequest = false
+                _alert(res.message)
+                return
+            }
+            _alert(res.message)
+            isRequest = false
+        })
     }
 
     onMounted(() => {
-        const delayTime = Math.floor(Math.random() * 1000);
-        // setTimeout(() => { 
-            http({
-          url: 'goods/GetList',
-          data: { size: 245, page: 1, cid: 8 }
+        http({
+            url: 'c=Share&a=giftproject',
+            data: { cid: 1020 }
         }).then((res: any) => {
-          if (res.code != 200) {
-            _alert(res.message, function () {
-              router.go(-1)
-            })
-            return
-          }
-          tableData.value = res.data.list
+            tableData.value = res.data.list
         })
-        // },delayTime)
     })
 </script>
 <style lang="scss" scoped>
-    .tasktent {
-        padding: 0 1rem;
+    .mission{
+        background-color: #f4e6c8;
+        padding:  0 1rem;
+        height: calc(100% - 2.9rem);
+        position: relative;
+        z-index: 1;
 
-        .invites {
-            .inviteimg {
-                margin: 1.2rem 0;
+        .introduce{
+            text-align: center;
+        }
+
+        .projects{
+            height: calc(100% - 13rem);
+            width: 100%;
+
+            .projects_top{
+                height: 1.5rem;
+                font-size: 0.5rem;
+                display: flex;
+                justify-content: space-between;
+
+                div{
+                    width: 17%;
+                    height: 1.5rem;
+                    background-color: #305753;
+                    color: #f3e5c0;
+                    text-align: center;
+                    border-radius: 5px;
+                }
             }
 
-            .money {
-                display: flex;
-                justify-content: space-around;
+            .projects_content{
+                height: 4rem;
+                margin-top: 0.2rem;
 
-                div {
-                    background: url(../../assets/img/signin/back.png);
-                    background-repeat: no-repeat;
-                    background-size: 100% 100%;
-                    width: 6rem;
-                    height: 5.8rem;
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: center;
+                .projects_content_left{
+                    width: 18%;
+                    height: 4rem;
+                    float: left;
+                }
 
-                    h1 {
-                        margin: 0.3rem 0;
-                        font-size: 1.2rem;
-                        color: rgb(253, 211, 55);
+                .projects_content_right{
+                    width: 79.5%;
+                    height: 4rem;
+                    float: right;
+
+                    div{
+                        display: flex;
+                        justify-content: space-around;
+
+                        div{
+                            height: 1.5rem;
+                            width: 22%;
+                            background-color: #fefefe;
+                            font-size: 0.55rem;
+                            line-height: 1.5rem;
+                            border:  1px solid #305753;
+                            border-radius: 5px;
+                            font-weight: bold;
+                            color: #305753;
+                        }
                     }
 
-                    img {
-                        width: 1.6rem;
-                        height: 1.5rem;
-                    }
-
-                    span {
+                    .projects_content_right_save{
+                        width: 100%;
+                        margin-top: 0.5rem;
+                        background-color: #703e2f;
+                        height: 1.7rem;
+                        line-height: 1.7rem;
+                        color: #e6d7c2;
+                        border-radius: 10px;
                         font-size: 0.8rem;
                         font-weight: bold;
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-around;
                     }
                 }
             }
         }
 
-        .flrst {
-            .flrsttop {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 1.2rem 0;
-
-                img {
-                    width: 1.2rem;
-                    height: 1.2rem;
-                }
-
-                p {
-                    color: #008260;
-                    font-weight: bold;
-                    font-size: 1.4rem;
-                    margin: 0 1rem;
-                }
-            }
-
-            .flrstbot {
-                border: 1px solid #008260;
-                border-radius: 0.5rem;
-                padding: 0.8rem 0.4rem;
-                display: flex;
-                align-items: center;
-                height: 3.5rem;
-
-                img:nth-child(1) {
-                    width: 1.8rem;
-                    height: 1.4rem;
-                }
-
-                img:nth-child(3) {
-                    width: 4rem;
-                    height: 1.6rem;
-                }
-
-                p {
-                    font: bold 12px/18px "微软雅黑";
-                    zoom: 0.8;
-                    margin-left: 0.5rem;
-                }
-            }
-        }
-
-        .invition {
-            .invititop {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                margin: 1.2rem 0;
-
-                img {
-                    width: 1.2rem;
-                    height: 1.2rem;
-                }
-
-                p {
-                    color: #008260;
-                    font-weight: bold;
-                    font-size: 1.4rem;
-                    margin: 0 1rem;
-                }
-            }
-
-            .tasklisk {
-
-                .lisks {
-                    box-shadow: 0 0 10px 2px rgb(0 0 0/15%);
-                    border-radius: 0.5rem;
-                    padding: 0.8rem 0.4rem;
-                    margin: 1.2rem auto;
-                    height: 8rem;
-
-                    img:nth-child(1) {
-                        width: 4.5rem;
-                        height: 4.5rem;
-                    }
-
-                    img:nth-child(3) {
-                        width: 4rem;
-                        height: 1.6rem;
-                    }
-
-                    p {
-                        font: bold 12px/20px "微软雅黑";
-                        margin-left: 0.5rem;
-                        color: #008260;
-                    }
-
-                    span {
-                        font-weight: normal;
-                    }
-
-                    .lisks_save {
-                        width: 100%;
-                        height: 2rem;
-                        background-color: #008260;
-                        text-align: center;
-                        color: #fff;
-                        line-height: 2rem;
-                        border-radius: 21px;
-                    }
-                }
-            }
+        .bottom{
+            background-image: url('../../assets/img/signin/bottom.png');
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            height: 10rem;
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            z-index: -1;
         }
     }
 </style>
