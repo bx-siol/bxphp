@@ -192,25 +192,77 @@ class ShareController extends BaseController
 	{
 		$time = time();
 		if($time > 1717612169){
-			ReturnToJson(200, 'ok', "The activity has ended.");
+			ReturnToJson(1, 'ok', "The activity has ended.");
 		}		
 
 		$pageuser = checkLogin();
 		$params = $this->params;
 		//and reg_time>1716748200
+
+		switch ($params) {
+			case 225:
+				$gid = 219;
+				break;
+			case 226:
+				$gid = 220;
+				break;
+			case 227:
+				$gid = 221;
+				break;
+			case 228:
+				$gid = 222;
+				break;		
+		}
+		
 		//下级购买
 		$SubordinateBuy = Db::query("select gid,count(*) totalnum from pro_order where  uid in 
-		(select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 )  group by gid");
+		(select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 ) and gid ={$gid}   group by gid");
+
+		if(!isset($SubordinateBuy))
+			ReturnToJson(1, 'ok', "Please invite people to participate in the event.");
 
 		//自己领取
 		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} 
-		and gid in (225,226,227,228) group by gid");
+		and gid ={$params['goodsid']} group by gid");
 
+		if(!isset($SubordinateBuy))
+			$MyReceive['totalnum'] = 0;
+		
+		if($SubordinateBuy['totalnum'] > $MyReceive['totalnum']){
+			//发礼物
+			$goodInfo = Db::table('pro_goods')->where("id = {$params['goodsid']}")->find();
+			for ($i = 0; $i < $SubordinateBuy['totalnum']-$MyReceive['totalnum']; $i++) {
+				Db::table('pro_order')->insertGetId([
+					'uid'=> $pageuser['id'],
+					'osn'=> getRsn(),
+					'pid' => $pageuser['pid'],
+					'cid' => $goodInfo['cid'],
+					'gid' => $params['goodsid'],
+					'days' => $goodInfo['days'],
+					'rate' => $goodInfo['rate'],
+					'price' => $goodInfo['price'],
+					'price1' => 0,
+					'price2' => 0,
+					'p1' => 1,
+					'p2' => 1,
+					'p3' => 0,
+					'status' => 1,
+					'money' => $goodInfo['price'],
+					'num' => 1,
+					'create_day' => date('Ymd', NOW_TIME),
+					'create_time' => NOW_TIME,
+					'is_give' => 1,
+					'is_exchange' => 1,
+					'discount' => 1,
+					'w1_money' => $goodInfo['price'],
+					'w2_money' => 0,
+				]);
+			}
+		}
 
 		$return_data = [
-			'SubordinateBuy' => $SubordinateBuy,
-			'MyReceive' => $MyReceive
+			
 		];
-		ReturnToJson(1, 'Received successfully', $return_data);
+		ReturnToJson(200, 'Received successfully', $return_data);
 	}
 }
