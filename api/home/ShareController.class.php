@@ -215,8 +215,12 @@ class ShareController extends BaseController
 		}
 		
 		//下级购买
-		$SubordinateBuy = Db::query("select gid,count(*) totalnum from pro_order where  uid in 
-		(select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 ) and gid ={$gid}   group by gid");
+		// $SubordinateBuy = Db::query("select gid,count(*) totalnum from pro_order where  uid in 
+		// (select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 ) and gid ={$gid}   group by gid");
+
+		$SubordinateBuy = Db::query("select gid,count(*) totalnum from ( 
+			SELECT uid,gid FROM pro_order where uid in (select id from sys_user where pid={$pageuser['id']} and first_pay_day > 0 ) GROUP BY uid ORDER BY create_time
+			) a where gid ={$gid}  group by gid");
 
 		if(is_null($SubordinateBuy[0]['totalnum']))
 			ReturnToJson(1, 'Please invite people to participate in the event.');
