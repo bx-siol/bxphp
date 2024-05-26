@@ -177,12 +177,28 @@ class ShareController extends BaseController
 	//雀巢礼品活动
 	public function _giftproject()
 	{
-		$pageuser = checkLogin(); //isLogin
+		$pageuser = checkLogin();
 		$params = $this->params;
 		$list = Db::table('pro_goods')->where("cid={$params['cid']}")->select();
 
 		$return_data = [
 			'list' => $list
+		];
+		ReturnToJson(1, 'ok', $return_data);
+	}
+
+	//领取礼品
+	public function _giftreceive()
+	{
+		$time = time();
+
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$list = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day > 0")->select();
+
+		$return_data = [
+			'list' => $list,
+			'time' => $time
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
