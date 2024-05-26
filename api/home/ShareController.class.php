@@ -192,7 +192,7 @@ class ShareController extends BaseController
 	{
 		$time = time();
 		if($time > 1717612169){
-			ReturnToJson(1, 'ok', "The activity has ended.");
+			ReturnToJson(1, 'The activity has ended.');
 		}		
 
 		$pageuser = checkLogin();
@@ -219,7 +219,7 @@ class ShareController extends BaseController
 		(select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 ) and gid ={$gid}   group by gid");
 
 		if(empty($SubordinateBuy['totalnum']))
-			ReturnToJson(1, 'ok', "Please invite people to participate in the event.");
+			ReturnToJson(1, 'Please invite people to participate in the event.');
 
 		//自己领取
 		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} 
