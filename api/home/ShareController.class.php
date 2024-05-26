@@ -191,15 +191,26 @@ class ShareController extends BaseController
 	public function _giftreceive()
 	{
 		$time = time();
+		if($time > 1717612169){
+			ReturnToJson(200, 'ok', "The activity has ended.");
+		}		
 
 		$pageuser = checkLogin();
 		$params = $this->params;
-		$list = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day > 0")->select();
+		//and reg_time>1716748200
+		//下级购买
+		$SubordinateBuy = Db::query("select gid,count(*) totalnum from pro_order where  uid in 
+		(select id from sys_user where pid={$params["id"]} and first_pay_day >0 )  group by gid;")->select();
+
+		//自己领取
+		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} 
+		and gid in (225,226,227,228) group by gid;")->select();
+
 
 		$return_data = [
-			'list' => $list,
-			'time' => $time
+			'SubordinateBuy' => $SubordinateBuy
+			'MyReceive' => $MyReceive
 		];
-		ReturnToJson(1, 'ok', $return_data);
+		ReturnToJson(1, 'Received successfully', $return_data);
 	}
 }
