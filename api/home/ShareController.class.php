@@ -228,10 +228,10 @@ class ShareController extends BaseController
 		if(is_null($MyReceive[0]['totalnum']))
 			$MyReceive['totalnum'] = 0;
 
-		if($SubordinateBuy['totalnum'] > $MyReceive['totalnum']){
+		if($SubordinateBuy[0]['totalnum'] > $MyReceive[0]['totalnum']){
 			//发礼物
 			$goodInfo = Db::table('pro_goods')->where("id = {$params['goodsid']}")->find();
-			for ($i = 0; $i < $SubordinateBuy['totalnum']-$MyReceive['totalnum']; $i++) {
+			for ($i = 0; $i < $SubordinateBuy[0]['totalnum']-$MyReceive[0]['totalnum']; $i++) {
 				Db::table('pro_order')->insertGetId([
 					'uid'=> $pageuser['id'],
 					'osn'=> getRsn(),
