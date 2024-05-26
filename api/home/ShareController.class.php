@@ -199,7 +199,7 @@ class ShareController extends BaseController
 		$params = $this->params;
 		//and reg_time>1716748200
 
-		switch ($params) {
+		switch ($params['goodsid']) {
 			case 225:
 				$gid = 219;
 				break;
@@ -227,7 +227,7 @@ class ShareController extends BaseController
 
 		if(!isset($SubordinateBuy))
 			$MyReceive['totalnum'] = 0;
-		
+
 		if($SubordinateBuy['totalnum'] > $MyReceive['totalnum']){
 			//发礼物
 			$goodInfo = Db::table('pro_goods')->where("id = {$params['goodsid']}")->find();
