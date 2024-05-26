@@ -219,7 +219,7 @@ class ShareController extends BaseController
 		(select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 ) and gid ={$gid}   group by gid");
 
 		if(is_null($SubordinateBuy[0]['totalnum']))
-			ReturnToJson(1, 'Please invite people to participate in the event.',$SubordinateBuy);
+			ReturnToJson(1, 'Please invite people to participate in the event.');
 
 		//自己领取
 		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} 
@@ -258,6 +258,9 @@ class ShareController extends BaseController
 					'w2_money' => 0,
 				]);
 			}
+		}
+		else{
+			ReturnToJson(1, 'Please invite people to participate in the event.');
 		}
 
 		$return_data = [
