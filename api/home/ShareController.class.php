@@ -220,7 +220,7 @@ class ShareController extends BaseController
 		//当日日期
 		$currentTimestamp = time();
 		$oneMinuteLater = $currentTimestamp - 9000;
-		$oneMinuteLaterDate = date("Y-m-d", $oneMinuteLater);
+		$oneMinuteLaterDate = date("Ymd", $oneMinuteLater);
 		$SubordinateBuy = Db::query("select gid,count(*) totalnum from ( 
 			SELECT uid,gid FROM pro_order where uid in 
 			(select id from sys_user where pid={$pageuser['id']} and first_pay_day ={$oneMinuteLaterDate} ) GROUP BY uid ORDER BY create_time
