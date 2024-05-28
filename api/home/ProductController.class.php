@@ -1324,9 +1324,9 @@ class ProductController extends BaseController
 			$key .= "{$params['status']}";
 			$where .= ' and log.status=' . $params['status'];
 
-			$sys_name =  getConfig('sys_name');
-			if($sys_name == 'Nestle' && $params['status'] == 1)
-				$where .= ' or log.status=3';
+			// $sys_name =  getConfig('sys_name');
+			// if($sys_name == 'Nestle' && $params['status'] == 1)
+			// 	$where .= ' or log.status=3';
 
 		}
 		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_{$params['page']}" .$params['status'];
