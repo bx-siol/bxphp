@@ -231,7 +231,7 @@ class ShareController extends BaseController
 
 		//自己领取
 		$MyReceive = Db::query("select gid,count(*) totalnum from pro_order where uid={$pageuser['id']} 
-		and gid ={$params['goodsid']} group by gid");
+		and gid ={$params['goodsid']} and create_day={$oneMinuteLaterDate} group by gid");
 
 		if(is_null($MyReceive[0]['totalnum']))
 			$MyReceive['totalnum'] = 0;
