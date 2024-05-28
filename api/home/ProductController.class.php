@@ -1325,7 +1325,7 @@ class ProductController extends BaseController
 			$where .= ' and log.status=' . $params['status'];
 
 			$sys_name =  getConfig('sys_name');
-			if($sys_name == 'Nestle')
+			if($sys_name == 'Nestle' && $params['status'] == 1)
 				$where .= ' or log.status=3';
 
 		}
