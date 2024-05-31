@@ -356,17 +356,21 @@ class ShareController extends BaseController
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			//写入流水记录
-			$result = walletLog([
-				'wid' => $wallet['id'],
+			$db_item = [
+				'wid' => $wallet['wid'],
 				'uid' => $pageuser['id'],
 				'type' => 111,
-				'money' => 100,
-				'ori_balance' => $wallet['balance'],
-				'new_balance' => $wallet_data['balance'],
 				'fkey' => '',
-				'remark' => 'Inviting 3 people to register today to earn 100 points'
-			]);
-			if (!$result)
+				'money' => floatval(100),
+				'create_time' => time(),
+				'create_day' => date('Ymd', time()),
+				'create_id' => intval($pageuser['id']),
+				'remark' => 'Inviting 3 people to register today to earn 100 points',
+				'ori_balance' =>  $wallet['balance'],
+				'new_balance' => $wallet_data['balance']
+			];
+			$res = Db::table('wallet_log')->insertGetId($db_item);
+			if (!$res)
 				throw new \Exception('Failed to write journal records.');
 
 			Db::commit();
