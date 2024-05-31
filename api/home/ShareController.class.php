@@ -284,7 +284,7 @@ class ShareController extends BaseController
 		$params = $this->params;
 		
 		$todaystart = strtotime(date('Y-m-d'));
-		$todayend = strtotime(date('Y-m-d'))-86399;
+		$todayend = strtotime(date('Y-m-d'))+86399;
 		$today = date('Ymd', NOW_TIME);
 		$todayregister = Db::table('sys_user')->where("reg_time >= {$todaystart} and reg_time<= {$todayend}")->count();
 		$todayReset = Db::table('sys_user')->where("reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
