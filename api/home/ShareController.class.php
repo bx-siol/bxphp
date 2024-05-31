@@ -316,7 +316,7 @@ class ShareController extends BaseController
 		$threedayRecharge = 0;
 		if($regstart !=0 && $regend !=0){
 			$threedayRecharge = Db::table('sys_user')
-			->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} 
+			->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
 					and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
 			->count();
 		}
