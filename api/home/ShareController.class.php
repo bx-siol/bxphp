@@ -218,9 +218,7 @@ class ShareController extends BaseController
 		// (select id from sys_user where pid={$pageuser['id']} and first_pay_day >0 ) and gid ={$gid}   group by gid");
 
 		//当日日期
-		$currentTimestamp = time();
-		$oneMinuteLater = $currentTimestamp - 9000;
-		$oneMinuteLaterDate = date("Ymd", $oneMinuteLater);
+		$oneMinuteLaterDate = date('Ymd', NOW_TIME);
 		$SubordinateBuy = Db::query("select gid,count(*) totalnum from ( 
 			SELECT uid,gid FROM pro_order where uid in 
 			(select id from sys_user where pid={$pageuser['id']} and first_pay_day ={$oneMinuteLaterDate} ) GROUP BY uid ORDER BY create_time
@@ -273,6 +271,30 @@ class ShareController extends BaseController
 
 		$return_data = [
 			
+		];
+		ReturnToJson(200, 'Received successfully', $return_data);
+	}
+
+	//------------------------------------邀请任务
+	//先正达
+	//邀请任务查询
+	public function _getTakDat()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		
+		$todaystart = strtotime(date('Y-m-d'));
+		$todayend = strtotime(date('Y-m-d'))-86399;
+		$today = date('Ymd', NOW_TIME);
+		$todayregister = Db::table('sys_user')->where('reg_time >= {$todaystart} and reg_time<= {$todayend}')->count();
+		$todayReset = Db::table('sys_user')->where('reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}')->count();
+
+		$return_data = [
+			'create_day' => date('Ymd', NOW_TIME),
+			'todaystart' => $todaystart,
+			'todayend' => $todayend,
+			'todayregister' => $todayregister
+			'todayReset' => $todayReset
 		];
 		ReturnToJson(200, 'Received successfully', $return_data);
 	}
