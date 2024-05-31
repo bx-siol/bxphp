@@ -289,14 +289,39 @@ class ShareController extends BaseController
 		//今日注册
 		$todayregister = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend}")->count();
 		//今日注册加充值
-		$todayReset = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
+		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
 
-		//3日内充值
+		//每3日内充值
+		$top = strtotime('2024-06-01 00:00:00');
+		//计算时间段
+		$time = time();
+		$flag = true;
+		$i = 1;
+		$regstart = 0;
+		$regend = 0;
+		while($flag){
+			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+			if($start >= $time && $time <= $end){
+				$flag = false;
+				$regstart = $start;
+				$regend = $end;
+			}
+			$i++;
+		};
+		$threedayRecharge = 0;
+		if($regstart !=0 && $regend !=0){
+			$threedayRecharge = Db::table('sys_user')
+			->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} 
+					and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
+			->count();
+		}
+			
 
 		$return_data = [
-			'new' => strtotime('2024-06-01 00:00:00'),
 			'todayregister' => $todayregister,
-			'todayReset' => $todayReset
+			'todayReset' => $todayRecharge,
+			'threedayRecharge' => $threedayRecharge
 		];
 		ReturnToJson(200, 'Received successfully', $return_data);
 	}
