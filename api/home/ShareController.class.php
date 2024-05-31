@@ -313,9 +313,11 @@ class ShareController extends BaseController
 		
 		$threedayRecharge = 0;
 		if($regstart !=0 && $regend !=0){
+			$firstpaystart =  date('Y-m-d',$regstart);
+			$firstpayend =  date('Y-m-d',$regend);
 			$threedayRecharge = Db::table('sys_user')
 			->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
-					and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
+					and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
 			->count();
 		}
 
@@ -464,10 +466,13 @@ class ShareController extends BaseController
 		if($regstart ==0 || $regend ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');
 		
+			
+		$firstpaystart =  date('Y-m-d',$regstart);
+		$firstpayend =  date('Y-m-d',$regend);
 		$threedayRecharge = Db::table('sys_user')
-							->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
-									and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
-							->count();;
+			->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
+					and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
+			->count();
 		
 		if($threedayRecharge < 5)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
@@ -542,11 +547,13 @@ class ShareController extends BaseController
 		}
 		if($regstart ==0 || $regend ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');
-		
+			
+		$firstpaystart =  date('Y-m-d',$regstart);
+		$firstpayend =  date('Y-m-d',$regend);
 		$threedayRecharge = Db::table('sys_user')
-							->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
-									and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
-							->count();;
+				->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
+						and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
+				->count();
 		
 		if($threedayRecharge < 10)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
