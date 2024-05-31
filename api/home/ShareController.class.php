@@ -324,7 +324,7 @@ class ShareController extends BaseController
 		$return_data = [
 			'todayregister' => $todayregister,
 			'todayRecharge' => $todayRecharge,
-			'threedayRecharge' => $threedayRecharge
+			'threedayRecharge' => 4
 		];
 		ReturnToJson(200, 'ok', $return_data);
 	}
