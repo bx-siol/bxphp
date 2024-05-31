@@ -295,7 +295,7 @@ class ShareController extends BaseController
 		//计算时间段
 		$time = time();
 		$flag = true;
-		$i = 1;
+		$i = 0;
 		$regstart = 0;
 		$regend = 0;
 		if($time > $top)
@@ -303,7 +303,7 @@ class ShareController extends BaseController
 			while($flag){
 				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
 				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-				if($start >= $time && $time <= $end){
+				if($start <= $time && $time <= $end){
 					$flag = false;
 					$regstart = $start;
 					$regend = $end;
@@ -455,7 +455,7 @@ class ShareController extends BaseController
 			while($flag){
 				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
 				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-				if($start >= $time && $time <= $end){
+				if($start <= $time && $time <= $end){
 					$flag = false;
 					$regstart = $start;
 					$regend = $end;
@@ -535,7 +535,7 @@ class ShareController extends BaseController
 			while($flag){
 				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
 				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-				if($start >= $time && $time <= $end){
+				if($start <= $time && $time <= $end){
 					$flag = false;
 					$regstart = $start;
 					$regend = $end;
