@@ -47,7 +47,8 @@ class UserController extends BaseController
 
 		//$reward = Db::table('pro_reward')->where("uid={$pageuser['id']}")->sum('money');
 		$reward = Db::table('wallet_log')
-		->where("uid={$pageuser['id']} and (type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45)")
+		->where("uid={$pageuser['id']} and 
+		(type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45 or type=112 or type=113 or type=114)")
 		->sum('money');
 
 		//$hb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']}")->sum('money');
@@ -61,7 +62,8 @@ class UserController extends BaseController
 
 		$rebate = Db::table('pro_reward')->where("uid={$pageuser['id']} and type=2")->sum('money');
 		$today_profit = Db::table('wallet_log')
-		->where("uid={$pageuser['id']} and create_day={$now_day} and (type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45)")
+		->where("uid={$pageuser['id']} and create_day={$now_day} and 
+		(type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45 or type=112 or type=113 or type=114)")
 		->sum('money');
 
 		$newmember = Db::table('sys_user')->where(" pids like '%{$pageuser['id']}%' and DATE(FROM_UNIXTIME(reg_time)) = CURDATE() ")->count();
