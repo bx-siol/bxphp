@@ -297,7 +297,9 @@ class ShareController extends BaseController
 		$i = 0;
 		$regstart = 0;
 		$regend = 0;
-		if($time > $top)
+		
+		$top1 =  strtotime(date('Y-m-d',strtotime('2024-05-31 00:00:00')));
+		if($time > $top1)
 		{
 			while(true){
 				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
