@@ -375,6 +375,8 @@ class ShareController extends BaseController
 				throw new \Exception('Failed to write journal records.');
 
 			Db::commit();
+			$rediskey = RedisKeys::USER_WALLET . $pageuser["id"] . "_3";
+			$this->redis->rmall($rediskey);
 		}
 		catch (Exception $e) {
 			Db::rollback();
@@ -430,6 +432,8 @@ class ShareController extends BaseController
 				throw new \Exception('Failed to write journal records.');
 
 			Db::commit();
+			$rediskey = RedisKeys::USER_WALLET . $pageuser["id"] . "_2";
+			$this->redis->rmall($rediskey);
 		}
 		catch (\Exception $e) {
 			Db::rollback();
@@ -509,6 +513,8 @@ class ShareController extends BaseController
 				throw new \Exception('Failed to write journal records.');
 
 			Db::commit();
+			$rediskey = RedisKeys::USER_WALLET . $pageuser["id"] . "_2";
+			$this->redis->rmall($rediskey);
 		}
 		catch (\Exception $e) {
 			Db::rollback();
@@ -518,7 +524,7 @@ class ShareController extends BaseController
 		ReturnToJson(200, 'Received successfully');
 	}
 
-	//领取3日内邀请5人注册充值送100余额
+	//领取3日内邀请10人注册充值送200余额
 	public function _TenPersonReward()
 	{
 		$pageuser = checkLogin();
@@ -588,6 +594,8 @@ class ShareController extends BaseController
 				throw new \Exception('Failed to write journal records.');
 
 			Db::commit();
+			$rediskey = RedisKeys::USER_WALLET . $pageuser["id"] . "_2";
+			$this->redis->rmall($rediskey);
 		}
 		catch (\Exception $e) {
 			Db::rollback();
