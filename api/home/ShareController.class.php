@@ -326,6 +326,6 @@ class ShareController extends BaseController
 			'todayReset' => $todayRecharge,
 			'threedayRecharge' => $threedayRecharge
 		];
-		ReturnToJson(200, 'Received successfully', $return_data);
+		ReturnToJson(200, 'ok', $return_data);
 	}
 }
