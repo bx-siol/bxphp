@@ -310,7 +310,7 @@ class ShareController extends BaseController
 		};
 		
 		$threedayRecharge = 0;
-		if($regstart !=0 && $regend !=0){
+		if($regstart != 0 && $regend != 0){
 			$firstpaystart =  date('Y-m-d',$regstart);
 			$firstpayend =  date('Y-m-d',$regend);
 			$threedayRecharge = Db::table('sys_user')
@@ -322,7 +322,9 @@ class ShareController extends BaseController
 		$return_data = [
 			'todayregister' => $todayregister,
 			'todayRecharge' => $todayRecharge,
-			'threedayRecharge' => $threedayRecharge
+			'threedayRecharge' => $threedayRecharge,
+			'regstart' => $regstart,
+			'regend' => $regend,
 		];
 		ReturnToJson(200, 'ok', $return_data);
 	}
