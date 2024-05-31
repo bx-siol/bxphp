@@ -478,7 +478,7 @@ class ShareController extends BaseController
 		if (!$wallet)
 			ReturnToJson(1, 'Wallet acquisition exception.');		
 		
-		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=113 and create_day >={$regstart} and create_day <={$regend} ")->count();
+		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=113 and create_day >={$firstpaystart} and create_day <={$firstpayend} ")->count();
 		if($walletlog > 0)
 			ReturnToJson(1, 'Received today.');		
 		
@@ -557,7 +557,7 @@ class ShareController extends BaseController
 		if (!$wallet)
 			ReturnToJson(1, 'Wallet acquisition exception.');		
 		
-		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=114 and create_day >={$regstart} and create_day <={$regend} ")->count();
+		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=114 and create_day >={$firstpaystart} and create_day <={$firstpayend} ")->count();
 		if($walletlog > 0)
 			ReturnToJson(1, 'Received today.');		
 		
