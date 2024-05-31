@@ -299,16 +299,20 @@ class ShareController extends BaseController
 		$i = 1;
 		$regstart = 0;
 		$regend = 0;
-		while($flag){
-			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
-			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-			if($start >= $time && $time <= $end){
-				$flag = false;
-				$regstart = $start;
-				$regend = $end;
-			}
-			$i++;
-		};
+		if($time > $top)
+		{
+			while($flag){
+				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+				if($start >= $time && $time <= $end){
+					$flag = false;
+					$regstart = $start;
+					$regend = $end;
+				}
+				$i++;
+			};
+		}
+		
 		$threedayRecharge = 0;
 		if($regstart !=0 && $regend !=0){
 			$threedayRecharge = Db::table('sys_user')
