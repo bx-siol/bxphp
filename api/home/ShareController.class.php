@@ -366,10 +366,9 @@ class ShareController extends BaseController
 				'fkey' => '',
 				'remark' => 'Inviting 3 people to register today to earn 100 points'
 			]);
-			// if (!$result)
-			// 	throw new \Exception('Failed to write journal records.');
+			if (!$result)
+				throw new \Exception('Failed to write journal records.');
 
-			ReturnToJson(200, $result);
 			Db::commit();
 		}
 		catch (Exception $e) {

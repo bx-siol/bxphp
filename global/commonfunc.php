@@ -167,8 +167,8 @@ function walletLog($pdata = [], $create_id = 0)
 	];
 	try {
 		$res = Db::table('wallet_log')->insertGetId($db_item);
-	} catch (Exception $e) {
-		return $e->getMessage();
+	} catch (\Exception $e) {
+		return false;
 	}
 	$db_item['id'] = $res;
 	return $db_item;
