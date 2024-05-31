@@ -281,7 +281,6 @@ class ShareController extends BaseController
 	public function _getTakDat()
 	{
 		$pageuser = checkLogin();
-		$params = $this->params;
 		
 		$todaystart = strtotime(date('Y-m-d'));
 		$todayend = strtotime(date('Y-m-d'))+86399;
@@ -327,5 +326,259 @@ class ShareController extends BaseController
 			'threedayRecharge' => $threedayRecharge
 		];
 		ReturnToJson(200, 'ok', $return_data);
+	}
+
+	//领取当日3人注册送100积分
+	public function _Claimpoints()
+	{
+		$pageuser = checkLogin();
+		$todaystart = strtotime(date('Y-m-d'));
+		$todayend = strtotime(date('Y-m-d'))+86399;
+		$today = date('Ymd', NOW_TIME);
+		$todayregister = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend}")->count();
+		if($todayregister <3)		
+			ReturnToJson(1, 'Please invite people to register first to receive rewards.');
+
+		$wallet = getWallet($$pageuser['id'], 3);
+		if (!$wallet)
+			ReturnToJson(1, 'Wallet acquisition exception.');		
+		
+		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=111 and create_day={$today} ")->count();
+		if($walletlog > 0)
+			ReturnToJson(1, 'Received today.');		
+		
+		Db::startTrans();
+		try{
+			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
+			$wallet_data = [
+				'balance' => $wallet['balance'] + 100
+			];
+			//更新钱包余额
+			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
+			//写入流水记录
+			$result = walletLog([
+				'wid' => $wallet['id'],
+				'uid' => $wallet['uid'],
+				'type' => 111,
+				'money' => 100,
+				'ori_balance' => $wallet['balance'],
+				'new_balance' => $wallet_data['balance'],
+				'fkey' => '',
+				'remark' => 'Inviting 3 people to register today to earn 100 points'
+			]);
+			if (!$result)
+				throw new \Exception('Failed to write journal records.');
+
+			Db::commit();
+		}
+		catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(1, 'The system is busy, please try again later.', ['e' => $e]);
+		}
+		
+		ReturnToJson(200, 'Received successfully');
+	}
+	
+	//领取当日3人注册充值送50余额
+	public function _ClaimRS()
+	{
+		$pageuser = checkLogin();
+		$todaystart = strtotime(date('Y-m-d'));
+		$todayend = strtotime(date('Y-m-d'))+86399;
+		$today = date('Ymd', NOW_TIME);
+		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
+		if($todayRecharge <3)		
+			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
+
+		$wallet = getWallet($$pageuser['id'], 2);
+		if (!$wallet)
+			ReturnToJson(1, 'Wallet acquisition exception.');		
+		
+		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=112 and create_day={$today} ")->count();
+		if($walletlog > 0)
+			ReturnToJson(1, 'Received today.');		
+		
+		Db::startTrans();
+		try{
+			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
+			$wallet_data = [
+				'balance' => $wallet['balance'] + 50
+			];
+			//更新钱包余额
+			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
+			//写入流水记录
+			$result = walletLog([
+				'wid' => $wallet['id'],
+				'uid' => $wallet['uid'],
+				'type' => 112,
+				'money' => 50,
+				'ori_balance' => $wallet['balance'],
+				'new_balance' => $wallet_data['balance'],
+				'fkey' => '',
+				'remark' => 'Inviting 3 people to register today to earn 100 points'
+			]);
+			if (!$result)
+				throw new \Exception('Failed to write journal records.');
+
+			Db::commit();
+		}
+		catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(1, 'The system is busy, please try again later.', ['e' => $e]);
+		}
+		
+		ReturnToJson(200, 'Received successfully');
+	}
+
+	//领取3日内邀请5人注册充值送100余额
+	public function _FivePersonReward()
+	{
+		$pageuser = checkLogin();
+		//每3日内充值
+		$top = strtotime('2024-06-01 00:00:00');
+		//计算时间段
+		$time = time();
+		$flag = true;
+		$i = 1;
+		$regstart = 0;
+		$regend = 0;
+		if($time > $top)
+		{
+			while($flag){
+				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+				if($start >= $time && $time <= $end){
+					$flag = false;
+					$regstart = $start;
+					$regend = $end;
+				}
+				$i++;
+			};
+		}
+		if($regstart ==0 || $regend ==0)
+			ReturnToJson(1, 'The system is busy, please try again later.');
+		
+		$threedayRecharge = Db::table('sys_user')
+							->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
+									and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
+							->count();;
+		
+		if($threedayRecharge < 5)		
+			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
+
+		$wallet = getWallet($$pageuser['id'], 2);
+		if (!$wallet)
+			ReturnToJson(1, 'Wallet acquisition exception.');		
+		
+		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=113 and create_day >={$regstart} and create_day <={$regend} ")->count();
+		if($walletlog > 0)
+			ReturnToJson(1, 'Received today.');		
+		
+		Db::startTrans();
+		try{
+			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
+			$wallet_data = [
+				'balance' => $wallet['balance'] + 100
+			];
+			//更新钱包余额
+			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
+			//写入流水记录
+			$result = walletLog([
+				'wid' => $wallet['id'],
+				'uid' => $wallet['uid'],
+				'type' => 113,
+				'money' => 100,
+				'ori_balance' => $wallet['balance'],
+				'new_balance' => $wallet_data['balance'],
+				'fkey' => '',
+				'remark' => 'Inviting 3 people to register today to earn 100 points'
+			]);
+			if (!$result)
+				throw new \Exception('Failed to write journal records.');
+
+			Db::commit();
+		}
+		catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(1, 'The system is busy, please try again later.', ['e' => $e]);
+		}
+		
+		ReturnToJson(200, 'Received successfully');
+	}
+
+	//领取3日内邀请5人注册充值送100余额
+	public function _TenPersonReward()
+	{
+		$pageuser = checkLogin();
+		//每3日内充值
+		$top = strtotime('2024-06-01 00:00:00');
+		//计算时间段
+		$time = time();
+		$flag = true;
+		$i = 1;
+		$regstart = 0;
+		$regend = 0;
+		if($time > $top)
+		{
+			while($flag){
+				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+				if($start >= $time && $time <= $end){
+					$flag = false;
+					$regstart = $start;
+					$regend = $end;
+				}
+				$i++;
+			};
+		}
+		if($regstart ==0 || $regend ==0)
+			ReturnToJson(1, 'The system is busy, please try again later.');
+		
+		$threedayRecharge = Db::table('sys_user')
+							->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
+									and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
+							->count();;
+		
+		if($threedayRecharge < 10)		
+			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
+
+		$wallet = getWallet($$pageuser['id'], 2);
+		if (!$wallet)
+			ReturnToJson(1, 'Wallet acquisition exception.');		
+		
+		$walletlog = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=114 and create_day >={$regstart} and create_day <={$regend} ")->count();
+		if($walletlog > 0)
+			ReturnToJson(1, 'Received today.');		
+		
+		Db::startTrans();
+		try{
+			$wallet = Db::table('wallet_list')->where("id={$wallet['id']}")->lock(true)->find();
+			$wallet_data = [
+				'balance' => $wallet['balance'] + 200
+			];
+			//更新钱包余额
+			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
+			//写入流水记录
+			$result = walletLog([
+				'wid' => $wallet['id'],
+				'uid' => $wallet['uid'],
+				'type' => 114,
+				'money' => 200,
+				'ori_balance' => $wallet['balance'],
+				'new_balance' => $wallet_data['balance'],
+				'fkey' => '',
+				'remark' => 'Inviting 3 people to register today to earn 100 points'
+			]);
+			if (!$result)
+				throw new \Exception('Failed to write journal records.');
+
+			Db::commit();
+		}
+		catch (\Exception $e) {
+			Db::rollback();
+			ReturnToJson(1, 'The system is busy, please try again later.', ['e' => $e]);
+		}
+		
+		ReturnToJson(200, 'Received successfully');
 	}
 }
