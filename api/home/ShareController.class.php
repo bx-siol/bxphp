@@ -496,7 +496,7 @@ class ShareController extends BaseController
 				'uid' => $pageuser['id'],
 				'type' => 113,
 				'fkey' => '',
-				'money' => floatval(50),
+				'money' => floatval(100),
 				'create_time' => time(),
 				'create_day' => date('Ymd', time()),
 				'create_id' => intval($pageuser['id']),
