@@ -371,9 +371,9 @@ class ShareController extends BaseController
 
 			Db::commit();
 		}
-		catch (\Exception $e) {
+		catch (Exception $e) {
 			Db::rollback();
-			ReturnToJson(1, 'The system is busy, please try again later.', ['e' => $e]);
+			ReturnToJson(1, 'The system is busy, please try again later.', ['e' => $e->getMessage()]);
 		}
 		
 		ReturnToJson(200, 'Received successfully');
