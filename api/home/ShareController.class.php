@@ -316,7 +316,6 @@ class ShareController extends BaseController
 					and first_pay_day >= {date('Y-m-d',$regstart)} and first_pay_day <= {date('Y-m-d',$regend)}")
 			->count();
 		}
-			
 
 		$return_data = [
 			'todayregister' => $todayregister,
