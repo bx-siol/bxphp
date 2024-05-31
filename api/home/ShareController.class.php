@@ -358,7 +358,7 @@ class ShareController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			//写入流水记录
 			$db_item = [
-				'wid' => $wallet['wid'],
+				'wid' => $wallet['id'],
 				'uid' => $pageuser['id'],
 				'type' => 111,
 				'fkey' => '',
@@ -413,7 +413,7 @@ class ShareController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			//写入流水记录
 			$db_item = [
-				'wid' => $wallet['wid'],
+				'wid' => $wallet['id'],
 				'uid' => $pageuser['id'],
 				'type' => 112,
 				'fkey' => '',
@@ -492,7 +492,7 @@ class ShareController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			//写入流水记录
 			$db_item = [
-				'wid' => $wallet['wid'],
+				'wid' => $wallet['id'],
 				'uid' => $pageuser['id'],
 				'type' => 113,
 				'fkey' => '',
@@ -571,7 +571,7 @@ class ShareController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			//写入流水记录
 			$db_item = [
-				'wid' => $wallet['wid'],
+				'wid' => $wallet['id'],
 				'uid' => $pageuser['id'],
 				'type' => 114,
 				'fkey' => '',
