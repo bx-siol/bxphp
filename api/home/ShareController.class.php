@@ -369,6 +369,7 @@ class ShareController extends BaseController
 			// if (!$result)
 			// 	throw new \Exception('Failed to write journal records.');
 
+			ReturnToJson(200, $result);
 			Db::commit();
 		}
 		catch (Exception $e) {

@@ -165,11 +165,11 @@ function walletLog($pdata = [], $create_id = 0)
 		'ori_balance' => $pdata['ori_balance'],
 		'new_balance' => $pdata['new_balance']
 	];
-	//try {
+	try {
 		$res = Db::table('wallet_log')->insertGetId($db_item);
-	//} catch (\Exception $e) {
-	//	return false;
-	//}
+	} catch (Exception $e) {
+		return $e->getMessage();
+	}
 	$db_item['id'] = $res;
 	return $db_item;
 }
