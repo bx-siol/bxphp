@@ -339,7 +339,7 @@ class ShareController extends BaseController
 		if($todayregister <3)		
 			ReturnToJson(1, 'Please invite people to register first to receive rewards.');
 
-		$wallet = getWallet($$pageuser['id'], 3);
+		$wallet = getWallet($pageuser['id'], 3);
 		if (!$wallet)
 			ReturnToJson(1, 'Wallet acquisition exception.');		
 		
@@ -390,7 +390,7 @@ class ShareController extends BaseController
 		if($todayRecharge <3)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
 
-		$wallet = getWallet($$pageuser['id'], 2);
+		$wallet = getWallet($pageuser['id'], 2);
 		if (!$wallet)
 			ReturnToJson(1, 'Wallet acquisition exception.');		
 		
@@ -466,7 +466,7 @@ class ShareController extends BaseController
 		if($threedayRecharge < 5)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
 
-		$wallet = getWallet($$pageuser['id'], 2);
+		$wallet = getWallet($pageuser['id'], 2);
 		if (!$wallet)
 			ReturnToJson(1, 'Wallet acquisition exception.');		
 		
@@ -542,7 +542,7 @@ class ShareController extends BaseController
 		if($threedayRecharge < 10)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
 
-		$wallet = getWallet($$pageuser['id'], 2);
+		$wallet = getWallet($pageuser['id'], 2);
 		if (!$wallet)
 			ReturnToJson(1, 'Wallet acquisition exception.');		
 		
