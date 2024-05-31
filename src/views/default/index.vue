@@ -59,12 +59,11 @@
                   <van-image :src="m3"></van-image>
                   <p>{{ t('团队') }}</p>
                 </a>
-                <a class="divs" href="javascript:;" @click="appdload">
-                  <van-image :src="m4"></van-image>
-                  <p>{{ t('下载') }}</p>
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Activity' })">
+                  <van-image :src="m9"></van-image>
+                  <p>{{ t('任务') }}</p>
                 </a>
               </div>
-
             </div>
 
             <div style="display: flex;justify-content: space-between;margin: 1.275rem 0 0.875rem;" v-if="false">
@@ -124,7 +123,9 @@
           </div>
         </div>
       </div>
+      <div class="app" @click="appdload">APP</div>
     </div>
+
 
     <van-dialog v-model:show="tipShow" style="border-radius: 8px" :showConfirmButton="false" class-name="home_tip_show"
       class="home_tip_shows">
@@ -138,10 +139,10 @@
       </div>
       <div class="dialog_content">
         <div class="notice_list">
-          <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; max-height: 10rem; overflow-y: auto"></div>
+          <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; height: 14rem; overflow-y: auto"></div>
         </div>
       </div>
-      <div class="dialog_confirm_btn" @click="tipShow = false">
+      <div class="dialog_confirm_btn" @click="confirmTip">
         <span></span>
       </div>
     </van-dialog>
@@ -204,6 +205,7 @@ import m6 from '../../assets/img/home/home-icon-1-6.png'
 import m7 from '../../assets/img/home/home-icon-1-7.png'
 import m7s from '../../assets/img/home/home-icon-1-7s.png'
 import m8 from '../../assets/img/home/home-icon-1-8.png'
+import m9 from '../../assets/img/home/home-icon-1-9.png'
 import chance from '../../assets/img/home/home-banner-3-1.png'
 import integral from '../../assets/img/home/home-banner-3-2.png'
 import teamawardbg1 from '../../assets/img/home/home-banner-4.png'
@@ -407,8 +409,9 @@ const init = () => {
     if (res.code != 1) {
       return
     }
+    var needTip = getCookie("closeIndexTip") != 1
     tdata.value = res.data
-    if (tdata.value.tip) {
+    if (tdata.value.tip && needTip) {
       tipShow.value = true
       hasMsg.value = true
     }
@@ -514,7 +517,33 @@ const onReceiveNo = (item: any) => {
   _alert('Currently unavailable')
 }
 
+const confirmTip = (item) => {
+        add_cookie("closeIndexTip", "1")
+        tipShow.value = false
+        router.push({ path: '/Activity' })
+    }
 
+    const add_cookie = (name, val) => {
+        var exp = new Date();
+        exp.setTime(exp.getTime() + 5 * 60 * 1000);
+        document.cookie = name + "=" + escape(val) + ";expires=" + exp.toGMTString();//把cookie_name添加进cookie
+    }
+    const getCookie = (cookieName) => {
+        if (document.cookie.length > 0) {
+            /**通过String对象的indexOf()来检查这个cookie是否存在，不存在就为 -1**/
+            var c_start = document.cookie.indexOf(cookieName + "=");
+            if (c_start != -1) {
+                /**最后这个+1其实表示"="，获取到cookie值的开始位置**/
+                c_start = c_start + cookieName.length + 1;
+                var c_end = document.cookie.indexOf(";", c_start);
+                if (c_end == -1) c_end = document.cookie.length;
+                /**通过substring()得到值**/
+                var cookieValue = unescape(document.cookie.substring(c_start, c_end));
+                return cookieValue;
+            }
+        }
+        return null;
+    }
 
 onMounted(() => {
   if (window.location.href.indexOf('csisolar.in') > 0 || window.location.href.indexOf('csisolar.life ') > 0) {
@@ -621,7 +650,7 @@ onMounted(() => {
 }
 
 :deep(.van-popup--center) {
-  background: url(../../assets/img/home/pop-up.png) no-repeat;
+  background: url(../../assets/img/home/pop-up_1.png) no-repeat;
   background-size: 100% 26rem;
   padding: 2rem 0 0;
   height: 24rem;
@@ -721,6 +750,19 @@ onMounted(() => {
       margin-right: 0.375rem;
     }
   }
-
+  .app{
+    position: fixed;
+    right: 0;
+    top: 30rem;
+    width: 3rem;
+    height: 3rem;
+    line-height: 3rem;
+    border-radius: 4rem;
+    font-size: 1rem;
+    font-weight: bold;
+    background-color: #f9ae3b;
+    color: #fff;
+    text-align: center;
+  }
 }
 </style>

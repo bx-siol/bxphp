@@ -417,6 +417,16 @@ const routes: Array<RouteRecordRaw> = [
         },
         component: () => import('../views/signin/teamaward.vue')
     },
+    {
+        path: '/activity',
+        name: 'Activity',
+        meta: {
+            title: 'activity',
+            needLogin: true
+        },
+        component: () => import('../views/signin/activity.vue')
+    },
+    
 ]
 
 const router = createRouter({
