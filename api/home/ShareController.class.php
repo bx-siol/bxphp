@@ -294,7 +294,6 @@ class ShareController extends BaseController
 		$top =  date('Y-m-d',strtotime('2024-05-31 00:00:00'));
 		//计算时间段
 		$time = time();
-		$flag = true;
 		$i = 0;
 		$regstart = 0;
 		$regend = 0;
