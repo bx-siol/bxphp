@@ -293,7 +293,7 @@ class ShareController extends BaseController
 			'create_day' => date('Ymd', NOW_TIME),
 			'todaystart' => $todaystart,
 			'todayend' => $todayend,
-			'todayregister' => $todayregister
+			'todayregister' => $todayregister,
 			'todayReset' => $todayReset
 		];
 		ReturnToJson(200, 'Received successfully', $return_data);
