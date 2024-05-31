@@ -298,20 +298,16 @@ class ShareController extends BaseController
 		$regstart = 0;
 		$regend = 0;
 		
-		$top1 =  strtotime(date('Y-m-d',strtotime('2024-05-31 00:00:00')));
-		if($time > $top1)
-		{
-			while(true){
-				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
-				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-				if($start <= $time && $time <= $end){
-					$regstart = $start;
-					$regend = $end;
-					break;
-				}
-				$i++;
-			};
-		}
+		while(true){
+			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+			if($start <= $time && $time <= $end){
+				$regstart = $start;
+				$regend = $end;
+				break;
+			}
+			$i++;
+		};
 		
 		$threedayRecharge = 0;
 		if($regstart !=0 && $regend !=0){
@@ -452,22 +448,19 @@ class ShareController extends BaseController
 		$i = 1;
 		$regstart = 0;
 		$regend = 0;
-		if($time > $top)
-		{
-			while(true){
-				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
-				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-				if($start <= $time && $time <= $end){
-					$regstart = $start;
-					$regend = $end;
-					break;
-				}
-				$i++;
-			};
-		}
-		if($regstart ==0 || $regend ==0)
-			ReturnToJson(1, 'The system is busy, please try again later.');
 		
+		while(true){
+			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+			if($start <= $time && $time <= $end){
+				$regstart = $start;
+				$regend = $end;
+				break;
+			}
+			$i++;
+		};
+		if($regstart ==0 || $regend ==0)
+			ReturnToJson(1, 'The system is busy, please try again later.');		
 			
 		$firstpaystart =  date('Y-m-d',$regstart);
 		$firstpayend =  date('Y-m-d',$regend);
@@ -534,19 +527,17 @@ class ShareController extends BaseController
 		$i = 1;
 		$regstart = 0;
 		$regend = 0;
-		if($time > $top)
-		{
-			while(true){
-				$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
-				$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-				if($start <= $time && $time <= $end){
-					$regstart = $start;
-					$regend = $end;
-					break;
-				}
-				$i++;
-			};
-		}
+		
+		while(true){
+			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
+			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+			if($start <= $time && $time <= $end){
+				$regstart = $start;
+				$regend = $end;
+				break;
+			}
+			$i++;
+		};
 		if($regstart ==0 || $regend ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');
 			
