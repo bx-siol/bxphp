@@ -291,7 +291,7 @@ class ShareController extends BaseController
 		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
 
 		//每3日内充值
-		$top =  date('Y-m-d',strtotime('2024-05-31 00:00:00'));
+		$top =  date('Y-m-d',strtotime('2024-06-01 00:00:00'));
 		//计算时间段
 		$time = time();
 		$i = 0;
@@ -448,7 +448,7 @@ class ShareController extends BaseController
 	{
 		$pageuser = checkLogin();
 		//每3日内充值
-		$top = date('Y-m-d',strtotime('2024-05-31 00:00:00'));
+		$top = date('Y-m-d',strtotime('2024-06-01 00:00:00'));
 		//计算时间段
 		$time = time();
 		$i = 1;
@@ -529,7 +529,7 @@ class ShareController extends BaseController
 	{
 		$pageuser = checkLogin();
 		//每3日内充值
-		$top = date('Y-m-d',strtotime('2024-05-31 00:00:00'));
+		$top = date('Y-m-d',strtotime('2024-06-01 00:00:00'));
 		//计算时间段
 		$time = time();
 		$i = 1;
