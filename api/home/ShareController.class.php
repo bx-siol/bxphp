@@ -435,7 +435,7 @@ class ShareController extends BaseController
 	{
 		$pageuser = checkLogin();
 		//每3日内充值
-		$top = strtotime('2024-06-01 00:00:00');
+		$top = strtotime('2024-05-31 00:00:00');
 		//计算时间段
 		$time = time();
 		$flag = true;
