@@ -311,8 +311,8 @@ class ShareController extends BaseController
 		
 		$threedayRecharge = 0;
 		if($regstart != 0 && $regend != 0){
-			$firstpaystart =  date('Y-m-d',$regstart);
-			$firstpayend =  date('Y-m-d',$regend);
+			$firstpaystart =  date('Ymd',$regstart);
+			$firstpayend =  date('Ymd',$regend);
 			$threedayRecharge = Db::table('sys_user')
 			->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
 					and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
@@ -464,8 +464,8 @@ class ShareController extends BaseController
 		if($regstart ==0 || $regend ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');		
 			
-		$firstpaystart =  date('Y-m-d',$regstart);
-		$firstpayend =  date('Y-m-d',$regend);
+		$firstpaystart =  date('Ymd',$regstart);
+		$firstpayend =  date('Ymd',$regend);
 		$threedayRecharge = Db::table('sys_user')
 			->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
 					and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
@@ -543,8 +543,8 @@ class ShareController extends BaseController
 		if($regstart ==0 || $regend ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');
 			
-		$firstpaystart =  date('Y-m-d',$regstart);
-		$firstpayend =  date('Y-m-d',$regend);
+		$firstpaystart =  date('Ymd',$regstart);
+		$firstpayend =  date('Ymd',$regend);
 		$threedayRecharge = Db::table('sys_user')
 				->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
 						and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
