@@ -29,11 +29,11 @@
             </div>
             <div class="contentbg_content">
                 <div class="title">3 Daily Task</div>
-                <div style="font-size: 1.5vh;width: 88%;margin-top: 1vh;color: #787878;">
+                <div style="font-size: 0.55rem;width: 88%;margin-top: 0.3rem;color: #787878;">
                     Invite 5 new friends to recharge within three days and get an extra 100RS.
                     <img :src="hot1" style="width: 1.5rem;height: 0.8rem;position: relative;float: right;top: -0.6rem;left: 1.9rem;" />
                 </div>
-                <div style="height: 3.5vh;margin-top: 1vh;">
+                <div style="height: 1.5rem;margin-top: 0.2rem;">
                     <div style="display: flex;margin-top: 0.2rem;">
                         <div class="progress-bar">
                             <div class="progress" :style="{ width: progressBarWidth(tableData.threedayRecharge,5) }">
@@ -44,11 +44,11 @@
                     </div>
                 </div>
                 <div style="border-top:1px solid #c3c3c3;height: 0;margin-top: 0.5vh;"></div>
-                <div style="font-size: 1.5vh;width: 88%;margin-top: 1vh;color: #787878;">
+                <div style="font-size:  0.55rem;width: 88%;margin-top: 0.3rem;color: #787878;">
                     Invite 10 new friends to recharge within three days and get an extra 200RS.
                     <img :src="hot1" style="width: 1.5rem;height: 0.8rem;position: relative;float: right;top: -0.6rem;left: 1.9rem;" />
                 </div>
-                <div style="height: 3.5vh;margin-top: 1vh;">
+                <div style="height: 1.5rem;margin-top: 0.2rem;">
                     <div style="display: flex;margin-top: 0.2rem;">
                         <div class="progress-bar">
                             <div class="progress" :style="{ width: progressBarWidth(tableData.threedayRecharge,10) }">
@@ -58,10 +58,10 @@
                         <div  @click="TenPersonReward" :class=" tableData.todayRecharge < 10 ?'touming' :''" style="background: #fea804;height: 3vh;width: 25%;margin-left: 3%;text-align: center;line-height: 3vh;color: #fff;border-radius: 5px;">200 RS</div>
                     </div>
                 </div>
-                <div style="font-size: 1.3vh;margin-top: 1vh;color: #787878;">
+                <div style="font-size: 0.55rem;margin-top: 1vh;color: #787878;">
                     <span style="color: #83963b;">●</span> If the above conditions are met, you can click the button to receive it. The number of people will be recalculated the next day after receiving it.
                 </div>
-                <div style="font-size: 1.3vh;margin-top: 1vh;color: #787878;">
+                <div style="font-size: 0.55rem;margin-top: 1vh;color: #787878;">
                     <span style="color: #83963b;">●</span> If you do not click the button to receive it, it will be invalid afte 3 days and the number of people will be recalculated.
                 </div>
             </div>
@@ -259,19 +259,19 @@
             }
 
             .contentbg_top{
-                height: 32vh;
+                height: 30vh;
                 background-color: #fff;
                 border-radius: 10px;
                 padding: 0 1rem;
 
                 p{
-                    font-size: 1.5vh;
+                    font-size: 0.55rem;
                 }
             }
 
             .contentbg_content{
-                margin-top: 2vh;
-                height: 35vh;
+                margin-top: 1rem;
+                height: 32vh;
                 background-color: #fff;
                 border-radius: 10px;
                 padding: 0 1rem;
