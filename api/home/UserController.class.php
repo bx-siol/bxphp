@@ -336,8 +336,10 @@ class UserController extends BaseController
 		$start_time = strtotime(date('Y-m-d 00:00:01'));
 		$end_time = strtotime(date('Y-m-d 23:59:59'));
 
+		
+		$today = date('Ymd', NOW_TIME);
 		$newmember = Db::table('sys_user')
-		->where(" pids like '%{$pageuser['id']}%' and first_pay_day >0 and reg_time >={$start_time} and  reg_time <={$end_time} ")->count();
+		->where(" pids like '%{$pageuser['id']}%' and first_pay_day ={$today} ")->count();
 
 		$today = date('Ymd');
 		foreach ($list as &$item) {
