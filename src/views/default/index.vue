@@ -120,7 +120,7 @@
           <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; max-height: 14rem; overflow-y: auto"></div>
         </div>
       </div>
-      <div class="dialog_confirm_btn" @click="confirmTip">
+      <div class="dialog_confirm_btn" @click="tipShow = false">
         <span>{{ t('确定') }}</span>
       </div>
     </van-dialog>
@@ -366,7 +366,8 @@ const init = () => {
     }
     var needTip = getCookie("closeIndexTip") != 1
     tdata.value = res.data
-    if (tdata.value.tip && needTip) {
+    //&& needTip
+    if (tdata.value.tip ) {
       tipShow.value = true
       hasMsg.value = true
     }
