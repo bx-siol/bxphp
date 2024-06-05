@@ -2,7 +2,7 @@
     <div class="task">
         <div class="topbg">
             <div class="topbg_bk" @click="callback">
-                <van-icon name="arrow-left" /> Bank
+                <van-icon name="arrow-left" /> Back
             </div>
         </div>
         <div class="contentbg">
