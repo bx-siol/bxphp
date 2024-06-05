@@ -41,7 +41,7 @@
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
           </div>
-          <div class="giftbonus" @click="onLink({ name: 'giftbonus' })" ></div>
+          <div class="giftbonus" v-if="false" @click="onLink({ name: 'giftbonus' })" ></div>
           <div class="index_cer">
             <div class="menubox">
               <div
