@@ -520,7 +520,7 @@ const onReceiveNo = (item: any) => {
 const confirmTip = (item) => {
         add_cookie("closeIndexTip", "1")
         tipShow.value = false
-        router.push({ path: '/Activity' })
+        router.push({ path: '/Project' })
     }
 
     const add_cookie = (name, val) => {
