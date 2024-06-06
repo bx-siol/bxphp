@@ -1559,7 +1559,7 @@ class ProductController extends BaseController
 						continue;
 
 					foreach($uv_order as $ite){
-						if($ite['price'] > $item['price']){
+						if($ite['price'] >= $item['price']){
 							$isreceive = true;
 						}
 					}
