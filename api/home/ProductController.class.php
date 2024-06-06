@@ -1527,6 +1527,7 @@ class ProductController extends BaseController
 				'pdig2' => $pageuser['pidg2'],
 			];
 			Db::table('pro_reward')->insertGetId($pro_reward);
+			writeLog("{$pro_reward['uid']}_{$pro_reward['osn']}", '收益记录');
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			if ($item['is_give'] == '0') {
