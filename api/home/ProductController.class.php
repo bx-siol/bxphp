@@ -1549,6 +1549,7 @@ class ProductController extends BaseController
 					->where("uid={$uv['id']} and status=1 and is_give=0 and reward_day = {$today} ")
 					->order(['price' => 'desc'])
 					->select();
+					writeLog("检测同级：" .json_encode($uv_order), '收益记录');
 					// if ($item['price'] == 3000) {
 					// 	if (!$uv_order || $uv_order['price'] < 2500)
 					// 		continue;
