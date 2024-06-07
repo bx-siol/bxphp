@@ -1527,14 +1527,12 @@ class ProductController extends BaseController
 				'pdig2' => $pageuser['pidg2'],
 			];
 			Db::table('pro_reward')->insertGetId($pro_reward);
-			writeLog("{$pro_reward['uid']}_{$pro_reward['osn']}", '收益记录');
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			if ($item['is_give'] == '0') {
 				//返佣
 				$up_users = getUpUser($item['uid'], true);
 				writeLog(json_encode($up_users), '收益记录');
-				$today = date('Ymd', NOW_TIME);
 				foreach ($up_users as $uv) {
 					writeLog("{$uv['id']}_{$uv['gid']}_{$uv['stop_commission']}", '收益记录');
 					if ($uv['stop_commission'])   //暂停佣金
@@ -1546,28 +1544,11 @@ class ProductController extends BaseController
 						continue;
 					writeLog("{$uv['id']}_{$rate}", '收益记录');
 					//检测该用户是否有购买同等金额以上的设备
-					$uv_order = Db::table('pro_order')
-					->where("uid={$uv['id']} and status=1 and is_give=0 and reward_day = {$today} ")
-					->order(['price' => 'desc'])
-					->select();
-					writeLog("检测同级：" .json_encode($uv_order), '收益记录');
-					// if ($item['price'] == 3000) {
-					// 	if (!$uv_order || $uv_order['price'] < 2500)
-					// 		continue;
-					// } else  
-					//writeLog("{$uv['id']}_{$uv_order['price']}_{$item['price']}", '收益记录');
-					$isreceive = false;
-					if (!$uv_order)
+					$uv_order = Db::table('pro_order')->where("uid={$uv['id']} and status=1 and is_give=0")->order(['price' => 'desc'])->find();
+					writeLog("{$uv['id']}_{$uv_order['price']}_{$item['price']}", '收益记录');
+					if (!$uv_order || $uv_order['price'] < $item['price'])
 						continue;
-
-					foreach($uv_order as $ite){
-						if($ite['price'] >= $item['price']){
-							$isreceive = true;
-						}
-					}
-					if(!$isreceive)
-						continue;					
-
+					
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
 					if (!$wallet2)
