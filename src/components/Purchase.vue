@@ -95,10 +95,10 @@
                                   <span>{{ t('价格') }}</span>
                                   <span>₹{{ cutOutNum(item.price,2) }}</span>
                                 </div>
-                                <div class="dailyearnings">
+                                <!-- <div class="dailyearnings">
                                   <span>{{ t('周期') }}</span>
                                   <span>{{ item.total_days }}</span>
-                                </div>      
+                                </div>       -->
                                 <div class="dailyearnings">
                                   <span>{{ t('剩余天数') }}</span>
                                   <span style="color: #64503e;">{{ item.days-item.total_days }}</span>
