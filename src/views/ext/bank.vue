@@ -1,7 +1,7 @@
 <template>
     <Page url="c=Ext&a=bank" ref="pageRef">
         <template #btn="myScope">
-            <el-button type="success" size="small" icon="el-icon-plus" @click="add">添加银行</el-button>
+            <el-button v-if="power.update" type="success" size="small" icon="el-icon-plus" @click="add">添加银行</el-button>
         </template>
         <template #table="myScope">
             <el-table-column prop="id" label="ID"></el-table-column>
@@ -9,7 +9,7 @@
             <el-table-column prop="name" label="名称"></el-table-column>
             <el-table-column label="操作">
                 <template #default="scope">
-                    <el-button size="small" @click="edit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button v-if="power.update" size="small" @click="edit(scope.$index, scope.row)">编辑</el-button>
                 </template>
             </el-table-column>
         </template>
@@ -56,6 +56,7 @@ export default defineComponent({
 import {  ref, onMounted, reactive } from 'vue'
 import http from "../../global/network/http";
 import { getZero, _alert } from "../../global/common";
+import { checkPower } from '../../global/user';
 
 let isRequest = false
 const pageRef = ref()
@@ -74,6 +75,11 @@ const dataForm = reactive<any>({
     id: 0,
     code: '',
     name: '',
+})
+
+//权限控制
+const power = reactive({
+    update: checkPower('Ext_bank_update'),
 })
 
 //弹层打开后回调
