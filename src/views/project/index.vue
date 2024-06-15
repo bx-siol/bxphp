@@ -90,7 +90,7 @@ onMounted(() => {
   .projectWrapper {
     padding: 0 1.02rem;
     box-sizing: border-box;
-    padding-bottom: 1.75rem;
+    padding-bottom: 3.75rem;
 
     .projectTab {
       :deep(.van-tabs__wrap) {

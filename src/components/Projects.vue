@@ -51,9 +51,9 @@
 
                     </div>
                   </div>
-                  <div class="detailRight">
-                    <div class="pay" @click="getProjectDetail(item)" v-if="item.status != 9" >join</div>
-                    <div class="pay" v-else >Sold Out</div>
+                  <div class="detailRight" @click="getProjectDetail(item)">
+                    <div class="pay" v-if="item.status != 9" >join</div>
+                    <div class="pay" v-else >Sold out</div>
                   </div>
                 </div>
               </template>
@@ -221,7 +221,7 @@ onMounted(() => {
 
 
   .basicProjects {
-    margin: 1rem 0 2rem;
+    margin-top: 1rem;
 
     .basicProjectsList {
       display: grid;
@@ -343,13 +343,13 @@ onMounted(() => {
         }
 
         .detailRight {
-          text-align: center;
-          width: 9rem;
-          height: 1.5rem;
-          line-height: 1.5rem;
           margin: 0.4rem auto;
           background: #84973b;
           border-radius: 6px;
+          height: 1.5rem;
+          width: 9rem;
+          line-height: 1.5rem;
+          text-align: center;
 
           .pay {
             color: #fff;
