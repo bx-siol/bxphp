@@ -222,7 +222,7 @@ onMounted(() => {
 
 
   .basicProjects {
-    margin-top: 1rem;
+    margin: 1rem 0 2rem;
 
     .basicProjectsList {
       display: grid;
