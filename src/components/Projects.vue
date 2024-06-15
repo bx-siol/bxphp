@@ -51,7 +51,7 @@
 
                     </div>
                   </div>
-                  <div class="detailRight" @click="getProjectDetail(item)">
+                  <div :style="item.status == 9 ? 'background:red':''" class="detailRight" @click="getProjectDetail(item)">
                     <div class="pay" v-if="item.status != 9" >join</div>
                     <div class="pay" v-else >Sold out</div>
                   </div>
