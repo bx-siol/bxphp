@@ -18,7 +18,7 @@
           </div>
         </div>
 
-        <div class="backg" style="padding: 1rem" >
+        <div class="backg" style="padding: 1rem">
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
           </div>
@@ -83,7 +83,8 @@
             <div class="u-flex">
               <div @click="onItem(item, index)" style="width: 32%;height: 4rem;margin-top: 8px;"
                 v-for="(item, index) in taskdata" :key="index">
-                <van-image round :src="imgFlag(item.img)" style="height: 4rem;width: 100%;border-radius:.5rem"></van-image>
+                <van-image round :src="imgFlag(item.img)"
+                  style="height: 4rem;width: 100%;border-radius:.5rem"></van-image>
               </div>
             </div>
 
@@ -517,33 +518,33 @@ const onReceiveNo = (item: any) => {
   _alert('Currently unavailable')
 }
 
-const confirmTip = (item) => {
-        add_cookie("closeIndexTip", "1")
-        tipShow.value = false
-        router.push({ path: '/Project' })
-    }
+const confirmTip = () => {
+  add_cookie("closeIndexTip", "1")
+  tipShow.value = false
+  // router.push({ path: '/Project' })
+}
 
-    const add_cookie = (name, val) => {
-        var exp = new Date();
-        exp.setTime(exp.getTime() + 5 * 60 * 1000);
-        document.cookie = name + "=" + escape(val) + ";expires=" + exp.toGMTString();//把cookie_name添加进cookie
+const add_cookie = (name: any, val: any) => {
+  var exp = new Date();
+  exp.setTime(exp.getTime() + 5 * 60 * 1000);
+  document.cookie = name + "=" + escape(val) + ";expires=" + exp.toGMTString();//把cookie_name添加进cookie
+}
+const getCookie = (cookieName: any) => {
+  if (document.cookie.length > 0) {
+    /**通过String对象的indexOf()来检查这个cookie是否存在，不存在就为 -1**/
+    var c_start = document.cookie.indexOf(cookieName + "=");
+    if (c_start != -1) {
+      /**最后这个+1其实表示"="，获取到cookie值的开始位置**/
+      c_start = c_start + cookieName.length + 1;
+      var c_end = document.cookie.indexOf(";", c_start);
+      if (c_end == -1) c_end = document.cookie.length;
+      /**通过substring()得到值**/
+      var cookieValue = unescape(document.cookie.substring(c_start, c_end));
+      return cookieValue;
     }
-    const getCookie = (cookieName) => {
-        if (document.cookie.length > 0) {
-            /**通过String对象的indexOf()来检查这个cookie是否存在，不存在就为 -1**/
-            var c_start = document.cookie.indexOf(cookieName + "=");
-            if (c_start != -1) {
-                /**最后这个+1其实表示"="，获取到cookie值的开始位置**/
-                c_start = c_start + cookieName.length + 1;
-                var c_end = document.cookie.indexOf(";", c_start);
-                if (c_end == -1) c_end = document.cookie.length;
-                /**通过substring()得到值**/
-                var cookieValue = unescape(document.cookie.substring(c_start, c_end));
-                return cookieValue;
-            }
-        }
-        return null;
-    }
+  }
+  return null;
+}
 
 onMounted(() => {
   if (window.location.href.indexOf('csisolar.in') > 0 || window.location.href.indexOf('csisolar.life ') > 0) {
@@ -750,7 +751,8 @@ onMounted(() => {
       margin-right: 0.375rem;
     }
   }
-  .app{
+
+  .app {
     position: fixed;
     right: 0;
     top: 30rem;
