@@ -400,9 +400,7 @@ const init = () => {
     if (res.code != 1) {
       return
     }
-
     taskdata.value = res.data.list;
-
   })
   http({
     url: 'a=index'
