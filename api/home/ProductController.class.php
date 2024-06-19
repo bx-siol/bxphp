@@ -1322,10 +1322,11 @@ class ProductController extends BaseController
 	{
 		//判断这人是今日充值
 		$today = date('Ymd');
-		if($pageuser["first_pay_day"] == $today)
+		$user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
+		if($user["first_pay_day"] == $today)
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
-			$UpUser = Db::table('sys_user')->where("id={$pageuser['pid']}")->find();
+			$UpUser = Db::table('sys_user')->where("id={$user['pid']}")->find();
 			$good = [
 				'uid' => $UpUser['id'],
 				'osn' => getRsn(),
@@ -1353,7 +1354,7 @@ class ProductController extends BaseController
 			{
 				//今日邀请人购买【VS-490】的人数
 				$todayNum = Db::query("select count(*) as total from pro_order where 
-							uid in (select id from ( select id from sys_user where pid = {$pageuser['pid']}  and first_pay_day={$today} ) as n) 
+							uid in (select id from ( select id from sys_user where pid = {$user['pid']}  and first_pay_day={$today} ) as n) 
 							and gid = 218 and create_day ={$today} ");
 				foreach ($todayNum as $k) {
 					if ($k['total'] % 2 == 0) {
