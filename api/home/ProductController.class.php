@@ -1327,28 +1327,6 @@ class ProductController extends BaseController
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
 			$UpUser = Db::table('sys_user')->where("id={$UserInfo['pid']}")->find();
-			$good = [
-				'uid' => $UpUser['id'],
-				'osn' => getRsn(),
-				'pid' => $UpUser['pid'],
-				'cid' => $giftitem['cid'],
-				'gid' => $giftitem['id'],
-				'days' => $giftitem['days'],
-				'rate' => $giftitem['rate'],
-				'price' => $giftitem['price'],
-				'price1' => $giftitem['price1'],
-				'price2' => $giftitem['price2'],
-				'p1' => 1,
-				'p2' => 1,
-				'p3' => 1,
-				'money' => $giftitem['price'],
-				'num' => 1,
-				'create_day' => date('Ymd', NOW_TIME),
-				'create_time' => NOW_TIME,
-				'create_ip' => CLIENT_IP,
-				'is_give' => 1,
-				'is_exchange' => 0,
-			];
 
 			if($item['id'] ==218)
 			{
@@ -1358,7 +1336,28 @@ class ProductController extends BaseController
 							and gid = 218 and create_day ={$today} ");
 				foreach ($todayNum as $k) {
 					if ($k['total'] % 2 == 0) {
-						Db::table('pro_order')->insertGetId($good);
+						Db::table('pro_order')->insertGetId([
+							'uid' => $UpUser['id'],
+							'osn' => getRsn(),
+							'pid' => $UpUser['pid'],
+							'cid' => $giftitem['cid'],
+							'gid' => $giftitem['id'],
+							'days' => $giftitem['days'],
+							'rate' => $giftitem['rate'],
+							'price' => $giftitem['price'],
+							'price1' => $giftitem['price1'],
+							'price2' => $giftitem['price2'],
+							'p1' => 1,
+							'p2' => 1,
+							'p3' => 1,
+							'money' => $giftitem['price'],
+							'num' => 1,
+							'create_day' => date('Ymd', NOW_TIME),
+							'create_time' => NOW_TIME,
+							'create_ip' => CLIENT_IP,
+							'is_give' => 1,
+							'is_exchange' => 0,
+						]);
 					}
 				}		
 			}else{
@@ -1377,7 +1376,28 @@ class ProductController extends BaseController
 
 				for ($i = 1; $i <= $zs; $i++)
 				{
-					Db::table('pro_order')->insertGetId($good);
+					Db::table('pro_order')->insertGetId([
+						'uid' => $UpUser['id'],
+						'osn' => getRsn(),
+						'pid' => $UpUser['pid'],
+						'cid' => $giftitem['cid'],
+						'gid' => $giftitem['id'],
+						'days' => $giftitem['days'],
+						'rate' => $giftitem['rate'],
+						'price' => $giftitem['price'],
+						'price1' => $giftitem['price1'],
+						'price2' => $giftitem['price2'],
+						'p1' => 1,
+						'p2' => 1,
+						'p3' => 1,
+						'money' => $giftitem['price'],
+						'num' => 1,
+						'create_day' => date('Ymd', NOW_TIME),
+						'create_time' => NOW_TIME,
+						'create_ip' => CLIENT_IP,
+						'is_give' => 1,
+						'is_exchange' => 0,
+					]);
 				}
 			}
 		}
