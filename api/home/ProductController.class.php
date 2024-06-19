@@ -1323,7 +1323,6 @@ class ProductController extends BaseController
 		//判断这人是今日充值
 		$today = date('Ymd');
 		$UserInfo = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
-		writeLog(json_encode($UserInfo),'购买发送礼品');
 		if($UserInfo['first_pay_day'] == $today)
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
@@ -1376,7 +1375,7 @@ class ProductController extends BaseController
 						break;
 				}
 
-				for ($i=0; $i<$zs; $i++)
+				for ($i = 1; $i <= $zs; $i++)
 				{
 					Db::table('pro_order')->insertGetId($good);
 				}
