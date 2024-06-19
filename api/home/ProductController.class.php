@@ -1327,6 +1327,28 @@ class ProductController extends BaseController
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
 			$UpUser = Db::table('sys_user')->where("id={$UserInfo['pid']}")->find();
+			$good = [
+				'uid' => $UpUser['id'],
+				'osn' => getRsn(),
+				'pid' => $UpUser['pid'],
+				'cid' => $giftitem['cid'],
+				'gid' => $giftitem['id'],
+				'days' => $giftitem['days'],
+				'rate' => $giftitem['rate'],
+				'price' => $giftitem['price'],
+				'price1' => $giftitem['price1'],
+				'price2' => $giftitem['price2'],
+				'p1' => 1,
+				'p2' => 1,
+				'p3' => 1,
+				'money' => $giftitem['price'],
+				'num' => 1,
+				'create_day' => date('Ymd', NOW_TIME),
+				'create_time' => NOW_TIME,
+				'create_ip' => CLIENT_IP,
+				'is_give' => 1,
+				'is_exchange' => 0,
+			];
 
 			if($item['id'] ==218)
 			{
@@ -1336,69 +1358,26 @@ class ProductController extends BaseController
 							and gid = 218 and create_day ={$today} ");
 				foreach ($todayNum as $k) {
 					if ($k['total'] % 2 == 0) {
-						Db::table('pro_order')->insertGetId([
-							'uid' => $UpUser['id'],
-							'osn' => getRsn(),
-							'pid' => $UpUser['pid'],
-							'cid' => $giftitem['cid'],
-							'gid' => $giftitem['id'],
-							'days' => $giftitem['days'],
-							'rate' => $giftitem['rate'],
-							'price' => $giftitem['price'],
-							'price1' => $giftitem['price1'],
-							'price2' => $giftitem['price2'],
-							'p1' => 1,
-							'p2' => 1,
-							'p3' => 1,
-							'money' => $giftitem['price'],
-							'num' => 1,
-							'create_day' => date('Ymd', NOW_TIME),
-							'create_time' => NOW_TIME,
-							'create_ip' => CLIENT_IP,
-							'is_give' => 1,
-							'is_exchange' => 0,
-						]);
+						Db::table('pro_order')->insertGetId($good);
 					}
 				}		
 			}else{
-				$zs= 1;
 				switch ($item['id']) {
+					case 225://PF-1900
+						$good['num'] = 1;
+						break;
 					case 219://VS-3200
-							$zs = 2;
+							$good['num'] = 2;
 						break;
 					case 220://VS-7800
-							$zs = 3;
+							$good['num'] = 3;
 						break;
 					case 221://VS-16700
-							$zs = 4;
+							$good['num'] = 4;
 						break;
 				}
-
-				for ($i = 0; $i < $zs; $i++)
-				{
-					Db::table('pro_order')->insertGetId([
-						'uid' => $UpUser['id'],
-						'osn' => getRsn(),
-						'pid' => $UpUser['pid'],
-						'cid' => $giftitem['cid'],
-						'gid' => $giftitem['id'],
-						'days' => $giftitem['days'],
-						'rate' => $giftitem['rate'],
-						'price' => $giftitem['price'],
-						'price1' => $giftitem['price1'],
-						'price2' => $giftitem['price2'],
-						'p1' => 1,
-						'p2' => 1,
-						'p3' => 1,
-						'money' => $giftitem['price'],
-						'num' => 1,
-						'create_day' => date('Ymd', NOW_TIME),
-						'create_time' => NOW_TIME,
-						'create_ip' => CLIENT_IP,
-						'is_give' => 1,
-						'is_exchange' => 0,
-					]);
-				}
+	
+				Db::table('pro_order')->insertGetId($good);
 			}
 		}
 	}
