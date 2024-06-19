@@ -1354,7 +1354,8 @@ class ProductController extends BaseController
 				//今日邀请人购买【VS-490】的人数
 				$todayNum = Db::query("select count(*) as total from pro_order where 
 							uid in (select id from ( select id from sys_user where pid = {$pageuser['pid']}  and first_pay_day={$today} ) as n) 
-							and gid = 218");
+							and gid = 218 and create_day ={$today} ");
+				writeLog("aaa:" .$todayNum['total'],'bdsdfsdf');
 				if ($todayNum['total'] % 2 == 0) {
 					Db::table('pro_order')->insertGetId($good);
 				}
