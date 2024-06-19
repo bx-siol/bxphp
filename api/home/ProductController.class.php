@@ -1325,7 +1325,7 @@ class ProductController extends BaseController
 		if($pageuser["first_pay_day"] == $today)
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
-			$UpUser = Db::table('sys_user')->where("id={$pageuser['pid']}")->select();
+			$UpUser = Db::table('sys_user')->where("id={$pageuser['pid']}")->find();
 			$good = [
 				'uid' => $UpUser['id'],
 				'osn' => getRsn(),
