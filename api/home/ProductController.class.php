@@ -1323,7 +1323,7 @@ class ProductController extends BaseController
 		//判断这人是今日充值
 		$today = date('Ymd');
 		$user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
-		if($user["first_pay_day"] == $today)
+		if($user['first_pay_day'] == $today)
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
 			$UpUser = Db::table('sys_user')->where("id={$user['pid']}")->find();
