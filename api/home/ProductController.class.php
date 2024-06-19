@@ -1363,22 +1363,20 @@ class ProductController extends BaseController
 					}
 				}		
 			}else{
+				$zs= 1;
 				switch ($item['id']) {
-					case 225://PF-1900
-						$good['num'] = 1;
-						break;
 					case 219://VS-3200
-							$good['num'] = 2;
+							$zs = 2;
 						break;
 					case 220://VS-7800
-							$good['num'] = 3;
+							$zs = 3;
 						break;
 					case 221://VS-16700
-							$good['num'] = 4;
+							$zs = 4;
 						break;
 				}
-				
-				for ($i=0; $i<$good['num']; $i++)
+
+				for ($i=0; $i<$zs; $i++)
 				{
 					Db::table('pro_order')->insertGetId($good);
 				}
