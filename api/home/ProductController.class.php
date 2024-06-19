@@ -1320,11 +1320,64 @@ class ProductController extends BaseController
 	*/
 	public function eventgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
-		writeLog(json_encode($item),'购买发送礼品');
-		writeLog(json_encode($quantity),'购买发送礼品');
-		writeLog(json_encode($pageuser),'购买发送礼品');
-		writeLog(json_encode($check_num),'购买发送礼品');
-		writeLog(json_encode($pro_order),'购买发送礼品');
+		//上级订单
+		$UpOrder = Db::table('pro_order')->where("uid={$pageuser['pid']}")->select();
+		//判断这人是今日充值
+		$today = date('Ymd');
+		if($pageuser["first_pay_day"] == $today)
+		{			
+			$giftitem = Db::table('pro_goods')->where("id=228")->find();
+			$good = [
+				'uid' => $pageuser['id'],
+				'osn' => getRsn(),
+				'pid' => $pageuser['pid'],
+				'cid' => $giftitem['cid'],
+				'gid' => $giftitem['id'],
+				'days' => $giftitem['days'],
+				'rate' => $giftitem['rate'],
+				'price' => $giftitem['price'],
+				'price1' => $giftitem['price1'],
+				'price2' => $giftitem['price2'],
+				'p1' => 1,
+				'p2' => 1,
+				'p3' => 1,
+				'money' => $giftitem['price'],
+				'num' => 1,
+				'create_day' => date('Ymd', NOW_TIME),
+				'create_time' => NOW_TIME,
+				'create_ip' => CLIENT_IP,
+				'is_give' => 1,
+				'is_exchange' => 0,
+			];
+
+			if($item['id'] ==218)
+			{
+				//今日邀请人购买【VS-490】的人数
+				$todayNum = Db::query("select count(*) as total from pro_order where 
+							uid in (select id from ( select id from sys_user where pid = {$pageuser['pid']}  and first_pay_day={$today} ) as n) 
+							and gid = 218");
+				if ($todayNum['total'] % 2 == 0) {
+					Db::table('pro_order')->insertGetId($good);
+				}
+			}else{
+				switch ($item['id']) {
+					case 225://PF-1900
+						$good['num'] = 1;
+						break;
+					case 219://VS-3200
+							$good['num'] = 2;
+						break;
+					case 220://VS-7800
+							$good['num'] = 3;
+						break;
+					case 221://VS-16700
+							$good['num'] = 4;
+						break;
+				}
+	
+				Db::table('pro_order')->insertGetId($good);
+			}
+		}
 	}
 	/*******************购买产品相关***********************/
 
