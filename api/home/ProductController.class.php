@@ -1217,6 +1217,11 @@ class ProductController extends BaseController
 			//if ($item['price2'] > 0)
 			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 
+			//先正达活动
+			$projectlogo = getConfig('sys_name');
+			if($projectlogo == 'Syngenta')
+				$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
+
 		} else {
 			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'], 2, 10, 'Repeat purchase:' . $pro_order['osn']);
@@ -1305,6 +1310,22 @@ class ProductController extends BaseController
 		]);
 	}
 
+	//先正达购买活动
+	/*条件如下：	
+		当天邀请2人购买【VS-490】，即可免费获得1份【礼物】，价值150Rs。
+		当天邀请1人购买【PF-1900】，即可免费获得1份【礼物】，价值150Rs。
+		当天邀请1人购买【VS-3200】，即可免费获得2份【礼物】，价值300Rs。
+		当天邀请1人购买【VS-7800】，即可免费获得3份【礼物】，价值450Rs。
+		当天邀请1人购买【VS-16700】，即可免费获得4份【礼物】，价值600Rs。
+	*/
+	public function eventgift($item, $quantity, $pageuser, $check_num, $pro_order)
+	{
+		writeLog(json_encode($item),'购买发送礼品');
+		writeLog(json_encode($quantity),'购买发送礼品');
+		writeLog(json_encode($pageuser),'购买发送礼品');
+		writeLog(json_encode($check_num),'购买发送礼品');
+		writeLog(json_encode($pro_order),'购买发送礼品');
+	}
 	/*******************购买产品相关***********************/
 
 
