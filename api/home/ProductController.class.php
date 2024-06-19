@@ -1377,8 +1377,11 @@ class ProductController extends BaseController
 							$good['num'] = 4;
 						break;
 				}
-	
-				Db::table('pro_order')->insertGetId($good);
+				
+				for ($i=0; $i<$good['num']; $i++)
+				{
+					Db::table('pro_order')->insertGetId($good);
+				}
 			}
 		}
 	}
