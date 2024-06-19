@@ -1320,17 +1320,16 @@ class ProductController extends BaseController
 	*/
 	public function eventgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
-		//上级订单
-		$UpOrder = Db::table('pro_order')->where("uid={$pageuser['pid']}")->select();
 		//判断这人是今日充值
 		$today = date('Ymd');
 		if($pageuser["first_pay_day"] == $today)
 		{			
 			$giftitem = Db::table('pro_goods')->where("id=228")->find();
+			$UpUser = Db::table('sys_user')->where("id={$pageuser['pid']}")->select();
 			$good = [
-				'uid' => $pageuser['id'],
+				'uid' => $UpUser['id'],
 				'osn' => getRsn(),
-				'pid' => $pageuser['pid'],
+				'pid' => $UpUser['pid'],
 				'cid' => $giftitem['cid'],
 				'gid' => $giftitem['id'],
 				'days' => $giftitem['days'],
