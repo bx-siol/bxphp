@@ -1374,7 +1374,7 @@ class ProductController extends BaseController
 						break;
 				}
 
-				for ($i = 1; $i <= $zs; $i++)
+				for ($i = 0; $i < $zs; $i++)
 				{
 					Db::table('pro_order')->insertGetId([
 						'uid' => $UpUser['id'],
