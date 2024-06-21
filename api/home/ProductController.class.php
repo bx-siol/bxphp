@@ -1218,9 +1218,9 @@ class ProductController extends BaseController
 			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 
 			//先正达活动
-			$projectlogo = getConfig('sys_name');
-			if($projectlogo == 'Syngenta')
-				$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
+			// $projectlogo = getConfig('sys_name');
+			// if($projectlogo == 'Syngenta')
+			// 	$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
 
 		} else {
 			if ($item['price0'] > 0) //复购送自己
