@@ -288,7 +288,8 @@ class ShareController extends BaseController
 		//今日注册
 		$todayregister = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend}")->count();
 		//今日注册加充值
-		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
+		//and reg_time >= {$todaystart} and reg_time<= {$todayend}
+		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day = {$today}")->count();
 
 		//每3日内充值
 		$top =  date('Y-m-d',strtotime('2024-06-01 00:00:00'));
