@@ -81,6 +81,7 @@
             <el-table-column prop="category_name" label="产品分类" width="120"></el-table-column>
             <el-table-column prop="goods_name" label="产品名称" min-width="320"></el-table-column>
             <el-table-column prop="days" label="期限(天)" width="100"></el-table-column>
+            <el-table-column prop="is_give_flag" label="是否赠送" width="100"></el-table-column>
             <el-table-column prop="rate" label="收益率(%)" width="100"></el-table-column>
             <el-table-column prop="price" label="产品单价" width="120"></el-table-column>
             <el-table-column prop="num" label="购买数量" width="100"></el-table-column>
