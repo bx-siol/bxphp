@@ -1607,6 +1607,7 @@ class ProductController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			if ($item['is_give'] == '0') {
 				//返佣
+				writeLog('开始进行返佣：' .$item['uid'], '收益记录');
 				$up_users = getUpUser($item['uid'], true);
 				writeLog(json_encode($up_users), '收益记录');
 				foreach ($up_users as $uv) {
