@@ -416,6 +416,7 @@ class ProductController extends BaseController
 		foreach ($list as &$item) {
 			$item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
 			$item['status_flag'] = $cnf_product_order_status[$item['status']];
+			$item['is_give_flag'] = $item['is_give'] == 0 ?'否': '是' ;
 		}
 		$return_data = [
 			'list' => $list,
