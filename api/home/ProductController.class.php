@@ -1619,6 +1619,7 @@ class ProductController extends BaseController
 					$rate = $commission_arr[$uv['agent_level']];
 					if (!$rate || $rate < 0)
 						continue;
+
 					writeLog("{$uv['id']}_{$rate}", '收益记录');
 					//检测该用户是否有购买同等金额以上的设备
 					$uv_order = Db::table('pro_order')->where("uid={$uv['id']} and status=1 and is_give=0")->order(['price' => 'desc'])->find();
@@ -1626,6 +1627,7 @@ class ProductController extends BaseController
 					if (!$uv_order || $uv_order['price'] < $item['price'])
 						continue;
 					
+					writeLog("{$uv['id']}开始获得佣金", '收益记录');
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
 					if (!$wallet2)
