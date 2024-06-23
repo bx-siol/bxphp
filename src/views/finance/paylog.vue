@@ -69,6 +69,9 @@
                 <el-input size="small" style="width: 180px;" placeholder="通道单号" clearable v-model="params.s_oldosn"
                     @keyup.enter="doSearch">
                 </el-input>
+                <el-input size="small" style="width: 260px;margin-left: 10px;" placeholder="上级用户账号" clearable v-model="params.s_keyword2" @keyup.enter="doSearch">
+                    <template #prepend>团队搜索</template>
+                </el-input>
                 <span style="font-size: 14px;margin-left: 10px;">用户账号</span>
                 <el-input size="small" style="width: 180px;" placeholder="用户账号" clearable
                     v-model="params.s_user_account" @keyup.enter="doSearch">
