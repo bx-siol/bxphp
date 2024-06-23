@@ -323,6 +323,20 @@ class FinanceController extends BaseController
 		if ($params['s_tjr'] == 1) {
 			$where .= " and u2.gid=81";
 		}
+
+		//团队搜索
+		if ($params['s_keyword2']) {
+			$s_keyword2 = $params['s_keyword2'];
+			$uid_arr = [];
+			$s_puser = Db::table('sys_user')->where("id='{$s_keyword2}' or account='{$s_keyword2}'")->find();
+			if ($s_puser) {
+				$uid_arr = getDownUser($s_puser['id']);
+			}
+			$uid_arr[] = 0;
+			$uid_str = implode(',', $uid_arr);
+			$where .= " and u.id in({$uid_str})";
+		}
+
 		// if ($params['s_tjr'] == 1) {
 		// 	$where .= " and u.pid=" . $params['s_tjr'];
 		// }
@@ -335,7 +349,6 @@ class FinanceController extends BaseController
 
 		$list = Db::view(['fin_paylog' => 'log'], ['*'])
 			->view(['sys_user' => 'u'], ['account', 'nickname', 'realname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
-
 			->view(['sys_user' => 'u2'], ['account' => 'p_account'], 'u.pid=u2.id', 'LEFT')
 			//->view(['cnf_bank'=>'bk'],['name'=>'bank_name'],'log.receive_bank_id=bk.id','LEFT')
 			->where($where)
