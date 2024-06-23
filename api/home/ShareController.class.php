@@ -669,6 +669,12 @@ class ShareController extends BaseController
 		while(true){
 			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
 			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
+			if($start > $time)
+			{
+				$regstart = $start;
+				$regend = $end;
+				break;
+			}
 			if($start <= $time && $time <= $end){
 				$regstart = $start;
 				$regend = $end;
