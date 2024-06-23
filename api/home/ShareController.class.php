@@ -600,7 +600,7 @@ class ShareController extends BaseController
 			ReturnToJson(1, 'The system is busy, please try again later.');
 			
 		$firstpaystart =  date('Ymd',$regstart_10);
-		$firstpayend =  date('Ymd',$regstart_10);
+		$firstpayend =  date('Ymd',$regend_10);
 		$threedayRecharge_10 = Db::table('sys_user')
 				->where("pid={$pageuser['id']} and reg_time >= {$regstart_10} and reg_time<= {$regend_10} 
 						and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
