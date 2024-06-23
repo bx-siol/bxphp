@@ -484,35 +484,42 @@ class ShareController extends BaseController
 	public function _FivePersonReward()
 	{
 		$pageuser = checkLogin();
-		//每3日内充值
-		$top = date('Y-m-d',strtotime('2024-06-01 00:00:00'));
-		//计算时间段
-		$time = time();
-		$i = 1;
-		$regstart = 0;
-		$regend = 0;
-		
-		while(true){
-			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
-			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-			if($start <= $time && $time <= $end){
-				$regstart = $start;
-				$regend = $end;
-				break;
-			}
-			$i++;
-		};
-		if($regstart ==0 || $regend ==0)
+
+		//按照第一个用户充值开始计算每3日内
+		//1、查询是否有过领取记录		
+		$wallet_log_113 = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=113")->order(['create_day'=>'desc'])->find();
+		//2、查询下属首个充值时间
+		$DownRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day > 0 ")->order(['first_pay_day'=>'asc'])->find();
+		//若没有领取 首充时间加3d 计算时间范围
+		$regstart_5 = 0;
+		$regend_5 = 0;
+		if(isset($wallet_log_113))
+		{
+			$reg = date('Y-m-d',$wallet_log_113['create_time']);
+			$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+			$timeFrame = $this -> TimeInterval($start);
+			$regstart_5  = $timeFrame['$regstart'];
+			$regend_5  = $timeFrame['$regend'];
+		}
+		else
+		{
+			$timeFrame = $this -> TimeInterval($DownRecharge['first_pay_day']);
+			$regstart_5  = $timeFrame['$regstart'];
+			$regend_5  = $timeFrame['$regend'];
+		}
+
+		//每3日内充值查询
+		if($regstart_5 ==0 || $regend_5 ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');		
 			
-		$firstpaystart =  date('Ymd',$regstart);
-		$firstpayend =  date('Ymd',$regend);
-		$threedayRecharge = Db::table('sys_user')
-			->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
+		$firstpaystart =  date('Ymd',$regstart_5);
+		$firstpayend =  date('Ymd',$regend_5);
+		$threedayRecharge_5 = Db::table('sys_user')
+			->where("pid={$pageuser['id']} and reg_time >= {$regstart_5} and reg_time<= {$regend_5} 
 					and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
 			->count();
 		
-		if($threedayRecharge < 5)		
+		if($threedayRecharge_5 < 5)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
 
 		$wallet = getWallet($pageuser['id'], 2);
@@ -565,35 +572,41 @@ class ShareController extends BaseController
 	public function _TenPersonReward()
 	{
 		$pageuser = checkLogin();
-		//每3日内充值
-		$top = date('Y-m-d',strtotime('2024-06-01 00:00:00'));
-		//计算时间段
-		$time = time();
-		$i = 1;
-		$regstart = 0;
-		$regend = 0;
-		
-		while(true){
-			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
-			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-			if($start <= $time && $time <= $end){
-				$regstart = $start;
-				$regend = $end;
-				break;
-			}
-			$i++;
-		};
-		if($regstart ==0 || $regend ==0)
+		//按照第一个用户充值开始计算每3日内
+		//1、查询是否有过领取记录		
+		$wallet_log_114 = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=114")->order(['create_day'=>'desc'])->find();
+		//2、查询下属首个充值时间
+		$DownRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day > 0 ")->order(['first_pay_day'=>'asc'])->find();
+		//若没有领取 首充时间加3d 计算时间范围
+		$regstart_10 = 0;
+		$regend_10 = 0;
+		if(isset($wallet_log_114))
+		{
+			$reg = date('Y-m-d',$wallet_log_114['create_time']);
+			$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+			$timeFrame = $this -> TimeInterval($start);
+			$regstart_10  = $timeFrame['$regstart'];
+			$regend_10  = $timeFrame['$regend'];
+		}
+		else
+		{
+			$timeFrame = $this -> TimeInterval($DownRecharge['first_pay_day']);
+			$regstart_10  = $timeFrame['$regstart'];
+			$regend_10  = $timeFrame['$regend'];
+		}
+
+		//每3日内充值查询
+		if($regstart_10 ==0 || $regend_10 ==0)
 			ReturnToJson(1, 'The system is busy, please try again later.');
 			
-		$firstpaystart =  date('Ymd',$regstart);
-		$firstpayend =  date('Ymd',$regend);
-		$threedayRecharge = Db::table('sys_user')
-				->where("pid={$pageuser['id']} and reg_time >= {$regstart} and reg_time<= {$regend} 
+		$firstpaystart =  date('Ymd',$regstart_10);
+		$firstpayend =  date('Ymd',$regstart_10);
+		$threedayRecharge_10 = Db::table('sys_user')
+				->where("pid={$pageuser['id']} and reg_time >= {$regstart_10} and reg_time<= {$regend_10} 
 						and first_pay_day >= {$firstpaystart} and first_pay_day <= {$firstpayend}")
 				->count();
 		
-		if($threedayRecharge < 10)		
+		if($threedayRecharge_10 < 10)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
 
 		$wallet = getWallet($pageuser['id'], 2);
