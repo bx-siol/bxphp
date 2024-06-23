@@ -36,11 +36,11 @@
                 <div style="height: 1.5rem;margin-top: 0.2rem;">
                     <div style="display: flex;margin-top: 0.2rem;">
                         <div class="progress-bar">
-                            <div class="progress" :style="{ width: progressBarWidth(tableData.threedayRecharge,5) }">
+                            <div class="progress" :style="{ width: progressBarWidth(tableData.threedayRecharge_5,5) }">
                             </div>
                         </div>
-                        <p style="margin-left: 0.6rem;color: #7b7272;margin-top: 2px;"> {{tableData.threedayRecharge}}/5</p>
-                        <div @click="FivePersonReward" :class=" tableData.todayRecharge < 5 ?'touming' :''" style="background: #fea804;height: 3vh;width: 25%;margin-left: 3%;text-align: center;line-height: 3vh;color: #fff;border-radius: 5px;">100 RS</div>
+                        <p style="margin-left: 0.6rem;color: #7b7272;margin-top: 2px;"> {{tableData.threedayRecharge_5}}/5</p>
+                        <div @click="FivePersonReward" :class=" tableData.threedayRecharge_5 < 5 ?'touming' :''" style="background: #fea804;height: 3vh;width: 25%;margin-left: 3%;text-align: center;line-height: 3vh;color: #fff;border-radius: 5px;">100 RS</div>
                     </div>
                 </div>
                 <div style="border-top:1px solid #c3c3c3;height: 0;margin-top: 0.5vh;"></div>
@@ -51,11 +51,11 @@
                 <div style="height: 1.5rem;margin-top: 0.2rem;">
                     <div style="display: flex;margin-top: 0.2rem;">
                         <div class="progress-bar">
-                            <div class="progress" :style="{ width: progressBarWidth(tableData.threedayRecharge,10) }">
+                            <div class="progress" :style="{ width: progressBarWidth(tableData.threedayRecharge_10,10) }">
                             </div>
                         </div>
-                        <p style="margin-left: 0.6rem;color: #7b7272;margin-top: 2px;"> {{tableData.threedayRecharge}}/10</p>
-                        <div  @click="TenPersonReward" :class=" tableData.todayRecharge < 10 ?'touming' :''" style="background: #fea804;height: 3vh;width: 25%;margin-left: 3%;text-align: center;line-height: 3vh;color: #fff;border-radius: 5px;">200 RS</div>
+                        <p style="margin-left: 0.6rem;color: #7b7272;margin-top: 2px;"> {{tableData.threedayRecharge_10}}/10</p>
+                        <div  @click="TenPersonReward" :class=" tableData.threedayRecharge_10 < 10 ?'touming' :''" style="background: #fea804;height: 3vh;width: 25%;margin-left: 3%;text-align: center;line-height: 3vh;color: #fff;border-radius: 5px;">200 RS</div>
                     </div>
                 </div>
                 <div style="font-size: 0.55rem;margin-top: 1vh;color: #787878;">
@@ -159,7 +159,7 @@
         })
     }
     const FivePersonReward = ()=>{
-        if(tableData.value.threedayRecharge < 5){
+        if(tableData.value.threedayRecharge_5 < 5){
             return
         }
         if (isRequest) {
@@ -182,7 +182,7 @@
         })
     }
     const TenPersonReward = ()=>{
-        if(tableData.value.threedayRecharge < 10){
+        if(tableData.value.threedayRecharge_10 < 10){
             return
         }
         if (isRequest) {
