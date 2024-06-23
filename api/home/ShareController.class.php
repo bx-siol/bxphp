@@ -304,11 +304,20 @@ class ShareController extends BaseController
 		$regend_10 = 0;
 		if(isset($wallet_log_113))
 		{
-			$reg = date('Y-m-d',$wallet_log_113['create_time']);
-			$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
-			$timeFrame = $this -> TimeInterval($start);
-			$regstart_5  = $timeFrame['$regstart'];
-			$regend_5  = $timeFrame['$regend'];
+			if($wallet_log_113['create_day'] == date('Ymd',time()))
+			{
+				$reg = date('Y-m-d',$wallet_log_113['create_time']);
+				$regstart_5  =  date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$regend_5  =  date('Y-m-d', strtotime($reg . '+'. 3 .' days'));
+			}
+			else
+			{
+				$reg = date('Y-m-d',$wallet_log_113['create_time']);
+				$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$timeFrame = $this -> TimeInterval($start);
+				$regstart_5  = $timeFrame['$regstart'];
+				$regend_5  = $timeFrame['$regend'];
+			}
 		}
 		else
 		{
@@ -319,11 +328,20 @@ class ShareController extends BaseController
 
 		if(isset($wallet_log_114))
 		{
-			$reg = date('Y-m-d',$wallet_log_114['create_time']);
-			$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
-			$timeFrame = $this -> TimeInterval($start);
-			$regstart_10  = $timeFrame['$regstart'];
-			$regend_10  = $timeFrame['$regend'];
+			if($wallet_log_114['create_day'] == date('Ymd',time()))
+			{
+				$reg = date('Y-m-d',$wallet_log_114['create_time']);
+				$regstart_10  =  date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$regend_10  =  date('Y-m-d', strtotime($reg . '+'. 3 .' days'));
+			}
+			else
+			{
+				$reg = date('Y-m-d',$wallet_log_114['create_time']);
+				$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$timeFrame = $this -> TimeInterval($start);
+				$regstart_10  = $timeFrame['$regstart'];
+				$regend_10  = $timeFrame['$regend'];
+			}
 		}
 		else
 		{
@@ -495,11 +513,20 @@ class ShareController extends BaseController
 		$regend_5 = 0;
 		if(isset($wallet_log_113))
 		{
-			$reg = date('Y-m-d',$wallet_log_113['create_time']);
-			$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
-			$timeFrame = $this -> TimeInterval($start);
-			$regstart_5  = $timeFrame['$regstart'];
-			$regend_5  = $timeFrame['$regend'];
+			if($wallet_log_113['create_day'] == date('Ymd',time()))
+			{
+				$reg = date('Y-m-d',$wallet_log_113['create_time']);
+				$regstart_5  =  date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$regend_5  =  date('Y-m-d', strtotime($reg . '+'. 3 .' days'));
+			}
+			else
+			{
+				$reg = date('Y-m-d',$wallet_log_113['create_time']);
+				$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$timeFrame = $this -> TimeInterval($start);
+				$regstart_5  = $timeFrame['$regstart'];
+				$regend_5  = $timeFrame['$regend'];
+			}
 		}
 		else
 		{
@@ -583,11 +610,20 @@ class ShareController extends BaseController
 		$regend_10 = 0;
 		if(isset($wallet_log_114))
 		{
-			$reg = date('Y-m-d',$wallet_log_114['create_time']);
-			$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
-			$timeFrame = $this -> TimeInterval($start);
-			$regstart_10  = $timeFrame['$regstart'];
-			$regend_10  = $timeFrame['$regend'];
+			if($wallet_log_114['create_day'] == date('Ymd',time()))
+			{
+				$reg = date('Y-m-d',$wallet_log_114['create_time']);
+				$regstart_10  =  date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$regend_10  =  date('Y-m-d', strtotime($reg . '+'. 3 .' days'));
+			}
+			else
+			{
+				$reg = date('Y-m-d',$wallet_log_114['create_time']);
+				$start = date('Y-m-d', strtotime($reg . '+'. 1 .' days'));
+				$timeFrame = $this -> TimeInterval($start);
+				$regstart_10  = $timeFrame['$regstart'];
+				$regend_10  = $timeFrame['$regend'];
+			}
 		}
 		else
 		{
@@ -669,12 +705,6 @@ class ShareController extends BaseController
 		while(true){
 			$start = strtotime(date('Y-m-d', strtotime($top . '+'. 3*($i-1) .' days')));
 			$end = strtotime(date('Y-m-d', strtotime(date('Y-m-d',$start) . '+3 days')))-1;
-			if($start > $time)
-			{
-				$regstart = $start;
-				$regend = $end;
-				break;
-			}
 			if($start <= $time && $time <= $end){
 				$regstart = $start;
 				$regend = $end;
