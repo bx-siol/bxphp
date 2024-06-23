@@ -1533,7 +1533,7 @@ class ProductController extends BaseController
 				ReturnToJson(-1, 'Currently unavailable3');
 		}
 		$pro_order = [];
-		$reward = ($item['rate'] / 100) * $item['money'] * $item['num'];
+		$reward = ($item['rate'] / 100) * $item['price'] * $item['num'];
 		$ProfitGoods = Db::table('pro_goods')->where("id='{$item['gid']}'")->field('dayout')->find();
 		$dayout = intval($ProfitGoods['dayout']);
 		// 如果设置了到期时间，一次性到期
