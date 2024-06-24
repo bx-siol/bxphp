@@ -448,7 +448,8 @@ class ShareController extends BaseController
 		$todaystart = strtotime(date('Y-m-d'));
 		$todayend = strtotime(date('Y-m-d'))+86399;
 		$today = date('Ymd', NOW_TIME);
-		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend} and first_pay_day = {$today}")->count();
+		//and reg_time >= {$todaystart} and reg_time<= {$todayend}
+		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day = {$today}")->count();
 		if($todayRecharge <3)		
 			ReturnToJson(1, 'Please invite people to recharge and receive rewards first.');
 
