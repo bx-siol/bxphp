@@ -287,9 +287,11 @@ class ShareController extends BaseController
 		$today = date('Ymd', NOW_TIME);
 		//今日注册
 		$todayregister = Db::table('sys_user')->where("pid={$pageuser['id']} and reg_time >= {$todaystart} and reg_time<= {$todayend}")->count();
+		$todayregister_flag = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=111 and create_day={$today}")->count();
 		//今日充值
 		//and reg_time >= {$todaystart} and reg_time<= {$todayend}
 		$todayRecharge = Db::table('sys_user')->where("pid={$pageuser['id']} and first_pay_day = {$today}")->count();
+		$todayRecharge_flag = Db::table('wallet_log')->where("uid={$pageuser['id']} and type=112 and create_day={$today}")->count();
 
 		//按照第一个用户充值开始计算每3日内
 		//1、查询是否有过领取记录		
@@ -380,6 +382,8 @@ class ShareController extends BaseController
 			'regend_5' => $regend_5,
 			'regstart_10' => $regstart_10,
 			'regend_10' => $regend_10,
+			'todayregister_flag' => $todayregister_flag,
+			'todayRecharge_flag' => $todayRecharge_flag,
 		];
 		ReturnToJson(200, 'ok', $return_data);
 	}
