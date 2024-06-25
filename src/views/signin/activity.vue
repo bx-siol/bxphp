@@ -13,13 +13,13 @@
                         <img :src="m1" style="height: 6vh;width: 6vh;margin-left: 33%;" />
                         <p style="text-align: center;margin-top: 1vh;color: #869840;">{{tableData.todayregister}}/3</p>
                         <p style="color: #869840;text-align: center;font-size: 0.6rem;margin-top: 0.5vh;">INVITE 3 PEOPLE TO REGISTER</p>
-                        <div @click="Claimpoints" :class=" tableData.todayregister < 3 ?'touming' :''" style="height: 3.5vh;background-color: rgb(254, 166, 4);width: 90%;margin: 0.6vh 0px 0px 5%;line-height: 3.5vh;text-align: center;color: rgb(255, 255, 255);border-radius: 6px;font-weight: bold;font-size: 0.8rem;">100 POINTS</div>
+                        <div @click="Claimpoints" :class=" tableData.todayregister_flag == 1? 'touming' :(tableData.todayregister < 3 ?'touming' :'')" style="height: 3.5vh;background-color: rgb(254, 166, 4);width: 90%;margin: 0.6vh 0px 0px 5%;line-height: 3.5vh;text-align: center;color: rgb(255, 255, 255);border-radius: 6px;font-weight: bold;font-size: 0.8rem;">100 POINTS</div>
                     </div>
                     <div style="height: 17vh;width: 43%;float: right;border: 2px solid #feba05;border-radius: 7px;">
                         <img :src="m2" style="height: 6vh;width: 7vh;margin-left: 33%;" />
                         <p style="text-align: center;margin-top: 1vh;color: #869840;">{{tableData.todayRecharge}}/3</p>
                         <p style="color: #869840;text-align: center;font-size: 0.6rem;margin-top: 0.5vh;">INVITE 3 PEOPLE TO RECHARGE</p>
-                        <div  @click="ClaimRS" :class=" tableData.todayRecharge < 3 ?'touming' :''" style="height: 3.5vh;background-color: rgb(254, 166, 4);width: 90%;margin: 0.6vh 0px 0px 5%;line-height: 3.5vh;text-align: center;color: rgb(255, 255, 255);border-radius: 6px;font-weight: bold;font-size: 0.8rem;">50 RS</div>
+                        <div  @click="ClaimRS" :class=" tableData.todayRecharge_flag == 1 ? 'touming' :(tableData.todayRecharge < 3 ?'touming' :'')" style="height: 3.5vh;background-color: rgb(254, 166, 4);width: 90%;margin: 0.6vh 0px 0px 5%;line-height: 3.5vh;text-align: center;color: rgb(255, 255, 255);border-radius: 6px;font-weight: bold;font-size: 0.8rem;">50 RS</div>
                     </div>
                 </div>
                 <p style="margin-top: 0.5vh;color: #787878;">
@@ -113,6 +113,9 @@
     };
 
     const Claimpoints = ()=>{
+        if(tableData.value.todayregister_flag == 1){
+            return
+        }
         if(tableData.value.todayregister < 3){
             return
         }
@@ -136,6 +139,9 @@
         })
     }
     const ClaimRS = ()=>{
+        if(tableData.value.todayRecharge_flag == 1){
+            return
+        }
         if(tableData.value.todayRecharge < 3){
             return
         }
