@@ -38,10 +38,10 @@ function payOrder($fin_paylog, $sub_type = '')
 	if ($result['code'] != 1) {
 		return $result;
 	}
-	$resultArr = $result["output"][0];
-	if ($resultArr["code"] != 0) {
+	$resultArr = json_decode(json_encode($result["output"][0]));
+	if ($resultArr['code'] != 0) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
-		return ['code' => -1, 'msg' => $resultArr["msg"]];
+		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
 	$return_data = [
