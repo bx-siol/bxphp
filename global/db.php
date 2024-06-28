@@ -291,3 +291,16 @@ $_ENV['PAY_CONFIG']['usdtpay'] = [
 	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/usdtpay/pay', //代收回调 
 ];
+$_ENV['PAY_CONFIG']['crpay'] = [
+	'mch_id' => '6CxgcdBt',
+	'mch_key' => 'bc59c42cdb7b06472ed8d21bbb560ac9',
+	'pay_type' => '980', //通道编码   商户后台获取通道管理-通道编码
+
+	'pay_url' => 'https://api.crpay.top/api/payment/create_order', //代收
+	'dpay_url' => 'https://api.crpay.top/api/payment/create_pay_order', //代付
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/crpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/crpay/cash' //代付回调
+];
+

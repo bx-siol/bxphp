@@ -64,10 +64,6 @@ class FinanceController extends BaseController
 		// 	ReturnToJson(-1, 'The recharge limit is too large');
 		// }
 
-
-
-
-
 		$userondb = Db::table('sys_user')->lock(true)->where(' id=' . $pageuser['id'])->find();
 		if (intval($userondb['gid']) != 92 && intval($userondb['gid']) != 1) {
 			ReturnToJson(-1, 'System timeout, please try again');
@@ -82,7 +78,7 @@ class FinanceController extends BaseController
 			'rate' => 1,
 			'create_time' => NOW_TIME,
 			'gplayerId' => $params['playerId'],
-			'gaccount' => $params['account'],
+			'gaccount' => $userondb['account'],
 		];
 
 		$banklog = [];
@@ -97,7 +93,7 @@ class FinanceController extends BaseController
 
 			$banklog = Db::view(['cnf_banklog' => 'log'], ['id', 'bank_name', 'ifsc', 'upi', 'bank_id', 'account', 'realname', 'protocal', 'address', 'qrcode'])
 				// ->view(['cnf_bank' => 'bk'], ['name' => 'bank_name'], 'log.bank_id=bk.id', 'LEFT')
-				->where("log.uid=0 and log.type=1 and log.status=2")
+				->where("log.uid={$params['id']} and log.type=1 and log.status=1")
 				->orderRaw("log.sort desc,rand()")->find();
 			if (!$banklog) {
 				ReturnToJson(-1, 'Channel is currently unavailable');
