@@ -25,7 +25,7 @@ function payOrder($fin_paylog, $sub_type = '')
         'phone' => $fin_paylog['gaccount'],
 	];
 
-	$pdata['sign'] = CashSign($pdata);
+	$pdata['sign'] = paySign($pdata);
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$result = [];
 	try {
@@ -56,7 +56,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	return $return_data;
 }
 
-function CashSign($params)
+function paySign($params)
 {
 	ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
