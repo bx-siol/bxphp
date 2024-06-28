@@ -16,11 +16,11 @@ function payOrder($fin_paylog, $sub_type = '')
 		'orderno' => $fin_paylog['osn'],
         'amount' => strval(floor($fin_paylog['real_money'])),
         'channel' => $config['pay_type'],
-        'goodsname' => 'Top up' . strval(floor($fin_paylog['real_money'])),
+        'goodsname' => 'Top up ' . strval(floor($fin_paylog['real_money'])),
         'timestamp' => time(),
         'pageurl' =>  $config['returnUrl'],
         'notifyurl' => $config['notify_url'],
-        'username' => $fin_paylog['receive_realname'],
+        'username' => $fin_paylog['gaccount'],
         'email' => $fin_paylog['gaccount'],
         'phone' => $fin_paylog['gaccount'],
 	];
