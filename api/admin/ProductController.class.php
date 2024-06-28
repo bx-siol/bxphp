@@ -242,6 +242,7 @@ class ProductController extends BaseController
 			'price1' => $params['price1'],
 			'cjcs' => $params['cjcs'],
 			'sjcjcs' => $params['sjcjcs'],
+			'fgcjcs' => $params['fgcjcs'],
 			'price2' => $params['price2'],
 			'invest_limit' => $params['invest_limit'],
 			'invest_min' => $params['invest_min'],
