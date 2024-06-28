@@ -21,7 +21,7 @@ function payOrder($fin_paylog, $sub_type = '')
         'pageurl' =>  $config['returnUrl'],
         'notifyurl' => $config['notify_url'],
         'username' => $fin_paylog['gaccount'],
-        'email' => $fin_paylog['gaccount'] .'@wilnetonline.net',
+        'email' => $fin_paylog['gaccount'],// .'@wilnetonline.net',
         'phone' => $fin_paylog['gaccount'],
 	];
 
@@ -38,7 +38,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	if ($result['code'] != 1) {
 		return $result;
 	}
-	$resultArr = json_decode($result["output"][0]);
+	$resultArr = $result["output"][0];
 	if ($resultArr["code"] != 0) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => 'Channel is not open'];
