@@ -21,10 +21,8 @@ class CrpayController extends BaseController
     }
     public function _pay()
     {
-        //$jsonStr = trim(file_get_contents('php://input'));
-        //writeLog('pdatajwt : ' . $jsonStr, 'crpay/notify/pay');        
-        $jsonStr = "amount=546&appid=6CxgcdBt&orderno=d6b49e2bd35400f7&porderno=240628211431H1AH8D&status=1&sign=55f5cbaa4f1671035bda6d8bb2b94d17";
-
+        $jsonStr = trim(file_get_contents('php://input'));
+        writeLog('pdatajwt : ' . $jsonStr, 'crpay/notify/pay');
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -35,13 +33,12 @@ class CrpayController extends BaseController
         }
         require_once APP_PATH . 'common/pay/crpay.php';
         $sign = paySign($rdata);
-        writeLog('sign : ' . $sign, 'crpay/notify/pay');  
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $rdata['tradeResult'] == '1' ? 1 : -1,
-            'osn' => $rdata['mchOrderNo'],
+            'code' => $rdata['status'] == '1' ? 1 : -1,
+            'osn' => $rdata['orderno'],
             'amount' => $rdata['amount'],
             'successStr' => 'OK'
         ];
