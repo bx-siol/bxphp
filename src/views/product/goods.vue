@@ -34,6 +34,7 @@
             <el-table-column prop="price2" label="上级奖励" width="100"></el-table-column>
             <el-table-column prop="cjcs" label="用户抽奖" width="100"></el-table-column>
             <el-table-column prop="sjcjcs" label="上级抽奖" width="100"></el-table-column>
+            <el-table-column prop="fgcjcs" label="复购抽奖" width="100"></el-table-column>
             <el-table-column prop="invest_limit" label="限购数量" width="120">
                 <template #default="{ row }">
                     <template v-if="row.invest_limit > 0">{{ row.invest_limit }}</template>
@@ -212,16 +213,22 @@
                         </el-col>
                     </el-row>
                     <el-row>
-                        <el-col :span="12">
-                            <el-form-item label="首购抽奖">
-                                <el-input size="small" v-model="dataForm.cjcs" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
-                                <span>&nbsp;&nbsp;首次购买送自己抽奖</span>
+                        <el-col :span="8">
+                            <el-form-item label="首购送自己">
+                                <el-input size="small" v-model="dataForm.cjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
+                                <span>&nbsp;&nbsp;抽奖次数</span>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="12">
-                            <el-form-item label="首购上级抽奖">
-                                <el-input size="small" v-model="dataForm.sjcjcs" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
-                                <span>&nbsp;&nbsp;首次购买送上级抽奖</span>
+                        <el-col :span="8">
+                            <el-form-item label="首购送上级">
+                                <el-input size="small" v-model="dataForm.sjcjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
+                                <span>&nbsp;&nbsp;抽奖次数</span>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="复购送自己">
+                                <el-input size="small" v-model="dataForm.fgcjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
+                                <span>&nbsp;&nbsp;抽奖次数</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -392,6 +399,7 @@ const dataForm = reactive<any>({
     price: '',
     price1: '',
     price0: '',
+    fgcjcs:'',
     sjcjcs: '',
     cjcs: '',
     price2: '',
@@ -436,6 +444,7 @@ const add = () => {
     dataForm.price = ''
     dataForm.price0 = '0'
     dataForm.sjcjcs = '0'
+    dataForm.fgcjcs = '0'
     dataForm.cjcs = '0'
     dataForm.price1 = '0'
     dataForm.price2 = '0'
@@ -495,6 +504,7 @@ const edit = (idx: number, item: any) => {
     dataForm.gifttopuser = item.gifttopuser
     dataForm.gifttoself = item.gifttoself
 
+    dataForm.fgcjcs = item.fgcjcs
     dataForm.sjcjcs = item.sjcjcs
     dataForm.cjcs = item.cjcs
     dataForm.Integral = item.Integral
