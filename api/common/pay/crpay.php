@@ -38,11 +38,11 @@ function payOrder($fin_paylog, $sub_type = '')
 	if ($result['code'] != 1) {
 		return $result;
 	}
-	$resultArr = json_decode($result['output'][0]);
+	$resultArr = json_decode($result['output'][0],true);
     writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	if ($resultArr["code"] != 0) {
+	if ($resultArr['code'] != 0) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
-		return ['code' => -1, 'msg' => $resultArr["msg"]];
+		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
 	$return_data = [
@@ -52,7 +52,7 @@ function payOrder($fin_paylog, $sub_type = '')
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
 			'out_osn' => '',
-			'pay_url' => $resultArr["payurl"] 
+			'pay_url' => $resultArr['payurl'] 
 		]
 	];
 	return $return_data;
