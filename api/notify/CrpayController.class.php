@@ -40,7 +40,7 @@ class CrpayController extends BaseController
             'code' => $rdata['status'] == '1' ? 1 : -1,
             'osn' => $rdata['orderno'],
             'amount' => $rdata['amount'],
-            'successStr' => 'OK'
+            'successStr' => 'success'
         ];
         $this->payAct($pdata, 'crpay');
     }
