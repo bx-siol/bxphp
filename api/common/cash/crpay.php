@@ -44,7 +44,7 @@ function CashOrder($fin_cashlog)
 		'msg' => $result['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
-			'osn' => $fin_cashlog['orderno'],
+			'osn' => $resultArr['orderno'],
 			'out_osn' => $resultArr['porderno']
 		]
 	];
