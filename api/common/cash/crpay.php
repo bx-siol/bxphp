@@ -55,7 +55,7 @@ function CashSign($params)
 {
 	ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
-    $appSecret = $config['dmch_key'];
+    $appSecret = $config['mch_key'];
     foreach ($params as $key => $value) {
 		if (empty ($key) || empty ($value) || $key == 'sign') {
 			continue;
