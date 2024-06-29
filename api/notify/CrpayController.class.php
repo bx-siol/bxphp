@@ -63,19 +63,26 @@ class CrpayController extends BaseController
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $rdata['merTransferId'],
-            'out_osn' => $rdata['tradeNo'],
-            'pay_status' => $rdata['tradeResult'] == '1' ? 9 : 3,
-            'pay_msg' => $rdata['respCode'],
-            'amount' => $rdata['transferAmount'] ,
-            'successStr' => 'OK',
-            'failStr' => 'OK1'
+            'osn' => $rdata['orderno'],
+            'out_osn' => $rdata['porderno'],
+            'pay_status' => $rdata['status'] == '2' ? 9 : 3,
+            'pay_msg' => $rdata['status'] == '2' ? 'success' : 'fail',
+            'amount' => $rdata['amount'] ,
+            'successStr' => 'success',
+            'failStr' => 'fail'
         ];
 
-        //冲正状态
-        if ($rdata['tradeResult'] == '5')
-            $pdata['pay_status'] = 4;
-
         $this->cashAct($pdata);
+    }
+
+    
+    public function _order()
+    {
+		$params = $this->params;
+        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+        require_once APP_PATH . 'common/cash/crpay.php';
+        $result = CashOrder($fin_cashlog);
+        
+	    return $result;
     }
 }
