@@ -19,7 +19,7 @@
             <el-table-column prop="buyAmountEnd" label="必中奖结束购买金额"></el-table-column>
             <el-table-column label="操作" width="160">
                 <template #default="scope">
-                    <el-button size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
+                    <el-button v-if="power.update" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
                 </template>
             </el-table-column>
         </template>
@@ -108,6 +108,7 @@ import { ref, onMounted, reactive, getCurrentInstance } from 'vue';
 import { useStore } from "vuex";
 import { _alert, getSrcUrl } from "../../global/common";
 import http from "../../global/network/http";
+import { checkPower } from '../../global/user';
 
 let isRequest = false
 const store = useStore()
@@ -124,6 +125,7 @@ const tableData = ref<any>({
 //权限控制
 const power = reactive({
     //delete:checkPower('Shop_order_delete'),
+    update: checkPower('Gift_lottery_update'),    
 })
 
 const imgFlag = (src: string) => {
