@@ -472,7 +472,7 @@ class GiftController extends BaseController
 
 	public function _lottery_save()
 	{
-		$pageuser = checkPower();
+		$pageuser = checkPower('Gift_lottery_update');
 		$params = $this->params;
 		$item_id = intval($params['id']);
 		if (!$params['name']) {
