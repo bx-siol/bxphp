@@ -152,7 +152,7 @@ class ProductController extends BaseController
 			->where($cp_where)
 			->field(['log.id', 'log.cid', 'list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
 			->select();
-
+		writeLog(json_encode($coupon_logs),'aaaaaaaaaa');
 		$coupon_arr = [];
 		$coupon_cids = [];
 		if ($coupon_logs) {
