@@ -1070,6 +1070,9 @@ class ProductController extends BaseController
 	{
 		//送抽奖
 		$lotterynum = $quantity * intval($item['cjcs']);
+		if($check_num != 0)
+			$lotterynum = $quantity * intval($item['fgcjcs']);
+
 		Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $lotterynum)->update();
 		//增加中奖记录
 		$prizesList = Db::table('gift_prize')->order('probability')->select();
