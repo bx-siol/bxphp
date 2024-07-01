@@ -71,6 +71,8 @@ class GiftController extends BaseController
 				Db::table('gift_prize_log')->insertGetId($gift_prize_log);
 			}
 			writeLog("3333",'aaaaaaaaaa');
+			writeLog(json_encode($gift_prize_log),'aaaaaaaaaa');
+			writeLog(json_encode($prize),'aaaaaaaaaa');
 			if(isset($gift_prize_log))
 				$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 			else
