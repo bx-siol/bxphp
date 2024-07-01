@@ -1,8 +1,12 @@
 <template>
     <div class="choujiang" style="padding: 0 1rem;">
         <MyNav>
+            <template #title><div></div></template>
             <template #left>
-                <div></div>
+                <div @click="callback"> 
+                    <van-icon name="arrow-left" size="1.3rem" style="vertical-align: middle;top:0px;color: #84a80f;" class="alter"/>
+                    <span class="alter" style="vertical-align: middle;position: relative;left: -2px;color: #84a80f;">Back</span>
+                </div>
             </template>
         </MyNav>
         <div :class="['tree', { shake: Shaking }]">
@@ -16,7 +20,7 @@
                     {{ num }} times left
                 </span>
             </div>
-            <div class="lotterypoints" @click="wobble">
+            <div class="lotterypoints" @click="wobble" v-if="false">
                 <p>ponints lottery </p>
                 <span>
                     <img :src="number">
@@ -25,38 +29,43 @@
             </div>
         </div>
         <div class="article">
-            <div class="lotterytitle">Activity Rules</div>
+            <div class="lotterytitle">Lottery Rules</div>
             <div class="lotteryarticle">
                 <p>
                     <img :src="xx" />
-                    <span>Invite new users to recharge and get 1 lucky fraw chance</span>
+                    <span>New members can get 1 chance to draw a lottery by joining and activating the product.</span>
                 </p>
                 <br />
                 <p>
                     <img :src="xx" />
-                    You can get 1 lucky draw chance when you buy a product
+                    Invite new members to join and get 1 chance to draw a lottery.
                 </p>
                 <br />
                 <p>
                     <img :src="xx" />
-                    How to use the voucher:<br />
-                    When you get a cash coupon,the amount you get gose directly into your accout
+                    Get 1 chance to draw a lottery for each product purchased.
                 </p>
                 <br />
                 <p>
                     <img :src="xx" />
-                    How to use the coupon:<br />
-                    After receiving the coupon,you can purchase the corresponding discounted product and enjoy the discount
+                    How to use cash coupons: After obtaining cash coupons, the amount will be directly transferred to your account.
                 </p>
                 <br />
                 <p>
                     <img :src="xx" />
-                    How to use the invitation coupon:<br />
-                    After obtaining the invitation coupon,invite new members to join and purchase to get extra cash rewards
+                    How to use coupons: After receiving coupons, you can purchase corresponding discounted products and enjoy discounts.
+                </p>
+                <br />
+                <p>
+                    <img :src="xx" />
+                    How to use invitation coupons: After obtaining invitation coupons, you can get extra cash rewards by inviting new members to join.
+                </p>
+                <br />
+                <p>
+                    <img :src="xx" />
+                    Note: The number of draws per day will be reset to 0 at 23:59. If you get a chance to draw, please use it immediately.
                 </p>
             </div>
-
-
         </div>
         <van-popup v-model:show="showLotteryPop">
             <div class="LotteryPop" @click="receiveGift">
@@ -64,22 +73,28 @@
                 <div class="content">{{ tipstr }}</div>
             </div>
         </van-popup>
+        <van-popup v-model:show="showLotteryRule">
+            <div style="background-color: #fff;color: #000;width: 13rem;height: 14rem;padding: 1rem;border-radius: 10px;">
+                <div style="text-align: center;font-size: 1.2rem;font-weight: bold;padding: 0.5rem 0;">Kind tips</div>
+                <p style="font-size: 0.75rem;margin: 0.5rem 0;">Rules for the lucky draw:</p>
+                <p style="font-size: 0.75rem;margin: 0.5rem 0;">1: Upgrade the product to get a chance to win a lucky draw</p>
+                <p style="font-size: 0.75rem;margin: 0.5rem 0;">2: Invite friends to join to get a chance to win a lucky draw</p>
+                <p style="font-size: 0.75rem;margin: 0.5rem 0;">The number of lucky draws per day will be reset to 0 at 23:59 p.m.</p>
+                <div style="height: 2rem;background-color: #e00302;color: #fff;text-align: center;line-height: 2rem;border-radius: 20px;margin-top: 1.2rem;" @click="receiveGiftRule">Close</div>
+            </div>
+        </van-popup>
     </div>
-    <MyTab></MyTab>
 </template>
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeMount } from 'vue'
-import { getSrcUrl } from '../../global/common'
 import MyNav from '../../components/Nav.vue'
 import { Grid, GridItem, Tab, Icon, Button, Image, Popup } from 'vant'
-import MyTab from '../../components/Tab.vue'
 import MyNoticeBar from '../../components/NoticeBar.vue'
 import { Swipe, SwipeItem, NoticeBar, Tag, Col, Row } from 'vant'
 import MyPop from '../../components/Pop.vue'
 export default defineComponent({
     components: {
         MyPop,
-        MyTab,
         MyNoticeBar,
         [Grid.name]: Grid,
         [Tab.name]: Tab,
@@ -103,11 +118,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { Dialog } from 'vant'
 import http from '../../global/network/http'
 import { _alert, lang } from '../../global/common'
-
-import open from '../../assets/img/lottery/open.png'
-import lottery1 from '../../assets/img/lottery/lottery1.png'
 import xx from '../../assets/img/lottery/xx.png'
-import test from '../../assets/img/lottery/test.gif'
 import number from '../../assets/img/lottery/number.png'
 import tree from '../../assets/img/lottery/tree.png'
 import Lotteryback from '../../assets/img/lottery/Lotteryback.png'
@@ -116,28 +127,32 @@ const store = useStore()
 const route = useRoute()
 const router = useRouter()
 const pageuser = isLogin()
-const imgFlag = (src: string) => {
-    return getSrcUrl(src, 1);
-}
+const num = ref(0)
+const tipstr = ref('Thank you')
+const Shaking = ref(false);
+const imgLotteryPop = ref(Lotteryback)
+let limitation = false;
+
 const showLotteryPop = ref<boolean>(false)
+const showLotteryRule = ref<boolean>(true)
 const tdata = ref({
     lottery: 0,
     notice: {},
     prize_arr: [],
 })
-const imgLotteryPop = ref(Lotteryback)
+
 const receiveGift = () => {
     showLotteryPop.value = false
 }
 
-const num = ref(0)
+const receiveGiftRule = () => {
+    showLotteryRule.value = false
+}
 
-const tipstr = ref('Thank you')
+const callback = ()=>{
+    router.push({ path: '/' });
+}
 
-const Shaking = ref(false);
-
-
-let limitation = false;
 const startCallback = () => {
     if (limitation) {
         return;
@@ -158,21 +173,16 @@ const startCallback = () => {
 
             num.value = res.data.lottery
             tipstr.value = res.data.giftprizelog.prize_name
-
-
+            
             setTimeout(() => {
                 Shaking.value = false;
-
                 showLotteryPop.value = true
-
                 limitation = false;
             }, 1000)
 
         })
     }, delayTime)
-    // console.log(limitation,'限制');
 }
-
 
 const wobble = () => {
     if (limitation) {
@@ -186,28 +196,9 @@ const wobble = () => {
         showLotteryPop.value = true
         limitation = false;
     }, 2000);
-
 }
 
-
-onBeforeMount(() => {
-    if (!pageuser) {
-        store.state.backurl = route.path
-        router.push({ name: 'Login' })
-        return
-    }
-    setTimeout(() => {
-        http({
-            url: 'a=notice',
-        }).then((res: any) => {
-            if (res.code != 1) {
-                _alert(res.msg)
-                return
-            }
-            tdata.value.notice = res.data.notice
-        })
-    }, 1000)
-
+onBeforeMount(() => {   
     http({
         url: 'c=Gift&a=turntable',
         data: { page: 1 }
@@ -222,11 +213,7 @@ onBeforeMount(() => {
 })
 
 onMounted(() => {
-    if (!pageuser) {
-        store.state.backurl = route.path
-        router.push({ name: 'Login' })
-        return
-    }
+
 })
 </script>
 
@@ -241,7 +228,7 @@ onMounted(() => {
     background: #84a80f url(../../assets/img/lottery/back3.png)0 0rem;
     background-size: 100% 21.1rem;
     background-repeat: no-repeat;
-    min-height: 875px;
+    // min-height: 875px;
 
     :deep(.van-nav-bar) {
         background-color: transparent;
@@ -308,7 +295,7 @@ onMounted(() => {
         top: 27rem;
         left: 50%;
         transform: translateX(-50%);
-        width: 90%;
+        width: 100%;
 
         .lotterytitle {
             height: 1.8rem;
@@ -328,6 +315,8 @@ onMounted(() => {
 
         .lotteryarticle {
             padding-bottom: 2rem;
+            background-color: #84a80f;
+            padding: 0 5%;
 
             p {
                 display: flex;
@@ -357,7 +346,7 @@ onMounted(() => {
 
     .content {
         height: 3rem;
-        width: 15rem;
+        width: 10rem;
         position: absolute;
         top: 6rem;
         left: 50%;

@@ -17,7 +17,6 @@
             <MyLanguage :showIcon="true" top="unset" :switchLanStyle="switchLanStyle"></MyLanguage>
           </div>
         </div>
-
         <div class="backg" style="padding: 1rem">
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
@@ -38,29 +37,45 @@
           </div>
 
           <div class="malls u-flex u-bet">
-            <div @click="onLink({ name: 'TeamAward' })">
+            <div @click="onLink({ name: 'Gift_lottery' })">
               <van-image :src="teamawardbg1"></van-image>
             </div>
           </div>
           <div class="index_cer">
             <div class="menubox">
-              <div
-                style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
+              <div style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_recharge' })">
                   <van-image :src="m1"></van-image>
                   <p>{{ t('充值') }}</p>
                 </a>
                 <!-- <span class="line"></span> -->
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_withdraw' })">
                   <van-image :src="m2"></van-image>
+                  <p>{{ t('提现') }}</p>
+                </a>
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
+                  <van-image :src="m3"></van-image>
                   <p>{{ t('奖金') }}</p>
                 </a>
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'User_team' })">
-                  <van-image :src="m3"></van-image>
+                  <van-image :src="m4"></van-image>
                   <p>{{ t('团队') }}</p>
                 </a>
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Activity' })">
-                  <van-image :src="m9"></van-image>
+                <a class="divs" style="margin-top: 1rem;" href="javascript:;" @click="onLink({ name: 'Gift_lottery' })">
+                  <van-image :src="m5"></van-image>
+                  <p>{{ t('幸运抽奖') }}</p>
+                </a>
+                <!-- <span class="line"></span> -->
+                <a class="divs" style="margin-top: 1rem;" href="javascript:;" @click="onLink({ name: 'TeamAward' })">
+                  <van-image :src="m6"></van-image>
+                  <p>{{ t('福利') }}</p>
+                </a>
+                <a class="divs" style="margin-top: 1rem;" href="javascript:;" @click="onLink({ name: 'Purchase' })">
+                  <van-image :src="m7"></van-image>
+                  <p>{{ t('我的产品') }}</p>
+                </a>
+                <a class="divs" style="margin-top: 1rem;" href="javascript:;" @click="onLink({ name: 'Activity' })">
+                  <van-image :src="m8"></van-image>
                   <p>{{ t('任务') }}</p>
                 </a>
               </div>
@@ -193,9 +208,6 @@ import NoMsg from "../../assets/img/home/nomsg.png";
 import Msg from "../../assets/img/home/msg.png";
 import syngenta from '../../assets/img/home/syngenta.jpg'
 import illustration from '../../assets/img/login/illustration.png';
-// import DialogBg1 from '../../assets/img/120lq.jpg';
-// import DialogBg120 from '../../assets/img/120.png';
-// import i76 from '../../assets/img/76.png';
 import Balance from '../../assets/img/home/Balance.png'
 import m1 from '../../assets/img/home/home-icon-1-1.png'
 import m2 from '../../assets/img/home/home-icon-1-2.png'
@@ -204,12 +216,10 @@ import m4 from '../../assets/img/home/home-icon-1-4.png'
 import m5 from '../../assets/img/home/home-icon-1-5.png'
 import m6 from '../../assets/img/home/home-icon-1-6.png'
 import m7 from '../../assets/img/home/home-icon-1-7.png'
-import m7s from '../../assets/img/home/home-icon-1-7s.png'
 import m8 from '../../assets/img/home/home-icon-1-8.png'
-import m9 from '../../assets/img/home/home-icon-1-9.png'
 import chance from '../../assets/img/home/home-banner-3-1.png'
 import integral from '../../assets/img/home/home-banner-3-2.png'
-import teamawardbg1 from '../../assets/img/home/home-banner-4.png'
+import teamawardbg1 from '../../assets/img/home/home-banner-6.png'
 import teamawardbg2 from '../../assets/img/home/home-banner-5.png'
 import videosrc from '../../assets/video/video.mp4'
 import { Card, Button, Tag, Tab, Tabs, Swipe, SwipeItem, Icon } from 'vant';
@@ -519,7 +529,7 @@ const onReceiveNo = (item: any) => {
 const confirmTip = () => {
   add_cookie("closeIndexTip", "1")
   //tipShow.value = false
-  router.push({ path: '/Project' })
+  router.push({ path: '/gift/lottery' })
 }
 
 const add_cookie = (name: any, val: any) => {
@@ -753,7 +763,7 @@ onMounted(() => {
   .app {
     position: fixed;
     right: 0;
-    top: 30rem;
+    top: 35rem;
     width: 3rem;
     height: 3rem;
     line-height: 3rem;

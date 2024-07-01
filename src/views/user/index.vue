@@ -86,16 +86,11 @@
             <div class="home_list">
                 <van-cell-group>
                     <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
-                    <van-cell class="financial_records" :title="t('财务记录')" :icon="financialrecords"
-                        :to="{ name: 'Finance_balancelog' }"></van-cell>
-                    <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon" v-if="false"></van-cell>
-                    <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox"
-                        :to="{ name: 'Setting_bank' }"></van-cell>
-                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="ico_1062"
-                        v-if="false"></van-cell>
-                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }">
-                        <!-- <div>join today：{{newmember}}</div> -->
-                    </van-cell>
+                    <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon" ></van-cell>
+                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" v-if="false" :icon="coupon3" ></van-cell>
+                    <van-cell class="financial_records" :title="t('财务记录')" :icon="financialrecords" :to="{ name: 'Finance_balancelog' }"></van-cell>
+                    <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox" :to="{ name: 'Setting_bank' }"></van-cell>
+                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
                     <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }" v-if="false"></van-cell>
                     <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
                     <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
@@ -158,6 +153,7 @@ import app from '../../assets/img/user/app.png';
 import Setting from "../../assets/img/user/Setting.png";
 import coupon from "../../assets/img/user/coupon.png";
 import coupon2 from "../../assets/img/user/coupon2.png";
+import coupon3 from "../../assets/img/user/coupon3.png";
 import Service from "../../assets/img/user/Service.png";
 
 import vip1 from "../../assets/img/user/vip/1.png";

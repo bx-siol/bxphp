@@ -297,14 +297,13 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: .65rem;
     flex-wrap: wrap;
 }
 
 
 
 .index_cer .menubox a {
-    height: 4rem;
+    height: 5rem;
     color: #3d3d3b;
     font-size: 0.8rem;
     text-align: center;
@@ -326,7 +325,7 @@ img {
     white-space: nowrap;
     color: #fff;
     text-transform: uppercase !important;
-    font-weight: bold;
+    font-size: 0.7rem;
 }
 
 .index_cer .menubox .van-image {

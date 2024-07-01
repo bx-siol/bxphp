@@ -3,7 +3,6 @@
     <Nav leftText=''></Nav>
     <div style="background: ">
       <div :class="['project_img', { backdrop: info.pointshop == 1 }]">
-        <!--<img :src="describe" class="describe">-->
         <van-swipe indicator-color="white" :autoplay="3000">
           <van-swipe-item v-if="info.covers == []">
             <img :src="imgFlag(info.icon)" style="width: 100%; max-height: 200px" />
@@ -78,7 +77,7 @@
                 <span v-else class="gold">{{ t('无限制') }}</span>
               </template>
             </van-cell>
-            <van-collapse v-if="false" v-model="activeNames" class="collapse">
+            <van-collapse v-model="activeNames" class="collapse">
               <van-collapse-item :title="t('折扣券')" name="1">
                 <div class="Discount">
                   <div v-for="(item, index) in coupons" :key="index" :style="styles[index]"
@@ -413,20 +412,6 @@ const init = () => {
     wallet3.value = res.data.wallet3
 
     coupons.value = [];
-
-    coupons.value.push({
-      id: -1,
-      available: 1,
-      condition: t('折扣券'),
-      reason: '',
-      value: 0,
-      name: t('折扣券'),
-      startAt: 1489104000,
-      endAt: 1514592000,
-      valueDesc: '0',
-      unitDesc: '%',
-    });
-
     for (let index = 0; index < res.data.coupon_arr.length; index++) {
       const element = res.data.coupon_arr[index];
       coupons.value.push({
