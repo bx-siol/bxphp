@@ -70,7 +70,9 @@
         <van-popup v-model:show="showLotteryPop">
             <div class="LotteryPop" @click="receiveGift">
                 <img :src="imgLotteryPop" />
-                <div class="content">{{ tipstr }}</div>
+                <div class="content">
+                    <img style="height: 7.5rem;" :src="imgFlag(tipstr)" />
+                </div>
             </div>
         </van-popup>
         <van-popup v-model:show="showLotteryRule">
@@ -80,7 +82,7 @@
                 <p style="font-size: 0.75rem;margin: 0.5rem 0;">1: Upgrade the product to get a chance to win a lucky draw</p>
                 <p style="font-size: 0.75rem;margin: 0.5rem 0;">2: Invite friends to join to get a chance to win a lucky draw</p>
                 <p style="font-size: 0.75rem;margin: 0.5rem 0;">The number of lucky draws per day will be reset to 0 at 23:59 p.m.</p>
-                <div style="height: 2rem;background-color: #e00302;color: #fff;text-align: center;line-height: 2rem;border-radius: 20px;margin-top: 1.2rem;" @click="receiveGiftRule">Close</div>
+                <div style="height: 2rem;background-color: #84973b;color: #fff;text-align: center;line-height: 2rem;border-radius: 20px;margin-top: 1.2rem;" @click="receiveGiftRule">Close</div>
             </div>
         </van-popup>
     </div>
@@ -117,7 +119,7 @@ import { checkLogin, doLogout, isLogin } from '../../global/user'
 import { useRoute, useRouter } from 'vue-router'
 import { Dialog } from 'vant'
 import http from '../../global/network/http'
-import { _alert, lang } from '../../global/common'
+import { _alert, lang,getSrcUrl } from '../../global/common'
 import xx from '../../assets/img/lottery/xx.png'
 import number from '../../assets/img/lottery/number.png'
 import tree from '../../assets/img/lottery/tree.png'
@@ -128,13 +130,13 @@ const route = useRoute()
 const router = useRouter()
 const pageuser = isLogin()
 const num = ref(0)
-const tipstr = ref('Thank you')
+const tipstr = ref('')
 const Shaking = ref(false);
 const imgLotteryPop = ref(Lotteryback)
 let limitation = false;
 
 const showLotteryPop = ref<boolean>(false)
-const showLotteryRule = ref<boolean>(true)
+const showLotteryRule = ref<boolean>(false)
 const tdata = ref({
     lottery: 0,
     notice: {},
@@ -151,6 +153,10 @@ const receiveGiftRule = () => {
 
 const callback = ()=>{
     router.push({ path: '/' });
+}
+
+const imgFlag = (src: string) => {
+    return getSrcUrl(src, 0)
 }
 
 const startCallback = () => {
@@ -172,7 +178,7 @@ const startCallback = () => {
             }
 
             num.value = res.data.lottery
-            tipstr.value = res.data.giftprizelog.prize_name
+            tipstr.value = res.data.giftprizelog.prize_cover
             
             setTimeout(() => {
                 Shaking.value = false;
@@ -210,6 +216,10 @@ onBeforeMount(() => {
         num.value = res.data.user.lottery
         tdata.value = res.data
     })
+    setTimeout(function(){
+        
+        showLotteryRule.value = true;
+    },500);
 })
 
 onMounted(() => {
@@ -346,15 +356,15 @@ onMounted(() => {
 
     .content {
         height: 3rem;
-        width: 10rem;
+        width: 9rem;
         position: absolute;
-        top: 6rem;
+        top: 4.2rem;
         left: 50%;
         transform: translateX(-54%);
         text-align: center;
         color: red;
         font-weight: bold;
-        font-size: 1.2rem;
+        font-size: 1.5rem;
         word-break: break-all;
         padding-top: 0.5rem;
     }
