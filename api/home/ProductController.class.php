@@ -152,14 +152,13 @@ class ProductController extends BaseController
 			->where($cp_where)
 			->field(['log.id', 'log.cid', 'list.gids', 'log.money', 'log.discount', 'log.num', 'log.used', 'log.create_time', 'log.effective_time'])
 			->select();
-		writeLog(json_encode($coupon_logs),'aaaaaaaaaa');
 		$coupon_arr = [];
 		$coupon_cids = [];
 		if ($coupon_logs) {
 			foreach ($coupon_logs as $cp) {
-				if (in_array($cp['cid'], $coupon_cids)) {
-					continue;
-				}
+				// if (in_array($cp['cid'], $coupon_cids)) {
+				// 	continue;
+				// }
 				$gids = json_decode($cp['gids'], true);
 				if (in_array($itemid, $gids)) {
 					$cp['coupon_name'] = $coupon_list[$cp['cid']]['name'];
