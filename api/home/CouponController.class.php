@@ -161,16 +161,13 @@ class CouponController extends BaseController
 			$result2 = walletLog([
 				'wid' => $wallet2['id'],
 				'uid' => $wallet2['uid'],
-				// 'cid' => $wallet2['cid'],
-				// 'wtype' => $wallet2['type'],
-				'type' => 14,
+				'type' => 10,
 				'money' => $coupon['money'],
 				'ori_balance' => $wallet2['balance'],
 				'new_balance' => $wallet_data2['balance'],
 				'fkey' => $coupon['id'],
-				'remark' => 'Exchange'
+				'remark' => 'Use invitation ticket, id:'.$coupon['id']
 			]);
-
 
 			if (!$result2) {
 				throw new \Exception('Failed to write journal records.');
