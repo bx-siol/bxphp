@@ -50,7 +50,7 @@ class GiftController extends BaseController
 
 			$gift_prize_log = Db::table("gift_prize_log")->where("is_user = 0 and uid={$pageuser['id']}")->find();
 			if(!isset($gift_prize_log)) {
-				$prize = Db::table("gift_prize")->where("type=4")->select();
+				$prize = Db::table("gift_prize")->where("type=4")->find();
 				$gift_prize_log = [
 					'uid' => $pageuser['id'],
 					'type' => $prize['type'],
@@ -71,12 +71,7 @@ class GiftController extends BaseController
 				Db::table('gift_prize_log')->insertGetId($gift_prize_log);
 			}
 			writeLog("3333",'aaaaaaaaaa');
-			writeLog(json_encode($gift_prize_log),'aaaaaaaaaa');
-			writeLog(json_encode($prize),'aaaaaaaaaa');
-			if(isset($gift_prize_log))
-				$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
-			else
-				$prize = Db::table("gift_prize")->where("type=4")->select();
+			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 
 			writeLog("44444",'aaaaaaaaaa');
 			if ($prize['type'] == 1) { //金额
