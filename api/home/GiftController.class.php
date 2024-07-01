@@ -67,7 +67,8 @@ class GiftController extends BaseController
 					'is_user' => 0,
 					'gift_prize_id' => $prize['id'],
 				];
-				Db::table('gift_prize_log')->insertGetId($gift_prize_log);
+				$id = Db::table('gift_prize_log')->insertGetId($gift_prize_log);
+				writeLog($id,'aaaaaaaaaa');
 			}
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 			writeLog(json_encode($gift_prize_log),'aaaaaaaaaa');
@@ -138,7 +139,7 @@ class GiftController extends BaseController
 			} else if ($prize['type'] == 3 || $prize['type'] == 4) { //实物
 				$tipMsg = $prize['remark'];
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['is_user'=>1]);
-			}  else if ($prize['type'] == 5) { //代金券
+			} else if ($prize['type'] == 5) { //代金券
 				addCouponLog($user['id'], $prize['coupon_id'], 1, $prize['remark']);				
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['coupon_id'=>$prize['coupon_id'],'is_user'=>1]);
 				$tipMsg = "Coupon: {$prize['name']}";
