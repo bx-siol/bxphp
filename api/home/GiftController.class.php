@@ -47,7 +47,7 @@ class GiftController extends BaseController
 			Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 
 			$gift_prize_log = Db::table("gift_prize_log")->where("is_user = 0 and uid={$pageuser['id']}")->find();
-			if(isset($gift_prize_log)) {
+			if(!isset($gift_prize_log)) {
 				$prize = Db::table("gift_prize")->where("type=4")->select();
 				$gift_prize_log = [
 					'uid' => $pageuser['id'],
