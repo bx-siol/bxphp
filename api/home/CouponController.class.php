@@ -110,6 +110,7 @@ class CouponController extends BaseController
 				ReturnToJson(-1, 'This coupon has expired');
 			}
 
+			writeLog('1111','aaaaaaaaaa');
 			//检测是否符合邀请条件
 			$pro_order = Db::table('pro_order')->where("pid={$pageuser['id']} and is_exchange=0 and create_time>={$coupon['create_time']}")->lock(true)->find(); //and create_time>={$coupon['create_time']}
 			if (!$pro_order) {
@@ -128,6 +129,8 @@ class CouponController extends BaseController
 			} else {
 				$coupon_log['status'] = 2;
 			}
+			
+			writeLog('2222','aaaaaaaaaa');
 			Db::table('coupon_log')->where("id={$coupon['id']}")->update($coupon_log);
 			$coupon_used = [
 				'cid' => $coupon['cid'],
@@ -142,7 +145,7 @@ class CouponController extends BaseController
 				'create_time' => NOW_TIME
 			];
 			Db::table('coupon_used')->insertGetId($coupon_used);
-
+			writeLog('3333','aaaaaaaaaa');
 			$wallet2 = getWallet($pageuser['id'], 2); //余额钱包
 			if (!$wallet2) {
 				throw new \Exception('Wallet acquisition exception.');
@@ -154,7 +157,7 @@ class CouponController extends BaseController
 			//更新钱包余额
 			Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
 			//写入流水记录
-
+			writeLog('4444','aaaaaaaaaa');
 			$result2 = walletLog([
 				'wid' => $wallet2['id'],
 				'uid' => $wallet2['uid'],
@@ -173,6 +176,7 @@ class CouponController extends BaseController
 				throw new \Exception('Failed to write journal records.');
 			}
 
+			writeLog('5555','aaaaaaaaaa');
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {

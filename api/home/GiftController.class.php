@@ -32,7 +32,6 @@ class GiftController extends BaseController
 
 	public function _turntableAct()
 	{
-		writeLog("111",'aaaaaaaaaa');
 		$pageuser = checkLogin();
 		$tipMsg = 'ok';
 		Db::startTrans();
@@ -71,8 +70,6 @@ class GiftController extends BaseController
 				$gift_prize_log['id'] = $id;
 			}
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
-			writeLog(json_encode($gift_prize_log),'aaaaaaaaaa');
-			writeLog(json_encode($prize),'aaaaaaaaaa');
 
 			if ($prize['type'] == 1) { //金额
 				$money = $this->getRandMoney($prize['from_money'], $prize['to_money']);
@@ -145,7 +142,6 @@ class GiftController extends BaseController
 				$tipMsg = "Coupon: {$prize['name']}";
 			}
 			
-			writeLog("5555",'aaaaaaaaaa');
 			Db::commit();
 			$this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);
 		} catch (\Exception $e) {
