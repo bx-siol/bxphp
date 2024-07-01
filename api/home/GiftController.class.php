@@ -46,7 +46,6 @@ class GiftController extends BaseController
 				'lottery' => $user['lottery'] - 1
 			];
 			Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
-			writeLog("2222",'aaaaaaaaaa');
 
 			$gift_prize_log = Db::table("gift_prize_log")->where("is_user = 0 and uid={$pageuser['id']}")->find();
 			if(!isset($gift_prize_log)) {
@@ -70,10 +69,8 @@ class GiftController extends BaseController
 				];
 				Db::table('gift_prize_log')->insertGetId($gift_prize_log);
 			}
-			writeLog("3333",'aaaaaaaaaa');
 			$prize = Db::table('gift_prize')->where("id={$gift_prize_log['gift_prize_id']}")->find();
 
-			writeLog("44444",'aaaaaaaaaa');
 			if ($prize['type'] == 1) { //金额
 				$money = $this->getRandMoney($prize['from_money'], $prize['to_money']);
 				$money = number_format($money, 2, '.', '');
@@ -106,7 +103,7 @@ class GiftController extends BaseController
 					throw new \Exception('Failed to write journal records.');
 				}
 				$tipMsg = "Money:{$money}";
-			} elseif ($prize['type'] == 2) { //产品
+			} else if ($prize['type'] == 2) { //产品
 				$goodInfo = Db::table('pro_goods')->where("id = {$prize['gid']}")->find();
 				Db::table('pro_order')->insertGetId([
 					'uid'=> $pageuser['id'],
@@ -136,10 +133,10 @@ class GiftController extends BaseController
 
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['gid'=>$prize['gid'],'is_user'=>1]);
 				$tipMsg = "Product:{$prize['name']}";
-			} elseif ($prize['type'] == 3 || $prize['type'] == 4) { //实物
+			} else if ($prize['type'] == 3 || $prize['type'] == 4) { //实物
 				$tipMsg = $prize['remark'];
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['is_user'=>1]);
-			}  elseif ($prize['type'] == 5) { //代金券
+			}  else if ($prize['type'] == 5) { //代金券
 				addCouponLog($user['id'], $prize['coupon_id'], 1, $prize['remark']);				
 				Db::table('gift_prize_log')->where("id={$gift_prize_log['id']}")->update(['coupon_id'=>$prize['coupon_id'],'is_user'=>1]);
 				$tipMsg = "Coupon: {$prize['name']}";
