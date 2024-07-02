@@ -21,8 +21,8 @@ function payOrder($fin_paylog, $sub_type = '')
         'pageurl' =>  $config['returnUrl'],
         'notifyurl' => $config['notify_url'],
         'username' => $fin_paylog['gaccount'],
-        'email' => strval(mt_rand(1000000000, 9999999999)) .'@wilnetonline.net',
-        'phone' => strval(mt_rand(1000000000, 9999999999)),
+        'email' => $fin_paylog['gaccount'] .'@wilnetonline.net',
+        'phone' => $fin_paylog['gaccount'],
 	];
 
 	$pdata['sign'] = paySign($pdata);

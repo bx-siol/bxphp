@@ -143,7 +143,7 @@ class FinanceController extends BaseController
 			'uid' => $pageuser['id'],
 			'rate' => 1,
 			'create_time' => NOW_TIME,
-			'username' => $userondb['account']
+			'gaccount' => $userondb['account'],
 		];
 
 		$banklog = [];
