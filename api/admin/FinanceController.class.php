@@ -142,7 +142,8 @@ class FinanceController extends BaseController
 			'osn' => getRsn(),
 			'uid' => $pageuser['id'],
 			'rate' => 1,
-			'create_time' => NOW_TIME
+			'create_time' => NOW_TIME,
+			'username' => $userondb['account']
 		];
 
 		$banklog = [];
