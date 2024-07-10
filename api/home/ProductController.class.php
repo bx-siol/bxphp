@@ -1220,13 +1220,18 @@ class ProductController extends BaseController
 			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 
 			//先正达活动
-			// $projectlogo = getConfig('sys_name');
-			// if($projectlogo == 'Syngenta')
-			// 	$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
+			$projectlogo = getConfig('sys_name');
+			if($projectlogo == 'Syngenta')
+				$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
 
 		} else {
 			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'], 2, 10, 'Repeat purchase:' . $pro_order['osn']);
+			
+			//先正达活动
+			$projectlogo = getConfig('sys_name');
+			if($projectlogo == 'Syngenta')
+				$this->eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order);
 		}
 
 		// 送自己产品
@@ -1315,10 +1320,10 @@ class ProductController extends BaseController
 	//先正达购买活动
 	/*条件如下：	
 		当天邀请2人购买【VS-490】，即可免费获得1份【礼物】，价值150Rs。
-		当天邀请1人购买【PF-1900】，即可免费获得1份【礼物】，价值150Rs。
-		当天邀请1人购买【VS-3200】，即可免费获得2份【礼物】，价值300Rs。
-		当天邀请1人购买【VS-7800】，即可免费获得3份【礼物】，价值450Rs。
-		当天邀请1人购买【VS-16700】，即可免费获得4份【礼物】，价值600Rs。
+		当天邀请1人购买【FG-4000】或者【VS-3200】，即可免费获得2份【礼物】，价值300Rs。
+		当天邀请1人购买【FG-8900】或者【VS-7800】，即可免费获得3份【礼物】，价值450Rs。
+		当天邀请1人购买【FG-18300】或者【VS-16700】，即可免费获得4份【礼物】，价值600Rs。
+		当天邀请1人购买【FG-25500】，即可免费获得5份【礼物】，价值750Rs。
 	*/
 	public function eventgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
@@ -1365,23 +1370,82 @@ class ProductController extends BaseController
 				}		
 			}else{
 				switch ($item['id']) {
-					case 225://PF-1900
-						$good['num'] = 1;
-						break;
 					case 219://VS-3200
-							$good['num'] = 2;
+					case 229://FG-4000
+						$good['num'] = 2;
 						break;
 					case 220://VS-7800
+					case 230://FG-8900
 							$good['num'] = 3;
 						break;
 					case 221://VS-16700
+					case 231://FG-18300
 							$good['num'] = 4;
 						break;
+					case 232://FG-25500
+							$good['num'] = 5;
+						break;
 				}
-	
-				Db::table('pro_order')->insertGetId($good);
+
+				if($good['num'] > 1)
+					Db::table('pro_order')->insertGetId($good);
 			}
 		}
+	}
+
+	//先正达购买活动
+	/*条件如下：	
+		升级【FG-4000】或者【VS-3200】产品，即可获得2份【礼物】，价值300Rs；
+		升级【FG-8900】或者【VS-7800】产品，即可获得3份【礼物】，价值450Rs；
+		升级【FG-18300】或者【VS-16700】产品，即可获得4份【礼物】，价值600Rs；
+		升级【FG-25500】产品，即可获得5份【礼物】，价值750Rs。
+	*/
+	public function eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order)
+	{
+		$giftitem = Db::table('pro_goods')->where("id=228")->find();
+		$good = [
+			'uid' => $pageuser['id'],
+			'osn' => getRsn(),
+			'pid' => $pageuser['pid'],
+			'cid' => $giftitem['cid'],
+			'gid' => $giftitem['id'],
+			'days' => $giftitem['days'],
+			'rate' => $giftitem['rate'],
+			'price' => $giftitem['price'],
+			'price1' => $giftitem['price1'],
+			'price2' => $giftitem['price2'],
+			'p1' => 1,
+			'p2' => 1,
+			'p3' => 1,
+			'money' => $giftitem['price'],
+			'num' => 1,
+			'create_day' => date('Ymd', NOW_TIME),
+			'create_time' => NOW_TIME,
+			'create_ip' => CLIENT_IP,
+			'is_give' => 1,
+			'is_exchange' => 0,
+		];
+
+		switch ($item['id']) {
+			case 219://VS-3200
+			case 229://FG-4000
+				$good['num'] = 2;
+				break;
+			case 220://VS-7800
+			case 230://FG-8900
+					$good['num'] = 3;
+				break;
+			case 221://VS-16700
+			case 231://FG-18300
+					$good['num'] = 4;
+				break;
+			case 232://FG-25500
+					$good['num'] = 5;
+				break;
+		}
+		
+		if($good['num'] > 1)
+			Db::table('pro_order')->insertGetId($good);
 	}
 	/*******************购买产品相关***********************/
 
