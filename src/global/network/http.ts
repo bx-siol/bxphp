@@ -14,7 +14,7 @@ const http = (config: AxiosRequestConfig): AxiosPromise => {
     config.url = url + config.url
     const instance = axios.create({
         //baseURL: '/api',
-        timeout: 10000,
+        timeout: 120000,
         method: 'POST',
         transformRequest: [function (data) {
             // 对 data 进行任意转换处理
