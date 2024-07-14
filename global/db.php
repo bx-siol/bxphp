@@ -303,4 +303,16 @@ $_ENV['PAY_CONFIG']['crpay'] = [
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/crpay/pay', //代收回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/crpay/cash' //代付回调
 ];
+$_ENV['PAY_CONFIG']['pppay'] = [
+	'mch_id' => '7e0e3cf0-beba-4916-a3b5-ed57b2735728',
+	'mch_key' => '74ef2c28e92f4b18a373083892fa3db3',
+
+	'pay_url' => 'https://sh01.pppay12.com/createpay', //代收
+	'dpay_url' => 'https://sh01.pppay12.com/createwd', //代付
+	'balance_url' => 'https://sh01.pppay12.com/getbalance', //余额
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/pppay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/pppay/cash' //代付回调
+];
 
