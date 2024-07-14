@@ -31,19 +31,20 @@ function payOrder($fin_paylog, $sub_type = '')
 	
 	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
 	$resultArr = $result['output'];
-	if ($resultArr['code'] != '200') {
+	if ($resultArr['code'] != '1') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
-
+	
+	$rs = json_decode($resultArr['data'],true);	
 	$return_data = [
 		'code' => 1,
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_paylog['osn'],
-			'out_osn' => '',
-			'pay_url' => $resultArr['data']['url'] 
+			'out_osn' => $rs['id'],
+			'pay_url' => $rs['navurl'] 
 		]
 	];
 	return $return_data;
