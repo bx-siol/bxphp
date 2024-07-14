@@ -61,14 +61,14 @@ function balance()
 		return $result;
 
 	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	$resultArr = json_decode($result['output'][0],true);
-	if ($resultArr['code'] != 1) {
+	$resultArr = $result['output'];
+	if ($resultArr['code'] != '1') {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 	$return_data = [
 		'code' => 1,
-		'msg' => $resultArr['respCode'],
+		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
 			'balance' => $resultArr['data']['balance'],
