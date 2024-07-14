@@ -56,17 +56,13 @@ function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
 	$url = $config['balance_url'] .'?id=' . $config['mch_id'] .'&pass=' . md5($config['mch_key']);
-	
-	writeLog($url, GetPayName() . '/balance');
 	$result = CurlGet($url);
-	
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($result['code'] != 1)
 		return $result;
 
 	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	$resultArr = $result['output'];
-	if ($resultArr['code'] != '200') {
+	if ($resultArr['code'] != 1) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
@@ -75,8 +71,8 @@ function balance()
 		'msg' => $resultArr['respCode'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['data']['balanceAll'],
-			'payout_balance' => $resultArr['data']['balanceUsable'],
+			'balance' => $resultArr['data']['balance'],
+			'payout_balance' => $resultArr['data']['balance'],
 		]
 	];
 	return $return_data;
