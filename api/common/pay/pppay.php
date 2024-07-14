@@ -55,8 +55,10 @@ function payOrder($fin_paylog, $sub_type = '')
 function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
-	$url = $config['balance_url'] . $config['mch_id'] . md5($config('mch_key'));
+	$url = $config['balance_url'] .'?id=' . $config['mch_id'] .'&pass=' . md5($config('mch_key'));
 	$result = CurlGet($url);
+	
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
 	if ($result['code'] != 1)
 		return $result;
 
