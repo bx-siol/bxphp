@@ -12,21 +12,18 @@ function payOrder($fin_paylog, $sub_type = '')
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
-        'merchant' => $config['mch_id'],
-		'payCode' => $config['pay_type'],
+        'recvid' => $config['mch_id'],
+		'orderid' => $fin_paylog['osn'],
 		'amount' => strval($fin_paylog['money']),
-        'orderId'=> $fin_paylog['osn'],
-		'notifyUrl' => $config['notify_url'],
+        'paytypes'=> 'UPI',
+		'notifyurl' => $config['notify_url'],
+		'returnurl' => $config['returnUrl'],
+		'memuid' => md5($fin_paylog['osn']),
 	];
     $pdata['sign'] = paySign($pdata);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
-	$result = [];
-	try {
-		$result = CurlPost($config['pay_url'], $pdata, 30);
-	} catch (\Throwable $th) {
-		return ['code' => -1, 'msg' => ''];
-	}
+	$result = CurlPost($config['pay_url'], $pdata, 30);
 
 	if ($result['code'] != 1) {
 		return $result;
@@ -86,12 +83,6 @@ function paySign($params)
     ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
-    foreach ($params as $key => $value) {
-		if (empty ($key) || empty ($value) || $key == 'sign') {
-			continue;
-		}
-		$signOriginStr .=  "$key=$value&";
-	}
-    $signOriginStr = $signOriginStr . "key=$appSecret";
+    $signOriginStr = $params['recvid'] .$params['orderid'] .$params['amount'] .$appSecret;
     return  strtolower(md5($signOriginStr));
 }
