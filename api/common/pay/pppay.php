@@ -71,8 +71,8 @@ function balance()
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['data']['balance'],
-			'payout_balance' => $resultArr['data']['balance'],
+			'balance' => $resultArr['data']["balance"],
+			'payout_balance' => $resultArr['data']["balance"],
 		]
 	];
 	return $return_data;
