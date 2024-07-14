@@ -61,7 +61,7 @@ function balance()
 		return $result;
 
 	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
-	$resultArr = $result['output'];
+	$resultArr = json_decode($result['output'][0],true);
 	if ($resultArr['code'] != 1) {
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
