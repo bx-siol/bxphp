@@ -66,13 +66,14 @@ function balance()
 		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
+	$rs = json_decode($result['data'],true);
 	$return_data = [
 		'code' => 1,
 		'msg' => $resultArr['msg'],
 		'data' => [
 			'merId' => $config['mch_id'],
-			'balance' => $resultArr['data']["balance"],
-			'payout_balance' => $resultArr['data']["balance"],
+			'balance' => $rs["balance"],
+			'payout_balance' => $rs["balance"],
 		]
 	];
 	return $return_data;
