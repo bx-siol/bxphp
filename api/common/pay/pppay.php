@@ -56,6 +56,8 @@ function balance()
 {
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];	
 	$url = $config['balance_url'] .'?id=' . $config['mch_id'] .'&pass=' . md5($config('mch_key'));
+	
+	writeLog($url, GetPayName() . '/balance');
 	$result = CurlGet($url);
 	
 	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/balance');
