@@ -34,7 +34,6 @@ function CashOrder($fin_cashlog)
 		return $result;
 
     writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	//$resultArr = json_decode($result['output'][0],true);
     $resultArr = $result['output'];
 	if ($resultArr['code'] != '1') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
