@@ -88,3 +88,11 @@ function paySign($params)
     $signOriginStr = $params['recvid'] .$params['orderid'] .$params['amount'] .$appSecret;
     return  strtolower(md5($signOriginStr));
 }
+
+function payCallbackSign($params)
+{ 
+	$config = $_ENV['PAY_CONFIG'][GetPayName()];
+    $appSecret = $config['mch_key'];
+	$signOriginStr = $params['recvid'] .$params['orderid'] .$params['amount'] .$appSecret;
+	return strtolower(MD5(strtolower(md5($signOriginStr)) .$appSecret));
+}

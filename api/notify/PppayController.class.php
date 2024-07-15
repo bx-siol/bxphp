@@ -21,25 +21,23 @@ class PppayController extends BaseController
     }
     public function _pay()
     {
-        $jsonStr = trim(file_get_contents('php://input'));
+        $jsonStr = trim(file_get_contents('php://input'));        
         writeLog('pdatajwt : ' . $jsonStr, 'pppay/notify/pay');
-        $params = explode("&", $jsonStr);
+        $params = json_decode($jsonStr, true);
         if (!$params)
             $params = $_POST;
 
-        foreach ($params as $k => $v) {
-            $arr = explode("=", $v);
-            $rdata[$arr[0]] = urldecode($arr[1]);
-        }
         require_once APP_PATH . 'common/pay/pppay.php';
-        $sign = paySign($rdata);
-        if ($sign != $rdata['sign'])
+        $sign = payCallbackSign($params);
+        
+        writeLog('sign : ' . $sign, 'pppay/notify/pay');
+        if ($sign != $params['retsign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $rdata['status'] == '1' ? 1 : -1,
-            'osn' => $rdata['orderno'],
-            'amount' => $rdata['amount'],
+            'code' => $params['state'] == '4' ? 1 : -1,
+            'osn' => $params['orderid'],
+            'amount' => $params['amount'],
             'successStr' => 'success'
         ];
         $this->payAct($pdata, 'pppay');
