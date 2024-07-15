@@ -43,7 +43,7 @@ function CashOrder($fin_cashlog)
     $rs= json_decode($resultArr['data'],true);
 	$return_data = [
 		'code' => 1,
-		'msg' => $result['msg'],
+		'msg' => $resultArr['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $rs['orderid'],
@@ -64,9 +64,7 @@ function CashSign($params)
 
 function CashCallbackSign($params)
 {
-    ksort($params);
     $config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
-    $signOriginStr = $params['sendid'] .$params['orderid'] .$params['amount'] .$params['bankinfo'] .$appSecret;
-    return  md5(md5($signOriginStr) .$appSecret );
+    return  md5($params['sign'] .$appSecret );
 }
