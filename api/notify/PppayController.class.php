@@ -65,15 +65,4 @@ class PppayController extends BaseController
 
         $this->cashAct($pdata);
     }
-
-    
-    public function _order()
-    {
-		$params = $this->params;
-        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
-        require_once APP_PATH . 'common/cash/pppay.php';
-        $result = CashOrder($fin_cashlog);
-        
-	    return $result;
-    }
 }
