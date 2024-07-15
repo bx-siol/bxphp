@@ -14,7 +14,7 @@ function payOrder($fin_paylog, $sub_type = '')
 	$pdata = [
         'recvid' => $config['mch_id'],
 		'orderid' => $fin_paylog['osn'],
-		'amount' => strval($fin_paylog['money']),
+		'amount' => $fin_paylog['money'],
         'paytypes'=> 'UPI',
 		'notifyurl' => $config['notify_url'],
 		'returnurl' => $config['returnUrl'],
@@ -93,6 +93,6 @@ function payCallbackSign($params)
 { 
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
-	$signOriginStr = $params['recvid'] .$params['orderid'] .$params['amount'] .$appSecret;
+	$signOriginStr = $params['recvid'] .$params['orderid'] . intval($params['amount']) .$appSecret;
 	return strtolower(MD5(strtolower(md5($signOriginStr)) .$appSecret));
 }
