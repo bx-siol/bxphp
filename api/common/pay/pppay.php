@@ -91,6 +91,8 @@ function paySign($params)
 
 function payCallbackSign($params)
 { 
+	
+	writeLog('pdata : ' . json_encode($params), 'pppay/notify/pay');
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
 	$signOriginStr = $params['recvid'] .$params['orderid'] . intval($params['amount']) .$appSecret;
