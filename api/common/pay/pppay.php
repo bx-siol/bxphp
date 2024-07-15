@@ -94,5 +94,5 @@ function payCallbackSign($params)
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
     $appSecret = $config['mch_key'];
 	$signOriginStr = $params['recvid'] .$params['orderid'] . intval($params['amount']) .$appSecret;
-	return strtolower(MD5(strtolower(md5($signOriginStr)) .$appSecret));
+	return strtolower(md5(strtolower(md5($signOriginStr)) .$appSecret));
 }
