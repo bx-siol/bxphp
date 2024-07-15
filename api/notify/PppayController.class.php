@@ -25,8 +25,8 @@ class PppayController extends BaseController
         $jsonStr = '{\"amount\":\"25500.00\",\"createtime\":\"2024-07-15 10:21:25\",\"id\":\"853fbcc2-c67d-4c33-898f-b7251a304a30\",\"note\":null,\"orderid\":\"de31f09fd6a31521\",\"ordertype\":\"2\",\"paytypes\":\"UPI\",\"recvcharge\":\"1530.00\",\"recvheader\":\"https://img0523.pppay12.com/img/header/default/033.jpg\",\"recvid\":\"7e0e3cf0-beba-4916-a3b5-ed57b2735728\",\"recvnickname\":\"cicici\",\"remark\":null,\"retsign\":\"53af81b33d5c8c3b954e71a507dbd3f6\",\"sendcharge\":\"561.00\",\"sendheader\":\"https://img0523.pppay12.com/img/header/default/028.jpg\",\"sendid\":\"c1f73462-a56a-40b5-82e9-d1ee80a33011\",\"sendnickname\":\"xiaofeng1\",\"sign\":\"4fdceeee12bb1e3df4b624e20fdf3fe8\",\"state\":\"4\",\"transtime\":\"2024-07-15 10:22:48\"}';
         writeLog('pdatajwt : ' . $jsonStr, 'pppay/notify/pay');
         $params = json_decode($jsonStr, true);
-        if (!$params)
-            $params = $_POST;
+        // if (!$params)
+        //     $params = $_POST;
 
         require_once APP_PATH . 'common/pay/pppay.php';
         $sign = payCallbackSign($params);
