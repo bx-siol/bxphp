@@ -44,29 +44,36 @@ class PppayController extends BaseController
     {
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('jsonStr : ' . $jsonStr, 'pppay/notify/cash');
-        $params = explode("&", $jsonStr);
+        $params = json_decode($jsonStr, true);
         if (!$params)
             $params = $_POST;
 
-        foreach ($params as $k => $v) {
-            $arr = explode("=", $v);
-            $rdata[$arr[0]] = urldecode($arr[1]);
-        }
         require_once APP_PATH . 'common/cash/pppay.php';
-        $sign = CashSign($rdata);
-        if ($sign != $rdata['sign'])
+        $sign = CashCallbackSign($params);
+        if ($sign != $params['retsign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $rdata['orderno'],
-            'out_osn' => $rdata['porderno'],
-            'pay_status' => $rdata['status'] == '2' ? 9 : 3,
-            'pay_msg' => $rdata['status'] == '2' ? 'success' : 'fail',
-            'amount' => $rdata['amount'] ,
+            'osn' => $params['orderid'],
+            'out_osn' => $params['id'],
+            'pay_status' => $params['state'] == '4' ? 9 : 3,
+            'pay_msg' => $params['state'] == '4' ? 'success' : 'fail',
+            'amount' => $params['amount'] ,
             'successStr' => 'success',
             'failStr' => 'fail'
         ];
 
         $this->cashAct($pdata);
+    }
+
+    
+    public function _order()
+    {
+		$params = $this->params;
+        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+        require_once APP_PATH . 'common/cash/pppay.php';
+        $result = CashOrder($fin_cashlog);
+        
+	    return $result;
     }
 }
