@@ -246,3 +246,9 @@ onMounted(() => {
 
 })
 </script>
+
+<style>
+.el-select-dropdown__wrap {
+    max-height: 600px;
+}
+</style>
