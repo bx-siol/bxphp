@@ -708,17 +708,17 @@ class FinanceController extends BaseController
 		}
 		//查找对应的一级代理账号
 		if ($params['pidg1']) {
-			$upuser = Db::table("sys_user")->where("account={$params['pidg1']} ")->find();
+			$upuser = Db::table("sys_user")->where("account='{$params['pidg1']}' ")->find(); 
 			$where .= " and (u.pidg1 ={$upuser["id"]})";
 		}
 		//查找对应的二级代理账号
 		if ($params['pidg2']) {
-			$upuser = Db::table("sys_user")->where("account={$params['pidg2']} ")->find();
+			$upuser = Db::table("sys_user")->where("account='{$params['pidg2']}' ")->find();
 			$where .= " and (u.pidg2 ={$upuser["id"]})";
 		}
 		//查找对应的上级账号
 		if ($params['pid']) {
-			$upuser = Db::table("sys_user")->where("account={$params['pid']} ")->find();
+			$upuser = Db::table("sys_user")->where("account='{$params['pid']}' ")->find();
 			$uid_arr = getDownUser_new($upuser["id"]);
 			$uid_str = implode(',', $uid_arr);
 			$where .= " and log.uid in({$uid_str})";
