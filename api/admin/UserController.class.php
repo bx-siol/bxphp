@@ -639,6 +639,7 @@ class UserController extends BaseController
 		sleep(1);
 		array_push($down_ids,$from_user['id']);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
+		writeLog('55555' . json_encode($down_ids),'aaaaaaa');
 		foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
 			$sql = "WITH RECURSIVE cte AS (SELECT id, pid, gid FROM sys_user WHERE id = {$item}
 						UNION ALL SELECT t.id, t.pid, t.gid FROM sys_user t JOIN cte ON t.id = cte.pid) 
@@ -648,7 +649,7 @@ class UserController extends BaseController
 						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
 			$sq += Db::execute($sql);
 		}
-		writeLog('55555','aaaaaaa');
+		writeLog('66666','aaaaaaa');
 		$sq += Db::execute($sql);
 		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
 	}
