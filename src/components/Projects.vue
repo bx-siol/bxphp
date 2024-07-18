@@ -1,6 +1,6 @@
 <template>
   <div class="Projects">
-    <van-tabs v-model:active="active" swipe-threshold="2" animated>
+    <van-tabs v-model:active="active" swipe-threshold="3" animated>
       <div v-for="(itemc, indexc) in newsdata">
         <van-tab :key="indexc" :title="itemc.name"
           v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name && itemc.id != 1019) > -1">
@@ -164,6 +164,8 @@ onMounted(() => {
 .Projects {
 
   :deep(.van-tab) {
+    padding: 0.3rem;
+    
     &.van-tab--active {
       position: relative;
       background-color: transparent;
@@ -184,7 +186,7 @@ onMounted(() => {
       border: 1px solid #666 !important;
       padding: 0.3rem 0.4rem;
       white-space: nowrap;
-      width: 6.85rem;
+      //width: 5.5rem;
       border-radius: 1rem;
       text-align: center;
       font-weight: bold;
@@ -199,7 +201,7 @@ onMounted(() => {
       border: 1px solid #fff !important;
       padding: 0.3rem 0.4rem;
       white-space: nowrap;
-      width: 6.85rem;
+      //width: 5.5rem;
       border-radius: 1rem;
       text-align: center;
       font-weight: bold;
