@@ -578,7 +578,6 @@ class UserController extends BaseController
 	//转移自己及所有下级
 	public function _transferActOwn()
 	{
-		writeLog('11111111111','aaaaaaa');
 		$pageuser = checkPower('User_transfer');
 		$params = $this->params;
 
@@ -603,13 +602,11 @@ class UserController extends BaseController
 		if (!$from_user || !$to_user) {
 			ReturnToJson(-1, '账号不存在');
 		}
-		writeLog('22222','aaaaaaa');
 		$down_ids = getDownUser($from_user['id']);
 		$uid_str = implode(',', $down_ids);
 		if (in_array($to_user['id'], $down_ids)) {
 			ReturnToJson(-1, '转入账号不能是转出账号的下级');
 		}
-		writeLog('3333','aaaaaaa');
 		$sq = 0;
 		Db::startTrans();
 		try {
@@ -637,6 +634,8 @@ class UserController extends BaseController
 		
 		writeLog('44444','aaaaaaa');
 		writeLog('44444' . json_encode($down_ids),'aaaaaaa');
+		writeLog('44444_2' . $from_user['id'],'aaaaaaa');
+		writeLog('44444_3' . $uid_str,'aaaaaaa');
 		sleep(1);
 		array_push($down_ids,$from_user['id']);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
