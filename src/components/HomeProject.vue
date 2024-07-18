@@ -200,7 +200,7 @@ const goProjectDetail = (item: any) => {
         .basicItemRight {
           display: flex;
           flex-direction: column;
-          margin-right: 0.6rem;
+          margin-right: 1.6rem;
           width: 70%;
 
           .name {
