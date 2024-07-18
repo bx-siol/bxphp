@@ -636,6 +636,7 @@ class UserController extends BaseController
 			$uid_str = $uid_str .','. $from_user['id'];		
 		
 		writeLog('44444','aaaaaaa');
+		writeLog('44444' . json_encode($down_ids),'aaaaaaa');
 		sleep(1);
 		array_push($down_ids,$from_user['id']);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
