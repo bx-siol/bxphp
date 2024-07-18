@@ -578,6 +578,7 @@ class UserController extends BaseController
 	//转移自己及所有下级
 	public function _transferActOwn()
 	{
+		writeLog('11111111111','aaaaaaa');
 		$pageuser = checkPower('User_transfer');
 		$params = $this->params;
 
@@ -602,11 +603,13 @@ class UserController extends BaseController
 		if (!$from_user || !$to_user) {
 			ReturnToJson(-1, '账号不存在');
 		}
+		writeLog('22222','aaaaaaa');
 		$down_ids = getDownUser($from_user['id']);
 		$uid_str = implode(',', $down_ids);
 		if (in_array($to_user['id'], $down_ids)) {
 			ReturnToJson(-1, '转入账号不能是转出账号的下级');
 		}
+		writeLog('3333','aaaaaaa');
 		$sq = 0;
 		Db::startTrans();
 		try {
@@ -632,6 +635,7 @@ class UserController extends BaseController
 		else			
 			$uid_str = $uid_str .','. $from_user['id'];		
 		
+		writeLog('44444','aaaaaaa');
 		sleep(1);
 		array_push($down_ids,$from_user['id']);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
@@ -644,6 +648,7 @@ class UserController extends BaseController
 						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
 			$sq += Db::execute($sql);
 		}
+		writeLog('55555','aaaaaaa');
 		$sq += Db::execute($sql);
 		ReturnToJson(1, '转移成功,等待后台同步所有下级的层级，预计1-10分钟后同步完成 需要更新层级数量：' . $sq, ['$down_ids' => $down_ids, '$t1' => $sq]);
 	}
