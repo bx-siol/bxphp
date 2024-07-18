@@ -633,20 +633,18 @@ class UserController extends BaseController
 			$uid_str = $uid_str .','. $from_user['id'];		
 		
 		writeLog('44444','aaaaaaa');
-		writeLog('44444' . json_encode($down_ids),'aaaaaaa');
-		writeLog('44444_2' . $from_user['id'],'aaaaaaa');
-		writeLog('44444_3' . $uid_str,'aaaaaaa');
 		sleep(1);
 		array_push($down_ids,$from_user['id']);
 		Db::table('sys_user')->where(' id in(' . $uid_str . ')')->update(['pidg1' => 0]);
-		writeLog('55555' . json_encode($down_ids),'aaaaaaa');
 		foreach ($down_ids as $item) { // 更新所有下级的pids pidg1 pidg2	 
 			$sql = "WITH RECURSIVE cte AS (SELECT id, pid, gid FROM sys_user WHERE id = {$item}
 						UNION ALL SELECT t.id, t.pid, t.gid FROM sys_user t JOIN cte ON t.id = cte.pid) 
 						UPDATE sys_user
 						SET pidg1 = (SELECT id FROM cte WHERE gid = 71),
 						pidg2 = (SELECT id FROM cte WHERE gid = 81) 
-						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	   
+						WHERE sys_user.id ={$item}"; //更新当前用户的 pidg1 pidg2	
+					
+			writeLog('55555——2：' . $sql,'aaaaaaa');	   
 			$sq += Db::execute($sql);
 		}
 		writeLog('66666','aaaaaaa');
