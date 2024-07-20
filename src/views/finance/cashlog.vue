@@ -215,7 +215,7 @@
             </template>
 
             <template #summary="{ tdata }">
-                <div v-if="power.check_all" class="plActionBox" style="text-align: left; ">
+                <div v-if="power.check_all" class="plActionBox" style="text-align: left; width: 20%;float: left;">
                     <span style="display: inline-block;  text-align: center;">
                         <el-checkbox v-model="selectAll" size="small" @change="onSelectAll"></el-checkbox>
                     </span>
@@ -224,7 +224,14 @@
                     <el-button size="small" type="danger" @click="onPlAction(3)">{{ isTrans ? 'Bulk rejection' : '批量驳回'
                         }}
                     </el-button>
-
+                    <!-- 
+                    <span>{{ isTrans ? 'Records' : '记录' }}：{{ tdata.count }}</span>
+                    <span>{{ isTrans ? 'Total money' : '总额' }}：{{ tdata.money }}</span>
+                    <span>{{ isTrans ? 'Total money' : '实付总额' }}：{{ tdata.real_money }}</span>
+                    <span>{{ isTrans ? 'Total money' : '笔数' }}：{{ tdata.money1 }}</span>
+                    <span>{{ isTrans ? 'Total money' : '金额' }}：{{ tdata.real_money1 }}</span> -->
+                </div>
+                <div style="float: left;width: 55%;">
                     <span>{{ isTrans ? 'Records' : '记录' }}：{{ tdata.count }}</span>
                     <span>{{ isTrans ? 'Total money' : '总额' }}：{{ tdata.money }}</span>
                     <span>{{ isTrans ? 'Total money' : '实付总额' }}：{{ tdata.real_money }}</span>
