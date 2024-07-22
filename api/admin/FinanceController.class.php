@@ -1204,7 +1204,7 @@ class FinanceController extends BaseController
 			->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
 			->view(['cnf_currency' => 'c'], ['name' => 'currency', 'symbol', 'icon'], 'log.cid=c.id', 'LEFT')
 			->where($where)
-			->order(['log.create_time' => 'desc', 'log.uid' => 'desc'])
+			->order(['log.balance' => 'desc'])
 			->page($params['page'], $this->pageSize)
 			->select()
 			->toArray();
