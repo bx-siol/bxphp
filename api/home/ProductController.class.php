@@ -983,7 +983,7 @@ class ProductController extends BaseController
 			$w1_money = $discount_total;
 			$w2_money = 0;
 			if (floatval($wallet1['balance']) < $discount_total) {
-				ReturnToJson(-1, 'Wallet acquisition exception.');
+				ReturnToJson(-1, 'Your balance is insufficient.');
 			}
 		} else {
 			//首次购买，保留余额钱包
@@ -1211,6 +1211,7 @@ class ProductController extends BaseController
 				]);
 				$this->redis->rmall(RedisKeys::USER_ORDER . $puser['id']);
 			}
+			
 			//首次购买送自己
 			//if ($item['price1'] > 0)			
 			//updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
@@ -1220,18 +1221,18 @@ class ProductController extends BaseController
 			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 
 			//先正达活动
-			// $projectlogo = getConfig('sys_name');
-			// if($projectlogo == 'Syngenta')
-			// 	$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
+			$projectlogo = getConfig('sys_name');
+			if($projectlogo == 'Syngenta')
+				$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
 
 		} else {
 			if ($item['price0'] > 0) //复购送自己
-				updateWalletBalanceAndLog($pageuser['id'], $item['price0'], 2, 10, 'Repeat purchase:' . $pro_order['osn']);
+				updateWalletBalanceAndLog($pageuser['id'], $item['price0'] * $quantity, 2, 10, 'Repeat purchase:' . $pro_order['osn']);
 			
 			//先正达活动
-			// $projectlogo = getConfig('sys_name');
-			// if($projectlogo == 'Syngenta')
-			// 	$this->eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order);
+			$projectlogo = getConfig('sys_name');
+			if($projectlogo == 'Syngenta')
+				$this->eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order);
 		}
 
 		// 送自己产品
@@ -1319,11 +1320,12 @@ class ProductController extends BaseController
 
 	//先正达购买活动
 	/*条件如下：	
-		当天邀请2人购买【VS-490】，即可免费获得1份【礼物】，价值150Rs。
-		当天邀请1人购买【FG-4000】或者【VS-3200】，即可免费获得2份【礼物】，价值300Rs。
-		当天邀请1人购买【FG-8900】或者【VS-7800】，即可免费获得3份【礼物】，价值450Rs。
-		当天邀请1人购买【FG-18300】或者【VS-16700】，即可免费获得4份【礼物】，价值600Rs。
-		当天邀请1人购买【FG-25500】，即可免费获得5份【礼物】，价值750Rs。
+		1、当天邀请2人加入【VS-490】，即可免费获得1份【礼物】🎁价值200Rs；
+		2、当天邀请1人加入【AM-2500】，即可免费获得1份【礼物】🎁价值200Rs；
+		3、当天邀请1人加入【AM-5200】，即可免费获得2份【礼物】🎁价值400Rs；
+		4、当天邀请1人加入【AM-12800】，即可免费获得3份【礼物】🎁价值600Rs；
+		5、当天邀请1人加入【AM-24800】，即可免费获得4份【礼物】🎁价值800Rs。
+		6、当天邀请1人加入【AM-39000】，即可免费获得5份【礼物】🎁价值1000Rs。
 	*/
 	public function eventgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
@@ -1332,7 +1334,7 @@ class ProductController extends BaseController
 		$UserInfo = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		if($UserInfo['first_pay_day'] == $today)
 		{			
-			$giftitem = Db::table('pro_goods')->where("id=228")->find();
+			$giftitem = Db::table('pro_goods')->where("id=239")->find();
 			$UpUser = Db::table('sys_user')->where("id={$UserInfo['pid']}")->find();
 			$good = [
 				'uid' => $UpUser['id'],
@@ -1370,19 +1372,19 @@ class ProductController extends BaseController
 				}		
 			}else{
 				switch ($item['id']) {
-					case 219://VS-3200
-					case 229://FG-4000
-						$good['num'] = 2;
+					case 233://AM-2500
+						$good['num'] = 1;
 						break;
-					case 220://VS-7800
-					case 230://FG-8900
+					case 234://AM-5200
+							$good['num'] = 2;
+						break;
+					case 235://AM-12800
 							$good['num'] = 3;
 						break;
-					case 221://VS-16700
-					case 231://FG-18300
+					case 236://AM-24800
 							$good['num'] = 4;
 						break;
-					case 232://FG-25500
+					case 237://AM-39000
 							$good['num'] = 5;
 						break;
 				}
@@ -1395,14 +1397,15 @@ class ProductController extends BaseController
 
 	//先正达购买活动
 	/*条件如下：	
-		升级【FG-4000】或者【VS-3200】产品，即可获得2份【礼物】，价值300Rs；
-		升级【FG-8900】或者【VS-7800】产品，即可获得3份【礼物】，价值450Rs；
-		升级【FG-18300】或者【VS-16700】产品，即可获得4份【礼物】，价值600Rs；
-		升级【FG-25500】产品，即可获得5份【礼物】，价值750Rs。
+		1、升级【AM-2500】产品，即可获得1份【礼物】，价值200Rs；
+		2、升级【AM-5200】产品，即可获得2份【礼物】，价值400Rs；
+		3、升级【AM-12800】产品，即可获得3份【礼物】，价值600Rs；
+		4、升级【AM-24800】产品，即可获得4份【礼物】，价值800Rs。
+		5、升级【AM-24800】产品，即可获得5份【礼物】，价值1000Rs。
 	*/
 	public function eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
-		$giftitem = Db::table('pro_goods')->where("id=228")->find();
+		$giftitem = Db::table('pro_goods')->where("id=239")->find();
 		$good = [
 			'uid' => $pageuser['id'],
 			'osn' => getRsn(),
@@ -1427,19 +1430,19 @@ class ProductController extends BaseController
 		];
 
 		switch ($item['id']) {
-			case 219://VS-3200
-			case 229://FG-4000
+			case 223://AM-2500
+				$good['num'] = 1;
+				break;
+			case 234://AM-5200
 				$good['num'] = 2;
 				break;
-			case 220://VS-7800
-			case 230://FG-8900
+			case 235://AM-12800
 					$good['num'] = 3;
 				break;
-			case 221://VS-16700
-			case 231://FG-18300
+			case 236://AM-24800
 					$good['num'] = 4;
 				break;
-			case 232://FG-25500
+			case 237://AM-39000
 					$good['num'] = 5;
 				break;
 		}

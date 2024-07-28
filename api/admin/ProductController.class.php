@@ -284,6 +284,7 @@ class ProductController extends BaseController
 				$db_data['id'] = $item_id;
 				$rediskey_goods = RedisKeys::Goods . $params['gsn'];
 				$item = $this->redis->rm($rediskey_goods);
+				$this->redis->rm('pro_goods_' . $params['gsn']);
 			} else {
 				$db_data['create_time'] = NOW_TIME;
 				$db_data['gsn'] = getRsn();
