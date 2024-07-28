@@ -1389,8 +1389,7 @@ class ProductController extends BaseController
 						break;
 				}
 
-				if($good['num'] > 1)
-					Db::table('pro_order')->insertGetId($good);
+				Db::table('pro_order')->insertGetId($good);
 			}
 		}
 	}
@@ -1447,8 +1446,7 @@ class ProductController extends BaseController
 				break;
 		}
 		
-		if($good['num'] > 1)
-			Db::table('pro_order')->insertGetId($good);
+		Db::table('pro_order')->insertGetId($good);
 	}
 	/*******************购买产品相关***********************/
 
