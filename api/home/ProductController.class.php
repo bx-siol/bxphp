@@ -1430,7 +1430,7 @@ class ProductController extends BaseController
 		];
 
 		switch ($item['id']) {
-			case 223://AM-2500
+			case 233://AM-2500
 				$good['num'] = 1;
 				break;
 			case 234://AM-5200
