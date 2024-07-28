@@ -1371,25 +1371,28 @@ class ProductController extends BaseController
 					}
 				}		
 			}else{
-				switch ($item['id']) {
-					case 233://AM-2500
-						$good['num'] = 1;
-						break;
-					case 234://AM-5200
-							$good['num'] = 2;
-						break;
-					case 235://AM-12800
-							$good['num'] = 3;
-						break;
-					case 236://AM-24800
-							$good['num'] = 4;
-						break;
-					case 237://AM-39000
-							$good['num'] = 5;
-						break;
-				}
-
-				Db::table('pro_order')->insertGetId($good);
+				if($item['id'] == 233 || $item['id'] == 234 || $item['id'] == 235 || $item['id'] == 236 || $item['id'] == 237)
+				{
+					switch ($item['id']) {
+						case 233://AM-2500
+							$good['num'] = 1;
+							break;
+						case 234://AM-5200
+								$good['num'] = 2;
+							break;
+						case 235://AM-12800
+								$good['num'] = 3;
+							break;
+						case 236://AM-24800
+								$good['num'] = 4;
+							break;
+						case 237://AM-39000
+								$good['num'] = 5;
+							break;
+					}
+	
+					Db::table('pro_order')->insertGetId($good);
+				}				
 			}
 		}
 	}
@@ -1428,25 +1431,28 @@ class ProductController extends BaseController
 			'is_exchange' => 0,
 		];
 
-		switch ($item['id']) {
-			case 233://AM-2500
-				$good['num'] = 1;
-				break;
-			case 234://AM-5200
-				$good['num'] = 2;
-				break;
-			case 235://AM-12800
-					$good['num'] = 3;
-				break;
-			case 236://AM-24800
-					$good['num'] = 4;
-				break;
-			case 237://AM-39000
-					$good['num'] = 5;
-				break;
-		}
-		
-		Db::table('pro_order')->insertGetId($good);
+		if($item['id'] == 233 || $item['id'] == 234 || $item['id'] == 235 || $item['id'] == 236 || $item['id'] == 237)
+		{
+			switch ($item['id']) {
+				case 233://AM-2500
+					$good['num'] = 1;
+					break;
+				case 234://AM-5200
+					$good['num'] = 2;
+					break;
+				case 235://AM-12800
+						$good['num'] = 3;
+					break;
+				case 236://AM-24800
+						$good['num'] = 4;
+					break;
+				case 237://AM-39000
+						$good['num'] = 5;
+					break;
+			}
+			
+			Db::table('pro_order')->insertGetId($good);
+		}		
 	}
 	/*******************购买产品相关***********************/
 
