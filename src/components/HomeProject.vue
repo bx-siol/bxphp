@@ -41,12 +41,12 @@
                   </div>
                 </div>
               </div>
-              <div class="detailRight">
+              <div class="detailRight" :style="item.status == 9 || item.status == 2 ? 'background:red':''" >
                 <!-- <div class="addRs">₹{{ cutOutNum(item.price) }}</div> -->
-
-                <div class="pay" @click="getProjectDetail(item)">
-                  join
-                </div>
+                <!-- <div class="pay">join</div> -->
+                <div class="pay" v-if="item.status == 2" @click="getProjectDetail(item)" >Pre-sale</div>
+                <div class="pay" v-if="item.status == 3" @click="getProjectDetail(item)" >join</div>
+                <div class="pay" v-if="item.status == 9" @click="getProjectDetail(item)" >Sold out</div>
               </div>
             </div>
           </div>
@@ -267,14 +267,13 @@ const goProjectDetail = (item: any) => {
       }
 
       .detailRight {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        padding:0.3rem 3rem;
         margin: 0.4rem auto;
         background: #84973b;
         border-radius: 6px;
-        height: 1rem;
+        height: 1.5rem;
+        width: 9rem;
+        line-height: 1.5rem;
+        text-align: center;
 
         .addRs {
           color: #ff9900;
