@@ -33,7 +33,7 @@
           <span>{{ t('投资周期') }} </span>
         </div>
         <div class="dailyincome">
-          <span class="bold">₹{{ cutOutNum(detailData?.dailyIncome, 2) }}</span>
+          <span class="bold">₹{{ detailData?.dailyIncome }}</span>
           <span>{{ t('日收益') }} </span>
         </div>
         <div class="dailyincome">
@@ -413,7 +413,7 @@ const init = () => {
       detailData.value.name = res.data.info.name
       detailData.value.price = res.data.info.price
       detailData.value.dailyIncome = res.data.info.price * res.data.info.rate / 100
-      detailData.value.totalRevenue = res.data.info.price * res.data.info.rate * res.data.info.days / 100
+      detailData.value.totalRevenue = (res.data.info.price * res.data.info.rate * res.data.info.days / 100).toFixed(2)
       detailData.value.content = res.data.info.content
       detailData.value.tags = [
         res.data.info.days + ' Days',
