@@ -199,7 +199,8 @@ const edit = (idx: number, item: any) => {
 
 const save = () => {
     if (iconList.value[0]) {
-        dataForm.icon = iconList.value[0].src
+        dataForm.icon = iconList.value[0].src;
+        dataForm.cover = iconList.value[0].src;
     }
     if (isRequest) {
         return
