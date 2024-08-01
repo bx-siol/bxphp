@@ -412,7 +412,7 @@ const init = () => {
       }
       detailData.value.name = res.data.info.name
       detailData.value.price = res.data.info.price
-      detailData.value.dailyIncome = cutOutNum(res.data.info.price * res.data.info.rate / 100)
+      detailData.value.dailyIncome = (res.data.info.price * res.data.info.rate / 100).toFixed(2)
       detailData.value.totalRevenue = (res.data.info.price * res.data.info.rate * res.data.info.days / 100).toFixed(2)
       detailData.value.content = res.data.info.content
       detailData.value.tags = [
