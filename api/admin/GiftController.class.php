@@ -812,6 +812,10 @@ class GiftController extends BaseController
 			//$where .= " and (log.remark like '%{$params['s_keyword']}%')"; 
 			$where .= " and u.openid='{$params['s_keyword']}' ";
 		}
+		if($params['s_status'] != 0)
+		{
+			$where .= " and log.status='{$params['s_status']}' ";
+		}
 
 		$count_item = Db::table('coupon_log log')
 			->view(['sys_user' => 'u'], ['account', 'nickname', 'headimgurl'], 'log.uid=u.id', 'LEFT')
@@ -852,6 +856,7 @@ class GiftController extends BaseController
 				$goods[] = $goods_arr[$gid]['name'];
 			}
 			$item['goods'] = $goods;
+			$item['status_flag'] = $item['status'] == 1 ? '未使用' : '已使用';
 		}
 
 		$return_data = [
