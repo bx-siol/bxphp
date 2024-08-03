@@ -20,8 +20,9 @@
         <template #search="{ params, tdata, doSearch }">
             <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
-                <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
-                </el-option>
+                <!-- <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx"></el-option> -->
+                <el-option key="1" label="未使用" value="1"></el-option>
+                <el-option key="9" label="已使用" value="9"></el-option>
             </el-select>
         </template>
 
@@ -29,8 +30,8 @@
             <el-table-column prop="id" label="ID" width="80"></el-table-column>
             <el-table-column prop="account" label="用户账号" min-width="160"></el-table-column>
             <el-table-column prop="coupon_name" label="券名称" min-width="200"></el-table-column>
+            <el-table-column prop="status_flag" label="使用状态" min-width="80"></el-table-column>
             <el-table-column prop="discount" label="券折扣%" width="120"></el-table-column>
-
             <el-table-column prop="money" label="券面值" width="120"></el-table-column>
             <el-table-column prop="num" label="券数量" width="120"></el-table-column>
             <el-table-column prop="used" label="已使用数量" width="120"></el-table-column>
