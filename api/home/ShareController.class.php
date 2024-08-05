@@ -14,7 +14,7 @@ class ShareController extends BaseController
 	public function _index()
 	{
 		$pageuser = checkLogin(); //isLogin
-		$tg_img = $this->genCover2($pageuser, true);
+		// $tg_img = $this->genCover2($pageuser, true);
 		$where = " log.type=10 and uid='" . $pageuser['id'] . "'";
 
 		$RS = Db::table('wallet_log log')
@@ -29,7 +29,7 @@ class ShareController extends BaseController
 		$return_data = [
 			'icode' => $pageuser['icode'],
 			//'url' => $this->getQrcodeUrl($pageuser['icode']),
-			'qrcode' => $tg_img . '?rt=' . mt_rand(11111, 99999),
+			// 'qrcode' => $tg_img . '?rt=' . mt_rand(11111, 99999),
 			'RS' => $RS,
 			'people' => $people
 		];
