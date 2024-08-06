@@ -36,21 +36,21 @@ function CashOrder($fin_cashlog)
     $headers = CashSign($headerarr);
 
 	writeLog(json_encode($pdata, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) .
-		PHP_EOL . json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+		PHP_EOL . json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
     
     try {
 		$result = CurlPost($config['dpay_url'], $pdata, 30, $headers);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => 'Channel is not open.-9001'];
 	}
-	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
+	writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	if ($result['code'] != 1) {
 		return $result;
 	}
 
     $resultArr = $result['output'];
 	if ($resultArr['code'] != '00000') {
-		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay/error');
+		writeLog(json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg'] ];
 	}
 
