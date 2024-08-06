@@ -39,7 +39,7 @@ function CashOrder($fin_cashlog)
 		PHP_EOL . json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/pay');
     
     try {
-		$result = CurlPost($config['pay_url'], $pdata, 30, $headers);
+		$result = CurlPost($config['dpay_url'], $pdata, 30, $headers);
 	} catch (\Throwable $th) {
 		return ['code' => -1, 'msg' => 'Channel is not open.-9001'];
 	}
