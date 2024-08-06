@@ -61,6 +61,5 @@ function CashSign($params)
 		$signOriginStr = "$signOriginStr$key=$value&";
 	
 	$signOriginStr = $signOriginStr . "key=$appSecret";	
-	writeLog('signOriginStr : ' . $signOriginStr, 'cowpay/notify/cash');
     return  strtoupper(md5($signOriginStr));
 }

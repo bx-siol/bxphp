@@ -316,3 +316,23 @@ $_ENV['PAY_CONFIG']['pppay'] = [
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/pppay/cash' //代付回调
 ];
 
+$_ENV['PAY_CONFIG']['atpay'] = [
+	'mch_id' => '563283',
+	'mch_key' => 'E04739W2SF0UBH2KQ9X296AO',
+	'secret_key' => 'WOBS3PV7E3GV00EXJ5MKNCAPIFKKOL8H',
+
+	'pay_url' => 'https://api.atpayment.co/trade/v1/unifiedorder/legal', //代收
+	'dpay_url' => 'https://api.atpayment.co/trade/v1/agentpay/legal', //代付
+	'pdpay_url' => 'https://api.atpayment.co/trade/v1/agentpay/batch/legal', //批量代付
+
+	'balance_url' => 'https://api.atpayment.co/mer/v1/balanceQuery', //余额
+
+	'payquery_url' => 'https://api.atpayment.co', //收款查询
+	'dpayquery_url' => 'https://api.atpayment.co', //代付查询 
+	'utrorder_url' => 'https://api.atpayment.co', //utr补单
+	'utrquery_url' => 'https://api.atpayment.co', //utr查单 
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/atpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/atpay/cash' //代付回调
+];
