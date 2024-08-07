@@ -61,17 +61,36 @@ class AtpayController extends BaseController
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        $params = json_decode($jsonStr, true);
-        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'atpay/notify/cash');
+        $params = json_decode($jsonStr, true);      
+        // 在Nginx+FPM环境下获取HTTP头信息
+        $xQuAccessKey = isset($_SERVER['HTTP_X_QU_ACCESS_KEY']) ? $_SERVER['HTTP_X_QU_ACCESS_KEY'] : '';
+        $xQuMid = isset($_SERVER['HTTP_X_QU_MID']) ? $_SERVER['HTTP_X_QU_MID'] : '';
+        $xQuNonce = isset($_SERVER['HTTP_X_QU_NONCE']) ? $_SERVER['HTTP_X_QU_NONCE'] : '';
+        $xQuSignatureMethod = isset($_SERVER['HTTP_X_QU_SIGNATURE_METHOD']) ? $_SERVER['HTTP_X_QU_SIGNATURE_METHOD'] : '';
+        $xQuTimestamp = isset($_SERVER['HTTP_X_QU_TIMESTAMP']) ? $_SERVER['HTTP_X_QU_TIMESTAMP'] : '';
+        $xQuSignatureVersion = isset($_SERVER['HTTP_X_QU_SIGNATURE_VERSION']) ? $_SERVER['HTTP_X_QU_SIGNATURE_VERSION'] : '';
+        $xQuSignature = isset($_SERVER['HTTP_X_QU_SIGNATURE']) ? $_SERVER['HTTP_X_QU_SIGNATURE'] : '';
+
+        // 将获取的头信息存入数组，便于操作
+        $headers = [
+            'X-Qu-Access-Key' => $xQuAccessKey,
+            'X-Qu-Mid' => $xQuMid,
+            'X-Qu-Nonce' => $xQuNonce,
+            'X-Qu-Signature-Method' => $xQuSignatureMethod,
+            'X-Qu-Timestamp' => $xQuTimestamp,
+            'X-Qu-Signature-Version' => $xQuSignatureVersion,
+            // 'X-Qu-Signature' => $xQuSignature
+        ];
+        writeLog(json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'atpay/notify/cash');
+        writeLog(json_encode($headers, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'atpay/notify/cash');
         if (!$params)
             $params = $_POST;
-
         require_once APP_PATH . 'common/cash/atpay.php';
-        $sign = CashSign($params);
-        //writeLog($sign, 'atpay/notify/pay');
-        if ($sign != $params['sign'])
+        $sign = getsignstr($headers);
+        writeLog($sign . '||||' . $xQuSignature, 'atpay/notify/cash');
+        if ($sign != $xQuSignature)
             ReturnToJson(-1, 'Sign error');
-
+      
         $pdata = [
             'osn' => $params['orderId'],
             'out_osn' => $params['payOrderId'],
@@ -81,10 +100,6 @@ class AtpayController extends BaseController
             'successStr' => 'OK',
             'failStr' => 'OK1'
         ];
-
-        //冲正状态
-        if ($params['status'] == '4')
-            $pdata['pay_status'] = 4;
 
         $this->cashAct($pdata);
     }

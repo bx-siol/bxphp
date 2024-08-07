@@ -1321,11 +1321,10 @@ class ProductController extends BaseController
 	//先正达购买活动
 	/*条件如下：	
 		1、当天邀请2人加入【VS-490】，即可免费获得1份【礼物】🎁价值200Rs；
-		2、当天邀请1人加入【AM-2500】，即可免费获得1份【礼物】🎁价值200Rs；
-		3、当天邀请1人加入【AM-5200】，即可免费获得2份【礼物】🎁价值400Rs；
-		4、当天邀请1人加入【AM-12800】，即可免费获得3份【礼物】🎁价值600Rs；
-		5、当天邀请1人加入【AM-24800】，即可免费获得4份【礼物】🎁价值800Rs。
-		6、当天邀请1人加入【AM-39000】，即可免费获得5份【礼物】🎁价值1000Rs。
+		2、邀请1人加入或自行购买【IC-4200】，即可免费获得2份【礼物】🎁价值400Rs；
+		3、邀请1人加入或自行购买【IC-12700】，即可免费获得3份【礼物】🎁价值600Rs；
+		4、邀请1人加入或自行购买【IC-24700】，即可免费获得4份【礼物】🎁价值800Rs；
+		5、邀请1人加入或自行购买【IC-49700】，即可免费获得5份【礼物】🎁价值1000Rs。
 	*/
 	public function eventgift($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
@@ -1334,7 +1333,7 @@ class ProductController extends BaseController
 		$UserInfo = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		if($UserInfo['first_pay_day'] == $today)
 		{			
-			$giftitem = Db::table('pro_goods')->where("id=239")->find();
+			$giftitem = Db::table('pro_goods')->where("id=248")->find();
 			$UpUser = Db::table('sys_user')->where("id={$UserInfo['pid']}")->find();
 			$good = [
 				'uid' => $UpUser['id'],
@@ -1371,22 +1370,19 @@ class ProductController extends BaseController
 					}
 				}		
 			}else{
-				if($item['id'] == 233 || $item['id'] == 234 || $item['id'] == 235 || $item['id'] == 236 || $item['id'] == 237)
+				if($item['id'] == 243 || $item['id'] == 244 || $item['id'] == 245 || $item['id'] == 246 )
 				{
 					switch ($item['id']) {
-						case 233://AM-2500
-							$good['num'] = 1;
-							break;
-						case 234://AM-5200
+						case 243:
 								$good['num'] = 2;
 							break;
-						case 235://AM-12800
+						case 244:
 								$good['num'] = 3;
 							break;
-						case 236://AM-24800
+						case 245:
 								$good['num'] = 4;
 							break;
-						case 237://AM-39000
+						case 246:
 								$good['num'] = 5;
 							break;
 					}
