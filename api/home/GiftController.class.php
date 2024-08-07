@@ -181,7 +181,7 @@ class GiftController extends BaseController
 		try {
 			$check_detail = Db::table('gift_redpack_detail')->where("rsn='{$params['rsn']}' and uid={$pageuser['id']}")->find();
 			if ($check_detail) {
-				ReturnToJson(-1, 'You have received this redpack');
+				ReturnToJson(-1, 'You have received this bonus code');
 			}
 			$item = Db::table('gift_redpack')->where("rsn='{$params['rsn']}'")->lock(true)->find();
 			if (!$item) {
