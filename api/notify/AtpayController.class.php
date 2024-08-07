@@ -92,11 +92,11 @@ class AtpayController extends BaseController
             ReturnToJson(-1, 'Sign error');
       
         $pdata = [
-            'osn' => $params['orderId'],
-            'out_osn' => $params['payOrderId'],
-            'pay_status' => $params['status'] == '1' ? 9 : 3,
-            'pay_msg' => $params['statusDesc'],
-            'amount' => $params['amount'] / 100,
+            'osn' => $params['resource']['outTradeNo'],
+            'out_osn' => $params['resource']['tradeNo'],
+            'pay_status' => $params['resource']['tradeStatus'] == 'SUCCESS' ? 9 : 3,
+            'pay_msg' => $params['resource']['payStatus'],
+            'amount' => $params['resource']['tradeAmount'],
             'successStr' => 'OK',
             'failStr' => 'OK1'
         ];
