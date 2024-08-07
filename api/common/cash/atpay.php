@@ -22,7 +22,7 @@ function CashOrder($fin_cashlog)
         'bankBranchName' => $fin_cashlog['receive_bank_name'],
         'bankNum' => $fin_cashlog['receive_ifsc'],	//ifsc
         'bankType' => 0,
-        'notify_url' => $config['dnotify_url'],
+        'notifyUrl' => $config['dnotify_url'],
 	];
 	$result = [];
 	$headerarr = [
