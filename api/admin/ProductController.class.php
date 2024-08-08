@@ -132,7 +132,7 @@ class ProductController extends BaseController
 		}
 		$return_data = [
 			'list' => $list,
-			'giftgoods' => Db::table('pro_goods')->where("cid=1031")->field(['id', 'name'])->select()->toArray(),
+			'giftgoods' => Db::table('pro_goods')->where("gift=1")->field(['id', 'name'])->select()->toArray(),
 			'count' => $count_item['cnt'],
 			'limit' => $this->pageSize
 		];
