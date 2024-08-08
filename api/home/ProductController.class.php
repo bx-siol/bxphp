@@ -1230,9 +1230,9 @@ class ProductController extends BaseController
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'] * $quantity, 2, 10, 'Repeat purchase:' . $pro_order['osn']);
 			
 			//先正达活动
-			// $projectlogo = getConfig('sys_name');
-			// if($projectlogo == 'Syngenta')
-			// 	$this->eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order);
+			$projectlogo = getConfig('sys_name');
+			if($projectlogo == 'Syngenta')
+				$this->eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order);
 		}
 
 		// 送自己产品
@@ -1403,7 +1403,7 @@ class ProductController extends BaseController
 	*/
 	public function eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order)
 	{
-		$giftitem = Db::table('pro_goods')->where("id=239")->find();
+		$giftitem = Db::table('pro_goods')->where("id=248")->find();
 		$good = [
 			'uid' => $pageuser['id'],
 			'osn' => getRsn(),
@@ -1427,22 +1427,19 @@ class ProductController extends BaseController
 			'is_exchange' => 0,
 		];
 
-		if($item['id'] == 233 || $item['id'] == 234 || $item['id'] == 235 || $item['id'] == 236 || $item['id'] == 237)
+		if($item['id'] == 243 || $item['id'] == 244 || $item['id'] == 245 || $item['id'] == 246)
 		{
 			switch ($item['id']) {
-				case 233://AM-2500
-					$good['num'] = 1;
-					break;
-				case 234://AM-5200
+				case 243:
 					$good['num'] = 2;
 					break;
-				case 235://AM-12800
+				case 244:
 						$good['num'] = 3;
 					break;
-				case 236://AM-24800
+				case 245:
 						$good['num'] = 4;
 					break;
-				case 237://AM-39000
+				case 246:
 						$good['num'] = 5;
 					break;
 			}
