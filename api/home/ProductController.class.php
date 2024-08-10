@@ -1184,6 +1184,7 @@ class ProductController extends BaseController
 
 			if ($item['Integral'] > 0 && $puser != null)   //首次购买送上级积分 
 				updateWalletBalanceAndLog($puser['id'], $item['Integral'], 3, 1019, 'Team Buy:' . $pro_order['osn']);
+
 			//送推荐人产品
 			if ($item['gifttopuser']) {
 				$gifttopuser = Db::table('pro_goods')->where("id={$item['gifttopuser']}")->find();
@@ -1202,7 +1203,7 @@ class ProductController extends BaseController
 					'p2' => 1,
 					'p3' => 1,
 					'money' => $gifttopuser['price'],
-					'num' => 1,
+					'num' => $gifttopuser['sendupnum'],
 					'create_day' => date('Ymd', NOW_TIME),
 					'create_time' => NOW_TIME,
 					'create_ip' => CLIENT_IP,
@@ -1253,7 +1254,7 @@ class ProductController extends BaseController
 				'p2' => 1,
 				'p3' => 1,
 				'money' => $giftitem['price'],
-				'num' => 1,
+				'num' => $giftitem['sendnum'],
 				'create_day' => date('Ymd', NOW_TIME),
 				'create_time' => NOW_TIME,
 				'create_ip' => CLIENT_IP,
