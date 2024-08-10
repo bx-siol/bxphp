@@ -268,7 +268,8 @@ class ProductController extends BaseController
 			'gifttoself' => $params['gifttoself'],
 			'gift' => $params['gift'],
 			'pointshop' => $params['pointshop'],
-
+			'sendnum' => $params['sendnum'],
+			'sendupnum' => $params['sendupnum'],
 		];
 		try {
 			$model = Db::table('pro_goods');
