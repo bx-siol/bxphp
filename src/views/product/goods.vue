@@ -109,16 +109,20 @@
                                 </el-select>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="16">
+                        <el-col :span="8">
                             <el-form-item label="购买送自己">
-                            <el-select size="small" style="width: 300px;" v-model="dataForm.gifttoself" placeholder="选择产品">
-                                <el-option key="0" label="选择产品" value="0"></el-option>
-                                <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id">
-                                </el-option>
-                            </el-select>
-                            <span>&nbsp;&nbsp;设置此参数后 用户购买产品会送一个产品给当前购买的用户</span>
-                        </el-form-item>
-                        </el-col>                        
+                                <el-select size="small" style="width: 300px;" v-model="dataForm.gifttoself" placeholder="选择产品">
+                                    <el-option key="0" label="选择产品" value="0"></el-option>
+                                    <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="数量">
+                                <el-input size="small" v-model="dataForm.sendnum" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                            </el-form-item>
+                        </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="8">
@@ -126,13 +130,17 @@
                                 <el-input size="small" v-model="dataForm.price" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
-                        <el-col :span="16">
+                        <el-col :span="8">
                             <el-form-item label="购买送推荐人">
                                 <el-select size="small" style="width: 300px;" v-model="dataForm.gifttopuser" placeholder="选择产品">
                                     <el-option key="0" label="选择产品" value="0"></el-option>
                                     <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id"></el-option>
                                 </el-select>
-                                <span>&nbsp;&nbsp;设置此参数后 用户购买产品会送一个产品给当前购买用户的推荐人</span>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="数量">
+                                <el-input size="small" v-model="dataForm.sendupnum" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -396,6 +404,8 @@ const dataForm = reactive<any>({
     days: '',
     rate: '',
     scale: '',
+    sendnum:'1',
+    sendupnum:'1',
     price: '',
     price1: '',
     price0: '',
@@ -441,6 +451,8 @@ const add = () => {
     dataForm.days = ''
     dataForm.rate = ''
     dataForm.scale = ''
+    dataForm.sendnum = '0'
+    dataForm.sendupnum = '0'
     dataForm.price = ''
     dataForm.price0 = '0'
     dataForm.sjcjcs = '0'
@@ -495,7 +507,9 @@ const edit = (idx: number, item: any) => {
     dataForm.kc = item.kc
     dataForm.days = item.days
     dataForm.rate = item.rate
-    dataForm.scale = item.scale
+    dataForm.scale = item.scale    
+    dataForm.sendnum = item.sendnum    
+    dataForm.sendupnum = item.sendupnum    
     dataForm.price = item.price
     dataForm.price1 = item.price1
     dataForm.price0 = item.price0
