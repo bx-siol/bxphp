@@ -155,7 +155,7 @@ export default {
     待支付: 'Waiting payment',
     已支付: 'Paid',
     待审核: 'Pending review',
-    等待付款: 'Waiting for payment',
+    等待付款: 'Waiting Payment',
     不通过: 'Fail',
     已通过: 'Passed',
     初始支付密码与登录密码相同: 'The initial payment password is the same as the login password',
