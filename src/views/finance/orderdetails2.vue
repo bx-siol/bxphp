@@ -13,9 +13,9 @@
                     <p>{{ route.params.money }} Rs</p>
                 </li>
                 <li>
-                    <p>Handling Fees({{ ((route.params.money - route.params.par1) / route.params.money * 100) }}%):
+                    <p>Handling Fees({{ ((route.params.money - route.params.par1) / route.params.money * 100).toFixed(2) }}%):
                     </p>
-                    <p>{{ route.params.money - route.params.par1 }} Rs</p>
+                    <p>{{ (route.params.money - route.params.par1).toFixed(2) }} Rs</p>
                 </li>
                 <li>
                     <p>Actual Account: </p>
