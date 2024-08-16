@@ -1264,7 +1264,7 @@ class ProductController extends BaseController
 		}
 
 		if ($item['selfintegral'] > 0)   //送自己积分 
-			updateWalletBalanceAndLog($pageuser['id'], $item['selfintegral'], 3, 1019, 'Buy:' . $pro_order['osn']);
+			updateWalletBalanceAndLog($pageuser['id'], $item['selfintegral'] * $item[''], 3, 1019, 'Buy:' . $pro_order['osn']);
 
 		if ($item['selfbg'] > 0)  //送自己余额 不管什么情况都送
 			updateWalletBalanceAndLog($pageuser['id'], $item['selfbg'], 2, 10, 'Buy:' . $pro_order['osn']);
