@@ -39,6 +39,10 @@
                             <span>Daily earnings</span>
                             <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price/100) }}</span>
                           </div>
+                          <div class="dailyearnings">
+                            <span>Days</span>
+                            <span style="color:#64503e">{{ item.days }}</span>
+                          </div>
                           <div class="totalrevenue">
                             <span>Total revenue</span>
                             <span style="color:#64503e">₹{{ (item.rate * item.price * item.days / 100).toFixed(2)
