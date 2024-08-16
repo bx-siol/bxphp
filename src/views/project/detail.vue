@@ -154,11 +154,11 @@
             <div class="amount">
               <van-grid v-if="info.cid != 1019" :border="false" :column-num="2">
                 <van-grid-item>
-                  <span>₹{{ wallet2.balance }}</span>
+                  <span>₹{{ wallet1.balance }}</span>
                   <p>{{ t('充值钱包') }}</p>
                 </van-grid-item>
                 <van-grid-item>
-                  <span>₹{{ wallet1.balance }}</span>
+                  <span>₹{{ wallet2.balance }}</span>
                   <p>{{ t('余额钱包') }}</p>
                 </van-grid-item>
               </van-grid>
