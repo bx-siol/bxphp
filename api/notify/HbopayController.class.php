@@ -16,8 +16,11 @@ class HbopayController extends BaseController
     }
     public function _pay()
     {
+        
+        $reqData = $this->request->post(false); // post参数
         $jsonStr = trim(file_get_contents('php://input'));
         writeLog('pdatajwt : ' . $jsonStr, 'hbopay/notify/pay');
+        writeLog('reqData : ' . $reqData, 'hbopay/notify/pay');
         $params = json_decode($jsonStr, true); 
         
         require_once APP_PATH . 'common/pay/hbopay.php';

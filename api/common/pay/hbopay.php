@@ -15,7 +15,6 @@ function payOrder($fin_paylog, $sub_type = '')
 		'mchOrderNo' => $fin_paylog['osn'],
 		'amount' => strval($fin_paylog['money']),
 		'currency' => 'INR',
-		'usdtChannel' => 'TRC20',
 		'notifyUrl' => $config['notify_url'],
 		'successJumpUrl' => $config['returnUrl'],
         'failJumpUrl' => $config['returnUrl'],
