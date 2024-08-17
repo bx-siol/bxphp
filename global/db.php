@@ -336,3 +336,17 @@ $_ENV['PAY_CONFIG']['atpay'] = [
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/atpay/pay', //代收回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/atpay/cash' //代付回调
 ];
+
+$_ENV['PAY_CONFIG']['hbopay'] = [
+	'mch_id' => '202404120393878629',
+	'mch_key' => '41e4c21d2ccef2e7cfbbdad5acec3bf9',
+
+	'pay_url' => 'https://api.hbo88.top/pay/addOrder', //代收
+	'dpay_url' => 'https://api.hbo88.top/transfer/addOrder', //代付
+
+	'balance_url' => '', //余额
+
+	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/cash' //代付回调
+];
