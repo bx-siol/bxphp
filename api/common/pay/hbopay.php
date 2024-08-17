@@ -22,9 +22,9 @@ function payOrder($fin_paylog, $sub_type = '')
         'body' => $fin_paylog['osn'],
         'notifyFormat' => 'FORM-DATA',
 	];
-	$rdata['sign'] = paySign($pdata);
+	$pdata['sign'] = paySign($pdata);
 
-	writeLog(json_encode($pdata) . "\r\n" . json_encode($rdata), GetPayName() . '/pay');
+	writeLog(json_encode($pdata), GetPayName() . '/pay');
 	$result = CurlPost($config['pay_url'], $pdata, 30);
 	if ($result['code'] != 1)
 		return $result;
