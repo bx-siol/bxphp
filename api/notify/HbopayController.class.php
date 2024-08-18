@@ -17,7 +17,7 @@ class HbopayController extends BaseController
     public function _pay()
     {
         $params = $_POST;
-        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'nicepay/hbopay/pay');
+        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/pay');
         
         require_once APP_PATH . 'common/pay/hbopay.php';
         $sign = paySign($params, true);
