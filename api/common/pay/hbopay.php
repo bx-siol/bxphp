@@ -59,5 +59,7 @@ function paySign($params, $verify = false)
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$signOriginStr =$params['appId'] .$params['mchOrderNo'] .intval($params['amount']) .$params['notifyUrl'] .$config['mch_key'];	
 	writeLog('signOriginStr : ' . $signOriginStr, 'hbopay/notify/pay');
-	return  md5($signOriginStr);
+	$sign = md5($signOriginStr);
+	writeLog('sign : ' . $sign, 'hbopay/notify/pay');
+	return  $sign;
 }
