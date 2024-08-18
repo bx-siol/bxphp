@@ -344,6 +344,9 @@ $_ENV['PAY_CONFIG']['hbopay'] = [
 	'pay_url' => 'https://api.hbo88.top/pay/addOrder', //代收
 	'dpay_url' => 'https://api.hbo88.top/transfer/addOrder', //代付
 
+	'pay_id' =>'300001', //代收通道
+	'dpay_id' =>'300011', //代付通道
+
 	'balance_url' => '', //余额
 
 	'returnUrl' => 'http://' . HTTP_HOST . '/', //同步回调

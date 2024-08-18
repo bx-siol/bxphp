@@ -35,26 +35,38 @@ class HbopayController extends BaseController
 
     public function _cash()
     {
-        $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('pdatajwt : ' . $jsonStr, 'hbopay/notify/cash');
-        $params = json_decode($jsonStr, true);
-        $rdata = json_decode(urldecode($params["transdata"]), true);
+        $params = $_POST;
+        writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/cash');
 
         require_once APP_PATH . 'common/cash/hbopay.php';
-        $sign = CashSign($rdata);
+        $sign = CashSign($params);
         writeLog('sign : ' . $sign, 'hbopay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'osn' => $rdata['order_no'],
-            'out_osn' => $rdata['order_no'],
-            'pay_status' => $rdata['resp_code'] == 'S' ? 9 : 3,
-            'pay_msg' => $rdata['message'],
-            'amount' => $rdata['order_amount'],
+            'osn' => $params['mchOrderNo'],
+            'out_osn' => $params['my_order_no'],
+            'pay_status' => $params['transfer_state'] == '4' ? 9 : 3,
+            'pay_msg' => $params['result_info'],
+            'amount' => $params['transfer_amount'],
             'successStr' => 'success',
-            'failStr' => 'success'
+            'failStr' => 'fail'
         ];
+
+        //冲正状态
+        if ($params['transfer_state'] == '5')
+            $pdata['pay_status'] = 4;
+
         $this->cashAct($pdata);
+    }
+
+    public function _order()
+    {
+		$params = $this->params;
+        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+        require_once APP_PATH . 'common/cash/hbopay.php';
+        $result = CashOrder($fin_cashlog);        
+	    return $result;
     }
 }

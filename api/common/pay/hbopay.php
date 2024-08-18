@@ -20,6 +20,7 @@ function payOrder($fin_paylog, $sub_type = '')
         'failJumpUrl' => $config['returnUrl'],
         'body' => $fin_paylog['osn'],
         'notifyFormat' => 'FORM-DATA',
+		'my_order_no' => ''
 	];
 	$pdata['sign'] = paySign($pdata);
 
