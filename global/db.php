@@ -3,7 +3,7 @@
 define('SYS_KEY', 'asfasvcv4856e13asd35a3v1a5dv485adcxx'); //全局签名密钥
 define('PAY_BACKURL', '162.251.92.95:740');
 define('REQUEST_SCHEME', 'http');
-define('HTTP_HOST', '162.251.92.95:740');
+define('HTTP_HOST', 'localhost:3000');
 define('SERVER_IP', '162.251.92.95');
 
 $_ENV['PREFIX'] = 'bx'; //项目前/后缀
@@ -346,7 +346,7 @@ $_ENV['PAY_CONFIG']['hbopay'] = [
 
 	'balance_url' => '', //余额
 
-	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
+	'returnUrl' => 'http://' . HTTP_HOST . '/', //同步回调
 	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/pay', //代收回调
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/cash' //代付回调
 ];
