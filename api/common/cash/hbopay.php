@@ -33,8 +33,8 @@ function CashOrder($fin_cashlog)
 		return $result;
 
     writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
-	$resultArr = json_decode($result['output'][0],true);
-	if ($resultArr['code'] != '0') {
+	$resultArr = $result['output'];
+	if ($resultArr['code'] != '1') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
@@ -44,8 +44,8 @@ function CashOrder($fin_cashlog)
 		'msg' => $result['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
-			'osn' => $resultArr['orderno'],
-			'out_osn' => $resultArr['porderno']
+			'osn' => $resultArr['data']['mch_order_no'],
+			'out_osn' => $resultArr['data']['my_order_no']
 		]
 	];
 	return $return_data;
