@@ -5,6 +5,7 @@ define('PAY_BACKURL', '162.251.92.95:740');
 define('REQUEST_SCHEME', 'http');
 define('HTTP_HOST', 'localhost:3000');
 define('SERVER_IP', '162.251.92.95');
+define('HTTP_PAY', 'www.nestieax.xyz');
 
 $_ENV['PREFIX'] = 'bx'; //项目前/后缀
 
@@ -349,7 +350,7 @@ $_ENV['PAY_CONFIG']['hbopay'] = [
 
 	'balance_url' => '', //余额
 
-	'returnUrl' => 'http://' . HTTP_HOST . '/', //同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/pay', //代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/cash' //代付回调
+	'returnUrl' => 'http://' . HTTP_PAY . '/', //同步回调
+	'notify_url' => 'http://' . HTTP_PAY . '/api/Notify/hbopay/pay', //代收回调
+	'dnotify_url' => 'http://' . HTTP_PAY . '/api/Notify/hbopay/cash' //代付回调
 ];
