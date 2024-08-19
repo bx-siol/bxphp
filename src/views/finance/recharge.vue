@@ -164,7 +164,8 @@ const onSubmit = () => {
         url: 'c=Finance&a=rechargeAct',
         data: {
             pay_type: ptype.type,
-            money: money.value
+            money: money.value,
+            l_url : window.location.host
         }
     }).then((res: any) => {
         loadingShow.value = false
