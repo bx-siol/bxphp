@@ -151,7 +151,7 @@ class FinanceController extends BaseController
 					$sub_pay_type = 1;
 				}
 				$fin_paylog['l_url'] = $params['l_url'];
-				writeLog('fin_paylog222' .json_encode($fin_paylog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/pay');
+				
 				require_once $pay_file;
 				$result = payOrder($fin_paylog, $sub_pay_type);
 				// if ($params['pay_type'] != 'OfflinePay') {
