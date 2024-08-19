@@ -81,6 +81,8 @@ class FinanceController extends BaseController
 			'gaccount' => $userondb['account'],
 			'l_url' => $params['l_url']
 		];
+		
+		writeLog(json_encode($fin_paylog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/pay');
 
 		$banklog = [];
 		if ($params['pay_type'] == 'offline') {
