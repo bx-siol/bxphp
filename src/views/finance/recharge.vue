@@ -186,7 +186,7 @@ const onSubmit = () => {
             data: {
                 pay_type: ptype.type,
                 money: money.value,
-                l_url : window.location.host
+                l_url : window.location.origin
             }
         }).then((res: any) => {
             loadingShow.value = false
