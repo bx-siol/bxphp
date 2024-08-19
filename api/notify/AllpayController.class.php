@@ -3,11 +3,11 @@
 
 use think\facade\Db;
 
-class AalpayController extends BaseController
+class AllpayController extends BaseController
 {
     function GetPayName()
     {
-	    return "aalpay";
+	    return "allpay";
     }
 
     public function __construct()
@@ -17,12 +17,12 @@ class AalpayController extends BaseController
 
     public function _index()
     {
-        echo 'aalpay';
+        echo 'allpay';
     }
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('pdatajwt : ' . $jsonStr, 'aalpay/notify/pay');
+        writeLog('pdatajwt : ' . $jsonStr, 'allpay/notify/pay');
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -31,7 +31,7 @@ class AalpayController extends BaseController
             $arr = explode("=", $v);
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
-        require_once APP_PATH . 'common/pay/aalpay.php';
+        require_once APP_PATH . 'common/pay/allpay.php';
         $sign = paySign($rdata);
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
@@ -42,13 +42,13 @@ class AalpayController extends BaseController
             'amount' => $rdata['amount'],
             'successStr' => 'success'
         ];
-        $this->payAct($pdata, 'aalpay');
+        $this->payAct($pdata, 'allpay');
     }
 
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('jsonStr : ' . $jsonStr, 'aalpay/notify/cash');
+        writeLog('jsonStr : ' . $jsonStr, 'allpay/notify/cash');
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -57,7 +57,7 @@ class AalpayController extends BaseController
             $arr = explode("=", $v);
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
-        require_once APP_PATH . 'common/cash/aalpay.php';
+        require_once APP_PATH . 'common/cash/allpay.php';
         $sign = CashSign($rdata);
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
@@ -75,12 +75,12 @@ class AalpayController extends BaseController
         $this->cashAct($pdata);
     }
 
-    public function _order()
-    {
-		$params = $this->params;
-        $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
-        require_once APP_PATH . 'common/cash/aalpay.php';
-        $result = CashOrder($fin_cashlog);        
-	    return $result;
-    }
+    // public function _order()
+    // {
+	// 	$params = $this->params;
+    //     $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
+    //     require_once APP_PATH . 'common/cash/allpay.php';
+    //     $result = CashOrder($fin_cashlog);        
+	//     return $result;
+    // }
 }

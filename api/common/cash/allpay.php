@@ -6,7 +6,7 @@ use think\facade\Db;
 
 function GetPayName()
 {
-	return "aalpay";
+	return "allpay";
 }
 function CashOrder($fin_cashlog)
 {    

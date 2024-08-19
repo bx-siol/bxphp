@@ -1,7 +1,7 @@
 <?php
 //####################相关配置开始###########################
 define('SYS_KEY', 'asfasvcv4856e13asd35a3v1a5dv485adcxx'); //全局签名密钥
-define('PAY_BACKURL', '47.76.203.255:7552');//162.251.92.95:740
+define('PAY_BACKURL', '162.251.92.95:740');//162.251.92.95:740
 define('REQUEST_SCHEME', 'http');
 define('HTTP_HOST', '162.251.92.95:740');
 define('SERVER_IP', '162.251.92.95');
@@ -337,7 +337,7 @@ $_ENV['PAY_CONFIG']['atpay'] = [
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/atpay/cash' //代付回调
 ];
 
-$_ENV['PAY_CONFIG']['aalpay'] = [
+$_ENV['PAY_CONFIG']['allpay'] = [
 	'mch_id' => '100900001',
 	'mch_key' => '2525aceede1c4d108474964ddae8794f',  //代收key
 	'dmch_key' => 'GNHAD3WY09KUHMH3KFACLQFYDXMWPQ5Z', //代付key
@@ -348,6 +348,6 @@ $_ENV['PAY_CONFIG']['aalpay'] = [
 	'balance_url' => 'https://payment.allapay.com/query/balance', //余额
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/aalpay/pay', //代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/aalpay/cash' //代付回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/allpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/allpay/cash' //代付回调
 ];
