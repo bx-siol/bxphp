@@ -338,7 +338,7 @@ $_ENV['PAY_CONFIG']['atpay'] = [
 ];
 
 $_ENV['PAY_CONFIG']['aalpay'] = [
-	'mch_id' => '202404120393878629',
+	'mch_id' => '100900001',
 	'mch_key' => '2525aceede1c4d108474964ddae8794f',  //代收key
 	'dmch_key' => 'GNHAD3WY09KUHMH3KFACLQFYDXMWPQ5Z', //代付key
 	'pay_type' => '122', //支付类型   商户后台获取商户信息-通道信息-通道代码
