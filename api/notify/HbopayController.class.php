@@ -40,7 +40,6 @@ class HbopayController extends BaseController
 
         require_once APP_PATH . 'common/cash/hbopay.php';
         $sign = CashSign($params);
-        writeLog('sign : ' . $sign, 'hbopay/notify/cash');
         if ($sign != $params['sign'])
             ReturnToJson(-1, 'Sign error');
 
