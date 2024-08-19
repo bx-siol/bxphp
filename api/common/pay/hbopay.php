@@ -9,6 +9,8 @@ function GetPayName()
 }
 function payOrder($fin_paylog, $sub_type = '')
 {
+	
+	writeLog(json_encode($fin_paylog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/pay');
 	$config = $_ENV['PAY_CONFIG'][GetPayName()];
 	$pdata = [
 		'appId' => $config['mch_id'],
