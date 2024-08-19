@@ -79,7 +79,7 @@ class FinanceController extends BaseController
 			'create_time' => NOW_TIME,
 			'gplayerId' => $params['playerId'],
 			'gaccount' => $userondb['account'],
-			'l_url' => $params['l_url']
+			//'l_url' => $params['l_url']
 		];		
 
 		$banklog = [];
