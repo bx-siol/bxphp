@@ -79,8 +79,10 @@ class FinanceController extends BaseController
 			'create_time' => NOW_TIME,
 			'gplayerId' => $params['playerId'],
 			'gaccount' => $userondb['account'],
-			//'l_url' => $params['l_url']
-		];		
+			'l_url' => $params['l_url']
+		];
+		
+		writeLog('fin_paylog111' .json_encode($fin_paylog, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/pay');
 
 		$banklog = [];
 		if ($params['pay_type'] == 'offline') {
