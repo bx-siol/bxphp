@@ -5,7 +5,7 @@ use think\facade\Db;
 
 function GetPayName()
 {
-	return "sunpay";
+	return "aalpay";
 }
 
 function payOrder($fin_paylog, $sub_type = '')
