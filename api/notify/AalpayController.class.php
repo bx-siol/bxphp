@@ -7,7 +7,7 @@ class AalpayController extends BaseController
 {
     function GetPayName()
     {
-	    return "aalapy";
+	    return "aalpay";
     }
 
     public function __construct()
@@ -17,12 +17,12 @@ class AalpayController extends BaseController
 
     public function _index()
     {
-        echo 'aalapy';
+        echo 'aalpay';
     }
     public function _pay()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('pdatajwt : ' . $jsonStr, 'aalapy/notify/pay');
+        writeLog('pdatajwt : ' . $jsonStr, 'aalpay/notify/pay');
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -31,7 +31,7 @@ class AalpayController extends BaseController
             $arr = explode("=", $v);
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
-        require_once APP_PATH . 'common/pay/aalapy.php';
+        require_once APP_PATH . 'common/pay/aalpay.php';
         $sign = paySign($rdata);
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
@@ -42,13 +42,13 @@ class AalpayController extends BaseController
             'amount' => $rdata['amount'],
             'successStr' => 'success'
         ];
-        $this->payAct($pdata, 'aalapy');
+        $this->payAct($pdata, 'aalpay');
     }
 
     public function _cash()
     {
         $jsonStr = trim(file_get_contents('php://input'));
-        writeLog('jsonStr : ' . $jsonStr, 'aalapy/notify/cash');
+        writeLog('jsonStr : ' . $jsonStr, 'aalpay/notify/cash');
         $params = explode("&", $jsonStr);
         if (!$params)
             $params = $_POST;
@@ -57,7 +57,7 @@ class AalpayController extends BaseController
             $arr = explode("=", $v);
             $rdata[$arr[0]] = urldecode($arr[1]);
         }
-        require_once APP_PATH . 'common/cash/aalapy.php';
+        require_once APP_PATH . 'common/cash/aalpay.php';
         $sign = CashSign($rdata);
         if ($sign != $rdata['sign'])
             ReturnToJson(-1, 'Sign error');
@@ -79,7 +79,7 @@ class AalpayController extends BaseController
     {
 		$params = $this->params;
         $fin_cashlog = Db::table('fin_cashlog')->where("id={$params['id']}")->find();
-        require_once APP_PATH . 'common/cash/hbopay.php';
+        require_once APP_PATH . 'common/cash/aalpay.php';
         $result = CashOrder($fin_cashlog);        
 	    return $result;
     }
