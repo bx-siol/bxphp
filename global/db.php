@@ -1,7 +1,7 @@
 <?php
 //####################相关配置开始###########################
 define('SYS_KEY', 'asfasvcv4856e13asd35a3v1a5dv485adcxx'); //全局签名密钥
-define('PAY_BACKURL', '162.251.92.95:740');//162.251.92.95:740
+define('PAY_BACKURL', '47.76.203.255:7552');//162.251.92.95:740
 define('REQUEST_SCHEME', 'http');
 define('HTTP_HOST', '162.251.92.95:740');
 define('SERVER_IP', '162.251.92.95');
@@ -337,19 +337,17 @@ $_ENV['PAY_CONFIG']['atpay'] = [
 	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/atpay/cash' //代付回调
 ];
 
-$_ENV['PAY_CONFIG']['hbopay'] = [
+$_ENV['PAY_CONFIG']['aalpay'] = [
 	'mch_id' => '202404120393878629',
-	'mch_key' => '41e4c21d2ccef2e7cfbbdad5acec3bf9',
+	'mch_key' => '2525aceede1c4d108474964ddae8794f',  //代收key
+	'dmch_key' => 'GNHAD3WY09KUHMH3KFACLQFYDXMWPQ5Z', //代付key
+	'pay_type' => '122', //支付类型   商户后台获取商户信息-通道信息-通道代码
 
-	'pay_url' => 'https://api.hbo88.top/pay/addOrder', //代收
-	'dpay_url' => 'https://api.hbo88.top/transfer/addOrder', //代付
-
-	'pay_id' =>'300001', //代收通道
-	'dpay_id' =>'100011', //代付通道
-
-	'balance_url' => '', //余额
+	'pay_url' => 'https://payment.allapay.com/pay/web', //代收
+	'dpay_url' => 'https://payment.allapay.com/pay/transfer', //代付
+	'balance_url' => 'https://payment.allapay.com/query/balance', //余额
 
 	'returnUrl' => 'http://' . PAY_BACKURL . '/', //同步回调
-	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/pay', //代收回调
-	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/hbopay/cash' //代付回调
+	'notify_url' => 'http://' . PAY_BACKURL . '/api/Notify/aalpay/pay', //代收回调
+	'dnotify_url' => 'http://' . PAY_BACKURL . '/api/Notify/aalpay/cash' //代付回调
 ];
