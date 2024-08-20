@@ -25,7 +25,7 @@ class HbopayController extends BaseController
             ReturnToJson(-1, 'Sign error');
 
         $pdata = [
-            'code' => $params['pay_state'] == '1' ? 1 : -1,
+            'code' => ($params['pay_state'] == '1' || $params['pay_state'] == '2') ? 1 : -1,
             'osn' => $params['mchOrderNo'],
             'amount' => $params['amount'],
             'successStr' => 'success'
