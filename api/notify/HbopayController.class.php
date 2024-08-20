@@ -16,12 +16,8 @@ class HbopayController extends BaseController
     }
     public function _pay()
     {
-        $jsonStr = trim(file_get_contents('php://input'));
-        $params = json_decode($jsonStr, true);
-        writeLog(json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/pay');
-
-        //$params = $_POST;
-        //writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/pay');
+        $params = $_POST;
+        writeLog('pdata2 : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/pay');
         
         require_once APP_PATH . 'common/pay/hbopay.php';
         $sign = paySign($params, true);
@@ -39,12 +35,8 @@ class HbopayController extends BaseController
 
     public function _cash()
     {
-        $jsonStr = trim(file_get_contents('php://input'));
-        $params = json_decode($jsonStr, true);
-        writeLog(json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/pay');
-
-        //$params = $_POST;
-        //writeLog('pdata : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/cash');
+        $params = $_POST;
+        writeLog('pdata2 : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/cash');
 
         require_once APP_PATH . 'common/cash/hbopay.php';
         $sign = CashSign($params);
