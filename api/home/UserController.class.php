@@ -39,7 +39,16 @@ class UserController extends BaseController
 			Db::table('wallet_list')->insertGetId($db_item);
 			$wallet3 = $db_item;
 		}
+
 		$investment = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->sum('money');
+		if ($investment == null) {
+			$investment = 0;
+		}
+		$project = getConfig("sys_name");
+		if ($project == "Syngenta") {
+			$investment += Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=1")->sum('money');
+		}
+		
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
 		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');
 
@@ -47,9 +56,9 @@ class UserController extends BaseController
 
 		//$reward = Db::table('pro_reward')->where("uid={$pageuser['id']}")->sum('money');
 		$reward = Db::table('wallet_log')
-		->where("uid={$pageuser['id']} and 
+			->where("uid={$pageuser['id']} and 
 		(type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45 or type=112 or type=113 or type=114)")
-		->sum('money');
+			->sum('money');
 
 		//$hb_money = Db::table('gift_redpack_detail')->where("uid={$pageuser['id']}")->sum('money');
 		//$hb_money += Db::table('wallet_log')->where("uid={$pageuser['id']} and (type=9 or type=14)")->sum('money');
@@ -62,9 +71,9 @@ class UserController extends BaseController
 
 		$rebate = Db::table('pro_reward')->where("uid={$pageuser['id']} and type=2")->sum('money');
 		$today_profit = Db::table('wallet_log')
-		->where("uid={$pageuser['id']} and create_day={$now_day} and 
+			->where("uid={$pageuser['id']} and create_day={$now_day} and 
 		(type=6 or type=8 or type=9 or type=10 or type=14 or type=41 or type=42 or type=43 or type=45 or type=112 or type=113 or type=114)")
-		->sum('money');
+			->sum('money');
 
 		$newmember = Db::table('sys_user')->where(" pids like '%{$pageuser['id']}%' and DATE(FROM_UNIXTIME(reg_time)) = CURDATE() ")->count();
 
@@ -112,7 +121,7 @@ class UserController extends BaseController
 			//'tprofit' => round(floatval($today_profit + $jrhb_money + $today_jfdh_money), 2),
 			'tprofit' => round(floatval($today_profit), 2),
 			'service_arr' => $service_arr,
-			'newmember' =>$newmember,
+			'newmember' => $newmember,
 			//'pidg1' => $ccth
 		];
 		ReturnToJson(1, 'ok', $return_data);
@@ -146,178 +155,177 @@ class UserController extends BaseController
 		$params['page'] = intval($params['page']);
 		//$return_data = $this->redis->get($mem_key);
 		//if (!$return_data) {
-			switch ($lv) {
-				case 1:
-					$lvstr = $pageuser['id'] . ",%'";
-					break;
-				case 2:
-					$lvstr = "%," . $pageuser['id'] . ",%'";
-					break;
-				case 3:
-					$lvstr = "%," . $pageuser['id'] . "'";
-					break;
-				default:
-					$lvstr = "%" . $pageuser['id'] . "%'";
-					break;
-			}
-			$where = " log.pids like '" . $lvstr;
+		switch ($lv) {
+			case 1:
+				$lvstr = $pageuser['id'] . ",%'";
+				break;
+			case 2:
+				$lvstr = "%," . $pageuser['id'] . ",%'";
+				break;
+			case 3:
+				$lvstr = "%," . $pageuser['id'] . "'";
+				break;
+			default:
+				$lvstr = "%" . $pageuser['id'] . "%'";
+				break;
+		}
+		$where = " log.pids like '" . $lvstr;
 
-			//有效
-			$count_item1 = Db::table('sys_user log')
-				->fieldRaw('count(1) as paycnt')
-				->where($where . " and log.first_pay_day>0")
-				->find();
+		//有效
+		$count_item1 = Db::table('sys_user log')
+			->fieldRaw('count(1) as paycnt')
+			->where($where . " and log.first_pay_day>0")
+			->find();
 
-			//无效
-			$count_item2 = Db::table('sys_user log')
-				->fieldRaw('count(1) as unpaycnt')
-				->where($where . " and log.first_pay_day=0")
-				->find();
+		//无效
+		$count_item2 = Db::table('sys_user log')
+			->fieldRaw('count(1) as unpaycnt')
+			->where($where . " and log.first_pay_day=0")
+			->find();
 
-			if ($params['type'] == "pay") {
-				$where .= " and log.first_pay_day>0";
-			} else if ($params['type'] == "unpay") {
-				$where .= " and log.first_pay_day=0";
-			}
+		if ($params['type'] == "pay") {
+			$where .= " and log.first_pay_day>0";
+		} else if ($params['type'] == "unpay") {
+			$where .= " and log.first_pay_day=0";
+		}
 
-			//团队总人数
-			$count_item = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where($where)->find();
+		//团队总人数
+		$count_item = Db::table('sys_user log')->fieldRaw('count(1) as cnt')->where($where)->find();
 
-			$list = Db::view(['sys_user' => 'log'], ['id', 'account', 'nickname', 'headimgurl', 'reg_time', 'first_pay_day'])
-				->where($where)
-				->order(['log.reg_time' => 'desc'])
-				->page($params['page'], $this->pageSize)
-				->select()->toArray();
+		$list = Db::view(['sys_user' => 'log'], ['id', 'account', 'nickname', 'headimgurl', 'reg_time', 'first_pay_day'])
+			->where($where)
+			->order(['log.reg_time' => 'desc'])
+			->page($params['page'], $this->pageSize)
+			->select()->toArray();
 
-			foreach ($list as &$k) {
-				$referrer_str .= $k["id"] . ",";
-				$teamSize_str .= "select {$k['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k['id']}%';";
-				//$amount_str .= "select {$k['id']} as pid,id from sys_user where pids like '%{$k['id']}%';";下三级金额
-				$order_str .= $k["id"] . ",";
-			}
+		foreach ($list as &$k) {
+			$referrer_str .= $k["id"] . ",";
+			$teamSize_str .= "select {$k['id']} as id,count(1) as teamSize  from sys_user where pids like '%{$k['id']}%';";
+			//$amount_str .= "select {$k['id']} as pid,id from sys_user where pids like '%{$k['id']}%';";下三级金额
+			$order_str .= $k["id"] . ",";
+		}
 
-			$referrerData = array();
-			if ($referrer_str) {
-				$referrer_str = substr($referrer_str, 0, strlen($referrer_str) - 1);
-				$referrerData = Db::table('sys_user')->where("pid in ({$referrer_str})")->field('pid,count(1) as referrer')->group('pid')->select();
-			}
+		$referrerData = array();
+		if ($referrer_str) {
+			$referrer_str = substr($referrer_str, 0, strlen($referrer_str) - 1);
+			$referrerData = Db::table('sys_user')->where("pid in ({$referrer_str})")->field('pid,count(1) as referrer')->group('pid')->select();
+		}
 
-			$teamSizeDate = array();
-			if ($teamSize_str) {
-				$teamSize_str = substr($teamSize_str, 0, strlen($teamSize_str) - 1);
-				$teamSize_str = str_replace(";", " union ", $teamSize_str) . ';';
-				$teamSizeDate = Db::query($teamSize_str);
-			}
+		$teamSizeDate = array();
+		if ($teamSize_str) {
+			$teamSize_str = substr($teamSize_str, 0, strlen($teamSize_str) - 1);
+			$teamSize_str = str_replace(";", " union ", $teamSize_str) . ';';
+			$teamSizeDate = Db::query($teamSize_str);
+		}
 
-			$orderDate = array();
-			if($order_str)
-			{
-				$order_str =substr($order_str,0, strlen($order_str) - 1);
-				$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(w1_money+w2_money) as assets')->group('uid')->select();
-			}
+		$orderDate = array();
+		if ($order_str) {
+			$order_str = substr($order_str, 0, strlen($order_str) - 1);
+			$orderDate = Db::table('pro_order')->where("uid in ({$order_str})")->field('uid,sum(w1_money+w2_money) as assets')->group('uid')->select();
+		}
 
-			// $amountDate = array();
-			// if ($amount_str) {
-			// 	$amount_str = substr($amount_str, 0, strlen($amount_str) - 1);
-			// 	$amount_str = str_replace(";", " union ", $amount_str) . ';';
-			// 	$amountDate = Db::query($amount_str);
-			// }
-			// $dic = array();
-			// $amount_ids = ",";
-			// if (count($referrerData) > 0) {
-			// 	foreach ($amountDate as $it) {
-			// 		if (strstr($it['id'], $amount_ids)) {
+		// $amountDate = array();
+		// if ($amount_str) {
+		// 	$amount_str = substr($amount_str, 0, strlen($amount_str) - 1);
+		// 	$amount_str = str_replace(";", " union ", $amount_str) . ';';
+		// 	$amountDate = Db::query($amount_str);
+		// }
+		// $dic = array();
+		// $amount_ids = ",";
+		// if (count($referrerData) > 0) {
+		// 	foreach ($amountDate as $it) {
+		// 		if (strstr($it['id'], $amount_ids)) {
 
-			// 		} else {
-			// 			$amount_ids .= $it['id'] . ',';
-			// 		}
+		// 		} else {
+		// 			$amount_ids .= $it['id'] . ',';
+		// 		}
 
-			// 		if (isset ($dic["{$it['pid']}"])) {
-			// 			$val = $dic["{$it['pid']}"];
-			// 			array_push($val, $it['id']);
-			// 			$dic["{$it['pid']}"] = $val;
-			// 		} else {
-			// 			$dic["{$it['pid']}"] = array($it['id']);
-			// 		}
-			// 	}
-			// 	if ($amount_ids)
-			// 		$amount_ids = substr($amount_ids, 1, strlen($amount_ids) - 2);
-			// }
-			// $amountData = Db::table("pro_order")
-			// 	->whereIn('uid', $amount_ids)
-			// 	->field('uid,sum(money) as money')
-			// 	->group('uid')
-			// 	->having("sum(money) > 0")
-			// 	->select();
+		// 		if (isset ($dic["{$it['pid']}"])) {
+		// 			$val = $dic["{$it['pid']}"];
+		// 			array_push($val, $it['id']);
+		// 			$dic["{$it['pid']}"] = $val;
+		// 		} else {
+		// 			$dic["{$it['pid']}"] = array($it['id']);
+		// 		}
+		// 	}
+		// 	if ($amount_ids)
+		// 		$amount_ids = substr($amount_ids, 1, strlen($amount_ids) - 2);
+		// }
+		// $amountData = Db::table("pro_order")
+		// 	->whereIn('uid', $amount_ids)
+		// 	->field('uid,sum(money) as money')
+		// 	->group('uid')
+		// 	->having("sum(money) > 0")
+		// 	->select();
 
-			// $dicx = array();
+		// $dicx = array();
+		// if (count($dic) > 0) {
+		// 	foreach ($dic as $key => $value) {
+		// 		foreach ($amountData as $te) {
+		// 			if (!array_key_exists($key, $dicx))
+		// 				$dicx[$key] = 0;
+
+		// 			if (in_array($te["uid"], $value)) {
+		// 				$val = floatval($dicx[$key]);
+		// 				$val += floatval($te["money"]);
+		// 				$dicx[$key] = $val;
+		// 			}
+		// 		}
+		// 	}
+		// }
+
+		foreach ($list as &$item) {
+			$item["referrer"] = 0;
+			$item["teamSize"] = 0;
+			$item["amount"] = 0;
+			$item["assets"] = 0;
+
+			if (count($referrerData) > 0)
+				foreach ($referrerData as &$v)
+					if ($item["id"] == $v["pid"])
+						$item["referrer"] = $v['referrer'];
+
+			if (count($teamSizeDate) > 0)
+				foreach ($teamSizeDate as &$v)
+					if ($item["id"] == $v['id'])
+						$item["teamSize"] = $v["teamSize"];
+
 			// if (count($dic) > 0) {
-			// 	foreach ($dic as $key => $value) {
-			// 		foreach ($amountData as $te) {
-			// 			if (!array_key_exists($key, $dicx))
-			// 				$dicx[$key] = 0;
-
-			// 			if (in_array($te["uid"], $value)) {
-			// 				$val = floatval($dicx[$key]);
-			// 				$val += floatval($te["money"]);
-			// 				$dicx[$key] = $val;
-			// 			}
-			// 		}
-			// 	}
+			// 	if (array_key_exists($item['id'], $dicx))
+			// 		$item['amount'] = $dicx[$item['id']];
 			// }
 
-			foreach ($list as &$item) {
-				$item["referrer"] = 0;
-				$item["teamSize"] = 0;
-				$item["amount"] = 0;
-				$item["assets"] = 0;
+			if (count($orderDate) > 0)
+				foreach ($orderDate as &$v)
+					if ($item["id"] == $v["uid"])
+						$item["assets"] = $v['assets'];
 
-				if (count($referrerData) > 0)
-					foreach ($referrerData as &$v)
-						if ($item["id"] == $v["pid"])
-							$item["referrer"] = $v['referrer'];
+			$item['reg_time_day'] = date('Ymd', $item['reg_time']);
+			$item['reg_time'] = date('d/m/Y H:i', $item['reg_time']);
+			$item['today'] = date('Ymd');
+			$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C' : 'D');
+			$item['first_pay_day_flag'] = $item['first_pay_day'] > 0 ? 'yes' : 'no';
+		}
 
-				if (count($teamSizeDate) > 0)
-					foreach ($teamSizeDate as &$v)
-						if ($item["id"] == $v['id'])
-							$item["teamSize"] = $v["teamSize"];
+		$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time = " . strtotime("today");
+		$today = Db::table('sys_user log')->where($where1)->count();
+		$total_page = ceil($count_item['cnt'] / $this->pageSize);
 
-				// if (count($dic) > 0) {
-				// 	if (array_key_exists($item['id'], $dicx))
-				// 		$item['amount'] = $dicx[$item['id']];
-				// }
-
-				if(count($orderDate) > 0)
-					foreach ($orderDate as &$v)
-						if ($item["id"] == $v["uid"])
-							$item["assets"] = $v['assets'];
-
-				$item['reg_time_day'] = date('Ymd', $item['reg_time']);
-				$item['reg_time'] = date('d/m/Y H:i', $item['reg_time']);
-				$item['today'] = date('Ymd');
-				$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C' : 'D');
-				$item['first_pay_day_flag'] = $item['first_pay_day'] > 0 ? 'yes' : 'no';
-			}
-
-			$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time = " . strtotime("today");
-			$today = Db::table('sys_user log')->where($where1)->count();
-			$total_page = ceil($count_item['cnt'] / $this->pageSize);
-
-			$return_data = [
-				'list' => $list,
-				'allcount' => 0, // getDownUsercount($pageuser['id']),
-				'count' => intval($count_item['cnt']),
-				'paycount' => intval($count_item1['paycnt']),
-				'unpaycount' => intval($count_item2['unpaycnt']),
-				'$pg' => $params['page'],
-				'page' => $params['page'] + 1,
-				'finished' => $params['page'] >= $total_page ? true : false,
-				'limit' => $this->pageSize,
-				'today' => $today,
-				'lv' => $lv,
-				'$total_page' => $total_page,
-			];
-			//$this->redis->set($mem_key, $return_data, 60);//boos 要求实时 为了不改代码先做60秒缓存
+		$return_data = [
+			'list' => $list,
+			'allcount' => 0, // getDownUsercount($pageuser['id']),
+			'count' => intval($count_item['cnt']),
+			'paycount' => intval($count_item1['paycnt']),
+			'unpaycount' => intval($count_item2['unpaycnt']),
+			'$pg' => $params['page'],
+			'page' => $params['page'] + 1,
+			'finished' => $params['page'] >= $total_page ? true : false,
+			'limit' => $this->pageSize,
+			'today' => $today,
+			'lv' => $lv,
+			'$total_page' => $total_page,
+		];
+		//$this->redis->set($mem_key, $return_data, 60);//boos 要求实时 为了不改代码先做60秒缓存
 		//}
 		ReturnToJson(1, 'ok', $return_data);
 	}
@@ -327,19 +335,19 @@ class UserController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		$where = '';
-		if($params['type'] == 0)
+		if ($params['type'] == 0)
 			$where .= " and  first_pay_day > 0 ";
-		else if($params['type'] == 1)
+		else if ($params['type'] == 1)
 			$where .= " and first_pay_day =0 ";
 
 		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' {$where} ")->field('id,pids,reg_time,account')->order("reg_time")->select()->toArray();
 		$start_time = strtotime(date('Y-m-d 00:00:01'));
 		$end_time = strtotime(date('Y-m-d 23:59:59'));
 
-		
+
 		$today = date('Ymd', NOW_TIME);
 		$newmember = Db::table('sys_user')
-		->where(" pids like '%{$pageuser['id']}%' and first_pay_day ={$today} ")->count();
+			->where(" pids like '%{$pageuser['id']}%' and first_pay_day ={$today} ")->count();
 
 		$today = date('Ymd');
 		foreach ($list as &$item) {
@@ -347,13 +355,13 @@ class UserController extends BaseController
 			$item["level"] = array_search($pageuser['id'], $pidsArr) + 1;
 			$item['reg_time_day'] = date('Ymd', $item['reg_time']);
 
-			if($item['reg_time_day'] == $today)
-				if($item["level"] == 1)
+			if ($item['reg_time_day'] == $today)
+				if ($item["level"] == 1)
 					$item["newmember1"] = true;
-				if($item["level"] == 2)
-					$item["newmember2"] = true;
-				if($item["level"] == 3)
-					$item["newmember3"] = true;
+			if ($item["level"] == 2)
+				$item["newmember2"] = true;
+			if ($item["level"] == 3)
+				$item["newmember3"] = true;
 		}
 		$return_data = [
 			'list' => $list,
@@ -372,7 +380,7 @@ class UserController extends BaseController
 		$params['s_type'] = intval($params['s_type']);
 
 		$where = "log.uid={$pageuser['id']}";
-		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 
 		if ($params['s_start_time'] && $params['s_end_time']) {
 			$start_time = strtotime($params['s_start_time'] . ' 00:00:00');
@@ -436,19 +444,19 @@ class UserController extends BaseController
 		$team = Db::table('sys_user log')->where("pids like '%{$pageuser['id']}%' and first_pay_day>0")->count();
 		$team_B_num = Db::table('sys_user log')->where("pids like '{$pageuser['id']},%' and first_pay_day>0")->count();
 		$vip = 0;
-		if($team >= 30 && $team_B_num >= 8)
+		if ($team >= 30 && $team_B_num >= 8)
 			$vip = 1;
-		if($team >= 80 && $team_B_num >= 15)
+		if ($team >= 80 && $team_B_num >= 15)
 			$vip = 2;
-		if($team >= 200 && $team_B_num >= 20)
+		if ($team >= 200 && $team_B_num >= 20)
 			$vip = 3;
-		if($team >= 500 && $team_B_num >= 30)
+		if ($team >= 500 && $team_B_num >= 30)
 			$vip = 4;
-		if($team >= 1000 && $team_B_num >= 40)
+		if ($team >= 1000 && $team_B_num >= 40)
 			$vip = 5;
-		if($team >= 2000 && $team_B_num >= 60)
+		if ($team >= 2000 && $team_B_num >= 60)
 			$vip = 6;
-		
+
 		$return_data = [
 			'vip' => $vip,
 			'team' => $team,
