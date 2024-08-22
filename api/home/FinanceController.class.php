@@ -217,9 +217,11 @@ class FinanceController extends BaseController
 			ReturnToJson(-1, 'Please bind your bank card first.');
 		}
 		$where = '';
+		$where1 = '';
 		$project = getConfig("sys_name");
 		if ($project == "Syngenta") {
-			$where = ' or gid in (256,257) ';
+			$where = ' or gid in (256,257)';
+			$where1 = ' or (gid in (256,257) and days != total_days )';
 		}
 
 		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 {$where} ")->find();
@@ -227,7 +229,7 @@ class FinanceController extends BaseController
 			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
 
-		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 and days != total_days {$where} ")->find();
+		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 and days != total_days {$where1} ")->find();
 		if (!$pro_order) {
 			ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
 		}
