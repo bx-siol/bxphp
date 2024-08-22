@@ -39,6 +39,7 @@ function CashOrder($fin_cashlog)
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
 
+    writeLog('111111111111111', GetPayName() . '/cash');
 	$return_data = [
 		'code' => 1,
 		'msg' => $result['msg'],
