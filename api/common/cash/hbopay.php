@@ -34,7 +34,7 @@ function CashOrder($fin_cashlog)
 
     writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	$resultArr = $result['output'];
-	if ($resultArr['code'] != '1' || $resultArr['msg'] != '商户订单号已存在，请勿重复提交！') {
+	if ($resultArr['code'] != '1') {
 		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
 		return ['code' => -1, 'msg' => $resultArr['msg']];
 	}
