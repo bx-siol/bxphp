@@ -39,15 +39,14 @@ class UserController extends BaseController
 			Db::table('wallet_list')->insertGetId($db_item);
 			$wallet3 = $db_item;
 		}
-		
-		$investment = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->sum('money');		
-		if ($investment == null) {
-			$investment = 0;
-		}
+
+		$where = '';
 		$project = getConfig("sys_name");
 		if ($project == "Syngenta") {
-			$investment += Db::table('pro_order')->where("uid={$pageuser['id']} and gid in (256,257)")->sum('money');
+			$where = ' or gid in (256,257) ';
 		}
+		
+		$investment = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 {$where}")->sum('money');
 		
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
 		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');
