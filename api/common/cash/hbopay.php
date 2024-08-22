@@ -48,6 +48,7 @@ function CashOrder($fin_cashlog)
 			'out_osn' => $resultArr['data']['my_order_no']
 		]
 	];
+    writeLog('return_data' .json_encode($return_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	return $return_data;
 }
 

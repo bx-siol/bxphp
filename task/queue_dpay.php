@@ -87,7 +87,6 @@ function cashAct($item, $dtype)
 	if (!function_exists($func_name)) {
 		return false;
 	}
-	$result = $func_name($item);	
-	writeLog('cashActresult:' .json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/cash');
+	$result = $func_name($item);
 	return $result;
 }
