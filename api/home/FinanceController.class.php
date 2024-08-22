@@ -227,7 +227,7 @@ class FinanceController extends BaseController
 			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
 
-		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 and days != total_days ")->find();
+		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 and days != total_days {$where} ")->find();
 		if (!$pro_order) {
 			ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
 		}
