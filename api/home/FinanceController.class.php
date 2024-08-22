@@ -216,7 +216,13 @@ class FinanceController extends BaseController
 		if (!$banklog) {
 			ReturnToJson(-1, 'Please bind your bank card first.');
 		}
-		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->find();
+		$where = '';
+		$project = getConfig("sys_name");
+		if ($project == "Syngenta") {
+			$where = ' or gid in (256,257) ';
+		}
+
+		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 {$where} ")->find();
 		if (!$pro_order) {
 			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
