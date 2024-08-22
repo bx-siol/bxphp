@@ -1203,7 +1203,7 @@ class ProductController extends BaseController
 					'p2' => 1,
 					'p3' => 1,
 					'money' => $gifttopuser['price'],
-					'num' => $item['sendupnum'],
+					'num' => $item['sendupnum'] * $quantity,
 					'create_day' => date('Ymd', NOW_TIME),
 					'create_time' => NOW_TIME,
 					'create_ip' => CLIENT_IP,
@@ -1234,34 +1234,35 @@ class ProductController extends BaseController
 			// $projectlogo = getConfig('sys_name');
 			// if($projectlogo == 'Syngenta')
 			// 	$this->eventgiftsendown($item, $quantity, $pageuser, $check_num, $pro_order);
-		}
 
-		// 送自己产品
-		if ($item['gifttoself']) {
-			$giftitem = Db::table('pro_goods')->where("id={$item['gifttoself']}")->find();
-			Db::table('pro_order')->insertGetId([
-				'uid' => $pageuser['id'],
-				'osn' => getRsn(),
-				'pid' => $pageuser['pid'],
-				'cid' => $giftitem['cid'],
-				'gid' => $giftitem['id'],
-				'days' => $giftitem['days'],
-				'rate' => $giftitem['rate'],
-				'price' => $giftitem['price'],
-				'price1' => $giftitem['price1'],
-				'price2' => $giftitem['price2'],
-				'p1' => 1,
-				'p2' => 1,
-				'p3' => 1,
-				'money' => $giftitem['price'],
-				'num' => $item['sendnum'],
-				'create_day' => date('Ymd', NOW_TIME),
-				'create_time' => NOW_TIME,
-				'create_ip' => CLIENT_IP,
-				'is_give' => 1,
-				'is_exchange' => 0,
-			]);
+			// 送自己产品
+			if ($item['gifttoself']) {
+				$giftitem = Db::table('pro_goods')->where("id={$item['gifttoself']}")->find();
+				Db::table('pro_order')->insertGetId([
+					'uid' => $pageuser['id'],
+					'osn' => getRsn(),
+					'pid' => $pageuser['pid'],
+					'cid' => $giftitem['cid'],
+					'gid' => $giftitem['id'],
+					'days' => $giftitem['days'],
+					'rate' => $giftitem['rate'],
+					'price' => $giftitem['price'],
+					'price1' => $giftitem['price1'],
+					'price2' => $giftitem['price2'],
+					'p1' => 1,
+					'p2' => 1,
+					'p3' => 1,
+					'money' => $giftitem['price'],
+					'num' => $item['sendnum'] * $quantity,
+					'create_day' => date('Ymd', NOW_TIME),
+					'create_time' => NOW_TIME,
+					'create_ip' => CLIENT_IP,
+					'is_give' => 1,
+					'is_exchange' => 0,
+				]);
+			}
 		}
+		
 
 		if ($item['selfintegral'] > 0)   //送自己积分 
 			updateWalletBalanceAndLog($pageuser['id'], $item['selfintegral'] * $quantity, 3, 1019, 'Buy:' . $pro_order['osn']);
