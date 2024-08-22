@@ -35,21 +35,22 @@ function CashOrder($fin_cashlog)
     writeLog(json_encode($result, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	$resultArr = $result['output'];
 	if ($resultArr['code'] != '1') {
-		writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
-		return ['code' => -1, 'msg' => $resultArr['msg']];
+		if($resultArr['msg'] != '商户订单号已存在，请勿重复提交！')
+		{
+			writeLog('result : ' . json_encode($resultArr, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash/error');
+			return ['code' => -1, 'msg' => $resultArr['msg']];
+		}		
 	}
 
-    writeLog('111111111111111', GetPayName() . '/cash');
 	$return_data = [
 		'code' => 1,
 		'msg' => $result['msg'],
 		'data' => [
 			'mch_id' => $config['mch_id'],
 			'osn' => $fin_cashlog['osn'],
-			'out_osn' => $resultArr['data']['my_order_no']
+			'out_osn' => ''
 		]
 	];
-    writeLog('return_data' .json_encode($return_data, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), GetPayName() . '/cash');
 	return $return_data;
 }
 
