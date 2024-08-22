@@ -44,6 +44,7 @@ class UserController extends BaseController
 		if ($investment == null) {
 			$investment = 0;
 		}
+		
 		$project = getConfig("sys_name");
 		if ($project == "Syngenta") {
 			$investment += Db::table('pro_order')->where("uid={$pageuser['id']} and gid in (256,257)")->sum('money');
