@@ -34,11 +34,7 @@ class HbopayController extends BaseController
     }
 
     public function _cash()
-    {
-        $jsonStr = trim(file_get_contents('php://input'));
-        $params1 = json_decode($jsonStr, true);
-        writeLog('pdata1 : ' .json_encode($params1, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/pay');
-        
+    {        
         $params = $_POST;
         writeLog('pdata2 : ' . json_encode($params, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE), 'hbopay/notify/cash');
 
