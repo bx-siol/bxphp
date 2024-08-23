@@ -529,7 +529,7 @@ const onReceiveNo = (item: any) => {
 const confirmTip = () => {
   add_cookie("closeIndexTip", "1")
   tipShow.value = false
-  //router.push({ path: '/Project' })
+  router.push({ path: '/gift/lottery' })
 }
 
 const add_cookie = (name: any, val: any) => {
