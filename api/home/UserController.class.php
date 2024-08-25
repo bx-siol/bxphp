@@ -39,17 +39,10 @@ class UserController extends BaseController
 			Db::table('wallet_list')->insertGetId($db_item);
 			$wallet3 = $db_item;
 		}
-
-		$investment = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->sum('money');
-		if ($investment == null) {
-			$investment = 0;
-		}
 		
-		$summoney = Db::table('pro_order log')
+		$investment = Db::table('pro_order log')
 					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and c.is_normal = 1 ")->sum('log.money');
-					
-		$investment += $summoney;
+					->where("log.uid={$pageuser['id']} and log.is_give=0 or c.is_normal = 1 ")->sum('log.money');
 		
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
 		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');
