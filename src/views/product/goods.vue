@@ -267,12 +267,18 @@
                             </el-form-item>
                         </el-col>
                     </el-row>
-                    <el-form-item label="图标">
-                        <MyUpload v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;"></MyUpload>
-                    </el-form-item>
-                    <el-form-item label="相册">
-                        <MyUpload v-model:file-list="coverList" :limit="5" width="180px" height="100px" style="line-height: initial;"></MyUpload>
-                    </el-form-item>
+                    <el-row>
+                        <el-col :span="6">
+                            <el-form-item label="图标">
+                                <MyUpload v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;"></MyUpload>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="18">
+                            <el-form-item label="相册">
+                                <MyUpload v-model:file-list="coverList" :limit="5" width="180px" height="100px" style="line-height: initial;"></MyUpload>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
 
                     <el-row>
                         <el-col :span="8">
@@ -327,6 +333,13 @@
                         <el-col :span="8">
                             <el-form-item label="首页推荐" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.goodsindex">
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                </el-radio-group>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-form-item label="是否正常" style="margin-bottom: 0;">
+                                <el-radio-group v-model="dataForm.is_normal">
                                     <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
@@ -424,6 +437,7 @@ const dataForm = reactive<any>({
     gift: '0',
     pointshop: '0',
     goodsindex: '0',
+    is_normal: '0',
     is_hot: '0',
     status: '1',
     covers: [],
@@ -473,6 +487,7 @@ const add = () => {
     dataForm.gift = '0'
     dataForm.pointshop = '0'
     dataForm.goodsindex = '0'
+    dataForm.is_normal = '0'
     dataForm.is_hot = '0'
     dataForm.is_xskc = '0'
     dataForm.kc = 0
@@ -537,6 +552,7 @@ const edit = (idx: number, item: any) => {
     dataForm.gift = item.gift.toString()    
     dataForm.pointshop = item.pointshop.toString()
     dataForm.goodsindex = item.goodsindex.toString()
+    dataForm.is_normal = item.is_normal.toString()
     dataForm.is_hot = item.is_hot.toString()
     dataForm.covers = item.covers
     configForm.visible = true
