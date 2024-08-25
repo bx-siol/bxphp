@@ -45,14 +45,11 @@ class UserController extends BaseController
 			$investment = 0;
 		}
 		
-		$project = getConfig("sys_name");
-		if ($project == "Syngenta") {
-			$summoney = Db::table('pro_order log')
+		$summoney = Db::table('pro_order log')
 					->leftJoin('pro_goods c', 'log.gid=c.id')
 					->where("log.uid={$pageuser['id']} and c.is_normal = 1 ")->sum('log.money');
 					
-			$investment += $summoney;
-		}
+		$investment += $summoney;
 		
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
 		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');

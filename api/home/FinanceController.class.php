@@ -216,20 +216,18 @@ class FinanceController extends BaseController
 		if (!$banklog) {
 			ReturnToJson(-1, 'Please bind your bank card first.');
 		}
-		$where = '';
-		$where1 = '';
-		$project = getConfig("sys_name");
-		if ($project == "Syngenta") {
-			$where = ' or is_normal = 1';
-			$where1 = ' or (is_normal = 1 and days != total_days )';
-		}
 
-		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 {$where} ")->find();
+		$pro_order = Db::table('pro_order log')
+					->leftJoin('pro_goods c', 'log.gid=c.id')
+					->where("log.uid={$pageuser['id']} and log.is_give=0 or c.is_normal = 1 ")->find();
 		if (!$pro_order) {
 			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
 
-		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 and days != total_days {$where1} ")->find();
+		$pro_order = Db::table('pro_order log')
+					->leftJoin('pro_goods c', 'log.gid=c.id')
+					->where("log.uid={$pageuser['id']} and log.is_give=0 and log.days != log.total_days or (c.is_normal = 1 and log.days != log.total_days ) ")->find();
+
 		if (!$pro_order) {
 			ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
 		}
