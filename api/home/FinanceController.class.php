@@ -219,14 +219,14 @@ class FinanceController extends BaseController
 
 		$pro_order = Db::table('pro_order log')
 					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and log.is_give=0 or c.is_normal = 1 ")->find();
+					->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->find();
 		if (!$pro_order) {
 			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
 
 		$pro_order = Db::table('pro_order log')
 					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and log.is_give=0 and log.days != log.total_days or (c.is_normal = 1 and log.days != log.total_days ) ")->find();
+					->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
 
 		if (!$pro_order) {
 			ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
