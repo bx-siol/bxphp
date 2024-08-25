@@ -42,7 +42,7 @@ class UserController extends BaseController
 		
 		$investment = Db::table('pro_order log')
 					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and log.is_give=0 or c.is_normal = 1 ")->sum('log.money');
+					->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->sum('log.money');
 		
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
 		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');
