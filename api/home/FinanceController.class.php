@@ -220,8 +220,8 @@ class FinanceController extends BaseController
 		$where1 = '';
 		$project = getConfig("sys_name");
 		if ($project == "Syngenta") {
-			$where = ' or gid in (256,257)';
-			$where1 = ' or (gid in (256,257) and days != total_days )';
+			$where = ' or is_normal = 1';
+			$where1 = ' or (is_normal = 1 and days != total_days )';
 		}
 
 		$pro_order = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 {$where} ")->find();
