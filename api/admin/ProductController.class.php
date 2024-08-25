@@ -270,6 +270,7 @@ class ProductController extends BaseController
 			'pointshop' => $params['pointshop'],
 			'sendnum' => $params['sendnum'],
 			'sendupnum' => $params['sendupnum'],
+			'is_normal' => $params['is_normal'],
 		];
 		try {
 			$model = Db::table('pro_goods');
