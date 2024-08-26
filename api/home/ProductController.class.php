@@ -808,7 +808,7 @@ class ProductController extends BaseController
 				$check_num = Db::table('pro_order log')
 							->leftJoin('pro_goods c', 'log.gid=c.id')
 							->where("log.uid={$pageuser['id']} and ( log.is_give=0 or c.is_normal = 1 )")
-							->count('id');
+							->count('log.id');
 
 				//$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
 				if ($check_num == 0)
