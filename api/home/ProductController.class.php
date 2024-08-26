@@ -805,12 +805,12 @@ class ProductController extends BaseController
 				$this->invest_date_gift($pageuser, $item, $quantity, $pro_order);
 			} else {
 
-				// $check_num = Db::table('pro_order log')
-				// 			->leftJoin('pro_goods c', 'log.gid=c.id')
-				// 			->where("log.uid={$pageuser['id']} and ( log.is_give=0 or c.is_normal = 1 ")
-				// 			->count('id');
+				$check_num = Db::table('pro_order log')
+							->leftJoin('pro_goods c', 'log.gid=c.id')
+							->where("log.uid={$pageuser['id']} and ( log.is_give=0 or c.is_normal = 1 ")
+							->count('id');
 
-				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
+				//$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
 				if ($check_num == 0)
 					$pro_order["p3"] = 1;
 
@@ -983,13 +983,12 @@ class ProductController extends BaseController
 		if (!$wallet1 || !$wallet2) {
 			throw new \Exception('Wallet acquisition exception.');
 		}
-		writeLog('开始','aaaaa');
+
 		//只允许使用充值钱包
 		if (intval($item['buyday']) >= 1) {
 			$w1_money = $discount_total;
 			$w2_money = 0;
 			if (floatval($wallet1['balance']) < $discount_total) {
-				writeLog('555555','aaaaa');
 				ReturnToJson(-1, 'Your balance is insufficient.');
 			}
 		} else {
@@ -999,11 +998,9 @@ class ProductController extends BaseController
 					if ($wallet1['balance'] >= $discount_total) {
 						$w1_money = $discount_total;
 					} else {
-						writeLog('11111','aaaaa');
 						ReturnToJson(-1, 'Your balance is insufficient.');
 					}
 				} else {
-					writeLog('2222','aaaaa');
 					ReturnToJson(-1, 'Your balance is insufficient.');
 				}
 			} else {
@@ -1027,11 +1024,9 @@ class ProductController extends BaseController
 		$pro_order['w2_money'] = $w2_money;
 		Db::table('pro_order')->insertGetId($pro_order);
 		if ($wallet1['balance'] < $w1_money) {
-			writeLog('33333','aaaaa');
 			ReturnToJson(-1, 'Your balance is insufficient.');
 		}
 		if ($wallet2['balance'] < $w2_money) {
-			writeLog('444444','aaaaa');
 			ReturnToJson(-1, 'Your balance is insufficient.');
 		}
 
