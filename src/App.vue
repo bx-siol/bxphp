@@ -70,7 +70,7 @@ onMounted(() => {
 }
 
 .toastBox {
-    background: #64523e !important;
+    background: #cb1a00 !important;
     padding: 1rem !important;
     /* font-size: 1.135rem !important; */
     word-break: break-word !important;

@@ -1,14 +1,9 @@
 <template>
     <div class="register">
         <div class="login_adorn">
-            <div class="deckout">
-                <img :src="ornament">
-                <p>Welcome to join Nestle</p>
-            </div>
-            <div class="deckout2">
-                <img :src="ornament2">
-            </div>
+            <img :src="ornament">
         </div>
+
         <div class="formbox">
             <div class="avatar">
                 <p @click="onLink({ name: 'Login' })"> {{ t('登录') }}</p>
@@ -23,23 +18,20 @@
                         <van-image :src="lock" style="width: 1.5rem;height: 1.5rem;" />
                     </template>
                     <template #button>
-                        <van-button size="mini" type="warning" class="sendCodeBtn" :loading="sendLoading"
-                            @click="onSendCode" plain>
-                            <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
-                                @finish="onTimerFinish" />
+                        <van-button size="mini" type="warning" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
+                            <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss" @finish="onTimerFinish" />
                             <span v-else>{{ t('发送') }}</span>
                         </van-button>
                     </template>
                 </van-field>
 
-                <van-field v-model="dataForm.nickname" :left-icon="useractive" :placeholder="t('请填写昵称')"></van-field>
+                <van-field v-model="dataForm.nickname" :left-icon="nickname" :placeholder="t('请填写昵称')"></van-field>
                 
-                <van-field v-model="dataForm.password_flag" type="password" :left-icon="key"
-                    :placeholder="t('请填写登录密码')"></van-field>
+                <van-field v-model="dataForm.password_flag" type="password" :left-icon="key" :placeholder="t('请填写登录密码')"></van-field>
 
                 <van-field v-model="dataForm.icode"
                     :disabled="(route.query.Icode ? route.query.Icode : (route.query.icode ? route.query.icode : '')) > 0"
-                    :left-icon="verify" :placeholder="t('请填写邀请码')"></van-field>
+                    :left-icon="Inviter" :placeholder="t('请填写邀请码')"></van-field>
                 <van-field v-show="false" v-model="dataForm.imgcode" :placeholder="t('图形验证码')" @keyup.enter="onRegister"
                     style="padding-top: 0;padding-bottom: 0;padding-right: 0;">
                     <template #left-icon>
@@ -51,13 +43,10 @@
                     </template>
                 </van-field>
             </van-cell-group>
-            <!-- <div class="otheraccount">{{ t('已有账号') }}？<a href="javascript:;" @click="onLink({ name: 'Login' })">{{
-                t('立即登录')
-            }}</a> </div> -->
-            <div class="registerBtnWrapper">
-                <van-button class="registerBtn" @click="onRegister">{{
-                    t('注册')
-                }}</van-button>
+            <div class="registerBtnWrapper" @click="onRegister">
+                 <div class="onLogin_btn">
+                    {{ t('注册') }}
+                </div>
             </div>
 
         </div>
@@ -83,18 +72,13 @@ export default defineComponent({
 
 </script>
 <script lang="ts" setup>
-import MyNav from "../../components/Nav.vue";
-import {
-    ico_1, ico_2, ico_3, ico_4, ico_5, ico_6, ico_103, img_yzm
-} from '../../global/assets';
-import useractive from '../../assets/img/login/name3.png';
+import { ico_1, ico_2, ico_3, ico_4, ico_5, ico_6, ico_103, img_yzm } from '../../global/assets';
 import ornament from '../../assets/img/login/ornament.png';
-import ornament2 from '../../assets/img/login/ornament2.png';
-import avatar from '../../assets/img/login/avatar.png';
-import lock from '../../assets/img/login/lock3.png';
 import phone from '../../assets/img/login/lock1.png';
-import verify from '../../assets/img/login/lock4.png';
 import key from '../../assets/img/login/lock2.png';
+import lock from '../../assets/img/login/lock3.png';
+import nickname from '../../assets/img/login/lock4.png';
+import Inviter from '../../assets/img/login/lock5.png';
 import { ref, reactive, toRefs, onMounted } from 'vue';
 import { useStore } from "vuex";
 import { useRoute, useRouter } from 'vue-router';
@@ -241,34 +225,20 @@ onMounted(() => {
     getVcode()
 });
 </script>
-
-<style>
-.accountItem .van-field__label label {
-    font-weight: bold;
-    color: white;
-}
-
-/* .formbox .van-field {
-    background: #0098a2;
-} */
-</style>
 <style scoped lang="scss">
 .formbox .van-field {
     color: #3d3d3d;
-    padding: 0.6rem;
+    padding: 0.4rem;
     border-radius: 8px;
     background-color: transparent;
-    border-bottom: 1px solid #c69c6d;
-}
-.formbox :deep(.van-field__left-icon){
-    height: 1.5rem;
+    border: 1px solid #d7d2d0;
 }
 
 .sendCodeBtn {
     border: none;
     font-weight: bold;
     font-size: 16px;
-    color: #c69c6d;
+    color: #cb1a00;
 }
 
 .register {
@@ -278,100 +248,52 @@ onMounted(() => {
         justify-content: space-around;
         padding-top: 1rem;
 
-        .deckout {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-
-            img {
-                width: 8rem;
-            }
-
-            p {
-                color: #64523e;
-                font-size: 14px;
-                margin-top: 1rem;
-            }
+        img {
+            width: 16rem;
+            height: 3rem;
+            margin: 16vh 0 5vh 0;
         }
-
-        .deckout2 {
-            img {
-                width: 10rem;
-                position: relative;
-                top: 1rem;
-            }
-        }
-
-    }
-
-    :deep(.van-nav-bar) {
-        background-color: transparent;
-    }
-
-    .van-nav-bar {
-        background-color: #1e1e2a;
     }
 
     .avatar {
         width: 100%;
-        height: 6.8rem;
+        height: 3rem;
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
+        margin-bottom: 1rem;
 
 
         p:nth-child(1) {
-            font-weight: bold;
-            color: #808080;
+            font-weight: bold;            
+            color: #d7d2d0;
+            border-bottom: 1px solid #d7d2d0;
+            width: 6rem;
+            text-align: center;
+            padding-bottom: 0.5rem;
         }
 
         p:nth-child(2) {
             font-weight: bold;
-            color: #c69c6d;
-            border-bottom: 2px solid #c69c6d;
+            color: #cd1f14;
+            border-bottom: 1px solid #cd1f14;
+            width: 6rem;
+            text-align: center;
+            padding-bottom: 0.5rem;
         }
     }
 
     .formbox {
-        width: 100%;
-        height: 38rem;
-        padding: 0rem 1rem 1.25rem;
+        width: 90%;
+        margin-left: 5%;
+        height: 25rem;
+        padding: 0 1rem;
         box-sizing: border-box;
-
-        border-radius: 30px 30px 0 0;
-        background: #64523e;
-
-
-        .deckout {
-            position: absolute;
-            top: -2.4rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgb(255, 255, 255, 0.15);
-            height: 2.4rem;
-            width: 80%;
-            border-radius: 8px 8px 0 0;
-        }
-
-        .deckout2 {
-            position: absolute;
-            top: -1.2rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background-color: rgb(255, 255, 255, 0.2);
-            height: 1.2rem;
-            width: 90%;
-            border-radius: 8px 8px 0 0;
-            mix-blend-mode: screen;
-        }
-
-        .van-cell-group {
-            background: transparent;
-
-        }
+        padding-bottom: 1.25rem;
+        border-radius: 15px;
+        background: white;
 
         .van-field {
-
             &.accountItem {
                 :deep(.van-cell__value) {
                     margin-left: 0;
@@ -384,25 +306,26 @@ onMounted(() => {
         }
 
         .registerBtnWrapper {
-            width: 100%;
-            box-sizing: border-box;
             display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin-top: 1.5rem;
 
-            .registerBtn {
-                background: linear-gradient(to right, #c49b6c 20%, #a77d52);
-                color: #fff;
-                border-radius: 6px;
-                margin: 1rem auto 0;
-                width: 80%;
-                font-size: 1rem;
-                border-width: 0;
-                font-weight: bold;
+            .onLogin_btn{
+                background: url(/src/assets/img/login/login_btn.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                height: 2.5rem;
+                width: 16rem;
+                text-align: center;
+                line-height: 2.5rem;
+                color: white;
             }
         }
     }
 
     :deep(.van-field__control) {
-        color: #fff;
+        color: black;
     }
 
     :deep(.van-field__control::-webkit-input-placeholder) {

@@ -90,9 +90,9 @@ img {
 .forgetPass {
     position: relative;
     height: 100%;
-    background: #64523e url(../../assets/img/login/backcloth.jpg);
+    background: url(../../assets/img/login/backcloth.jpg);
     background-repeat: no-repeat;
-    background-size: 100% 40rem;
+    background-size: 100% 100%;
 }
 
 /* .formbox {
@@ -120,7 +120,7 @@ img {
 }
 
 .accountItem .van-field__label label {
-    color: #fff !important;
+    color: black !important;
     font-weight: bold;
 }
 
@@ -138,8 +138,7 @@ img {
 } */
 
 .formbox .van-field__control {
-
-    font-size: 0.9rem;
+    font-size: 0.8rem;
 }
 
 .formbox .botlink {
@@ -150,7 +149,7 @@ img {
 }
 
 .formbox .link_register {
-    color: #fff;
+    color: #000;
 }
 
 .formbox .link_forget {
