@@ -52,15 +52,21 @@ const ping=()=>{
     },pingInterval)
 }
 
-export const createWebsocket=()=>{
+export const createWebsocket=(isTourist?:boolean)=>{
     ws=new WebSocket(store.state.config.ws_url as string)
 
     ws.onopen=()=>{
-        send({
+        let ldata={
             act:'User/login',
-            account:store.state.user.account,
-            token:store.state.token
-        })
+            tourist:isTourist,
+            account:'',
+            token:''
+        }
+        if(!isTourist){
+            ldata.account=store.state.user.account as string
+            ldata.token=store.state.token
+        }
+        send(ldata)
     }
 
     ws.onmessage=async (evt:MessageEvent)=>{
@@ -84,14 +90,10 @@ export const createWebsocket=()=>{
             return false
         }
         if(data.act=='User/login'){//登录成功
+            ping()
             if(data.code==1){
                 store.commit('setWsOk',true)
             }
-            if(data.data.user.gid<42){
-                send({act:'User/joinGroup',group:'admin'})
-            }
-            send({act:'User/joinGroup',group:'ht'})
-            ping()
         }else if(data.act=='User/logout'){//退出登录
             needReConnect=false
         }
