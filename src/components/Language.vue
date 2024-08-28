@@ -2,7 +2,7 @@
     <div v-if="props.showAct" class="switchLan"
         :style="[props.switchLanStyle]">
         <van-button class="showPickerBtn" v-if="props.showIcon" :icon="$store.state.showLanguage ? 'arrow-up' : 'arrow-down'"
-            type="primary" icon-position="right" color="#fff" style="background-color: transparent; padding: 0;border:none;" @click="onAction">
+            type="primary" icon-position="right" style="background-color: transparent; padding: 0;border:none;" @click="onAction">
             {{ dataForm.language_name }}
         </van-button>
         <span :style="props.style" @click="onAction" v-else>
@@ -32,7 +32,6 @@ export default defineComponent({
 import http from "../global/network/http";
 import { useStore } from "vuex";
 import { _alert, lang } from "../global/common";
-import Switchlan from '../assets/img/home/switchlan.png'
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
@@ -98,7 +97,7 @@ onMounted(() => {
 
 actions.value.push({
   lang: 'en',
-  name: 'EN'
+  name: 'English'
 });
 
 actions.value.push({
@@ -127,6 +126,8 @@ if (selectedLang) {
   justify-content: center;
   line-height: 0.75rem;
   font-weight: bold;
+  color: #cb1a00 !important;
+
   :deep(.van-button) {
     background-color: #00b57e;
   }
@@ -139,12 +140,12 @@ if (selectedLang) {
   :deep(.van-button__content) {
     .van-icon-arrow-down {
       font-size: 0.75rem;
-      color: #fff;
+      color: #cb1a00;
     }
 
     .van-icon-arrow-up {
       font-size: 0.75rem;
-      color: #fff;
+      color: #cb1a00;
     }
   }
 }

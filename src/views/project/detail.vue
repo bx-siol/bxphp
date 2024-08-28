@@ -238,7 +238,6 @@ import md5 from "md5";
 import { _alert, lang, cutOutNum } from "../../global/common";
 import http from "../../global/network/http";
 import sold_out from '../../assets/img/project/sold_out.png';
-import chocolate from '../../assets/img/project/chocolate.png';
 
 import bird from '../../assets/ico/bird.png'
 

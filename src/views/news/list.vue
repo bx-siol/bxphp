@@ -49,8 +49,6 @@ import MyListBase from '../../components/ListBase.vue';
 import MyLoading from '../../components/Loading.vue';
 import bird from '../../assets/ico/bird.png'
 import MySwiper from '../../components/Swiper.vue'
-import Newsimg from '../../assets/img/Newsimg.png'
-import rewards from '../../assets/img/home/home-banner-3-1.png'
 import lbt1 from '../../assets/index/lbt1.jpg'
 import lbt2 from '../../assets/index/lbt2.jpg'
 import lbt3 from '../../assets/index/lbt3.jpg'

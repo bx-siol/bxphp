@@ -182,7 +182,7 @@ export const getSrcUrl = (path: string, img: number = 0): string => {
         return ''
     }
     path = path.replace(/^\/|\/$/g, '');
-    let url = location.origin + '/' + path
+    let url = "http://47.76.203.255:801" + '/' + path
 
     return url
 }

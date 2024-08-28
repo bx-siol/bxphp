@@ -38,7 +38,7 @@ import { defineComponent } from 'vue';
 import { Button, Form, Field, Uploader, CellGroup, Image, Icon, Overlay } from 'vant';
 import Nav from "../../components/Nav.vue";
 import Avatar from "../../components/Avatar.vue";
-import nestie from '../../assets/img/home/nestie.jpg'
+import Life_Fitness from '../../assets/img/home/Life-Fitness.png'
 
 export default defineComponent({
     components: {
@@ -129,7 +129,7 @@ const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
 const onError = () => {
-  user.value.headimgurl = nestie; 
+  user.value.headimgurl = Life_Fitness; 
 };
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);

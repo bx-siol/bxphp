@@ -266,11 +266,11 @@ img {
 
 .index_top .headbox {
     padding: 0.6rem 1rem;
-    background-color: #64523e;
+    background-color: white;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
+    box-shadow: 0 1px 4px 0 #c3c3c3;
 }
 
 .index_top .headbox p {
@@ -313,7 +313,7 @@ img {
 }
 
 .index_cer .menubox a {
-    height: 5rem;
+    height: 3rem;
     color: #3d3d3b;
     font-size: 0.8rem;
     text-align: center;
@@ -338,8 +338,8 @@ img {
 }
 
 .index_cer .menubox .van-image {
-    width: 4.5rem;
-    height: 4.5rem;
+    width: 6rem;
+    height: 3rem;
     /* width: 2.75rem;
     height: 2.75rem; */
 }
@@ -384,7 +384,7 @@ img {
     font-weight: bold;
     display: flex;
     align-items: center;
-    color: rgb(182, 140, 96);
+    color: #cb1a00;
 }
 
 .column_title2 img {

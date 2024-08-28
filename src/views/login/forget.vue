@@ -6,7 +6,7 @@
 
         <div class="formbox">
             <van-cell-group>
-                <van-field style="margin-top: 1rem;" class="accountItem" v-model="dataForm.account" :left-icon="lock"
+                <van-field style="margin-top: 1rem;" class="accountItem" v-model="dataForm.account" :left-icon="phone"
                     label="+91" label-width="30" :placeholder="t('请输入手机号')"  maxlength="10"></van-field>
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')">
                     <template #left-icon>
@@ -19,8 +19,8 @@
                         </van-button>
                     </template>
                 </van-field>
-                <van-field v-model="dataForm.password_flag" type="password" :left-icon="lock" :placeholder="t('请填写新密码')"></van-field>
-                <van-field v-model="dataForm.password_check" type="password" :left-icon="lock" :placeholder="t('确认新密码')"></van-field>
+                <van-field v-model="dataForm.password_flag" type="password" :left-icon="lock2" :placeholder="t('请填写新密码')"></van-field>
+                <van-field v-model="dataForm.password_check" type="password" :left-icon="lock2" :placeholder="t('确认新密码')"></van-field>
                 <van-field v-show="false" v-model="dataForm.imgcode" :placeholder="t('图形验证码')" @keyup.enter="onRetrieve" 
                     style="padding-top: 0;padding-bottom: 0;padding-right: 0;">
                     <template #left-icon>
@@ -67,7 +67,9 @@ import { useRouter } from "vue-router";
 import md5 from 'md5'
 import http from '../../global/network/http'
 import ornament from '../../assets/img/login/ornament.png';
-import lock from '../../assets/img/login/lock2.png'
+import phone from '../../assets/img/login/lock1.png'
+import lock2 from '../../assets/img/login/lock2.png';
+import lock from '../../assets/img/login/lock3.png';
 import { _alert, goRoute, lang } from "../../global/common";
 import { isLogin } from "../../global/user";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
@@ -171,12 +173,8 @@ const onRetrieve = () => {
                 getVcode()  //更新图形验证码
                 return
             }
-            _alert({
-                icon: 'success',
-                message: res.msg,
-                onClose: () => {
-                    router.push({ name: 'Login' })
-                }
+            _alert(res.msg, function () {
+                router.push({ name: 'Login' })
             })
         })
     }, delayTime)

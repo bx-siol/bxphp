@@ -400,7 +400,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/finance/reward.vue')
     },
     {
-        path: '/gift/lottery/a3d044b074d37a89',
+        path: '/gift/lottery',
         name: 'Gift_lottery',
         meta: {
             title: 'Lottery',

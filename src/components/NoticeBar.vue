@@ -1,8 +1,6 @@
 <template>
-    <van-notice-bar :scrollable="scrollable" :left-icon="Notice" style="background: transparent;" :color="color"
-        :mode="mode" @click="onNoticeBarClick">
-        <van-swipe vertical :style="{ height: height, lineHeight: height }" :autoplay="autoplay"
-            :show-indicators="false" @change="onNoticeBarChange">
+    <van-notice-bar :scrollable="scrollable" :left-icon="Notice" style="background: transparent;" :color="color" :mode="closeable">
+        <van-swipe vertical :style="{ height: height, lineHeight: height }" :autoplay="autoplay" :show-indicators="false" @change="onNoticeBarChange">
             <van-swipe-item v-for="item in noticeList">{{ item.title }}</van-swipe-item>
         </van-swipe>
         <template #right-icon v-if="slots['right-icon']">
@@ -15,7 +13,6 @@
         :content-style="{ padding: '4%', paddingBottom: '6%' }">
         <div><b>{{ arcItem.title }}</b></div>
         <div style="padding: 0.3rem 0;padding-bottom: 1rem;">
-            <!--            <van-tag plain type="success" style="margin-right: 0.3rem;">{{arcItem.tag}}</van-tag>-->
             <span style="vertical-align: middle;color: #969799;">{{ arcItem.time }}</span>
         </div>
         <div>
@@ -44,7 +41,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import { useSlots, ref, watch, onMounted } from 'vue';
 import { ico_voice } from '../global/assets';
-import Notice from '../assets/img/home/notice.png';
+import Notice from '../assets/img/home/msg.png';
 import { useRouter } from "vue-router";
 
 const slots = useSlots()
@@ -63,7 +60,7 @@ const props = defineProps({
     color: String,
     autoplay: {
         type: Number,
-        default: 3000
+        default: 1500
     },
     mode: { type: String, default: 'link' },
     to: { type: [String, Object] },

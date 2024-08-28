@@ -388,4 +388,6 @@ export default {
     领养: 'adopt',
     领取所有: 'Receive All',
     明天领取: 'Tomorrow',
+    收入天数 :'Earnings Days',
+    登出 :'Sign out',
 }
