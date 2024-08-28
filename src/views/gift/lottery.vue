@@ -1,233 +1,395 @@
 <template>
-    <Page :url="pageUrl" ref="pageRef" @success="onPageSuccess">
-        <template #table="myScope">
-            <el-table-column prop="id" label="ID" width="80"></el-table-column>
-            <el-table-column prop="typename" label="类型"></el-table-column>
-            <el-table-column prop="name" label="名称"></el-table-column>
-            <el-table-column prop="cover" label="图标">
-                <template #default="scope">
-                    <el-image style="width: 100px; height: 100px" :src="imgFlag(scope.row.cover)"
-                        :fit="(scope.row.cover)"></el-image>
-                </template>
-            </el-table-column>
-            <el-table-column prop="probability" label="中奖概率（%）"></el-table-column>
-            <el-table-column prop="from_money" label="最小金额"></el-table-column>
-            <el-table-column prop="to_money" label="最大金额"></el-table-column>
-            <el-table-column prop="goodname" label="产品名称"></el-table-column>
-            <el-table-column prop="couponname" label="奖券名称"></el-table-column>
-            <el-table-column prop="buyAmountStart" label="必中奖起始购买金额"></el-table-column>
-            <el-table-column prop="buyAmountEnd" label="必中奖结束购买金额"></el-table-column>
-            <el-table-column label="操作" width="160">
-                <template #default="scope">
-                    <el-button v-if="power.update" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
-                </template>
-            </el-table-column>
-        </template>
+    <div class="choujiang" style="padding: 0 1rem;">
+        <MyNav leftText=''> </MyNav>
+        <div class="top"> LUCKY DRAW</div>
+        <div class="lotteryNum">There are {{ num }} draws left</div>
+        <div
+            style="height: 22rem; margin-top: 1rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: space-around;">
 
-        <template #layer="{ tdata }">
-            <!--弹出层-->
-            <el-dialog :title="configForm.title" v-model="configForm.visible" :close-on-click-modal="false"
-                :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
-                <el-form :label-width="configForm.labelWidth">
-                    <el-form-item label="奖品名称">
-                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
-                    </el-form-item>
-                    <el-form-item label="图标">
-                        <MyUpload v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;">
-                        </MyUpload>
-                    </el-form-item>
-                    <el-form-item label="购买必中奖">
-                        <el-input size="small" v-model="dataForm.buyAmountStart" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                        &nbsp;&nbsp;至&nbsp;&nbsp;
-                        <el-input size="small" v-model="dataForm.buyAmountEnd" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                    </el-form-item>
-                    <el-form-item label="中奖概率">
-                        <el-input size="small" v-model="dataForm.probability" autocomplete="off" placeholder=""></el-input>
-                    </el-form-item>
-                    <el-form-item label="奖品类型">
-                        <el-radio-group v-model="dataForm.type">
-                            <el-radio :label="1">余额</el-radio>
-                            <el-radio :label="2">产品</el-radio>
-                            <el-radio :label="3">实物</el-radio>
-                            <el-radio :label="4">空</el-radio>
-                            <el-radio :label="5">奖券</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="中奖余额" v-if="dataForm.type == 1">
-                        <el-input size="small" v-model="dataForm.from_money" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                        &nbsp;&nbsp;至&nbsp;&nbsp;
-                        <el-input size="small" v-model="dataForm.to_money" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                    </el-form-item>
-                    <el-form-item label="产品" v-if="dataForm.type == 2">
-                        <el-select size="small" style="width: 100%;" v-model="dataForm.gid" placeholder="选择产品">
-                            <el-option v-for="(item, idx) in tdata.goods" :key="item.id" :label="item.name"
-                                :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="中奖描述" v-if="dataForm.type == 3">
-                        <el-input size="small" v-model="dataForm.remark" autocomplete="off" placeholder=""></el-input>
-                    </el-form-item>
-                    <el-form-item label="奖券" v-if="dataForm.type == 5">
-                        <el-select size="small" style="width: 100%;" v-model="dataForm.coupon_id" placeholder="选择奖券">
-                            <el-option v-for="(item, idx) in tdata.coupons" :key="item.id" :label="item.name"
-                                :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <input type="hidden" v-model="dataForm.id" />
-                        <el-button @click="onDialogClosed">取消</el-button>
-                        <el-button type="primary" @click="save">保存</el-button>
-                    </span>
-                </template>
-            </el-dialog>
-        </template>
+            <div class="rollbox" @click="FlippingOver($event)">
 
-    </Page>
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="rollbox" @click="FlippingOver($event)">
+
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="rollbox" @click="FlippingOver($event)">
+
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="rollbox" @click="FlippingOver($event)">
+
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="rollbox" @click="FlippingOver($event)">
+
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
+
+            <div class="rollbox" @click="FlippingOver($event)">
+
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="lotteryNum" style=" width: 43%; margin-left: 28%; margin-top: 1rem;">Activity Rules</div>
+        <div class="introduce">
+            <p>
+                <!-- <img :src="xx" /> -->
+                <span>1: New members who join for the first time will get 1 lucky draw opportunity.</span>
+            </p>
+            <br />
+            <p>
+                <!-- <img :src="xx" /> -->
+                2: Invite new members to join, and you will receive the corresponding number of draws.
+            </p>
+        </div>
+        <div style="height:15rem;">
+            <img :src="back" />
+        </div>
+    </div>
+    <van-popup v-model:show="showLotteryPop" style="border-radius: 12px;">
+        <div class="LotteryPop" @click="receiveGift">
+            <img :src="result" />
+            <div class="content" v-if="false">{{ tipstr }}</div>
+        </div>
+    </van-popup>
 </template>
-
 <script lang="ts">
-import { defineComponent } from 'vue'
-import Page from '../../components/Page.vue';
-import MyUpload from '../../components/Upload.vue';
-
+import { defineComponent, ref, onMounted, onBeforeMount } from 'vue'
+import { getSrcUrl } from '../../global/common'
+import MyNav from '../../components/Nav.vue'
+import { Grid, GridItem, Tab, Icon, Button, Image, Popup } from 'vant'
+import MyTab from '../../components/Tab.vue'
+import MyNoticeBar from '../../components/NoticeBar.vue'
+import { Swipe, SwipeItem, NoticeBar, Tag, Col, Row } from 'vant'
+import MyPop from '../../components/Pop.vue'
 export default defineComponent({
     components: {
-        Page
-    }
+        MyPop,
+        MyTab,
+        MyNoticeBar,
+        [Grid.name]: Grid,
+        [Tab.name]: Tab,
+        [GridItem.name]: GridItem,
+        [Icon.name]: Icon,
+        [Button.name]: Button,
+        [Image.name]: Image,
+        [Popup.name]: Popup,
+        [Swipe.name]: Swipe,
+        [SwipeItem.name]: SwipeItem,
+        [NoticeBar.name]: NoticeBar,
+        [Col.name]: Col,
+        [Row.name]: Row,
+    },
 })
 </script>
-
 <script lang="ts" setup>
-import { ref, onMounted, reactive, getCurrentInstance } from 'vue';
-import { useStore } from "vuex";
-import { _alert, getSrcUrl } from "../../global/common";
-import http from "../../global/network/http";
-import { checkPower } from '../../global/user';
+import { useStore } from 'vuex'
+import { checkLogin, doLogout, isLogin } from '../../global/user'
+import { useRoute, useRouter } from 'vue-router'
+import { Dialog } from 'vant'
+import http from '../../global/network/http'
+import { _alert, lang } from '../../global/common'
 
-let isRequest = false
+import open from '../../assets/img/lottery/open.png'
+import lottery1 from '../../assets/img/lottery/lottery1.png'
+import xx from '../../assets/img/lottery/xx.png'
+import back from '../../assets/img/lottery/back.png'
+
 const store = useStore()
-const pageRef = ref()
-const insObj = getCurrentInstance()
-const editor = ref()
-const actItem = ref<any>()
-const iconList = ref<any>([])
+const route = useRoute()
+const router = useRouter()
+const pageuser = isLogin()
+const imgFlag = (src: string) => {  
+    return getSrcUrl(src, 1);
+}
 
-const tableData = ref<any>({
-    goods_arr: []
+const FlippingOver = (val: any) => {
+
+    if (val.target.parentNode.parentNode.parentNode.classList.contains('box_rolling')) {
+        return;
+    }
+    startCallback(val)
+}
+
+const showLotteryPop = ref<boolean>(false)
+
+const receiveGift = () => {
+    flipitback();
+    showLotteryPop.value = false
+
+}
+
+const tdata = ref({
+    lottery: 0,
+    notice: {},
+    prize_arr: [],
 })
+const order = ref(0)
+const result = ref('')
+const num = ref(0)
+const tipstr = ref('Thank you')
 
-//权限控制
-const power = reactive({
-    //delete:checkPower('Shop_order_delete'),
-    update: checkPower('Gift_lottery_update'),    
-})
+const startCallback = (val: any) => {
 
-const imgFlag = (src: string) => {
-    return getSrcUrl(src)
+    const delayTime = Math.floor(Math.random() * 1000);
+    setTimeout(() => {
+        http({
+            url: 'c=Gift&a=turntableAct',
+        }).then((res: any) => {
+            if (res.code != 1) {
+                _alert(res.msg)
+                return
+            }
+
+            num.value = res.data.lottery
+            val.target.parentNode.parentNode.parentNode.className += " box_rolling ";
+            tipstr.value = res.data.giftprizelog.prize_name
+            result.value = imgFlag(res.data.giftprizelog.prize_cover)
+
+            showLotteryPop.value = true
+
+            setTimeout(() => {
+                flipitback();
+            }, 1000)
+        })
+    }, delayTime)
 }
 
-const pageUrl = ref('c=Gift&a=lottery')
-const onPageSuccess = (td: any) => {
-    tableData.value = td
+const flipitback = () => {  
+    const rollboxes = document.querySelectorAll('.rollbox');
+
+    rollboxes.forEach(box => {
+        box.classList.remove('box_rolling');
+    });
 }
-
-const configForm = reactive({
-    title: '',
-    width: '800px',
-    labelWidth: '100px',
-    top: '1%',
-    visible: false,
-    isEdit: false
-})
-
-//弹层打开后回调
-const dialogOpened = () => {
-    if (insObj) {
-        editor.value = insObj.refs['editor']
-    }
-    if (configForm.isEdit) {
-
-    } else {
-        editor.value.clear()
-    }
-}
-//弹层关闭后
-const onDialogClosed = () => {
-    iconList.value = [];
-    configForm.visible = false
-}
-const dataForm = reactive<any>({
-    id: 0,
-    type: 0,
-    name: '',
-    cover: [],
-    probability: 0,
-    from_money: 0,
-    to_money: 0,
-    gid: 0,
-    coupon_id: 0,
-    remark: '',
-    buyAmountStart: 0,
-    buyAmountEnd: 0,
-})
-
-const edit = (idx: number, item: any) => {
-    actItem.value = item
-    dataForm.id = item.id
-    dataForm.type = item.type
-    dataForm.name = item.name
-    dataForm.cover = item.cover
-    dataForm.probability = item.probability
-    dataForm.from_money = item.from_money
-    dataForm.to_money = item.to_money
-    dataForm.gid = item.gid
-    dataForm.coupon_id = item.coupon_id
-    dataForm.remark = item.remark,
-        dataForm.buyAmountStart = item.buyAmountStart
-    dataForm.buyAmountEnd = item.buyAmountEnd
-    configForm.visible = true
-    configForm.title = '编辑奖品'
-    configForm.isEdit = true,
-        iconList.value.push({ src: item.cover })
-}
-
-const save = () => {
-    if (iconList.value[0]) {
-        dataForm.icon = iconList.value[0].src;
-        dataForm.cover = iconList.value[0].src;
-    }
-    if (isRequest) {
-        return
-    } else {
-        isRequest = true
-    }
-    const pdata = {}
-    for (let i in dataForm) {
-        pdata[i] = dataForm[i]
-    }
+ 
+onBeforeMount(() => { 
+    // if (!pageuser) { 
+    //     store.state.backurl = route.path
+    //     router.push({ name: 'Login' })
+    //     // console.log(pageuser, 'pageuser的状态');
+    //     return
+    // }
+   
     http({
-        url: 'c=Gift&a=lottery_save',
-        data: pdata
+        url: 'a=notice',
     }).then((res: any) => {
-        isRequest = false
+        if (res.code != 1) {
+            _alert(res.msg)
+            return  
+        }
+        tdata.value.notice = res.data.notice
+    })
+
+    http({
+        url: 'c=Gift&a=turntable',
+        data: { page: 1 }
+    }).then((res: any) => {
         if (res.code != 1) {
             _alert(res.msg)
             return
         }
-        iconList.value = [];
-        configForm.visible = false  //关闭弹层
-        pageRef.value.doSearch()
+        num.value = res.data.user.lottery
+        tdata.value = res.data
+
     })
-}
-
-onMounted(() => {
-
 })
 
+onMounted(() => {
+    // if (!pageuser) {
+    //     store.state.backurl = route.path
+    //     router.push({ name: 'Login' })
+    //     console.log(pageuser, 'pageuser的状态');
+    //     return
+    // }
+})
 </script>
+
+<style scoped>
+.choujiang :deep(.van-popup) {
+    background: none;
+}
+</style>
+<style lang="scss" scoped>
+.choujiang {
+    .top {
+        height: 3rem;
+        text-align: center;
+        font-size: 2.2rem;
+        line-height: 3rem;
+        font-style: italic;
+        color: #64523e;
+        font-weight: bold;
+        margin: 1rem 0 0.5rem 0;
+    }
+
+    .lotteryNum {
+        height: 1.5rem;
+        text-align: center;
+        color: #fff;
+        background-color: #64523e;
+        line-height: 1.5rem;
+        width: 68%;
+        margin-left: 16%;
+        border-radius: 10px;
+        font-size: 0.85rem;
+    }
+
+    .rollbox {
+        position: relative;
+        perspective: 1000px;
+        width: 31%;
+        height: 10rem;
+
+        &_front,
+        &_behind {
+            transform-style: preserve-3d;
+            backface-visibility: hidden;
+            transition-duration: .5s;
+            transition-timing-function: 'ease-in';
+            background: #008080;
+
+            .contentbox {
+                >img {
+                    height: 10rem;
+                }
+            }
+        }
+
+        &_behind {
+            transform: rotateY(180deg);
+            visibility: hidden;
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            right: 0;
+            left: 0;
+        }
+    }
+
+    .box_rolling {
+        .rollbox_front {
+            transform: rotateY(180deg);
+            visibility: hidden;
+        }
+
+        .rollbox_behind {
+            transform: rotateY(360deg);
+            visibility: visible;
+        }
+    }
+
+    .introduce {
+        height: 8rem;
+        margin-top: 1rem;
+        font-size: 0.70rem;
+        color: #64523e;
+
+        p {
+            display: flex;
+            align-items: flex-start;
+            font: 12px/20px "微软雅黑";
+
+            img {
+                width: 0.5rem;
+                margin-top: 0.2rem;
+                margin-right: 0.2rem;
+            }
+        }
+    }
+}
+
+.LotteryPop {
+    width: 18rem;
+    height: 27rem;
+    border-radius: 8px;
+
+    img {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    .content {
+        height: 3rem;
+        width: 15rem;
+        position: absolute;
+        top: 6rem;
+        left: 50%;
+        transform: translateX(-54%);
+        text-align: center;
+        color: #64523e;
+        font-weight: bold;
+        font-size: 1.2rem;
+        word-break: break-all;
+        padding-top: 0.5rem;
+    }
+}
+</style>

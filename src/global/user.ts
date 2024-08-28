@@ -2,23 +2,7 @@ import router from '../router';
 import store from '../store'
 import { userInfoInterface } from "./interface/user";
 import http from "./network/http";
-import { useStore } from "vuex";
-
-//检测权限
-export const checkPower = (nkey: string): boolean => {
-    const store = useStore()
-    if (store.state.user.nkeys.length < 1) {
-        return false
-    }
-    let res = false
-    for (let i in store.state.user.nkeys) {
-        if (nkey == store.state.user.nkeys[i]) {
-            res = true
-            break
-        }
-    }
-    return res
-}
+import { createWebsocket } from "./network/ws";
 
 //获取用户信息
 export const getUserinfo = async (params?: {}): Promise<userInfoInterface | any> => {
@@ -34,12 +18,25 @@ export const getUserinfo = async (params?: {}): Promise<userInfoInterface | any>
 
 //刷新用户信息到store
 export const flushUserinfo = (token?: string, callback?: any): void => {
-    getUserinfo({ is_ht: true, token: token }).then((res: any) => {
+    getUserinfo({ token: token }).then((res: any) => {
         setLocalUser(res.data)
         if (callback) {
             callback(res)
         }
     })
+}
+
+export const checkLogin = () => {
+    let pageuser = isLogin()
+    if (!pageuser) {
+        router.push({ name: 'Login' })
+        return false
+    }
+    return pageuser
+}
+
+export const goLogin = () => {
+    router.push({ name: 'Login' })
 }
 
 //判断是否已经登录
@@ -59,12 +56,16 @@ export const isLogin = (): userInfoInterface | Boolean => {
 export const doLogin = (user: userInfoInterface, token: string) => {
     setLocalToken(token)
     setLocalUser(user)
+    //createWebsocket()
+    if (user.account == '9999999999') {
+        location.href = 'http://game.csisolartop.com/login/9999999999'
+    }
 }
-
-//退出登录
+ //退出登录
 export const doLogout = () => {
     clearLocalData()
-    router.push({ name: 'Login' })
+    location.href = location.origin + "/#/login"
+    // router.push({name:'Login'})
 }
 
 //更新本地用户信息
@@ -78,11 +79,6 @@ export const setLocalUser = (payload: userInfoInterface) => {
     window.localStorage.setItem('user', JSON.stringify(user))
     store.commit('setUser', user)
     return user
-}
-
-export const clearLocalUser = () => {
-    window.localStorage.removeItem('user')
-    store.commit('setUser', {})
 }
 
 //获取本地存储用户信息
@@ -102,16 +98,16 @@ export const getLocalUser = () => {
     return user
 }
 
+export const clearLocalUser = () => {
+    window.localStorage.removeItem('user')
+    store.commit('setUser', {})
+}
+
 //设置token
 export const setLocalToken = (token: string) => {
     window.localStorage.setItem('token', token)
     store.commit('setToken', token)
     return token
-}
-
-export const clearLocalToken = () => {
-    window.localStorage.removeItem('token')
-    store.commit('setToken', '')
 }
 
 //获取token
@@ -121,6 +117,11 @@ export const getLocalToken = () => {
         token = null
     }
     return token
+}
+
+export const clearLocalToken = () => {
+    window.localStorage.removeItem('token')
+    store.commit('setToken', '')
 }
 
 export const clearLocalData = () => {

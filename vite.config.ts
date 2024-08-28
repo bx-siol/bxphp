@@ -1,29 +1,39 @@
 import { defineConfig } from 'vite'
+import * as path from 'path'
 import vue from '@vitejs/plugin-vue'
-import * as path from "path";
-import Components from 'unplugin-vue-components/vite'
-import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
+import legacy from '@vitejs/plugin-legacy'
+import styleImport from 'vite-plugin-style-import'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-    //base: '/ht8888',
+
     base: '/',
     build: {
-        chunkSizeWarningLimit: 1024,
         emptyOutDir: true,
-        outDir: path.resolve() + '/ht8888/'
+        chunkSizeWarningLimit: 1024,
+        outDir: path.resolve() + '/h5/'
     },
     plugins: [
         vue(),
-        // Components({
-        //     resolvers: [ElementPlusResolver()],
-        // })
+        legacy({
+            targets: ['defaults', 'not IE 11']
+        }),
+        styleImport({
+            libs: [
+                {
+                    libraryName: 'vant',
+                    esModule: true,
+                    // resolveStyle: (name) => `vant/es/${name}/style`,
+                    resolveStyle: (name) => `../es/${name}/style/index`,
+                },
+            ],
+        })
     ],
     server: {
-        port: 3001,
+        port: 3000,
         proxy: {
             '/api/': {
-                target: 'http://47.76.203.255:7552/',//'http://8.210.239.216/',//
+                target: 'http://47.76.203.255:801/',//'http://8.210.239.216/',//
                 changeOrigin: true,
                 //rewrite: (path) => path.replace(/^\/api/, '')
             }
