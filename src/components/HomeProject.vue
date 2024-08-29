@@ -6,6 +6,7 @@
           <div class="basicProjectsList">
             <div class="basicItem" v-for="(item, index) in tableData.list" :key="index">
               <div class="detailLeft">
+                
                 <div class="basicItemLeft">
                   <div class="Countdown">
                     <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
@@ -32,7 +33,7 @@
                       </div>
                       <div class="totalrevenue">
                         <span>{{ t('总收入') }}</span>
-                        <span style="color: #cb1a00;">₹{{ cutOutNum(item.days * item.price * item.rate / 100) }}</span>
+                        <span style="color: #cb1a00;">₹{{ (item.days * item.price * item.rate / 100).toFixed(2)  }}</span>
                       </div>
                     </div>
                   </div>                 
@@ -75,7 +76,8 @@ import { useRoute, useRouter } from "vue-router";
 import MyListBase from './ListBase.vue';
 import { getSrcUrl, lang, _alert, cutOutNum } from "../global/common";
 import http from "../global/network/http";
-import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+import { useI18n } from 'vue-i18n'; 
+const { t } = useI18n();
 const now = Date.parse(new Date()) / 1000;
 
 const onFinish = (item: any) => {
@@ -146,7 +148,6 @@ const basicProjects = ref<basicProjects>({
           background: url(../assets/img/project/peroject_bg.png);
           background-repeat: no-repeat;
           background-size:100% 100%;
-          //background-color: black;
 
           .basicItemLeft {
             height: 7.5rem;

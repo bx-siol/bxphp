@@ -2,80 +2,66 @@
   <div class="Projects">
     <van-tabs v-model:active="active" swipe-threshold="2" animated>
       <div v-for="(itemc, indexc) in newsdata">
-        <van-tab :key="indexc" :title="itemc.name"
-          v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name && itemc.id != 1019) > -1">
+        <van-tab :key="indexc" :title="itemc.name" v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name) > -1">
           <div class="basicProjects">
             <div class="basicProjectsList">
               <div v-for="(item, index) in tableData" :key="index">
                 <div v-if="itemc.name == item.category_name" class="basicItem">
-                  <div style="display: flex;">
+                  <div class="detailLeft">
                     <div class="basicItemLeft">
-                      <img :src="imgFlag(item.icon)" class="productImg ">
-                      <img :key="item.key" v-if="item.status == 9" :src="sold_out" class="sold_out">
-                    </div>
-                    <div class="basicItemRight">
+                      <div class="Countdown">
+                        <div class="djs">
+                          <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
+                            <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)">
+                            </van-count-down>
+                          </span>
+                          <span v-if="item.dssj > now" style="position: absolute; right:6px; top: 8px;font-size: 12px;">
+                            <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.dssj)">
+                            </van-count-down>
+                          </span>
+                        </div>
+                      </div>
                       <div class="detail">
-                        <div class="detailLeft">
-                          <div class="name">
-                            {{ item.name }}
-                            <div class="djs">
-                              <span v-if="item.djs > now">
-                                <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"
-                                  style="color:#fff;font-size: 12px;"> </van-count-down>
-                              </span>
-                              <span v-if="item.dssj > now">
-                                <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.dssj)"
-                                  style="color:#fff;font-size: 12px;"> </van-count-down>
-                              </span>
-                            </div>
+                        <img :src="logo" style="height: 1.5rem;width: 7rem;margin: 0.5rem 0;">
+                        <div class="detailLeft_left">
+                          <div class="unitprice">
+                            <span>{{ item.name }}</span>
+                            <span style="color:#cb1a00">₹{{ cutOutNum(item.price) }}</span>
                           </div>
                           <div class="unitprice">
-                            <span v-if="itemc.id == 1019">Points</span>
-                            <span v-else>Unit Price</span>
-                            <span v-if="itemc.id == 1019" style="color:#64503e">{{ cutOutNum(item.price) }} IG</span>
-                            <span v-else style="color:#64503e">₹{{ cutOutNum(item.price) }}</span>
+                            <span>{{ t('收入天数') }}</span>
+                            <span>{{ item.days }} days</span>
                           </div>
                           <div class="dailyearnings">
-                            <span>Daily earnings</span>
-                            <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price/100) }}</span>
-                          </div>
-                          <div class="dailyearnings">
-                            <span>Days</span>
-                            <span style="color:#64503e">{{ item.days }}</span>
+                            <span>{{ t('每日收入') }}</span>
+                            <span>₹{{ cutOutNum(item.price * item.rate / 100) }}</span>
                           </div>
                           <div class="totalrevenue">
-                            <span>Total revenue</span>
-                            <span style="color:#64503e">₹{{ (item.rate * item.price * item.days / 100).toFixed(2)
-                            }}</span>
-                          </div>
-                          <div v-if="false" class="totalrevenue">
-                            <span>Current inventory</span>
-                            <span style="color:#64503e">{{ item.status == 9 ? 0 : item.kc }} </span>
+                            <span>{{ t('总收入') }}</span>
+                            <span style="color: #cb1a00;">₹{{ (item.days * item.price * item.rate / 100).toFixed(2)
+                              }}</span>
                           </div>
                         </div>
-
                       </div>
+                    </div>
+                    <div class="basicItemRight">
+                      <img :src="imgFlag(item.icon)" class="imgs ">
+                      <img v-if="item.status == 9" :src="sold_out" class="sold_out">
                     </div>
                   </div>
 
                   <div class="detailRight" @click="getProjectDetail(item)">
-                    <div class="pay">
-                      <span>buy now</span>
-                    </div>
+                    <img :src="pay" style="height: 1.5rem; width: 1.5rem;">
                   </div>
+
                 </div>
               </div>
             </div>
 
           </div>
         </van-tab>
-
       </div>
-
     </van-tabs>
-
-    <!-- <div v-for="(itemc, indexc) in newsdata  " :key="indexc" >
-    </div> -->
     <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
@@ -83,22 +69,18 @@
 <script lang="ts">
 import { onMounted, ref, defineComponent, onUnmounted, watchEffect, reactive, computed } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Product from '../assets/img/project/product.png';
 import MyListBase from './ListBase.vue';
 import MyLoading from './Loading.vue';
-// import countdown from './countdown.vue'
 import MyTab from "./Tab.vue";
 import http from "../global/network/http";
-import sqimg from '../assets/sq.png';
-import sold_out from '../assets/img/project/sold_out.png'
-
 import { getSrcUrl, goRoute, imgPreview } from "../global/common";
 import { _alert, lang, cutOutNum } from "../global/common";
 import { Tab, Tabs, CountDown } from "vant";
-import { number, time } from "echarts";
 export default defineComponent({
   components: {
     MyListBase,
+    MyLoading,
+    MyTab,
     [Image.name]: Image,
     [Tab.name]: Tab,
     [Tabs.name]: Tabs,
@@ -108,6 +90,13 @@ export default defineComponent({
 </script>
 
 <script lang="ts" setup>
+import { useI18n } from 'vue-i18n';
+import sold_out from '../assets/img/project/sold_out.png'
+import pay from '../assets/img/project/pay.png';
+import logo from '../assets/img/home/home_top.png';
+
+const { t } = useI18n();
+
 const now = Date.parse(new Date()) / 1000;
 
 const onFinish = (item: any) => {
@@ -144,10 +133,7 @@ const getProjectDetail = (item: any) => {
 
 onMounted(() => {
   //自己封装的接口请求方法 aiox
-  const delayTime = Math.floor(Math.random() * 1000);
-  // setTimeout(() => {
   http({
-    //url 就是请求的地址
     url: 'c=Product&a=list',
   }).then((res: any) => {
     if (res.code != 1) {
@@ -164,26 +150,28 @@ onMounted(() => {
     tableData.value = res.data.list
     loadingShow.value = false
   })
-  // }, delayTime)
-
 })
 </script>
+
 <style lang="scss" scoped>
 .Projects {
+  :deep(.van-tabs__wrap) {
+    .van-tabs__nav--line {
+      width: 96% !important;
+      margin-left: 3%;
+    }
+  }
+
+  :deep(.van-tabs__content) {
+      margin-top: 1rem;
+    }
 
   :deep(.van-tab) {
+    padding:  0 0.5rem  !important;
+
     &.van-tab--active {
       position: relative;
       background-color: transparent;
-      // &::after {
-      //     position: absolute;
-      //     bottom: -0.3rem;
-      //     content: ' ';
-      //     border: 2px solid #00b57e;
-      //     width: 1rem;
-      //     border-radius: 6px;
-      //     // border-top: 0.5rem solid ;
-      // }
     }
 
     .van-tab__text {
@@ -220,133 +208,119 @@ onMounted(() => {
     padding-top: 0.425rem;
   }
 
-
-
-
   .basicProjects {
-    // margin-top: 1rem;
-    margin: 1rem 0.6rem 0;
-
     .basicProjectsList {
+      margin-bottom: 2rem;
+
       .basicItem {
+        height: 7.5rem;
         margin-bottom: 1rem;
-        background-color: #fff;
-        border-radius: 8px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         position: relative;
-        box-shadow: 0px 0px 12px 2px rgb(235, 235, 235);
-        padding: 0.4rem 0.8rem 0.8rem;
 
-        .basicItemLeft {
-          width: 6.2rem;
-          height: 6rem;
-          margin: 0.2rem 0.2rem 0.4rem;
-          position: relative;
+        .detailLeft {
+          height: 7.5rem;
+          float: left;
+          width: 88%;
+          background: url(../assets/img/project/peroject_bg.png);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
 
-          .productImg {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            position: relative;
-            left: 50%;
-            transform: translateX(-50%);
-          }
+          .basicItemLeft {
+            height: 7.5rem;
+            padding-left: 3%;
+            width: 44%;
+            float: left;
 
-          .sold_out {
-            position: absolute;
-            z-index: 1;
-            width: 4rem;
-            height: 4rem;
-            opacity: 0.6;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -50%);
-          }
+            .Countdown {
+              position: absolute;
+              height: 2rem;
+              width: 6rem;
+              left: 9rem;
 
-        }
+              span {
+                background: red url(../assets/djs.png) 3px center no-repeat;
+                background-size: 18px;
+                padding: 2px 3px 2px 25px;
+                border-radius: 10px;
 
-        .basicItemRight {
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          flex: 1;
-
-
-          .detail {
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-
-            width: 100%;
-
-            .detailLeft {
-              font-size: 1rem;
-              flex: 1;
-              display: flex;
-              flex-direction: column;
-              justify-content: center;
-              align-items: flex-start;
-
-              .name {
-                font-size: 16px;
-                font-weight: bold;
-                display: flex;
-                align-items: center;
-                padding-bottom: 2px;
-                color: #64503e;
-
-                .djs {
-                  width: 6rem;
-                  height: 2rem;
-                  display: flex;
-                  align-items: center;
-                  justify-content: center;
-                  position: absolute;
-                  top: 0.2rem;
-                  right: -0.5rem;
-                }
-
-                .djs span {
-                  background: #64503e url(/src/assets/djs.png) 3px center no-repeat;
-                  background-size: 18px;
-                  padding: 2px 3px 2px 25px;
-                  border-radius: 10px;
+                .van-count-down {
+                  color: #fff;
                 }
               }
+            }
 
-              &>div {
-                margin-bottom: 0.3125rem;
-                width: 100%;
+            .detail {
+              font-size: 1rem;
+              display: flex;
+              align-items: flex-start;
+              flex-direction: column;
+              justify-content: center;
+              margin-top: 0.2rem;
+
+              .detailLeft_left {
+                font-size: 1rem;
                 display: flex;
-                justify-content: space-between;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                color: #fff;
+                width: 100%;
 
-                span {
-                  font-size: 0.75rem;
-                  font-weight: bold;
-                  color: #222;
-                }
+                &>div {
+                  margin-bottom: 0.3125rem;
+                  width: 100%;
+                  display: flex;
+                  justify-content: space-between;
+                  flex-direction: row;
+                  align-items: center;
 
-                span:first-child {
+                  span:first-child {
+                    font-size: 0.75rem;
+                    white-space: nowrap;
+                    font-weight: normal;
+                  }
 
-                  font-weight: normal;
+                  span {
+                    font-size: 0.75rem;
+                    font-weight: bold;
+                  }
                 }
               }
             }
           }
 
+          .basicItemRight {
+            width: 35%;
+            height: 7.5rem;
+            float: left;
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            margin-left: 15%;
+
+            .sold_out {
+              position: relative;
+              z-index: 1;
+              width: 4rem;
+              height: 4rem;
+              opacity: 0.6;
+              left: -47%;
+              top: 29%;
+              transform: translate(-50%, -50%);
+            }
+          }
         }
 
         .detailRight {
+          width: 10%;
+          height: 7.5rem;
+          margin-left: 2%;
+          background-color: black;
           display: flex;
-          justify-content: center;
           align-items: center;
-          padding: 0.3rem;
-          background: linear-gradient(to bottom, #c49b6c 20%, #a77d52);
-          border-radius: 1rem;
-          color: #fff;
+          justify-content: space-around;
         }
       }
     }

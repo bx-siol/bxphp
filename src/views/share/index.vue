@@ -3,7 +3,7 @@
         <MyNav></MyNav>
         <div style="text-align: center;" class="invite_wrap">
             <div class="qrcode">
-                <!-- <van-image :src="imgFlag(tdata.qrcode)" @click="onPreview(tdata.qrcode)"></van-image> -->                
+                <!-- <van-image :src="imgFlag(tdata.qrcode)" @click="onPreview(tdata.qrcode)"></van-image> -->
                 <vue-qrcode :value="montage.urls"></vue-qrcode>
             </div>
             <div class="idbox">
@@ -76,16 +76,16 @@ const montage = computed(() => {
 onMounted(() => {
     const delayTime = Math.floor(Math.random() * 1000);
     // setTimeout(() => {
-        http({
-            url: 'c=Share&a=index'
-        }).then((res: any) => {
-            tdata.value = res.data
-            copy(linkCopyRef.value.$el, {
-                text: (target: HTMLElement) => {
-                    return montage.value.urls.toLocaleLowerCase()
-                }
-            })
+    http({
+        url: 'c=Share&a=index'
+    }).then((res: any) => {
+        tdata.value = res.data
+        copy(linkCopyRef.value.$el, {
+            text: (target: HTMLElement) => {
+                return montage.value.urls.toLocaleLowerCase()
+            }
         })
+    })
     // }, delayTime)
 
 })
@@ -94,5 +94,19 @@ onMounted(() => {
 <style scoped>
 * {
     text-transform: none !important;
+}
+</style>
+<style scoped lang="scss">
+.invite {
+    .copyLinkBtn {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        background: url(/src/assets/img/login/login_btn.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        width: 16rem;
+        font-weight: bold;
+    }
 }
 </style>

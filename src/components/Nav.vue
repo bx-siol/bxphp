@@ -1,7 +1,7 @@
 <template>
     <van-nav-bar class="myNavBar" :fixed="fixed" :placeholder="fixed">
         <template #title>
-            <div :style="{ color: foregroundColor }">
+            <div :style="{ color: foregroundColor,'font-weight': 'bold' }">
                 <slot name="title">{{ topTitle }}</slot>
             </div>
         </template>
@@ -36,7 +36,7 @@ export default defineComponent({
 import { useRoute, useRouter } from "vue-router"
 import { ref, reactive } from "vue"
 
-const foregroundColor = ref('#898989')  //前景色
+const foregroundColor = ref('#ca0e00')  //前景色
 
 const route = useRoute()
 const router = useRouter()
@@ -90,10 +90,12 @@ const onLeftClick = () => {
 
 <style>
 .myNavBar .van-nav-bar {
-    background-color: rgb(100, 82, 62);
+    background-color: white;
     max-width: 640px;
     margin: 0 auto;
     right: 0;
+    color: #cb1a00;
+    box-shadow: 0 1px 4px 0 #c3c3c3;
 }
 
 /* .myNavBar .van-nav-bar{background-color: #0098a2;max-width: 640px;margin: 0 auto;right: 0;} */

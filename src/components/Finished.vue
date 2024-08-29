@@ -51,7 +51,6 @@
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Product from '../assets/img/project/product.png';
 import MyListBase from './ListBase.vue';
 import MyLoading from './Loading.vue';
 import MyTab from "./Tab.vue";
@@ -91,13 +90,6 @@ const onPageSuccess = (res: any) => {
 const goFinishedProjectDetail = (item: finishedProject) => {
   router.push({ name: 'Project_detail', params: { pid: item.id } })
 }
-
-
-
-const finishedProjects = ref<Array<finishedProject>>([
-  { id: 1, img: Product, name: 'CS3Y-MB-AG', totalRevenue: '1,000', dailyEarnings: '15', returRate: '200%', projectCycle: '45 Day' },
-
-])
 </script>
 <style lang="scss">
 .Finished {

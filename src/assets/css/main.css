@@ -1031,7 +1031,6 @@ img {
     /* padding: 0 4%; */
     padding: 0 1.25rem;
     font-size: 0.875rem;
-    height: 100%;
 }
 
 .recharge_wrap .balance {}
@@ -1055,7 +1054,7 @@ img {
 }
 
 .recharge_wrap .payway {
-    margin-top: 1.25rem;
+    margin-top: 1rem;
 }
 
 .recharge_wrap .payway .van-cell-group {
@@ -1081,10 +1080,9 @@ img {
 .recharge_wrap .submitBtn {
     border-radius: 4px;
     display: block;
-    background: #bf9567;
     border: 0;
     width: 14rem;
-    margin: 1.5rem auto 0;
+    margin: 1rem auto 0;
     padding: 0;
     height: 2.4rem;
     font-size: 0.9rem;
@@ -1136,9 +1134,8 @@ img {
 
 }
 
-.recharge_wrap .payinfo li span {
-    color: #002544;
-    font-weight: bold;
+.recharge_wrap .payinfo li div {
+    color: black;
     margin-bottom: 0.2rem;
     white-space: nowrap;
 }

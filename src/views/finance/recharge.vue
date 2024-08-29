@@ -1,82 +1,68 @@
 <template>
     <div class="recharge">
         <MyNav leftText=''> 
-            <template #right>
+            <!-- <template #right>
                 <span @click="onLink({ name: 'Finance_rechargelog' })">Record</span>
-            </template>
+            </template> -->
         </MyNav>
         <div class="recharge_wrap">
-            <div style="margin-top: 1.5rem">
+            <div style="height: 2rem;background-color: #ca0e00;border-radius: 20px;display: flex;color: white;align-items: center;justify-content: space-between;padding: 0 1rem;font-weight: bold;margin-top: 1rem;">
+                <div>Current Balance</div>
+                <div>₹ {{wallet.balance}}</div>
+            </div>
+            <van-field class="fieldbox" v-model="money" @keyup="onKyupAmount" :placeholder="t('请输入金额')" style="font-size: 1rem;"></van-field>
+            <div style="margin-top: 1rem">
                 <ul class="payItemBox">
-                    <li :class="itemIdx == idx ? 'on' : ''" v-for="(vo, idx) in payItems"
-                        @click="onclickPayItem(idx, vo.toString())">{{ vo + 'RS' }}</li>
+                    <li :class="itemIdx == idx ? 'on' : ''" v-for="(vo, idx) in payItems" @click="onclickPayItem(idx, vo.toString())">{{ vo + 'RS' }}</li>
                 </ul>
             </div>
-            <van-field class="fieldbox" v-model="money" @keyup="onKyupAmount" :placeholder="t('请输入金额')"
-                style="font-size: 1rem;"></van-field>
-            <van-button class="submitBtn" @click="onSubmit"
-                style="background-color: rgb(191,149,103);color: #fff;height: 2.25rem;">
-                {{ t('充值') }}</van-button>
 
-
-            <div style="margin-top: 2rem;" class="title">
-                <b>Payment channel</b>
+            <div class="submitBtn" @click="onSubmit">
+                <div class="onbtn">
+                    {{ t('充值') }}
+                </div>
             </div>
 
-
-
+            <div style="margin-top: 1rem;display: flex;align-items: center;" class="title">
+                <img :src="pay118" style="width: 0.4rem;height: 1.3rem;" />
+                <b style="margin-left: 0.5rem;font-size: 1rem;">Payment channel</b>
+            </div>
             <div class="payway">
                 <div style="width: 100%;" class="notice">
-                    <van-radio-group style="width: 100%;" v-model="checked">
-                        <van-cell-group style="font-size: 1.2rem;">
-                            <van-cell v-for="item in ptypeArr" @click="checked = item.id">
-                                <template #title>
-                                    <div style="display: flex;align-items: center;" class="van-cell__title">
-                                        <i style="width: 19.2px;height: 24px;margin-bottom: -4px;margin-right: 10px;"
-                                            class="van-badge__wrapper van-icon van-cell__left-icon">
-                                            <img class="" :src="dpimg"> </i>
-                                        <span class="Selected"
-                                            :style="{ 'color': (checked == item.id ? '#ff0000' : '#827977') }">{{
-                                                item.name
-                                            }}</span>
-                                    </div>
-                                </template>
-                                <template #right-icon>
-                                    <van-radio :name="item.id" checked-color="#ff0000" icon-size="16px" />
-                                </template>
-                            </van-cell>
-                        </van-cell-group>
+                    <van-radio-group style="display: flex; flex-wrap: wrap;min-width: 100%; justify-content: space-between;" v-model="checked">
+                        <div class="paytype" :class="{ checked: (item.id == checked) }" v-for="(item, index) in ptypeArr" :key="index" @click="checked = item.id">
+                            <b style="color: #ca0e00;">{{ (index + 1).toString().padStart(2, '0') }}</b>
+                            <div class="vertical-line"></div>
+                            {{ item.name }}
+                        </div>
                     </van-radio-group>
                 </div>
             </div>
-
-
             <div class="payway">
                 <div class="title">
-                    <!-- <img :src="hexagon" style="width: 13px;  display: inline; margin-right: 0.5rem ;"> -->
-                    <b>Note: </b>
+                    <img :src="pay118" style="width: 0.4rem;height: 1.3rem;" />
+                    <b style="margin-left: 0.5rem;font-size: 1rem;">Recharge Notice</b>
                 </div>
-
-
             </div>
             <div class="rechargeNotice">
-
                 <div class="noticeList">
                     <div class="noticeListItem">
-                        <span>1. The minimum deposit amount is 100RS</span>
+                        <span>1. The minimum recharge amount is 500RS</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>2. Confirm the recharge amount and fill in the UTR number correctly</span>
+                        <span>2. Enter the recharge amount as an integer</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>3. Each time you recharge, you need to go to the cashier to obtain the payment account number again. Please do not save the historical account recharge</span>
+                        <span>3. The payment amount must be the same as the recharge amount</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>4. After the payment is completed, the account will arrive within 10 minutes</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>5. If the recharge has not arrived, please log in to your account again or contact your customer service manager</span>
                     </div>
                 </div>
             </div>
-
-        </div>
-        <div v-if="vshow">
-            <!-- <Service v-if="vshow" @doService="doService" /> -->
         </div>
     </div>
 
@@ -110,6 +96,7 @@ export default defineComponent({
 <script lang="ts" setup>
 import { doLogin, getUserinfo, isLogin, setLocalToken, setLocalUser } from "../../global/user";
 import dpimg from '../../assets/img/dp.png';
+import pay118 from '../../assets/ico/118.png';
 
 import { _alert, lang, copy, getSrcUrl,goRoute } from "../../global/common";
 import { ref, reactive, onMounted, onBeforeUnmount, onBeforeMount, nextTick } from 'vue';
@@ -119,12 +106,18 @@ import md5 from "md5";
 import { useStore } from "vuex";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
-
 const showPicker = ref<boolean>(false)
-
-const imgFlag = (src: string) => {
-    return getSrcUrl(src, 1)
-}
+let isRequest = false
+const loadingShow = ref(false)
+const router = useRouter()
+const wallet = ref({})
+const checked = ref(0)
+const ptypeArr = ref([])
+const payItems = ref([])
+const vshow = ref(true)
+const itemIdx = ref(-1)
+const money = ref('')
+const store = useStore()
 
 const onLink = (to: any) => {
     goRoute(to)
@@ -138,22 +131,6 @@ const onConfirm = (value: string) => {
     showPicker.value = false
 };
 
-const doService = () => {
-    console.log('im service')
-}
-
-let isRequest = false
-const loadingShow = ref(false)
-const router = useRouter()
-const wallet = ref({})
-
-const checked = ref(0)
-const ptypeArr = ref([])
-const payItems = ref([])
-const vshow = ref(true)
-const itemIdx = ref(-1)
-const money = ref('')
-
 const onclickPayItem = (idx: number, mval: any) => {
     itemIdx.value = idx
     money.value = mval
@@ -163,7 +140,6 @@ const onKyupAmount = () => {
     money.value = money.value.replace(/\D/g, '');
     itemIdx.value = -1
 }
-const store = useStore()
 
 const onSubmit = () => {
     if (isRequest) {
@@ -218,67 +194,53 @@ const onRemember = (ev: any) => {
         window.localStorage.removeItem('remember')
     } else {
         let member = { account: '', password: '' }
-
         member.account = '1234567890'
         member.password = '123456.'
-
         window.localStorage.setItem('remember', JSON.stringify(member))
     }
 }
 const init = () => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    // setTimeout(() => {
-        http({
-            url: 'c=Finance&a=recharge'
-        }).then((res: any) => {
-            wallet.value = res.data.wallet
-            ptypeArr.value = res.data.pay_types
-
-
-            ptypeArr.value.forEach(item => {
-                columns.value.push(item.name)
-            })
-            result.value = ptypeArr.value[0].name
-            payItems.value = res.data.pay_items
-            if (res.data.pay_types && res.data.pay_types.length > 0) {
-                checked.value = res.data.pay_types[0].id
-            }
+    http({
+        url: 'c=Finance&a=recharge'
+    }).then((res: any) => {
+        wallet.value = res.data.wallet
+        ptypeArr.value = res.data.pay_types
+        ptypeArr.value.forEach(item => {
+            columns.value.push(item.name)
         })
-    // }, delayTime)
-
+        result.value = ptypeArr.value[0].name
+        payItems.value = res.data.pay_items
+        if (res.data.pay_types && res.data.pay_types.length > 0) {
+            checked.value = res.data.pay_types[0].id
+        }
+    })
 }
 
 onBeforeMount(() => {
     if (location.href.indexOf('?id=9999999999') > 0) {
         vshow.value = false;
-        const delayTime = Math.floor(Math.random() * 1000);
-        // setTimeout(() => {
-            http({
-                url: 'a=login',
-                data: {
-                    account: 'avxttest9999999999',
-                    password: md5('123456.'),
-                }
-            }).then((res: any) => {
-                if (res.code != 1) {
-                    isRequest = false
-                    _alert(res.msg)
-                    return
-                }
-                getUserinfo({ token: res.data.token }).then((res2: any) => {//因为设置了拦截器，回调内必然是调用成功的
-
-                    setLocalToken(res.data.token)
-                    setLocalUser(res2.data)
-
-                    //doLogin(res2.data, res.data.token)
-                    onRemember(true)
-                    init()
-                })
+        http({
+            url: 'a=login',
+            data: {
+                account: 'avxttest9999999999',
+                password: md5('123456.'),
+            }
+        }).then((res: any) => {
+            if (res.code != 1) {
+                isRequest = false
+                _alert(res.msg)
+                return
+            }
+            getUserinfo({ token: res.data.token }).then((res2: any) => {//因为设置了拦截器，回调内必然是调用成功的
+                setLocalToken(res.data.token)
+                setLocalUser(res2.data)
+                onRemember(true)
+                init()
             })
-        // }, delayTime)
-
+        })
     }
 })
+
 onMounted(() => {
     if (vshow.value != false)
         init()
@@ -299,145 +261,230 @@ onMounted(() => {
 
 
 <style lang="scss" scoped>
-.recharge_wrap .fieldbox {
-    margin-top: 2.5rem;
-}
-
-.recharge_wrap .title {
-    color: #000;
-}
-
-.recharge_wrap .payway .van-cell {
-    padding: 0.5rem 0px !important;
-}
-
 .recharge {
     position: relative;
     min-height: 100%;
     background: #fff;
     color: #3d3d3b;
     height: 100%;
-}
 
-.recharge .van-radio__icon--checked .van-icon {
-    background-color: #0098a2;
-    border-color: #0098a2;
-}
-
-.van-cell:after {
-    border-color: #c8d0dc !important;
-}
-
-.payItemBox {
-    text-align: left;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-
-    &:after {
-        content: '';
-        height: 0;
-        width: 5rem;
-        margin: 0.3rem 0;
-        padding: 0 0.5rem;
-    }
-}
-
-.payItemBox li {
-    color: #4d4d4d;
-    font-weight: bold;
-    text-align: center;
-    border: 1px solid #8e8b8b;
-    width: 5rem;
-    margin: 0.3rem 0;
-    display: inline-block;
-    line-height: 2rem;
-    padding: 0 0.5rem;
-    border-radius: 4px;
-}
-
-.payItemBox li.on {
-    background: rgb(100, 82, 62);
-    color: rgb(224, 224, 224);
-}
-
-.payway {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    .notice {
-        display: flex;
-        align-items: center;
-
-        .noticeText {
-            font-size: 0.875rem;
-        }
-
-        .Selected {
-            font-size: 16px;
-            font-weight: bold;
-        }
-
-        .dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            background: #000;
-            border-radius: 50%;
-            margin-right: 0.375rem;
-        }
+    .van-radio__icon--checked .van-icon {
+        background-color: #0098a2;
+        border-color: #0098a2;
     }
 
-    .showPickerBtn {
-        height: 1.25rem;
-        width: 6rem;
+    .recharge_wrap{
 
-    }
-}
+        .fieldbox {
+            margin-top: 1rem;
+            border: none;
+            border-bottom: 1px solid #ca0e00;
+            background-color: #d9d9d9;
+            border-radius: 10px 10px 0 0 ;
+            line-height: 2rem;
 
-.rechargeNotice {
-    margin-top: 1.25rem;
-
-    .notice {
-        display: flex;
-        align-items: center;
-
-        .noticeText {
-            font-size: 0.875rem;
+            ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                color: white;
+                opacity:  1;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            ::-moz-placeholder { /* Mozilla Firefox 19+ */
+                color: white;
+                opacity:  1;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            ::placeholder { /* Most modern browsers support this now. */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }            
         }
 
-        .dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            background: #000;
-            border-radius: 50%;
-            margin-right: 0.375rem;
+        .submitBtn {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+
+            .onbtn{
+                background: url(/src/assets/img/login/login_btn.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                height: 2.5rem;
+                width: 16rem;
+                text-align: center;
+                line-height: 2.5rem;
+                color: white;
+            }
+        }
+
+        .title {
+            color: #000;
+            display: flex;
+            align-items: center;
+        }
+
+        .payway{            
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            
+            .van-cell {
+                padding: 0.5rem 0px !important;
+                font-size: 1.2rem;
+                line-height: 2rem;
+            }
+
+            .van-radio__icon .van-icon {
+                width: 1.5rem;
+                height: 1.5rem;
+                line-height: 1.5rem;
+            }
+
+            .notice {
+                display: flex;
+                align-items: center;
+                font-size: 1rem;
+
+                .noticeText {
+                    font-size: 0.875rem;
+                }
+
+                .Selected {
+                    font-size: 16px;
+                    font-weight: bold;
+                }
+
+                .dot {
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    background: #000;
+                    border-radius: 50%;
+                    margin-right: 0.375rem;
+                }
+
+                .paytype{
+                    color: #b3b3b3;
+                    font-weight: 700;
+                    border-radius: 4px;
+                    width: 40%;
+                    padding: 0.5rem 0.6rem;
+                    display: flex;
+                    align-items: center;
+
+                    .vertical-line {
+                        height: 1rem; /* 设置线的高度 */
+                        border-left: 1px solid #ca0e00; /* 设置左边框为竖线 */
+                        margin: 0 0.4rem 0 0.2rem;
+                    }
+                }
+                
+                .checked {
+                    background: #ca0e00;
+                    color: white;
+                    border-color: #ca0e00;
+
+                    > b{
+                        color: white !important;
+                    }
+
+                    .vertical-line{
+                        border-left: 1px solid white; /* 设置左边框为竖线 */
+                    }
+
+                }
+            }
+
+            .showPickerBtn {
+                height: 1.25rem;
+                width: 6rem;
+
+            }
+        }
+                
+        .payItemBox {
+            text-align: left;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+
+            &:after {
+                content: '';
+                height: 0;
+                width: 5rem;
+                margin: 0.3rem 0;
+                padding: 0 0.5rem;
+            }
+
+            li {
+                color: #4d4d4d;
+                font-weight: bold;
+                text-align: center;
+                border: 1px solid #dbd8d8;
+                width: 5rem;
+                margin: 0.3rem 0;
+                display: inline-block;
+                line-height: 2rem;
+                padding: 0 0.5rem;
+                border-radius: 4px;
+            }
+
+            li.on {
+                background: #ca0e00;
+                border: 1px solid #ca0e00;
+                color: white;
+            }
+        }
+
+        .rechargeNotice {
+            .notice {
+                display: flex;
+                align-items: center;
+
+                .noticeText {
+                    font-size: 0.875rem;
+                }
+
+                .dot {
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    background: #000;
+                    border-radius: 50%;
+                    margin-right: 0.375rem;
+                }
+            }
+
+            .noticeList {
+                .noticeListItem {
+                    line-height: 20px;
+                    margin-top: 0.5rem;
+                    font-size: 0.75rem;
+                    font-weight: 600;
+                }
+            }
         }
     }
 
-    .noticeList {
-        .noticeListItem {
-            line-height: 20px;
-            margin-top: 0.75rem;
-        }
+    .van-cell:after {
+        border-color: #c8d0dc !important;
     }
-}
-
-.recharge_wrap .payway .van-cell {
-    padding: 1rem 0;
-    font-size: 1.2rem;
-    line-height: 2rem;
-}
-
-.recharge_wrap .payway .van-radio__icon .van-icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    line-height: 1.5rem;
-}
-
-.fieldbox {
-    line-height: 2rem;
 }
 </style>

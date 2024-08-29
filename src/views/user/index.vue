@@ -55,7 +55,7 @@
             </div>
             <div class="home_list">
                 <van-cell-group>
-                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
+                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }" v-if="false"></van-cell>
                     <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2" v-if="false"></van-cell>
                     <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox" :to="{ name: 'Setting_bank' }"></van-cell>
@@ -106,8 +106,6 @@ import invitationlink from '../../assets/img/user/invitationlink.png';
 import myteam from '../../assets/img/user/myteam.png';
 import bonus from '../../assets/img/user/bonus.png';
 import app from '../../assets/img/user/app.png';
-import pocketbook from "../../assets/img/user/pocketbook.png";
-import Balancewallet from "../../assets/img/user/Balancewallet.png";
 import coupon from "../../assets/img/user/coupon.png";
 import coupon2 from "../../assets/img/user/coupon2.png";
 import Service from "../../assets/img/user/Service.png";

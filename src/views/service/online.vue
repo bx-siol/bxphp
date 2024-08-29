@@ -6,8 +6,7 @@
             <div style="text-align: center;padding: 3% 4%;">
                 <div style="padding-bottom: 0.5rem;font-size: 1.2rem;">{{ item.name }}</div>
                 <div>
-                    <van-image :src="imgFlag(item.qrcode)" @click="imgPreview(item.qrcode)" width="15rem"
-                        style="min-height: 15rem;" />
+                    <van-image :src="imgFlag(item.qrcode)" @click="imgPreview(item.qrcode)" width="15rem" style="min-height: 15rem;" />
                 </div>
                 <div style="font-weight: bold;font-size: 1.2rem;line-height: 2rem;text-decoration:underline;">
                     <template v-if="item.name == 'Telegram'">

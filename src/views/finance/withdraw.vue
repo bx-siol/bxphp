@@ -1,135 +1,79 @@
 <template>
     <div class="recharge">
         <MyNav leftText=''>
-            <template #right>
+            <!-- <template #right>
                 <span @click="onLink({ name: 'Finance_withdrawlog' })">Record</span>
-            </template>
+            </template> -->
         </MyNav>
         <div class="recharge_wrap">
-            <div class="balances" v-if="false">
-                <div style="display: flex;align-items: center;">
-                    <img :src="qb">
-                    <p class="balance">{{ t('余额') }}</p>
-                </div>
-                <span>₹ {{ wallet.balance }}</span>
+            <div style="height: 2rem;background-color: #ca0e00;border-radius: 20px;display: flex;color: white;align-items: center;justify-content: space-between;padding: 0 1rem;font-weight: bold;margin-top: 1rem;">
+                <div>Current Balance</div>
+                <div>₹ {{wallet.balance}}</div>
             </div>
-
-            <div>
-
-                <div class="payinfo" style="margin-top: 1rem;">
-                    <p class="tit">{{ t('银行账户') }}</p>
-                    <ul>
-                        <!-- <li><span>{{ dataForm.money * tar / 100 }}RS</span>{{ t('税收') }}</li>
-                        <li><span>{{ tar }}%</span>{{ t('费用比率') }}</li>
-                        <li><span>{{ min }} RS</span>{{ t('最小提现金额') }}</li>
-                        <li><span>{{ max }} RS</span>{{ t('最大提现金额') }}</li> -->
-                        <li><span>{{ t('银行名称') }}</span> <span>{{ banklog.bank_name }}</span> </li>
-                        <li><span>{{ t('真实姓名') }}</span> <span>{{ banklog.realname }}</span> </li>
-                        <li><span>{{ t('银行账号') }}</span> <span>{{ banklog.account }}</span></li>
-                        <li><span>{{ t('IFSC ') }} </span> <span>{{ banklog.ifsc }}</span> </li>
-                        <li>
-                            <span style="color:#6e523e;">{{ t('账户余额') }} </span>
-                            <span style="color:#6e523e;">{{ wallet.balance }}</span>
-                        </li>
-                        <li><span style="color:#6e523e;">{{ t('Quantity') }}: </span>
-                            <span style="font-size: 12px;">Withdrawal Handling Fee({{ tar }}%):
-                                {{ (dataForm.money * tar / 100).toFixed(2) }} RS</span>
-                        </li>
-                    </ul>
-                </div>
-                <div style="display: flex;align-items: center;">
-                    <van-field class="fieldbox" v-model="dataForm.money" :placeholder="t('请输入金额')"
-                        style="background-color:#fff ;">
-                        <template #left-icon>
-                            <van-image :src="jb" style="width: 1.4rem;height: 1.4rem;margin-left: 0.5rem;" />
-                        </template>
-                        <template #button>
-                            <van-button size="small" type="primary" color="#bf9567" style="border-radius:4px;"
-                                @click="onClickAll">ALL</van-button>
-                        </template>
-                    </van-field>
-                </div>
-                <div class="withdrawInfo">
-                    <div class="notice">
-                        <span class="noticeText">PaymentPassword:</span>
-                    </div>
-                </div>
-                <van-field class="fieldbox" v-model="password2" :placeholder="t('请输入提现密码')"
-                    :type="showPassword ? 'text' : 'password'"
-                    style="height: 1.75rem;font-size: 0.75rem;margin-top: 0.875rem;">
-                    <template #right-icon>
-                        <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6" @click="showPassword = false"></van-icon>
-                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
-                    </template>
-                </van-field>
-                <van-button class="submitBtn" @click="onSubmit">{{ t('提现') }}</van-button>
+            <van-field class="fieldbox_money" v-model="dataForm.money" :placeholder="t('请输入金额')" style="font-size: 1rem;"></van-field>
+            <div class="payinfo" style="margin-top: 1rem;">
+                <ul>
+                    <li>
+                        <div style="width: 5rem;">{{ t('银行名称') }}</div> 
+                        <div style="width: 100%;text-align: right;">{{ banklog.bank_name }}</div>
+                     </li>
+                    <li>
+                        <div style="width: 5.5rem;">{{ t('真实姓名') }}</div>
+                        <div style="width: 100%;text-align: right;">{{ banklog.realname }}</div>
+                    </li>
+                    <li>
+                        <div style="width: 6rem;">{{ t('银行账号') }}</div>
+                        <div style="width: 100%;text-align: right;">{{ banklog.account }}</div>
+                    </li>
+                    <li>
+                        <div style="width: 2.2rem;">{{ t('IFSC ') }}</div>
+                        <div style="width: 100%;text-align: right;">{{ banklog.ifsc }}</div>
+                    </li>
+                    <!-- <li>
+                        <div style="color:#ca0e00;">{{ t('Quantity') }}:</div>
+                        <div style="font-size: 12px;">Withdrawal Handling Fee({{ tar }}%): {{ (dataForm.money * tar / 100).toFixed(2) }} RS</div>
+                    </li> -->
+                </ul>
             </div>
+            <van-field class="fieldbox" v-model="password2" :placeholder="t('请输入提现密码')" :type="showPassword ? 'text' : 'password'"
+                style="height: 1.75rem;font-size: 0.75rem;margin-top: 0.875rem;">
+                <template #right-icon>
+                    <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6" @click="showPassword = false"></van-icon>
+                    <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
+                </template>
+            </van-field>
 
-            <div class="withdrawInfo" v-if="false">
-                <div style="width: 100%;" class="notice">
-                    <van-radio-group style="width: 100%;" v-model="checked">
-                        <van-cell-group style="font-size: 1.2rem;">
-                            <van-cell v-for="item in ptypeArr" @click="checked = item.id">
-                                <template #title>
-                                    <div style="text-align: left;" class="van-cell__title">
-                                        <i style="width: 19.2px;height: 24px;margin-bottom: -4px;margin-right: 10px;"
-                                            class="van-badge__wrapper van-icon van-cell__left-icon">
-                                            <img class="" :src="dpimg"> </i>
-                                        <span :style="{ 'color': (checked == item.id ? '#ec8655' : '#000') }">{{
-                                            item.name
-                                        }}</span>
-                                    </div>
-                                </template>
-                                <template #right-icon>
-                                    <van-radio :name="item.id" icon-size="16px" />
-                                </template>
-                            </van-cell>
-                        </van-cell-group>
-                    </van-radio-group>
+            <div class="submitBtn" @click="onSubmit">
+                <div class="onbtn">
+                    {{ t('提现') }}
                 </div>
             </div>
 
-            <div class="withdrawalNotes" style="margin-top: 2rem;" v-if="false">
-                <div class="notice">
-                    <!-- <img :src="hexagon"> -->
-                    <span class="noticeText">Withdrawal Notes</span>
-                </div>
-                <div class="noticeList">
-                    <div class="noticeListItem">
-                        <span>You invest a minimum of Rs. 500 to initiate withdrawals.</span>
-                    </div>
-                </div>
-            </div>
             <div class="withdrawalNotes">
                 <div class="notice">
-                    <!-- <img :src="hexagon"> -->
                     <span class="noticeText">Kind tips:</span>
                 </div>
                 <div class="noticeList">
-
                     <div class="noticeListItem">
-                        <span>1: Valid members can apply to withdraw money. There is no limit on the number of withdrawals.
-                            The minimum withdrawal amount is Rs {{ min }}. </span>
+                        <span>1: Minimum withdrawal amount is Rs {{ min }}. </span>
                     </div>
                     <div class="noticeListItem">
-                        <span>2: IFSC must be 11 characters, the 5th character is 0. If the bank information is filled in
-                            incorrectly, the withdrawal will fail.</span>
+                        <span>2: You can withdraw once a day.</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>3: Withdrawal fee:{{ tar }} %</span>
+                        <span>3: Withdrawal will reach your account within 24-72.</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>4: Withdrawal time: 1-3 days </span>
+                        <span>4: Withdrawal tax {{ tar }}%.</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>5: If the withdrawal fails, please reapply or check whether your bank account information is correct.</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>5: IFSC should be 11 characters, and the 5th character should be "0", not "O". If you fill in incorrect bank information,your withdrawal will fail.</span>
                     </div>
                 </div>
             </div>
-            <!--            <div class="Instructions">
-                <p class="tit">Instructions：</p>
-                <div class="txtbox">
-                    <p>1、充值12356</p>
-                    <p>2、充值12356</p>
-                </div>
-            </div>-->
         </div>
     </div>
     <MyLoading :show="loadingShow" :title="loadtitle"></MyLoading>
@@ -231,9 +175,6 @@ const min = ref(0)
 const max = ref(0)
 const tar = ref(0)
 const ptypeArr = ref([])
-const onClickAll = () => {
-    dataForm.money = wallet.value.balance * 1
-}
 
 const onSubmit = () => {
     if (isRequest) {
@@ -313,10 +254,6 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-.myNavBar {
-    height: 45px !important;
-}
-
 .recharge {
     height: 100vh;
     overflow-y: scroll;
@@ -328,8 +265,6 @@ onMounted(() => {
     input {
         color: #000;
     }
-
-
 
     .recharge_wrap {
         .balances {
@@ -352,17 +287,45 @@ onMounted(() => {
             }
         }
 
-        .birds {
-            display: flex;
-            justify-content: space-evenly;
-            align-items: center;
-            margin: 1.4rem auto 0.2rem;
-            width: 80%;
-            color: #6e523e;
-            font-weight: bold;
+        .fieldbox_money{
+            margin-top: 1rem;
+            border: none;
+            border-bottom: 1px solid #ca0e00;
+            background-color: #d9d9d9;
+            border-radius: 10px 10px 0 0 ;
+            line-height: 1rem;
 
-            img {
-                width: 2rem;
+            ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+                color: white;
+                opacity:  1;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            ::-moz-placeholder { /* Mozilla Firefox 19+ */
+                color: white;
+                opacity:  1;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            ::-ms-input-placeholder { /* Microsoft Edge */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
+            }
+            ::placeholder { /* Most modern browsers support this now. */
+                color: white;
+                text-align: center;
+                font-size: 0.9rem;
             }
         }
 
@@ -374,97 +337,109 @@ onMounted(() => {
                 margin-right: -0.8rem;
             }
         }
-    }
 
-    .allbtn {
-        background: transparent;
-        border: none;
-        color: #4eb848;
-        font-weight: bold;
-        font-size: 14px;
-    }
-
-}
-
-.withdrawInfo {
-
-    .notice {
-        display: flex;
-        align-items: center;
-        justify-content: flex-start;
-
-        .noticeText {
-            font-size: 0.875rem;
-            color: #6e523e;
-            font-weight: bold;
+        .payinfo li div:nth-child(2){
+            border-bottom: 1px solid #c3c3c3;
         }
 
-        .dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            background: #000;
-            border-radius: 50%;
-            margin-right: 0.375rem;
-        }
+        .submitBtn {
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
 
-    }
-
-    .payOnline,
-    .onlineBanking {
-        margin-top: 0.625rem;
-
-        .showPayOnlineBtn,
-        .showOnlineBankingBtn {
-            height: 1.625rem;
-            width: 100%;
-            border-radius: 0.3125rem;
-
-            :deep(.van-button__content) {
-                justify-content: space-between;
-
-                &::before {
-                    display: none;
-                }
+            .onbtn{
+                background: url(/src/assets/img/login/login_btn.png);
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                height: 2.5rem;
+                width: 16rem;
+                text-align: center;
+                line-height: 2.5rem;
+                color: white;
             }
         }
-    }
 
-    .onlineBanking {
-        margin-top: 0.875rem;
-    }
-}
+        .withdrawInfo {
+            .notice {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
 
-.withdrawalNotes {
-    margin-top: 2rem;
-    padding-bottom: 1.25rem;
+                .noticeText {
+                    font-size: 0.875rem;
+                    color: #6e523e;
+                    font-weight: bold;
+                }
 
-    .notice {
-        display: flex;
-        align-items: center;
+                .dot {
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    background: #000;
+                    border-radius: 50%;
+                    margin-right: 0.375rem;
+                }
 
-        img {
-            width: 0.8rem;
-            margin-right: 0.5rem;
+            }
+
+            .payOnline,
+            .onlineBanking {
+                margin-top: 0.625rem;
+
+                .showPayOnlineBtn,
+                .showOnlineBankingBtn {
+                    height: 1.625rem;
+                    width: 100%;
+                    border-radius: 0.3125rem;
+
+                    :deep(.van-button__content) {
+                        justify-content: space-between;
+
+                        &::before {
+                            display: none;
+                        }
+                    }
+                }
+            }
+
+            .onlineBanking {
+                margin-top: 0.875rem;
+            }
         }
 
-        .noticeText {
-            font-size: 0.875rem;
-            font-weight: bold;
-        }
+        .withdrawalNotes {
+            margin-top: 2rem;
+            padding-bottom: 1.25rem;
 
-        .dot {
-            width: 0.5rem;
-            height: 0.5rem;
-            background: #000;
-            border-radius: 50%;
-            margin-right: 0.375rem;
-        }
-    }
+            .notice {
+                display: flex;
+                align-items: center;
 
-    .noticeList {
-        .noticeListItem {
-            margin-top: 0.75rem;
-            line-height: 20px;
+                img {
+                    width: 0.8rem;
+                    margin-right: 0.5rem;
+                }
+
+                .noticeText {
+                    font-size: 0.875rem;
+                    font-weight: bold;
+                }
+
+                .dot {
+                    width: 0.5rem;
+                    height: 0.5rem;
+                    background: #000;
+                    border-radius: 50%;
+                    margin-right: 0.375rem;
+                }
+            }
+
+            .noticeList {
+                .noticeListItem {
+                    margin-top: 0.5rem;
+                    line-height: 20px;
+                    font-size: 0.75rem;
+                }
+            }
         }
     }
 }

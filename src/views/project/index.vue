@@ -6,23 +6,17 @@
       </template>
     </Nav>
     <div class="projectWrapper">
-      <Projects />
-
-      <!-- <van-tabs v-model:active="active" class="projectTab">
-        <van-tab name="0" title="Projects">
+      <van-tabs v-model:active="active" class="projectTab">
+        <van-tab name="0" title="Product">
           <Projects />
         </van-tab>
-        <van-tab name="1" title="Ongoing">
-          <Ongoing />
+        <van-tab name="1" title="Purchased">
+          <Purchase />
         </van-tab>
-        <van-tab name="2" title="Finish">
-          <Finished />
-        </van-tab>
-      </van-tabs> -->
+      </van-tabs>
     </div>
 
   </div>
-  <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
 </template>
 
 <script lang="ts">
@@ -31,11 +25,8 @@ import { defineComponent, onMounted, reactive, ref } from 'vue';
 import { Image } from 'vant';
 import Nav from '../../components/Nav.vue';
 import MyListBase from '../../components/ListBase.vue';
-import Service from '../../components/service.vue';
-// import MyLoading from '../../components/Loading.vue';
 import Projects from '../../components/Projects.vue';
-import Finished from '../../components/Finished.vue';
-import Ongoing from '../../components/Ongoing.vue';
+import Purchase from "../../components/Purchase.vue";
 import { Button, Tab, Tabs } from "vant";
 export default defineComponent({
   components: {
@@ -81,9 +72,10 @@ onMounted(() => {
   overflow-x: hidden;
 
   .projectWrapper {
-    padding: 0 0.4rem;
+    padding: 0 0.6rem;
     box-sizing: border-box;
     padding-bottom: 1.75rem;
+    margin-top: 0.5rem;
 
     .projectTab {
       :deep(.van-tabs__wrap) {
@@ -99,54 +91,49 @@ onMounted(() => {
           padding-bottom: 0.625rem;
           z-index: 10;
           background: #fff;
-          padding-top: 1rem;
         }
       }
 
       :deep(.van-tabs__line) {
         display: none;
         background-color: #fff;
+        height: 2rem;
       }
 
       :deep(.van-tab) {
         &.van-tab--active {
           position: relative;
-
-          &::after {
-            position: absolute;
-            bottom: -1rem;
-            content: ' ';
-            border: 0.5rem solid transparent;
-            border-top: 0.5rem solid #bd312d;
-          }
+          border-radius: 30px;
         }
 
         .van-tab__text {
-          color: #bcbbbc;
-          border: 1px solid #bcbbbc;
-          background: #fff;
+          color: white;
+          background: #d9d9d9;
           width: 100%;
-          height: 1.75rem;
-          border-radius: 0.3125rem;
+          height: 2rem;
           box-sizing: border-box;
           display: flex;
           justify-content: center;
           align-items: center;
+          border-radius: 30px;
+          padding: 0 1.2rem;
         }
       }
 
       :deep(.van-tab--active) {
         .van-tab__text {
           color: #fff;
-          background: #bd312d;
-          border: 1px solid #bd312d;
+          background: url(/src/assets/img/login/login_btn.png);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
           width: 100%;
-          height: 1.75rem;
-          border-radius: 0.3125rem;
+          height: 2rem;
           box-sizing: border-box;
           display: flex;
           justify-content: center;
           align-items: center;
+          border-radius: 30px;
+          padding: 0 1.5rem;
         }
 
       }

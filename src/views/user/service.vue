@@ -1,78 +1,27 @@
 <template>
     <div class="service_page">
         <MyNav leftText=''> </MyNav>
-        <div class="content" v-if="false">
-            <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
-                <van-tab title="WhatsApp">
-                    <MyListBase :url="'GetService_Online?type=2'" ref="pageRef1" @success="onPageSuccess">
-                        <template #default="{ list }">
-                            <div class="listitem flex" v-for="(item, index) in list" :key="index">
-                                <van-image :src="imgFlag(item.portrait)" style="width: 3.6rem;"></van-image>
-                                <div class="flex info">
-                                    <div>
-                                        <p>{{ item.name }}</p>
-                                        <p class="desc">{{ item.account }}</p>
-                                    </div>
-                                    <van-button class="infoBtn" style=""
-                                        @click="OnLink(item.account, 0)">Consult</van-button>
-                                </div>
-                            </div>
-                        </template>
-                    </MyListBase>
-                </van-tab>
-                <van-tab title="Telegram">
-                    <MyListBase :url="'GetService_Online?type=1'" ref="pageRef" @success="onPageSuccess">
-                        <template #default="{ list }">
-                            <div class="listitem flex" v-for="(item, index) in list" :key="index">
-                                <van-image :src="item.avatar" style="width: 3.6rem;"></van-image>
-                                <div class="flex info">
-                                    <div>
-                                        <p>{{ item.name }}</p>
-                                        <p class="desc">{{ item.account }}</p>
-                                    </div>
-                                    <van-button class="infoBtn" style=""
-                                        @click="OnLink(item.account, 1)">Consult</van-button>
-                                </div>
-                            </div>
-                        </template>
-                    </MyListBase>
-                </van-tab>
-            </van-tabs>
-        </div>
-        <div style="background-color: #fff;color: #002544;border-radius: 16px;padding: 1rem;">
+        <div style="background-color: #fff;color: #002544;border-radius: 16px;">
             <div class="content">
                 <div class="content1">
+                    <img :src="service_manage" style="height: 7rem;width: 10rem;position: absolute;left: 0rem;">
                     <div class="Online">
-                        <div style="display: flex;align-items:center;margin-bottom: 1rem;">
-                            <img :src="telephone" style="width:1.5rem;height: 1.5rem;margin-right: 0.2rem;">
-                            <p style="font-weight: bold;">Online Time</p>
-                        </div>
-                        <div style="display: flex;justify-content: space-evenly;width: 100%;">
-                            <p>10:30-14:30</p>
-                            <p>16:30-24:00</p>
-                        </div>
+                       <div style="margin-bottom: 0.5rem;">Hello, I am dedicated customer service</div>
+                       <div style="color: #c3c3c3;">Glad to serve you</div>
                     </div>
                 </div>
             </div>
             <div class="content2">
-                <div v-for="item in service_arr">
+                <div v-for="item in service_arr" :style="item.type ==1 ? 'background-color: #2cb742;' : 'background-color: #f1c759;'">
                     <img :src="item.type == 1 ? Telegram : WhatsApp">
                     <p>{{ item.name }}</p>
-                    <van-button class="infoBtn" style=""
-                        @click="OnLink(item.account, item.type == 2 ? 0 : 1)">Consult</van-button>
+                    <van-button class="infoBtn" @click="OnLink(item.account, item.type == 2 ? 0 : 1)" :style="item.type ==1 ? 'color: #2cb742;' : 'color: #f1c759;'" >Consult</van-button>
                 </div>
-                <!--<div>
-                <img :src="WhatsApp">
-                <p>Whats</p>
-                <van-button class="infoBtn" style="" @click="OnLink('0', 0)">Consult</van-button>
-            </div>-->
             </div>
             <div class="content3">
-                <p>Welcome to join Nestle,Glad To Serve You. </p>
-                <p>The customer service manager will reply to your message as soon as possible! If you encounter any
-                    platform
-                    problems, please contact the online customer service manager directly, </p>
-                <p>Don't trust any stranger who claims to be a customer service person to contact you! ! !</p>
+                <p>Welcome to Life Fitness, the customer service manager is online from 10 am to 10 pm every day. </p>
+                <p>The customer service manager will reply to your message as soon as possible! If you encounter any platform problems,please contact the online customer service manager directly.</p>
+                <p>Do not trust any stranger who claims to be a customer service staff to contact you!!!</p>
             </div>
         </div>
 
@@ -82,20 +31,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import {
-    Field,
-    CellGroup,
-    Cell,
-    Button,
-    Icon,
-    RadioGroup,
-    Radio,
-    Image,
-    Picker,
-    Popup,
-    Tab,
-    Tabs,
-} from "vant";
+import { Field, CellGroup, Cell, Button, Icon, RadioGroup, Radio, Image, Picker, Popup, Tab, Tabs } from "vant";
 import MyNav from "../../components/Nav.vue";
 import MyLoading from "../../components/Loading.vue";
 import MyListBase from "../../components/ListBase.vue";
@@ -125,71 +61,14 @@ export default defineComponent({
 import Telegram from "../../assets/img/user/Telegram.png";
 import WhatsApp from "../../assets/img/user/WhatsApp.png";
 import telephone from "../../assets/img/user/telephone.png";
+import service_manage from "../../assets/img/user/service_manage.png";
 import { _alert, lang, copy, getSrcUrl } from "../../global/common";
-import {
-    ref,
-    reactive,
-    onMounted,
-    onBeforeUnmount,
-    onBeforeMount,
-    nextTick,
-} from "vue";
+import { ref, onMounted } from "vue";
 import http from "../../global/network/http";
 import { useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
-const active = ref(0);
-
-type level = {
-    avatar: string;
-    numbering: string;
-    number: number | string;
-    referrer: number | string;
-    teamSize: number | string;
-    amount: number | string;
-    account: number | string;
-};
 
 const service_arr = ref<any>({})
-const cpageRef = ref();
-const LVv = ref("");
-const pageRef = ref();
-const pageRef1 = ref();
-const tableData = ref<any>({});
-
-const onPageSuccess = (res: any) => {
-    tableData.value = res.all;
-    loadingShow.value = false;
-    if (cpageRef.value == undefined) {
-        cpageRef.value = pageRef.value;
-    } else if (res.lv == 1) {
-        cpageRef.value = pageRef.value;
-    } else if (res.lv == 2) {
-        cpageRef.value = pageRef1.value;
-    }
-};
-// gettodayregusercount
-const onClickTab = (title: any) => {
-    switch (title.name) {
-        case 0:
-            cpageRef.value = pageRef.value;
-            LVv.value = "Lv1";
-            break;
-        case 1:
-            cpageRef.value = pageRef1.value;
-            LVv.value = "Lv2";
-            break;
-    }
-    if (cpageRef.value != undefined) {
-        loadingShow.value = true;
-        cpageRef.value.doSearch();
-    }
-};
-
-const showPicker = ref<boolean>(false);
-
-const imgFlag = (src: string) => {
-    return getSrcUrl(src, 1);
-};
 
 const OnLink = (account: string, type: number) => {
     if (type == 0)
@@ -198,32 +77,12 @@ const OnLink = (account: string, type: number) => {
         window.location.href = 'tg://resolve?domain=' + account
 }
 
-const columns = ref<Array<string>>([]);
-const result = ref("");
-
-const onConfirm = (value: string) => {
-    result.value = value;
-    showPicker.value = false;
-};
-
-const doService = () => {
-    console.log("im service");
-};
-
-let isRequest = false;
-const loadingShow = ref(false);
-const router = useRouter();
-const init = () => { };
-
 onMounted(() => {
-    // const delayTime = Math.floor(Math.random() * 1000);
-    // setTimeout(() => {
     http({
         url: 'c=Service&a=GetService_Online&type=0'
     }).then((res: any) => {
         service_arr.value = res.data.list
     })
-    // }, delayTime) 
 });
 </script>
 
@@ -253,21 +112,19 @@ onMounted(() => {
             display: flex;
             align-items: center;
             justify-content: space-around;
-            padding: 1rem 0;
+            padding: 1.5rem 0;
             background: url(../../assets/img/user/backdrop.png);
             background-repeat: no-repeat;
             background-size: 100% 100%;
-            color: #fff;
+            color: black;
+            box-shadow: 0 0px 10px 0 #d1d1d1;
+            margin-top: 0.5rem;
+            border-radius: 5px;
 
             .Online {
-                display: flex;
-                flex-direction: column;
-                align-items: center;
                 width: 100%;
-
-                p {
-                    padding: 2px;
-                }
+                margin-left: 7rem;
+                font-size: 0.75rem;
             }
         }
     }
@@ -280,13 +137,13 @@ onMounted(() => {
 
         div {
             padding: 1rem 0;
-            border: 1px solid #ccc;
             border-radius: 8px;
             margin-bottom: 16px;
             display: flex;
             align-items: center;
             flex-direction: column;
             width: 45%;
+            box-shadow: 0 0px 10px 0 #d1d1d1;
 
             img {
                 width: 4rem;
@@ -294,20 +151,16 @@ onMounted(() => {
 
             p {
                 margin: 1rem 0;
-                color: #AAA;
+                color: white;
             }
 
             .infoBtn {
                 border: none;
-                color: #fff;
                 border-radius: 6px;
                 font-weight: bold;
-                background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+                background: white;
                 width: 80%;
                 height: 2rem;
-                // background: url('../../assets/img/user/user_bg3.png');
-                // background-size: 100% 100%;
-                // background-repeat: no-repeat;
             }
         }
 
@@ -315,10 +168,9 @@ onMounted(() => {
 
     .content3 {
         p {
-            color: #000;
-            margin: 1.8rem 0;
-            font: 0.8rem/20px '微软雅黑';
-
+            color: #494444;
+            margin: 1rem 0;
+            font-size: 0.75rem;
         }
     }
 

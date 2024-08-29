@@ -101,7 +101,7 @@ const tabs: Tab[] = [
         path: '/'
     },
     {
-        text: t('项目'),
+        text: t('产品'),
         icon: project,
         iconOn: projectactive,
         path: '/project'
