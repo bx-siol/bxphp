@@ -42,53 +42,72 @@
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
           </div>
+
+          <div class="mynotice">
+            <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" height="1.375rem"></MyNoticeBar>
+          </div>
           <div class="giftbonus" v-if="false" @click="onLink({ name: 'giftbonus' })"></div>
+
           <div class="index_cer">
             <div class="menubox">
               <div
                 style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
                 <a class="divs" href="javascript:;" style="justify-content: flex-end;"
                   @click="onLink({ name: 'Finance_recharge' })">
-                  <van-image :src="m1"></van-image>
+                  <div>
+                    <div>
+                      <van-image :src="m1"></van-image>
+                    </div>
+                    <div class="desc">{{ t('充值') }}</div>
+                  </div>
+
                 </a>
-                <!-- <span class="line"></span> -->
+
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_withdraw' })">
-                  <van-image :src="m2"></van-image>
+
+                  <div>
+                    <div>
+                      <van-image :src="m2"></van-image>
+                    </div>
+                    <div class="desc">{{ t('提现') }}</div>
+                  </div>
+
                 </a>
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
-                  <van-image :src="m3"></van-image>
+                  <div>
+                    <div>
+                      <van-image :src="m3"></van-image>
+                    </div>
+                    <div class="desc">invitation</div>
+                  </div>
                 </a>
                 <a class="divs" href="javascript:;" style="justify-content: flex-start;"
-                  @click="onLink({ name: 'User_team' })">
-                  <van-image :src="m4"></van-image>
+                  @click="onLink({ name: 'News' })">
+                  <div>
+                    <div>
+                      <van-image :src="m4"></van-image>
+                    </div>
+                    <div class="desc">Notify</div>
+                  </div>
                 </a>
-              </div>
-
-              <div
-                style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;"
-                  @click="onLink({ name: 'Gift_lottery' })">
-                  <van-image :src="m5"></van-image>
-                </a>
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Purchase' })">
-                  <van-image :src="m6"></van-image>
-                </a>
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'monthly' })">
-                  <van-image :src="m7"></van-image>
-                </a>
-                <a class="divs" href="javascript:;" style="justify-content: flex-start;" @click="appdload">
-                  <van-image :src="m8"></van-image>
+                <a class="divs" href="javascript:;" style="justify-content: flex-end;" @click="onLinkapp({})">
+                  <div>
+                    <div>
+                      <van-image :src="m5"></van-image>
+                    </div>
+                    <div class="desc">Download</div>
+                  </div>
                 </a>
               </div>
             </div>
 
-            <div class="videobox">
+            <!-- <div class="videobox">
               <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc"
                 style="width: 100%;border-radius: 8px;"></video>
-            </div>
+            </div> -->
 
             <div>
-              <div class="column_title2">
+              <!-- <div class="column_title2">
                 <img :src="horn1" style="width: 1.2rem;margin-right: 0.45rem;">
                 task reward
               </div>
@@ -97,14 +116,15 @@
                   style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index">
                   <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
                 </div>
-              </div>
-              <div class="column_title2">
+              </div> -->
+
+              <!-- <div class="column_title2">
                 <img :src="horn2">
                 popular products
-              </div>
+              </div>-->
               <div class="products">
                 <HomeProjects />
-              </div>
+              </div> 
             </div>
 
           </div>
@@ -261,7 +281,9 @@ const imgFlag = (src: string) => {
 const onLink = (to: any) => {
   goRoute(to)
 }
-
+const onLinkapp = (to: any) => {
+  location.href = '/app'
+}
 const goInvite = () => {
   // router.push({ path: '/invite' })
   router.push({ path: '/points' })

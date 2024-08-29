@@ -331,8 +331,12 @@ img {
     flex-direction: row-reverse;
     align-items: center;
     justify-content: center;
-    border-radius: 8px;
-    width: 22%;
+    border-radius: 30%;
+    width: 19%;
+}
+
+.index_cer .menubox a div img {
+    border-radius: 50%;
 }
 
 .index_cer .menubox .line {
@@ -355,18 +359,18 @@ img {
 }
 
 .mynotice {
-    background: #effbf6;
+    background: #f2f2f2;
     border-radius: 3px;
     margin: 0 auto;
-    color: #00b57e;
+    color: #030303 !important;
     margin-top: 1rem;
     margin-bottom: 1rem;
     padding: 0.15rem 0;
-    width: 90%;
+    width: 100%;
 }
 
 .mynotice .van-notice-bar {
-    color: #00b57e;
+    color: #030303;
     height: 1.375rem;
     font-size: 0.75rem;
     box-sizing: border-box;

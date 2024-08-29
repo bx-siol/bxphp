@@ -1,12 +1,12 @@
 <template>
     <van-notice-bar :scrollable="scrollable" :left-icon="Notice" style="background: transparent;" :color="color"
         :mode="mode" @click="onNoticeBarClick">
+        <!--  :right-icon="notice1"   -->
         <van-swipe vertical :style="{ height: height, lineHeight: height }" :autoplay="autoplay"
             :show-indicators="false" @change="onNoticeBarChange">
             <van-swipe-item v-for="item in noticeList">{{ item.title }}</van-swipe-item>
         </van-swipe>
         <template #right-icon v-if="slots['right-icon']">
-            <slot name="right-icon"></slot>
         </template>
     </van-notice-bar>
 
@@ -43,8 +43,8 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { useSlots, ref, watch, onMounted } from 'vue';
-import { ico_voice } from '../global/assets';
 import Notice from '../assets/img/home/notice.png';
+import notice1 from '../assets/img/home/notice1.png';
 import { useRouter } from "vue-router";
 
 const slots = useSlots()

@@ -106,17 +106,20 @@ const tabs: Tab[] = [
         path: '/project'
     },
     {
-        text: t('团队'),
+       
+       
+        text: 'Lucky Draw',
         icon: prizes,
         iconOn: prizesactive,
-        path: '/user/team'
+        path: '/gift/lottery/a3d044b074d37a89'
+       
     },
 
     {
-        text: t('新闻资讯'),
+        text: t('团队'),
         icon: community,
         iconOn: communityactive,
-        path: '/news',
+        path: '/user/team',
         //badge: store.state.newscountc
     },
     {
