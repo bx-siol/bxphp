@@ -4,7 +4,7 @@
     <div class="index_wrap">
       <div class="index_top">
         <div class="headbox">
-          <van-image :src="nestie" style="width: 1.8rem; height: 1.8rem;" class="logs"></van-image>
+          <!-- <van-image :src="nestie" style="width: 1.8rem; height: 1.8rem;" class="logs"></van-image> -->
 
           <van-image :src="illustration" style="width: 5rem; height: 1.4rem;left:-2px;"></van-image>
 
@@ -14,6 +14,7 @@
           <van-image @click="tipShow = true" :src="hasMsg ? Msg : NoMsg"
             style="width: 1.5rem; height: 1.5rem;left:0.3rem;" v-if="false"></van-image>
         </div>
+
         <div class="money" v-if="false">
           <div class="money-top">
             <div class="nbg1">
@@ -37,16 +38,17 @@
             <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" height="1.375rem"></MyNoticeBar>
           </div>
         </div>
-        <div class="backg" style="padding: 1rem">
+        <div class="backg">
           <div class="myswiper">
             <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
           </div>
-          <div class="giftbonus" v-if="false" @click="onLink({ name: 'giftbonus' })" ></div>
+          <div class="giftbonus" v-if="false" @click="onLink({ name: 'giftbonus' })"></div>
           <div class="index_cer">
             <div class="menubox">
               <div
                 style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;" @click="onLink({ name: 'Finance_recharge' })">
+                <a class="divs" href="javascript:;" style="justify-content: flex-end;"
+                  @click="onLink({ name: 'Finance_recharge' })">
                   <van-image :src="m1"></van-image>
                 </a>
                 <!-- <span class="line"></span> -->
@@ -62,8 +64,10 @@
                 </a>
               </div>
 
-              <div style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;" @click="onLink({ name: 'Gift_lottery' })">
+              <div
+                style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
+                <a class="divs" href="javascript:;" style="justify-content: flex-end;"
+                  @click="onLink({ name: 'Gift_lottery' })">
                   <van-image :src="m5"></van-image>
                 </a>
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'Purchase' })">
@@ -79,7 +83,8 @@
             </div>
 
             <div class="videobox">
-              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc" style="width: 100%;border-radius: 8px;"></video>
+              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc"
+                style="width: 100%;border-radius: 8px;"></video>
             </div>
 
             <div>
@@ -88,9 +93,10 @@
                 task reward
               </div>
               <div class="malls u-flex u-bet">
-                  <div @click="onLink({ name: 'Ext_task',params: { id: item.id } })" style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index" >
-                      <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
-                  </div>              
+                <div @click="onLink({ name: 'Ext_task', params: { id: item.id } })"
+                  style="width: 32%;height: 4rem;margin-bottom: 5px;" v-for="(item, index) in taskdata" :key="index">
+                  <van-image :src="imgFlag(item.img)" style="height: 4rem;width: 100%;"></van-image>
+                </div>
               </div>
               <div class="column_title2">
                 <img :src="horn2">
@@ -136,7 +142,7 @@
       <div style="margin-top: -6.05rem; margin-bottom: 3.4rem" class="dialog_confirm_btn" @click="t120lq()">
         <span
           style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
-            t('收到') }}</span>
+      t('收到') }}</span>
       </div>
     </van-dialog>
 
@@ -149,7 +155,7 @@
         @click="t120()">
         <span
           style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
-            t('收到') }}</span>
+      t('收到') }}</span>
       </div>
     </van-dialog>
   </div>
@@ -473,41 +479,46 @@ const onReceiveNo = (item: any) => {
 }
 
 const confirmTip = (item) => {
-        add_cookie("closeIndexTip", "1")
-        tipShow.value = false
-        router.push({ path: '/project' })
-    }
+  add_cookie("closeIndexTip", "1")
+  tipShow.value = false
+  router.push({ path: '/project' })
+}
 
-    const add_cookie = (name, val) => {
-        var exp = new Date();
-        exp.setTime(exp.getTime() + 5 * 60 * 1000);
-        document.cookie = name + "=" + escape(val) + ";expires=" + exp.toGMTString();//把cookie_name添加进cookie
+const add_cookie = (name, val) => {
+  var exp = new Date();
+  exp.setTime(exp.getTime() + 5 * 60 * 1000);
+  document.cookie = name + "=" + escape(val) + ";expires=" + exp.toGMTString();//把cookie_name添加进cookie
+}
+const getCookie = (cookieName) => {
+  if (document.cookie.length > 0) {
+    /**通过String对象的indexOf()来检查这个cookie是否存在，不存在就为 -1**/
+    var c_start = document.cookie.indexOf(cookieName + "=");
+    if (c_start != -1) {
+      /**最后这个+1其实表示"="，获取到cookie值的开始位置**/
+      c_start = c_start + cookieName.length + 1;
+      var c_end = document.cookie.indexOf(";", c_start);
+      if (c_end == -1) c_end = document.cookie.length;
+      /**通过substring()得到值**/
+      var cookieValue = unescape(document.cookie.substring(c_start, c_end));
+      return cookieValue;
     }
-    const getCookie = (cookieName) => {
-        if (document.cookie.length > 0) {
-            /**通过String对象的indexOf()来检查这个cookie是否存在，不存在就为 -1**/
-            var c_start = document.cookie.indexOf(cookieName + "=");
-            if (c_start != -1) {
-                /**最后这个+1其实表示"="，获取到cookie值的开始位置**/
-                c_start = c_start + cookieName.length + 1;
-                var c_end = document.cookie.indexOf(";", c_start);
-                if (c_end == -1) c_end = document.cookie.length;
-                /**通过substring()得到值**/
-                var cookieValue = unescape(document.cookie.substring(c_start, c_end));
-                return cookieValue;
-            }
-        }
-        return null;
-    }
+  }
+  return null;
+}
 
 onMounted(() => {
   init()
 })
 </script>
 
- 
+
 
 <style scoped>
+.backg {
+  padding: 1rem;
+  margin-top: -10rem;
+}
+
 .service {
   width: 2.5rem;
   height: 2.5rem;
@@ -608,7 +619,7 @@ onMounted(() => {
       line-height: 2.25rem;
       text-align: center;
       font-size: 0.875rem;
-      background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+      background: linear-gradient(to right, #db1000 20%, #db1000);
       color: #fff;
       border-radius: 1.3125rem;
     }
@@ -653,16 +664,19 @@ onMounted(() => {
       // top: -2.25rem;
       // left: 0.75rem;
     }
-    
+
   }
 
-  .giftbonus{
+  .giftbonus {
     width: 100%;
     height: 6rem;
     margin-top: 1rem;
-    background-image: url('../../assets/img/home/giftbonus.png'); /* 设置图片路径 */
-    background-size: 100% 100%; /* 背景图片覆盖整个元素 */
-    background-repeat: no-repeat; /* 背景图片不重复 */
+    background-image: url('../../assets/img/home/giftbonus.png');
+    /* 设置图片路径 */
+    background-size: 100% 100%;
+    /* 背景图片覆盖整个元素 */
+    background-repeat: no-repeat;
+    /* 背景图片不重复 */
   }
 
   .invite_icon:before,

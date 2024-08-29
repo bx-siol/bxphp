@@ -1,6 +1,6 @@
 <template>
     <van-tabbar class="myTabBox" v-model="menu.active" @change="onBarChange" route :inactive-color="menu.inactiveColor"
-        :active-color="menu.activeColor" style="background:#64523e;box-shadow: 0px -1px 4px 0 rgb(255 255 255/10%);">
+        :active-color="menu.activeColor" style="background:#fff;box-shadow: rgb(154 129 129 / 50%) 0px -2px 10px 0px;">
         <van-tabbar-item v-for="(item, idx) in menu.tabs" :to="!item.url ? item.path : ''" :url="item.url"
             style="line-height: 0.6;" :dot="item.dot" :badge="item.badge">
             <span>{{ item.text }}</span>
@@ -130,7 +130,7 @@ const tabs: Tab[] = [
 const menu = ref<any>({
     active: 0,
     inactiveColor: '#999',//未选中颜色
-    activeColor: '#fff',//选中颜色
+    activeColor: '#bd312d',//选中颜色
     tabs: tabs
 })
 
@@ -161,7 +161,7 @@ const onClickLogo = () => {
 </style>
 <style scoped>
 .activeimg {
-    width: 1.4rem;
+    width: 2.4rem;
     height: 1.4rem;
 }
 

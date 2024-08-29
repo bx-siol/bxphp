@@ -4,19 +4,17 @@
         <div class="login_adorn">
             <div class="deckout">
                 <img :src="ornament">
-                <p>Welcome to join Nestle</p>
+
             </div>
-            <div class="deckout2">
-                <img :src="ornament2">
-            </div>
+
         </div>
         <div class="formbox">
             <div class="avatar">
                 <img :src="illustration">
             </div>
             <van-cell-group>
-                <van-field style="margin-top: 2rem;" class="accountItem" v-model="dataForm.account" :left-icon="lock"
-                    label="+91" label-width="30" :placeholder="t('请输入手机号')"  maxlength="10"></van-field>
+                <van-field style="margin-top: 2rem;" class="accountItem" v-model="dataForm.account" :left-icon="lock1"
+                    label="+91" label-width="30" :placeholder="t('请输入手机号')" maxlength="10"></van-field>
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')">
                     <template #left-icon>
                         <van-image :src="lock" fit="cover" style="top:4px;width: 1.5rem;" />
@@ -40,21 +38,14 @@
                         <van-image :src="lock" fit="cover" style="top:4px;width: 1.5rem;" />
                     </template>
                     <template #right-icon>
-                        <van-image class="imgCode" style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"
+                        <van-image class="imgCode"
+                            style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"
                             :src="dataForm.imgcode_url" @click="getVcode" />
                     </template>
                 </van-field>
             </van-cell-group>
-            <!-- <div class="otheraccount">
-                <a href="javascript:;"
-                    style="border:1px solid #ba192f; color: #ba192f;  border-radius:1rem ;  padding: 0.5rem;"
-                    @click="onLink({ name: 'Login' })">{{
-                        t('返回登录')
-                    }}</a>
-            </div> -->
-            <van-button class="forgetPassBtn" @click="onRetrieve"
-                style="background: linear-gradient(to right, #c49b6c 20%, #a77d52); color: #fff;border-radius: 6px;"> {{
-                    t('找回密码') }}</van-button>
+
+            <van-button class="registerBtn" @click="onRetrieve"> {{ t('找回密码') }}</van-button>
         </div>
     </div>
 </template>
@@ -75,16 +66,14 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-import {
-    ico_1, ico_2, ico_3, ico_4, ico_5, ico_6, ico_103, img_yzm
-} from '../../global/assets';
+import lock1 from '../../assets/img/login/lock1.png';
 import { defineComponent, ref, reactive, toRefs, onMounted } from 'vue';
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
 import md5 from 'md5'
 import http from '../../global/network/http'
 import ornament from '../../assets/img/login/ornament.png';
-import ornament2 from '../../assets/img/login/ornament2.png';
+
 import lock from '../../assets/img/login/lock2.png'
 import { _alert, goRoute, lang } from "../../global/common";
 import { isLogin } from "../../global/user";
@@ -209,20 +198,25 @@ onMounted(() => {
     getVcode()
 });
 </script>
-
+<style>
+.accountItem .van-field__label label {
+    font-weight: bold;
+    color: #db1000 !important;
+}
+</style>
 <style lang="scss" scoped>
 .forgetPass {
     background-size: 100% 38rem;
 
     :deep(.van-nav-bar__left) {
         .alter {
-            color: #c69c6d !important;
+            color: #d61300 !important;
         }
     }
 
     :deep(.van-nav-bar__title) {
         .alter {
-            color: #c69c6d !important;
+            color: #d61300 !important;
         }
     }
 
@@ -259,12 +253,14 @@ onMounted(() => {
     }
 
     .formbox {
-        width: 100%;
-        padding: 2rem 1rem;
+        width: 94%;
+        padding: 0rem 1rem 1.25rem;
         box-sizing: border-box;
-        padding-bottom: 1.25rem;
-        border-radius: 16px;
-        background: #64523e;
+
+        border-radius: 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: 0px auto;
+        margin-top: 3rem;
 
         .deckout {
             position: absolute;
@@ -293,7 +289,7 @@ onMounted(() => {
             border: none;
             font-weight: bold;
             font-size: 16px;
-            color: #c69c6d;
+            color: #d61300;
 
         }
 
@@ -329,6 +325,17 @@ onMounted(() => {
 
 }
 
+.registerBtn {
+    background: linear-gradient(to right, #e30d00 20%, #e30d00);
+    color: #fff;
+    border-radius: 30px;
+    margin: auto;
+    width: 100%;
+    font-size: 1rem;
+    border-width: 0;
+    font-weight: bold;
+}
+
 .van-cell-group {
     background: transparent;
 
@@ -339,17 +346,21 @@ onMounted(() => {
     padding: 0.6rem;
     border-radius: 8px;
     background-color: transparent;
-    border-bottom: 1px solid #c69c6d;
+    border: 1px solid #d61300;
 }
 
 
 .accountItem .van-field__label label {
     font-weight: bold;
-    color: white;
+    color: #db1000 !important;
 }
 
 :deep(.van-field__control) {
-    color: #fff;
+    color: #db1000 !important;
+}
+
+:deep(.van-field__control label) {
+    color: #db1000 !important;
 }
 
 :deep(.van-field__control::-webkit-input-placeholder) {

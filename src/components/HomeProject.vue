@@ -271,7 +271,7 @@ const goProjectDetail = (item: any) => {
         align-items: center;
         justify-content: center;
         padding: 0.4rem;
-        background: linear-gradient(to bottom, #c49b6c 20%, #a77d52);
+        background: linear-gradient(to bottom, #db1000 20%, #db1000);
         border-radius: 6px;
         font-size: 14px;
         .addRs {

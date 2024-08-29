@@ -320,7 +320,7 @@ onMounted(() => {
 /deep/.van-button--plain.van-button--warning {
     color: #fff !important;
     padding: 1.38rem 0.8rem;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     ;
 }
 

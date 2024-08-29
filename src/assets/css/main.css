@@ -88,9 +88,10 @@ img {
 .login,
 .register,
 .forgetPass {
+    padding-top: 4.5rem;
     position: relative;
     height: 100%;
-    background: #64523e url(../../assets/img/login/backcloth.jpg);
+    background: #2d6598 url(../../assets/img/login/backcloth.jpg);
     background-repeat: no-repeat;
     background-size: 100% 40rem;
 }
@@ -266,11 +267,19 @@ img {
 }
 
 .index_top .headbox {
-    padding: 0.6rem 1rem;
+    /* padding: 0.6rem 1rem;
     background-color: #64523e;
     display: flex;
     align-items: center;
+    justify-content: space-between; */
+
+    padding: 0.6rem 1rem;
+    background-color: #cc1700;
+    display: flex;
+    align-items: baseline;
     justify-content: space-between;
+    height: 12rem;
+    border-radius: 0 0 40% 40%;
 
 }
 
@@ -834,7 +843,7 @@ img {
     margin: 0 auto;
     border: 0;
     font-size: 0.95rem;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     color: #fff;
     height: 2.5rem;
     border-radius: 6px;
@@ -1289,7 +1298,7 @@ img {
 }
 
 .invest_wrap .amount .van-grid-item {
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     border-radius: 8px;
     flex-basis: 48% !important;
 }

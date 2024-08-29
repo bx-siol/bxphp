@@ -310,11 +310,11 @@ const SwitchMembers = (lv: number, type: number) => {
         if (type == 0) {
             InactiveMember[0].style.background = "#ccc";
             InactiveMember[0].style.color = "#002544";
-            levelTabInactiveMember[0].style.background = "#c49b6c";
+            levelTabInactiveMember[0].style.background = "#db1000";
             levelTabInactiveMember[0].style.color = "#fff";
         }
         else {
-            InactiveMember[0].style.background = "#c49b6c";
+            InactiveMember[0].style.background = "#db1000";
             InactiveMember[0].style.color = "#fff";
             levelTabInactiveMember[0].style.background = "#ccc";
             levelTabInactiveMember[0].style.color = "#002544";
@@ -324,11 +324,11 @@ const SwitchMembers = (lv: number, type: number) => {
         if (type == 0) {
             InactiveMember[1].style.background = "#ccc";
             InactiveMember[1].style.color = "#002544";
-            levelTabInactiveMember[1].style.background = "#c49b6c";
+            levelTabInactiveMember[1].style.background = "#db1000";
             levelTabInactiveMember[1].style.color = "#fff";
         }
         else {
-            InactiveMember[1].style.background = "#c49b6c";
+            InactiveMember[1].style.background = "#db1000";
             InactiveMember[1].style.color = "#fff";
             levelTabInactiveMember[1].style.background = "#ccc";
             levelTabInactiveMember[1].style.color = "#002544";
@@ -338,11 +338,11 @@ const SwitchMembers = (lv: number, type: number) => {
         if (type == 0) {
             InactiveMember[2].style.background = "#ccc";
             InactiveMember[2].style.color = "#002544";
-            levelTabInactiveMember[2].style.background = "#c49b6c";
+            levelTabInactiveMember[2].style.background = "#db1000";
             levelTabInactiveMember[2].style.color = "#fff";
         }
         else {
-            InactiveMember[2].style.background = "#c49b6c";
+            InactiveMember[2].style.background = "#db1000";
             InactiveMember[2].style.color = "#fff";
             levelTabInactiveMember[2].style.background = "#ccc";
             levelTabInactiveMember[2].style.color = "#002544";
@@ -391,7 +391,7 @@ const getusercount = () => {
 
     .will {
         margin: 1.1rem;
-        background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+        background: linear-gradient(to right, #db1000 20%, #db1000);
         border-radius: 6px;
 
         .card {
@@ -487,7 +487,7 @@ const getusercount = () => {
                     float: left;
                     border-radius: 10px;
                     text-align: center;
-                    background: #c49b6c;
+                    background: #db1000;
                     color: #fff;
                     font-weight: bold;
                 }
@@ -499,7 +499,7 @@ const getusercount = () => {
                     float: right;
                     border-radius: 10px;
                     text-align: center;
-                    background: #c49b6c;
+                    background: #db1000;
                     color: #fff;
                     font-weight: bold;
                 }

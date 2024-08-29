@@ -302,7 +302,7 @@ onMounted(() => {
                 color: #fff;
                 border-radius: 6px;
                 font-weight: bold;
-                background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+                background: linear-gradient(to right, #db1000 20%, #db1000);
                 width: 80%;
                 height: 2rem;
                 // background: url('../../assets/img/user/user_bg3.png');

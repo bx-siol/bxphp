@@ -161,7 +161,7 @@ onMounted(() => {
     box-sizing: border-box;
     box-shadow: 0px 0px 22px 4px rgb(0 0 0 / 60%);
     border-radius: 10px;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     position: relative;
     top: -7.6em;
     color: #fff;
@@ -288,7 +288,7 @@ onMounted(() => {
     font: bold 16px/24px '微软雅黑';
     border-radius: 20px;
     color: #fff;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     border: none;
     margin-top: 16px;
 }

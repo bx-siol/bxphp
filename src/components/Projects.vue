@@ -344,7 +344,7 @@ onMounted(() => {
           justify-content: center;
           align-items: center;
           padding: 0.3rem;
-          background: linear-gradient(to bottom, #c49b6c 20%, #a77d52);
+          background: linear-gradient(to bottom, #db1000 20%, #db1000);
           border-radius: 1rem;
           color: #fff;
         }

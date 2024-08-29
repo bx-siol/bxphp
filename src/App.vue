@@ -38,7 +38,7 @@ onMounted(() => {
     background-size: 100% 100%;
     border: 0;
     color: #fff;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     font-weight: bold;
     border-radius: 4px;
 }
@@ -70,8 +70,9 @@ onMounted(() => {
 }
 
 .toastBox {
-    background: #64523e !important;
+    background: #db1000 !important;
     padding: 1rem !important;
+    font-weight: bold;
     /* font-size: 1.135rem !important; */
     word-break: break-word !important;
     /* width: 45% !important; */
@@ -100,7 +101,7 @@ onMounted(() => {
 }
 
 .conBox .van-field__label {
-    color: #64523e ;
+    color: #64523e;
     text-align: left;
 }
 

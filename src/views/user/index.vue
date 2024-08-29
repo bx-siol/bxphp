@@ -476,7 +476,7 @@ onMounted(() => {
 
         .myBtns {
             border: 0;
-            background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+            background: linear-gradient(to right, #db1000 20%, #db1000);
             font-size: 16px;
             font-weight: bold;
             border-radius: 3rem;

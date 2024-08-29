@@ -3,10 +3,6 @@
         <div class="login_adorn">
             <div class="deckout">
                 <img :src="ornament">
-                <p>Welcome to join Nestle</p>
-            </div>
-            <div class="deckout2">
-                <img :src="ornament2">
             </div>
         </div>
         <div class="formbox">
@@ -15,8 +11,8 @@
                 <p @click="onLink({ name: 'Register' })"> {{ t('注册') }}</p>
             </div>
             <van-cell-group>
-                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30"
-                    maxlength="10" :placeholder="t('请输入手机号')"></van-field>
+                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91"
+                    label-width="30" maxlength="10" :placeholder="t('请输入手机号')"></van-field>
 
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" maxlength="6">
                     <template #left-icon>
@@ -33,7 +29,7 @@
                 </van-field>
 
                 <van-field v-model="dataForm.nickname" :left-icon="useractive" :placeholder="t('请填写昵称')"></van-field>
-                
+
                 <van-field v-model="dataForm.password_flag" type="password" :left-icon="key"
                     :placeholder="t('请填写登录密码')"></van-field>
 
@@ -46,7 +42,8 @@
                         <van-image :src="ico_4" fit="cover" style="top:4px;width: 1.2rem;" />
                     </template>
                     <template #right-icon>
-                        <van-image class="imgCode" style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"
+                        <van-image class="imgCode"
+                            style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"
                             :src="dataForm.imgcode_url" @click="getVcode" />
                     </template>
                 </van-field>
@@ -89,7 +86,7 @@ import {
 } from '../../global/assets';
 import useractive from '../../assets/img/login/name3.png';
 import ornament from '../../assets/img/login/ornament.png';
-import ornament2 from '../../assets/img/login/ornament2.png';
+
 import avatar from '../../assets/img/login/avatar.png';
 import lock from '../../assets/img/login/lock3.png';
 import phone from '../../assets/img/login/lock1.png';
@@ -245,7 +242,7 @@ onMounted(() => {
 <style>
 .accountItem .van-field__label label {
     font-weight: bold;
-    color: white;
+    color: #db1000 !important;
 }
 
 /* .formbox .van-field {
@@ -258,9 +255,10 @@ onMounted(() => {
     padding: 0.6rem;
     border-radius: 8px;
     background-color: transparent;
-    border-bottom: 1px solid #c69c6d;
+    border: 1px solid #db1000;
 }
-.formbox :deep(.van-field__left-icon){
+
+.formbox :deep(.van-field__left-icon) {
     height: 1.5rem;
 }
 
@@ -268,7 +266,7 @@ onMounted(() => {
     border: none;
     font-weight: bold;
     font-size: 16px;
-    color: #c69c6d;
+    color: #db1000;
 }
 
 .register {
@@ -276,7 +274,7 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        padding-top: 1rem;
+        padding-top: 0rem;
 
         .deckout {
             display: flex;
@@ -284,7 +282,7 @@ onMounted(() => {
             align-items: center;
 
             img {
-                width: 8rem;
+                width: 13rem;
             }
 
             p {
@@ -314,33 +312,38 @@ onMounted(() => {
 
     .avatar {
         width: 100%;
-        height: 6.8rem;
+        height: 4rem;
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
+        text-align: center;
 
-
-        p:nth-child(1) {
-            font-weight: bold;
-            color: #808080;
-        }
 
         p:nth-child(2) {
+            width: 94px;
             font-weight: bold;
-            color: #c69c6d;
-            border-bottom: 2px solid #c69c6d;
+            color: #e30d00;
+            border-bottom: 2px solid #e30d00;
         }
+
+        p:nth-child(1) {
+            width: 94px;
+            font-weight: bold;
+            color: #808080;
+            border-bottom: 2px solid #808080;
+        }
+
     }
 
     .formbox {
-        width: 100%;
-        height: 38rem;
+        width: 94%;
         padding: 0rem 1rem 1.25rem;
         box-sizing: border-box;
 
-        border-radius: 30px 30px 0 0;
-        background: #64523e;
-
+        border-radius: 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: 0px auto;
+        margin-top: 3rem;
 
         .deckout {
             position: absolute;
@@ -389,9 +392,9 @@ onMounted(() => {
             display: flex;
 
             .registerBtn {
-                background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+                background: linear-gradient(to right, #e30d00 20%, #e30d00);
                 color: #fff;
-                border-radius: 6px;
+                border-radius: 30px;
                 margin: 1rem auto 0;
                 width: 80%;
                 font-size: 1rem;
@@ -402,7 +405,7 @@ onMounted(() => {
     }
 
     :deep(.van-field__control) {
-        color: #fff;
+        color: #db1000;
     }
 
     :deep(.van-field__control::-webkit-input-placeholder) {

@@ -7,7 +7,7 @@
         </template>
         <template #left>
             <slot name="left" :color="foregroundColor">
-                <div @click="onLeftClick" :style="{ color: foregroundColor,'font-weight': 'bold' }">
+                <div @click="onLeftClick" :style="{ color: foregroundColor, 'font-weight': 'bold' }">
                     <van-icon name="arrow-left" size="1.3rem" :color="foregroundColor"
                         style="vertical-align: middle;top:0px;" />
                     <span style="vertical-align: middle;position: relative;left: -2px;">{{ leftText }}</span>
@@ -90,11 +90,11 @@ const onLeftClick = () => {
 
 <style>
 .myNavBar .van-nav-bar {
-    background-color: rgb(100, 82, 62);
-    ;
+    background-color: rgba(255, 255, 255, 0.01);
     max-width: 640px;
     margin: 0 auto;
     right: 0;
+    font-weight: 500;
 }
 
 /* .myNavBar .van-nav-bar{background-color: #0098a2;max-width: 640px;margin: 0 auto;right: 0;} */
@@ -115,5 +115,4 @@ const onLeftClick = () => {
 }
 
 /*box-shadow: 0px 0px 3px 2px #c8d0dc;*/
-
 </style>

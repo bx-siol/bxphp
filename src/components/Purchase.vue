@@ -805,7 +805,7 @@ onMounted(() => {
     .receiveBtn {
       width: 100%;
       padding: 0.875rem 0;
-      background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+      background: linear-gradient(to right, #db1000 20%, #db1000);
       border: none;
       font-size: 0.8rem;
     }

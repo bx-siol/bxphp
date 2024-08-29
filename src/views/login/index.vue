@@ -3,11 +3,11 @@
         <div class="login_adorn">
             <div class="deckout">
                 <img :src="ornament">
-                <p>Welcome to join Nestle</p>
+                <!-- <p>Welcome to join Nestle</p> -->
             </div>
-            <div class="deckout2">
+            <!-- <div class="deckout2">
                 <img :src="ornament2">
-            </div>
+            </div> -->
         </div>
 
         <div class="formbox">
@@ -21,7 +21,8 @@
                 <van-field v-model="dataForm.password" :type="showPassword ? 'text' : 'password'" :left-icon="lock2"
                     :placeholder="t('请填写登录密码')">
                     <template #right-icon>
-                        <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6" @click="showPassword = false"></van-icon>
+                        <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6"
+                            @click="showPassword = false"></van-icon>
                         <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
                     </template>
                 </van-field>
@@ -30,7 +31,8 @@
                         <van-image :src="lock2" style="width: 1.5rem;height: 1.5rem;" />
                     </template>
                     <template #right-icon>
-                        <van-image class="imgCode" style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"
+                        <van-image class="imgCode"
+                            style="border-radius: 5px;overflow: hidden;height: 2.2rem;width: 5rem;"
                             :src="dataForm.vcode_url" @click="getVcode" />
                     </template>
                 </van-field>
@@ -44,13 +46,16 @@
                     {{ t('登录') }}
                 </van-button>
             </div>
-            <div class="makeup area">
+            <!-- <div class="makeup area">
                 <p>Dont Have An Account? <span @click="onLink({ name: 'Register' })">{{ t('注册') }}</span></p>
-            </div>
-            <div v-show="appshow" @click="appdload" class="appIco">
-                <span>APP</span>
-            </div>
+            </div> -->
+
         </div>
+
+        <div v-show="appshow" @click="appdload" class="appIco">
+            <span>APP</span>
+        </div>
+
     </div>
     <MyLoading :show="loadingShow" :title="loadtitle"></MyLoading>
 </template>
@@ -82,7 +87,7 @@ export default defineComponent({
 import lock1 from '../../assets/img/login/lock1.png';
 import lock2 from '../../assets/img/login/lock2.png';
 import ornament from '../../assets/img/login/ornament.png';
-import ornament2 from '../../assets/img/login/ornament2.png';
+// import ornament2 from '../../assets/img/login/ornament2.png';
 import http from "../../global/network/http";
 import { _alert, lang } from "../../global/common";
 import { doLogin, getUserinfo, isLogin } from "../../global/user";
@@ -213,7 +218,7 @@ onMounted(() => {
     padding: 0.6rem;
     border-radius: 8px;
     background-color: transparent;
-    border-bottom: 1px solid #c69c6d;
+    border: 1px solid #db1000;
 }
 
 .login {
@@ -221,7 +226,7 @@ onMounted(() => {
         display: flex;
         align-items: center;
         justify-content: space-around;
-        padding-top: 1rem;
+        padding-top: 0px;
 
         .deckout {
             display: flex;
@@ -229,7 +234,7 @@ onMounted(() => {
             align-items: center;
 
             img {
-                width: 8rem;
+                width: 13rem;
             }
 
             p {
@@ -252,33 +257,62 @@ onMounted(() => {
     // padding: 0 1rem;
     .login_top {
         width: 100%;
-        height: 6.8rem;
+        height: 4rem;
         display: flex;
-        justify-content: space-around;
+        justify-content: center;
         align-items: center;
+        text-align: center;
 
         p:nth-child(1) {
+            width: 94px;
             font-weight: bold;
-            color: #c69c6d;
-            border-bottom: 2px solid #c69c6d;
+            color: #e30d00;
+            border-bottom: 2px solid #e30d00;
         }
 
         p:nth-child(2) {
+            width: 94px;
             font-weight: bold;
             color: #808080;
+            border-bottom: 2px solid #808080;
         }
 
     }
 
-    .formbox {
+    .appIco {
         width: 100%;
-        height: 38rem;
+        height: 2.5rem;
+        font-size: 1rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2.375rem;
+
+        span {
+            width: 5rem;
+            height: 5rem;
+            display: inline-block;
+            border-radius: 50%;
+            font-size: 26px;
+            color: #d61300;
+            background: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+    }
+
+    .formbox {
+        width: 94%;
+
         padding: 0 1rem;
         box-sizing: border-box;
         padding-bottom: 1.25rem;
-        border-radius: 30px 30px 0 0;
-        background: #64523e;
-
+        border-radius: 15px;
+        background-color: rgba(255, 255, 255, 0.8);
+        margin: 0px auto;
+        margin-top: 3rem;
 
         .van-cell-group {
             width: 100%;
@@ -286,28 +320,7 @@ onMounted(() => {
             background: none;
         }
 
-        .appIco {
-            width: 100%;
-            height: 2.5rem;
-            font-size: 1rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 2.375rem;
 
-            span {
-                width: 3rem;
-                height: 3rem;
-                display: inline-block;
-                border-radius: 50%;
-                color: #fff;
-                background: #c69c6d;
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                font-weight: bold;
-            }
-        }
 
         .registerBtnWrapper {
             width: 100%;
@@ -316,7 +329,7 @@ onMounted(() => {
             .loginBtn {
                 width: 80%;
                 box-sizing: border-box;
-                background: linear-gradient(to right, #c49b6c 20%, #a77d52) !important;
+                background: linear-gradient(to right, #d61300 20%, #d61300) !important;
                 font-weight: bold;
                 display: block;
                 padding: 0;
@@ -324,8 +337,8 @@ onMounted(() => {
                 color: #fff;
                 height: 2.8rem;
                 font-size: 1rem;
-                margin: 1.875rem auto 0;
-                border-radius: 6px;
+                margin: 0.575rem auto 0;
+                border-radius: 30px;
             }
         }
 
@@ -344,7 +357,7 @@ onMounted(() => {
     }
 
     .makeup {
-        color: #fff;
+        color: #d61300;
         display: flex;
         justify-content: flex-end;
         margin-top: 1.5rem;
@@ -359,7 +372,7 @@ onMounted(() => {
     }
 
     :deep(.van-field__control) {
-        color: #fff;
+        color: #d91100;
     }
 
     :deep(.van-field__control::-webkit-input-placeholder) {

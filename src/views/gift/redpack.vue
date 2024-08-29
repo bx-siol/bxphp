@@ -9,7 +9,7 @@
                 </van-cell-group>
 
                 <div class="reward-btn">
-                    <van-button round block type="primary" native-type="submit" style="height: 2.5rem;border: none;font-size: 1.2rem;background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+                    <van-button round block type="primary" native-type="submit" style="height: 2.5rem;border: none;font-size: 1.2rem;background: linear-gradient(to right, #db1000 20%, #db1000);
                     border-radius: 30px;width: 80%;margin: 0 auto;">{{ t('收到') }}
                     </van-button>
                 </div>
