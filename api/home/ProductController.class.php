@@ -154,6 +154,7 @@ class ProductController extends BaseController
 			->select();
 		$coupon_arr = [];
 		$coupon_cids = [];
+		writeLog(json_encode($coupon_logs),'aaaaa');
 		if ($coupon_logs) {
 			foreach ($coupon_logs as $cp) {
 				// if (in_array($cp['cid'], $coupon_cids)) {
