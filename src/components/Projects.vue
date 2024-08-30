@@ -37,7 +37,7 @@
                           </div>
                           <div class="dailyearnings">
                             <span>Daily earnings</span>
-                            <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price/100) }}</span>
+                            <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price / 100) }}</span>
                           </div>
                           <div class="dailyearnings">
                             <span>Days</span>
@@ -46,7 +46,7 @@
                           <div class="totalrevenue">
                             <span>Total revenue</span>
                             <span style="color:#64503e">₹{{ (item.rate * item.price * item.days / 100).toFixed(2)
-                            }}</span>
+                              }}</span>
                           </div>
                           <div v-if="false" class="totalrevenue">
                             <span>Current inventory</span>
@@ -60,7 +60,7 @@
 
                   <div class="detailRight" @click="getProjectDetail(item)">
                     <div class="pay">
-                      <span>buy now</span>
+                      <span>BUY</span>
                     </div>
                   </div>
                 </div>
@@ -74,8 +74,8 @@
 
     </van-tabs>
 
-    <!-- <div v-for="(itemc, indexc) in newsdata  " :key="indexc" >
-    </div> -->
+    <!--<div v-for="(itemc, indexc) in newsdata  " :key="indexc" >
+    </div>-->
     <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
@@ -172,6 +172,7 @@ onMounted(() => {
 .Projects {
 
   :deep(.van-tab) {
+
     &.van-tab--active {
       position: relative;
       background-color: transparent;
@@ -188,25 +189,29 @@ onMounted(() => {
 
     .van-tab__text {
       border: none !important;
-      background-color: #e6e6e6 !important;
-      color: #222 !important;
-      padding: 0.3rem 0.4rem;
+      background-color: #000000 !important;
+      color: #fffdfd !important;
+      padding: 0.7rem 0.4rem;
       white-space: nowrap;
       width: 6rem;
-      border-radius: 1rem;
+      border-radius: 4rem;
       text-align: center;
     }
+  }
+
+  :deep(.van-tab--grow:first-of-type) {
+    margin-left: -1rem;
   }
 
   :deep(.van-tab--active) {
     .van-tab__text {
       border: none !important;
-      background-color: #64523e !important;
+      background-color: #cc1700 !important;
       color: #fff !important;
-      padding: 0.3rem 0.4rem;
+      padding: 0.8rem 0.6rem;
       white-space: nowrap;
       width: 6rem;
-      border-radius: 1rem;
+      border-radius: 4rem;
       text-align: center;
     }
   }
@@ -220,7 +225,11 @@ onMounted(() => {
     padding-top: 0.425rem;
   }
 
-
+  :deep(.van-tabs__nav) {
+    background-color: #000;
+    border-radius: 9rem;
+    padding: 0rem !important;
+  }
 
 
   .basicProjects {
@@ -242,7 +251,8 @@ onMounted(() => {
           width: 6.2rem;
           height: 6rem;
           margin: 0.2rem 0.2rem 0.4rem;
-          position: relative;
+          position: relative; 
+          border-right: 1px solid #c5bcbc;
 
           .productImg {
             max-width: 100%;
