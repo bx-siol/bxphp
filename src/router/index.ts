@@ -106,7 +106,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/project/:pid',
         name: 'Project_detail',
         meta: {
-            title: 'Product',
+            title: 'Purchase Details',
              needLogin: false
         },
         component: () => import('../views/project/detail.vue')
@@ -160,7 +160,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/news/info/:id',
         name: 'News_info',
         meta: {
-            title: 'Detail',
+            title: ' News Detail',
              needLogin: false
         },
         component: () => import('../views/news/info.vue')

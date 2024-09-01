@@ -390,4 +390,5 @@ export default {
     明天领取: 'Tomorrow',
     收入天数 :'Earnings Days',
     登出 :'Sign out',
+    剩余数量:'Remaining Quantity',
 }

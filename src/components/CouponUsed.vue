@@ -1,22 +1,17 @@
 <template>
   <div class="Projects">
     <div class="basicProjects">
-
       <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #default="{ list }">
-
           <div class="basicProjectsList">
             <div v-for="(item, index) in analogdata  " :key="index">
-              <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', 'padding-bottom': '2rem' }"
-                class="basicItem">
+              <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', 'padding-bottom': '2rem' }" class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
                     <td style="padding-left: 0.5rem;">
-                      <div style="font-size: 1.5rem;" v-if="item.money != 0">{{ t("邀请券")}}</div>
+                      <div style="font-size: 1.5rem;" v-if="item.money != 0">{{ t("邀请券") }}</div>
                       <div style="font-size: 1.5rem;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-
-                      <div style="font-size: 3rem;" v-if="item.money == 0">{{ 100-item.discount }}%</div>
+                      <div style="font-size: 3rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                       <div>{{ t("有效期至") }}:{{ item.effective_time }}</div>
                     </td>
                     <td style="font-size: 2rem; padding-left: 6rem;">
@@ -27,27 +22,20 @@
               </div>
               <div class="remark" v-if="item.remark != ''" style="font-size: 12px; margin-top: -2.1rem;">
                 <van-collapse :border="false" v-model="activeNames">
-                  <van-collapse-item style="background: rgba(0, 0, 0, 0) !important;" :border="false"
-                    :title="t('使用说明')" :name="item.id">
+                  <van-collapse-item style="background: rgba(0, 0, 0, 0) !important;" :border="false" :title="t('使用说明')" :name="item.id">
                     {{ item.remark }}
                   </van-collapse-item>
                 </van-collapse>
               </div>
             </div>
-
-
-
-
           </div>
         </template>
       </MyListBase>
     </div>
-
-
-    <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
+
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import { Col, Row, Icon, Collapse, CollapseItem } from "vant"
@@ -331,7 +319,7 @@ const getProjectDetail = (item: any) => {
   }
 }
 </style>
-<style  scoped>
+<style scoped>
 .remark /deep/ .van-cell--clickable:active {
   background: #0000;
 }

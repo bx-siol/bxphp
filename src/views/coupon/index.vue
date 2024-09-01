@@ -14,9 +14,7 @@
         </van-tab>
       </van-tabs>
     </div>
-    <!-- <Service @doService="doService" /> -->
   </div>
-  <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
 </template>
 
 <script lang="ts">

@@ -1,28 +1,21 @@
 <template>
   <div class="Projects">
     <div class="basicProjects">
-
       <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #default="{ list }">
-
           <div class="basicProjectsList">
             <div v-for="(item, index) in list" :key="index" class="bottom">
-              <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }"
-                class="basicItem">
+              <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }" class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
                     <td style="padding-left: 0.5rem;width: 80%;line-height: 22px;">
                       <div style="font-size:14px;font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
                       <div style="font-size:14px;font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-
                       <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
                     </td>
                     <td>
-                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money != 0">{{ item.money }} RS</div>
-                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money == 0">{{ 100 - item.discount }}%</div>
+                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;" v-if="item.money != 0">{{ item.money }} RS</div>
+                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                       <p class="Expired"> {{ t("已过期") }}</p>
                     </td>
                   </tr>
@@ -32,27 +25,21 @@
                 <van-collapse :border="false" v-model="activeNames">
                   <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
                     <!-- {{ item.remark }} -->
-                   <p> 1. Invite friends to buy any equipment to get an extra 50 Rs</p>
+                    <p> 1. Invite friends to buy any equipment to get an extra 50 Rs</p>
                     <p>2. You can only use 1 card each time you invite friends</p>
-                   <p> 3. It can be directly exchanged and recharged to the balance</p>
+                    <p> 3. It can be directly exchanged and recharged to the balance</p>
                   </van-collapse-item>
                 </van-collapse>
               </div>
             </div>
-
-
-
-
           </div>
         </template>
       </MyListBase>
     </div>
-
-
-    <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
+
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import { Col, Row, Icon, Collapse, CollapseItem } from "vant"
@@ -71,10 +58,8 @@ export default defineComponent({
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Product from '../assets/img/project/product.png';
 import MyListBase from './ListBase.vue';
 import MyLoading from './Loading.vue';
-import MyTab from "./Tab.vue";
 import http from "../global/network/http";
 import { getSrcUrl, goRoute, imgPreview } from "../global/common";
 import { _alert, lang } from "../global/common";
@@ -111,7 +96,7 @@ const getProjectDetail = (item: any) => {
 
 
 </script>
-<style lang="scss"  scoped >
+<style lang="scss" scoped>
 .Projects {
   .detail {
     font-size: 1rem;
@@ -226,7 +211,8 @@ const getProjectDetail = (item: any) => {
           text-align: center;
         }
       }
-      .bottom:last-child{
+
+      .bottom:last-child {
         margin-bottom: 1rem;
       }
     }
@@ -296,7 +282,7 @@ const getProjectDetail = (item: any) => {
 }
 </style>
 
-<style  scoped>
+<style scoped>
 .remark /deep/ .van-cell--clickable:active {
   background: #0000;
 }

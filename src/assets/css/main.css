@@ -1162,10 +1162,10 @@ img {
 .news_wrap li {
     display: flex;
     justify-content: space-between;
-    border-radius: 0.3rem;
-    padding: 0.5rem 0;
-    margin-bottom: 0.6rem;
+    margin-bottom: 1rem;
     align-items: center;
+    background-color: black;
+    height: 7rem;
 }
 
 .news_wrap .cont {

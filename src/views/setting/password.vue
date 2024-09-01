@@ -7,45 +7,31 @@
         </div>
         <van-form @submit="onSubmit">
             <van-cell-group>
-                <van-field v-model="dataForm.account" readonly>
-                    <template #left-icon>
-                        <van-icon name="user-o" :size="configForm.iconSize" :style="configForm.iconStyle" />
-                    </template>
-                </van-field>
-                <van-field v-model="dataForm.phone_flag" readonly>
-                    <template #left-icon>
-                        <van-icon name="phone-o" :size="configForm.iconSize" :style="configForm.iconStyle" />
-                    </template>
+                <van-field v-model="dataForm.phone_flag" readonly :left-icon="phone">
                     <template #right-icon>{{ t('发送手机号') }}</template>
                 </van-field>
-                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" class="dilate">
-                    <template #left-icon>
-                        <van-icon name="envelop-o" :size="configForm.iconSize" :style="configForm.iconStyle" />
+                <van-field v-model="dataForm.password_flag" :placeholder="t('新密码')" :type="showPassword1 ? 'text' : 'password'" :left-icon="key" >
+                    <template #right-icon>
+                        <van-icon v-if="showPassword1" name="eye-o" color="#d6d6d6" @click="showPassword1 = false"></van-icon>
+                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword1 = true"></van-icon>
                     </template>
+                </van-field>
+                <van-field v-model="dataForm.password_flag2" :type="showPassword2 ? 'text' : 'password'" :placeholder="t('确认密码')" :left-icon="key" >
+                    <template #right-icon>
+                        <van-icon v-if="showPassword2" name="eye-o" color="#d6d6d6" @click="showPassword2 = false"></van-icon>
+                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword2 = true"></van-icon>
+                    </template>
+                </van-field>
+                <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" class="dilate" :left-icon="lock" >
                     <template #button>
-                        <van-button size="mini" type="warning" :loading="sendLoading" class="sendCodeBtn"
-                            @click="onSendCode(1)" plain>
-                            <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
-                                @finish="onTimerFinish" />
+                        <van-button size="mini" type="warning" :loading="sendLoading" class="sendCodeBtn" @click="onSendCode(1)" plain>
+                            <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss" @finish="onTimerFinish" />
                             <span v-else>{{ t('点击获取') }}</span>
                         </van-button>
                     </template>
-                </van-field>
-                <van-field v-model="dataForm.password_flag" type="password" :placeholder="t('新密码')">
-                    <template #left-icon>
-                        <van-image :src="ico_2" width="1.8rem" fit="cover"
-                            style="vertical-align: middle;margin-left: -0.25rem;position: relative;top:-3px;" />
-                    </template>
-                </van-field>
-                <van-field v-model="dataForm.password_flag2" type="password" :placeholder="t('确认密码')">
-                    <template #left-icon>
-                        <van-icon name="passed" :size="configForm.iconSize" :style="configForm.iconStyle" />
-                    </template>
-                </van-field>
+                </van-field>               
             </van-cell-group>
-            <div :style="{ textAlign: 'center', color: '#bd312d', padding: '0 2rem' }" v-if="isPassword2">{{
-                t('初始支付密码与登录密码相同') }}
-            </div>
+            <div :style="{ textAlign: 'center', color: '#bd312d', padding: '0 2rem' }" v-if="isPassword2"></div>
             <div style="padding:0 2rem 1rem;">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
             </div>
@@ -84,9 +70,18 @@ import { _alert, isEmail, lang } from "../../global/common";
 import md5 from "md5";
 import { doLogout } from "../../global/user";
 import { useI18n } from 'vue-i18n';
+
+import phone from '../../assets/img/login/lock1.png';
+import key from '../../assets/img/login/lock2.png';
+import lock from '../../assets/img/login/lock3.png';
+
 const { t } = useI18n();
 const route = useRoute()
 const store = useStore()
+const currentTab = ref('LOGIN');
+const isPassword2 = ref(false)
+const showPassword1 = ref(false)
+const showPassword2 = ref(false)
 
 const configForm = reactive({
     iconSize: '1.3rem',
@@ -95,20 +90,16 @@ const configForm = reactive({
     }
 })
 
-const currentTab = ref('LOGIN');
-const isPassword2 = ref(false)
-
 const handleTab = (tab: string) => {
     currentTab.value = tab;
     if (tab == 'PAYMENT') {
-           isPassword2.value = true;
-           dataForm.type = 2;
+        isPassword2.value = true;
+        dataForm.type = 2;
     } else {
-           isPassword2.value = false;
-           dataForm.type = 1;
+        isPassword2.value = false;
+        dataForm.type = 1;
     }
 };
-
 
 const dataForm = reactive({
     account: store.state.user.account,
@@ -239,17 +230,12 @@ onBeforeUnmount(() => {
 })
 
 const getUserInfo = () => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    // setTimeout(() => {
-        http({
-            url: 'a=userinfo'
-        }).then((res: any) => {
-            dataForm.account = res.data.account;
-            dataForm.phone_flag = res.data.phone;
-            // pad_arr.password = res.data.password;
-            // pad_arr.password2 = res.data.password2;
-        })
-    // }, delayTime)
+    http({
+        url: 'a=userinfo'
+    }).then((res: any) => {
+        dataForm.account = res.data.account;
+        dataForm.phone_flag = res.data.phone;
+    })
 }
 
 onMounted(() => {
@@ -266,16 +252,19 @@ onMounted(() => {
 
 .conBox .streamer .activeTab {
     color: #fff;
-    background: #64523e;
+    background: url(/src/assets/img/login/login_btn.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 .conBox .streamer div {
     padding: 0.8rem 1rem;
     text-align: center;
-    border: 1px solid #64523e;
+    background-color: #d9d9d9;
     border-radius: 2rem;
     font-size: 12px;
     font-weight: bold;
+    color: #fff;
 }
 
 .conBox .streamer .nth-child1 {
@@ -284,10 +273,6 @@ onMounted(() => {
 
 .conBox .streamer .nth-child2 {
     background-color: #fff;
-}
-
-.conBox .dilate {
-    padding: 0 0 0 0.6rem;
 }
 
 .conBox .myBtn {
@@ -308,19 +293,18 @@ onMounted(() => {
 
 /deep/.van-cell {
     padding: 0.6rem;
-    border: 1px solid #c69c6d;
+    border: 1px solid #cc1700;
     margin-bottom: 1rem;
     border-radius: 6px;
 }
-
 /deep/.van-field__right-icon {
-    color: #c69c6d;
+    color: #cc1700;
 }
 
 /deep/.van-button--plain.van-button--warning {
     color: #fff !important;
     padding: 1.38rem 0.8rem;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: #cc1700;
     ;
 }
 
@@ -330,5 +314,15 @@ onMounted(() => {
 
 /deep/.van-field__control::-webkit-input-placeholder {
     color: #999 !important;
+}
+</style>
+<style scoped lang="scss" >
+.sendCodeBtn {
+    border: none;
+    font-weight: bold;
+    font-size: 16px;
+    color: #cb1a00 !important;
+    padding: 0.8rem 0.6rem !important;
+    border-radius: 6px !important;
 }
 </style>

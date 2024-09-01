@@ -1,28 +1,21 @@
 <template>
   <div class="Projects">
     <div class="basicProjects">
-
       <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #default="{ list }">
-
           <div class="basicProjectsList">
             <div v-for="(item, index) in list" :key="index" class="bottom">
-              <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${item.money != 0 ? yhj1 : yhj2})`, 'background-size': '100% 100%', }"
-                class="basicItem">
+              <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${item.money != 0 ? yhj1 : yhj2})`, 'background-size': '100% 100%', }" class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
                     <td style="padding-left: 0.5rem;width: 80%;line-height: 22px;">
                       <div style="font-size: 14px;font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
                       <div style="font-size: 14px;font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-
                       <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
                     </td>
                     <td>
-                      <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money != 0">{{item.money }} RS</div>
-                      <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money == 0">{{ 100 - item.discount }}%</div>
+                      <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;" v-if="item.money != 0">{{ item.money }} RS</div>
+                      <div style="font-size: 16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                       <p class="Exchange" @click="usefun(item)">{{ t('待使用') }}</p>
                     </td>
                   </tr>
@@ -39,17 +32,14 @@
                 </van-collapse>
               </div>
             </div>
-
           </div>
         </template>
       </MyListBase>
     </div>
-
-
-    <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
+
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import { Col, Row, Icon, Collapse, CollapseItem } from "vant"
@@ -250,7 +240,8 @@ const getProjectDetail = (item: any) => {
           text-align: center;
         }
       }
-      .bottom:last-child{
+
+      .bottom:last-child {
         margin-bottom: 1rem;
       }
     }
