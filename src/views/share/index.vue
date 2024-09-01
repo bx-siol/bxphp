@@ -25,7 +25,6 @@ import { _alert, lang } from "../../global/common";
 import { defineComponent, ref, onMounted, computed } from "vue";
 import MyNav from "../../components/Nav.vue";
 import { Button, Grid, GridItem, Image, Stepper, Cell, CellGroup } from "vant";
-import VueQrcode from 'vue-qrcode'
 
 export default defineComponent({
     name: "invite",
@@ -74,8 +73,6 @@ const montage = computed(() => {
 });
 
 onMounted(() => {
-    const delayTime = Math.floor(Math.random() * 1000);
-    // setTimeout(() => {
     http({
         url: 'c=Share&a=index'
     }).then((res: any) => {
@@ -86,8 +83,6 @@ onMounted(() => {
             }
         })
     })
-    // }, delayTime)
-
 })
 
 </script>
