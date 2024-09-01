@@ -22,7 +22,7 @@ class ShareController extends BaseController
 			->sum('money');
 
 		$where = " log.pid='" . $pageuser['id'] . "'";
-		$avatar = Db::table('sys_user log')->where($where)->find();
+		$avatar = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		$people = Db::table('sys_user log')
 			->where($where)
 			->count();
