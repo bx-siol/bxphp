@@ -1,6 +1,6 @@
 <template>
     <div class="invite">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div style="text-align: center;" class="invite_wrap">
             <div class="qrcode">
                 <!-- <van-image :src="imgFlag(tdata.qrcode)" @click="onPreview(tdata.qrcode)"></van-image> -->

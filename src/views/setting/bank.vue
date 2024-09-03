@@ -1,6 +1,6 @@
 <template>
     <div class="conBox">
-        <Nav></Nav>
+        <Nav leftText=''></Nav>
         <van-form @submit="onSubmit" :label-width="configForm.labelWidth" :label-align="configForm.labelAlign">
             <van-cell-group>
                 <van-field type="number" :label="t('账号')" v-model="dataForm.account" :placeholder="t('请输入您的账号')" />

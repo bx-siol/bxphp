@@ -1,5 +1,9 @@
 <template>
-    <MyNav leftText=''></MyNav>
+    <MyNav leftText=''>
+        <template #title>
+                {{ title }}
+            </template>
+    </MyNav>
     <div class="teamlist">
         <div class="list_top">
             <div style="width:18%;;">Product</div>
@@ -30,30 +34,21 @@ import MyNav from "../../components/Nav.vue";
 export default defineComponent({
     components: {
         MyNav,
-
     },
 });
 </script>
 
 <script lang="ts" setup>
-import Telegram from "../../assets/img/user/Telegram.png";
-import WhatsApp from "../../assets/img/user/WhatsApp.png";
-import telephone from "../../assets/img/user/telephone.png";
 import { _alert, lang, copy, getSrcUrl } from "../../global/common";
-import {
-    ref,
-    reactive,
-    onMounted,
-    onBeforeUnmount,
-    onBeforeMount,
-    nextTick,
-} from "vue";
+import { ref, onMounted } from "vue";
 import http from "../../global/network/http";
 import { useRouter, useRoute } from "vue-router";
 import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
 
 const route = useRoute()
+const title = 'Team ' + route.params.type+' Product'
+
 
 const GoodsList = ref([]);
 
@@ -85,9 +80,9 @@ onMounted(() => {
         width: 100%;
         margin-top: 0.1rem;
         text-align: center;
-        font-size: 0.75rem;
+        font-size: 0.9rem;
         font-weight: bold;
-        color: #64523e;
+        color: #cc1700;
         display: flex;
         justify-content: space-between;
         align-items: center

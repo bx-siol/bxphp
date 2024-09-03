@@ -1,6 +1,6 @@
 <template>
   <div style="min-height: 480px" class="giftbag">
-    <MyNav></MyNav>
+    <MyNav leftText=''></MyNav>
     <div class="reward">
       <van-form @submit="onSubmit">
         <van-cell-group inset>
@@ -151,6 +151,7 @@ label {
         font-weight: 100;
         color: #f8c22e;
         text-align: center;
+        font-weight: bold;
     }
   }
 }

@@ -96,7 +96,7 @@ const onLeftClick = () => {
     right: 0;
     color: #cb1a00;
     box-shadow: 0 1px 4px 0 #c3c3c3;
-    z-index: 9999;
+    z-index: 300;
 }
 
 /* .myNavBar .van-nav-bar{background-color: #0098a2;max-width: 640px;margin: 0 auto;right: 0;} */

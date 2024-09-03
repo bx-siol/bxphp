@@ -1,13 +1,40 @@
 <template>
     <div class="choujiang" style="padding: 0 1rem;">
-        <MyNav leftText=''> </MyNav>
+        <MyNav leftText=''>
+            <template #left>
+                <div></div>
+            </template>
+        </MyNav>
         <div class="top"> LUCKY DRAW</div>
         <div class="lotteryNum">There are {{ num }} draws left</div>
-        <div
-            style="height: 22rem; margin-top: 1rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: space-around;">
+        <div style="height: 22rem; margin-top: 1rem; display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-around; align-content: space-around;">
+            <div class="rollbox" @click="FlippingOver($event)">
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
 
             <div class="rollbox" @click="FlippingOver($event)">
+                <div class="rollbox_front">
+                    <div class="contentbox">
+                        <img :src="open" />
+                    </div>
+                </div>
+                <div class="rollbox_behind">
+                    <div class="contentbox">
+                        <img :src="result" />
+                    </div>
+                </div>
+            </div>
 
+            <div class="rollbox" @click="FlippingOver($event)">
                 <div class="rollbox_front">
                     <div class="contentbox">
                         <img :src="open" />
@@ -22,7 +49,6 @@
             </div>
 
             <div class="rollbox" @click="FlippingOver($event)">
-
                 <div class="rollbox_front">
                     <div class="contentbox">
                         <img :src="open" />
@@ -37,13 +63,11 @@
             </div>
 
             <div class="rollbox" @click="FlippingOver($event)">
-
                 <div class="rollbox_front">
                     <div class="contentbox">
                         <img :src="open" />
                     </div>
                 </div>
-
                 <div class="rollbox_behind">
                     <div class="contentbox">
                         <img :src="result" />
@@ -52,43 +76,11 @@
             </div>
 
             <div class="rollbox" @click="FlippingOver($event)">
-
                 <div class="rollbox_front">
                     <div class="contentbox">
                         <img :src="open" />
                     </div>
                 </div>
-
-                <div class="rollbox_behind">
-                    <div class="contentbox">
-                        <img :src="result" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="rollbox" @click="FlippingOver($event)">
-
-                <div class="rollbox_front">
-                    <div class="contentbox">
-                        <img :src="open" />
-                    </div>
-                </div>
-
-                <div class="rollbox_behind">
-                    <div class="contentbox">
-                        <img :src="result" />
-                    </div>
-                </div>
-            </div>
-
-            <div class="rollbox" @click="FlippingOver($event)">
-
-                <div class="rollbox_front">
-                    <div class="contentbox">
-                        <img :src="open" />
-                    </div>
-                </div>
-
                 <div class="rollbox_behind">
                     <div class="contentbox">
                         <img :src="result" />
@@ -99,12 +91,10 @@
         <div class="lotteryNum" style=" width: 43%; margin-left: 28%; margin-top: 1rem;">Activity Rules</div>
         <div class="introduce">
             <p>
-                <!-- <img :src="xx" /> -->
                 <span>1: New members who join for the first time will get 1 lucky draw opportunity.</span>
             </p>
             <br />
             <p>
-                <!-- <img :src="xx" /> -->
                 2: Invite new members to join, and you will receive the corresponding number of draws.
             </p>
         </div>
@@ -117,7 +107,8 @@
             <img :src="result" />
             <div class="content" v-if="false">{{ tipstr }}</div>
         </div>
-    </van-popup>
+    </van-popup>    
+    <MyTab></MyTab>
 </template>
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeMount } from 'vue'
