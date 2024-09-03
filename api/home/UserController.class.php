@@ -339,6 +339,13 @@ class UserController extends BaseController
 		$start_time = strtotime(date('Y-m-d 00:00:01'));
 		$end_time = strtotime(date('Y-m-d 23:59:59'));
 
+		$pro_order =  Db::table('pro_order od')
+					-> leftJoin('sys_user u' ,'od.uid = u.id')
+					->field('od.uid,sum(money) as totalmoney')
+					-> where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
+					-> group('od.uid')
+					->select()->toArray();
+
 		$today = date('Ymd', NOW_TIME);
 		$newmember = Db::table('sys_user')
 			->where(" pids like '%{$pageuser['id']}%' and first_pay_day ={$today} ")->count();
@@ -359,7 +366,20 @@ class UserController extends BaseController
 
 				if ($item["level"] == 3)
 					$item["newmember3"] = true;
-			}				
+			}
+
+			foreach($pro_order as &$it){
+				if($it['uid'] == $item['id']){
+					if ($item["level"] == 1)
+						$item["pro_order_B"] = $it['totalmoney'];
+
+					if ($item["level"] == 2)
+						$item["pro_order_C"] = $it['totalmoney'];
+
+					if ($item["level"] == 3)
+						$item["pro_order_D"] = $it['totalmoney'];
+				}					
+			}
 		}
 		
 		$return_data = [
