@@ -68,86 +68,83 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-.project {
-  background: #fff;
-  width: 100%;
-  overflow-x: hidden;
+    .project {
+        background: #fff;
+        width: 100%;
+        overflow-x: hidden;
 
-  .projectWrapper {
-    padding: 0 1rem;
-    box-sizing: border-box;
-    padding-bottom: 1.75rem;
+        .projectWrapper {
+            padding: 0 1rem;
+            box-sizing: border-box;
+            padding-bottom: 1.75rem;
 
-    .projectTab {
-      :deep(.van-tabs__wrap) {
-        .van-tabs__nav--line {
-          position: fixed;
-          width: 100%;
-          height: auto;
-          left: 50%;
-          transform: translateX(-50%);
-          box-sizing: border-box;
-          z-index: 10;
-          background: #fff;
-          padding: 1rem 0.625rem 0.625rem;
-          max-width: 640px;
+            .projectTab {
+                :deep(.van-tab) {
+                    padding: 0;
 
+                    &.van-tab--active {
+                        position: relative;
+                        background-color: transparent;
+                        // &::after {
+                        //     position: absolute;
+                        //     bottom: -0.3rem;
+                        //     content: ' ';
+                        //     border: 2px solid #00b57e;
+                        //     width: 1rem;
+                        //     border-radius: 6px;
+                        //     // border-top: 0.5rem solid ;
+                        // }
+                    }
+
+                    .van-tab__text {
+                        border: none !important;
+                        background-color: #000000 !important;
+                        color: #fffdfd !important;
+                        padding: 0.7rem 0.4rem;
+                        white-space: nowrap;
+                        width: 6rem;
+                        border-radius: 4rem;
+                        text-align: center;
+                    }
+                }
+
+                :deep(.van-tab--grow:first-of-type) {
+                    margin-left: -1rem;
+                }
+
+                :deep(.van-tab--active) {
+                    .van-tab__text {
+                        border: none !important;
+                        background-color: #cc1700 !important;
+                        color: #fff !important;
+                        padding: 0.8rem 0.6rem;
+                        white-space: nowrap;
+                        width:11rem;
+                        border-radius: 4rem;
+                        text-align: center;
+                    }
+                }
+
+                :deep(.van-tabs__line) {
+                    display: none;
+                    background-color: #fff;
+                }
+
+                :deep(.van-tabs__nav--line) {
+                    padding-top: 0.425rem;
+                }
+
+                :deep(.van-tabs__nav) {
+                    background-color: #000;
+                    border-radius: 9rem;
+                    padding: 0rem !important;
+                }
+
+                :deep(.van-grid-item__content--center) {
+                    flex-direction: row;
+                    padding: 1rem 0.375rem;
+                }
+            }
         }
-      }
-
-      :deep(.van-tabs__line) {
-        display: none;
-        background-color: #fff;
-      }
-
-      :deep(.van-tab) {
-        &.van-tab--active {
-          position: relative;
-
-          // &::after {
-          //   position: absolute;
-          //   bottom: -1rem;
-          //   content: ' ';
-          //   border: 0.5rem solid transparent;
-          //   border-top: 0.5rem solid #bd312d;
-          // }
-        }
-
-        .van-tab__text {
-          color: #64523e;
-          border: 1px solid #64523e;
-          background: #fff;
-          width: 100%;
-          height: 1.75rem;
-          border-radius: 0.8125rem;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-      }
-
-      :deep(.van-tab--active) {
-        .van-tab__text {
-          color: #fff;
-          background: #64523e;
-          border: 1px solid #64523e;
-          width: 100%;
-          height: 1.75rem;
-          border-radius: 0.8125rem;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
-
-      }
-
-      :deep(.van-grid-item__content--center) {
-        flex-direction: row;
-        padding: 1rem 0.375rem;
-      }
     }
-  }
-}
 </style>

@@ -88,53 +88,70 @@
                                                     </span>
                                                 </div>
                                                 <div v-else><span>Other</span></div>
-
-
-                                                <span v-if="item.type == 10" style="font-size: 0.9rem;"> {{
+                                                <div style=" border-bottom: 0.1rem solid red; width: 59vw;"></div>
+                                            </td>
+                                            <td style="padding: 0vh 3vw; margin-top: 1vh; font-weight: bold; color: black;">
+                                                <span v-if="item.type == 10" style="font-size: 0.9rem;">
+                                                    {{
                                                     item.money > 0 ? '+' + item.money : item.money
-                                                }}RS</span>
-
+                                                    }}RS
+                                                </span>
                                                 <span v-else-if="item.type == 1"
-                                                    style="font-size: 0.9rem;color: #ce1b22;font-weight: bold;"> {{
-                                                        item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
-                                                <span v-else-if="item.type == 6"
-                                                    style="font-size: 0.9rem;color: #0426f1;font-weight: bold;"> {{
-                                                        item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
-                                                <span v-else-if="item.type == 9"
-                                                    style="font-size: 0.9rem;color: #ffb123;font-weight: bold;"> {{
-                                                        item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
-                                                <span v-else-if="item.type == 14"
-                                                    style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
+                                                      style="font-size: 0.9rem;color: #ce1b22;font-weight: bold;">
                                                     {{
                                                         item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
+                                                    }}RS
+                                                </span>
+                                                <span v-else-if="item.type == 6"
+                                                      style="font-size: 0.9rem;color: #0426f1;font-weight: bold;">
+                                                    {{
+                                                        item.money > 0 ? '+' + item.money : item.money
+                                                    }}RS
+                                                </span>
+                                                <span v-else-if="item.type == 9"
+                                                      style="font-size: 0.9rem;color: #ffb123;font-weight: bold;">
+                                                    {{
+                                                        item.money > 0 ? '+' + item.money : item.money
+                                                    }}RS
+                                                </span>
+                                                <span v-else-if="item.type == 14"
+                                                      style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
+                                                    {{
+                                                        item.money > 0 ? '+' + item.money : item.money
+                                                    }}RS
+                                                </span>
 
                                                 <span v-else-if="item.type == 2"
-                                                    style="font-size: 0.9rem;color: #0098a2;font-weight: bold;"> {{
+                                                      style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
+                                                    {{
                                                         item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
+                                                    }}RS
+                                                </span>
                                                 <span v-else-if="item.type == 21"
-                                                    style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
+                                                      style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
                                                     {{
                                                         item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
+                                                    }}RS
+                                                </span>
                                                 <span v-else-if="item.type == 1019"
-                                                    style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
+                                                      style="font-size: 0.9rem;color: #0098a2;font-weight: bold;">
                                                     {{
                                                         item.money > 0 ? '+' + item.money : item.money
-                                                    }}</span>
+                                                    }}
+                                                </span>
                                                 <span v-else
-                                                    :style="{ 'font-size': '0.9rem', 'font-weight': 'bold', 'color': item.money > 0 ? '' : '#ce1b22' }">
+                                                      :style="{ 'font-size': '0.9rem', 'font-weight': 'bold', 'color': item.money > 0 ? '' : '#ce1b22' }">
                                                     {{
                                                         item.money > 0 ? '+' + item.money : item.money
-                                                    }}RS</span>
-                                            </td>
-                                            <td>
+                                                    }}RS
+                                                </span>
                                                 <span>{{ item.create_time }}</span>
-                                                <span>{{ item.fund_changes }}</span>
+                                                <span>{{ item.id }}</span>
+                                             </td>   
+                                            <td style="padding:0vh 3vw">
+                                                <span>Amount</span>
+                                                <span>Time</span>
+                                                <span>Order Nunber</span>
                                             </td>
                                         </div>
 
@@ -334,7 +351,6 @@ onMounted(() => { });
         font-size: 12px;
         margin: 1rem 0;
         background-color: #fff;
-        border-bottom: 1px solid #ddd;
         padding-bottom: 0.5rem;
 
         td {
@@ -352,23 +368,28 @@ onMounted(() => { });
 
 
 
-.tablebox {
-    .tableRight {
-        padding: 0 1rem 1rem;
-        height: 100%;
-        overflow-x: auto;
-        font-size: 0.8rem;
+    .tablebox {
+        .tableRight {
+            padding: 0 1rem 1rem;
+            height: 100%;
+            overflow-x: auto;
+            font-size: 0.8rem;
 
-        .variation {
-            div {
-                span {
-                    color: #002544;
-                    font-weight: bold;
+            .variation {
+                div:first-of-type {
+                    border: 1px solid red;
+                    padding: 0.5vh 2vw;
+                    border-radius: 25px;
+                    width: 30vw;
+
+                    span {
+                        color: red;
+                        font-weight: bold;
+                    }
                 }
             }
         }
     }
-}
 
 .tablebox td {
     border: none;

@@ -15,37 +15,15 @@
             </div>
 
             <div>
-
-                <div class="payinfo" style="margin-top: 1rem;">
-                    <p class="tit">{{ t('银行账户') }}</p>
-                    <ul>
-                        <!-- <li><span>{{ dataForm.money * tar / 100 }}RS</span>{{ t('税收') }}</li>
-                        <li><span>{{ tar }}%</span>{{ t('费用比率') }}</li>
-                        <li><span>{{ min }} RS</span>{{ t('最小提现金额') }}</li>
-                        <li><span>{{ max }} RS</span>{{ t('最大提现金额') }}</li> -->
-                        <li><span>{{ t('银行名称') }}</span> <span>{{ banklog.bank_name }}</span> </li>
-                        <li><span>{{ t('真实姓名') }}</span> <span>{{ banklog.realname }}</span> </li>
-                        <li><span>{{ t('银行账号') }}</span> <span>{{ banklog.account }}</span></li>
-                        <li><span>{{ t('IFSC ') }} </span> <span>{{ banklog.ifsc }}</span> </li>
-                        <li>
-                            <span style="color:#6e523e;">{{ t('账户余额') }} </span>
-                            <span style="color:#6e523e;">{{ wallet.balance }}</span>
-                        </li>
-                        <li><span style="color:#6e523e;">{{ t('Quantity') }}: </span>
-                            <span style="font-size: 12px;">Withdrawal Handling Fee({{ tar }}%):
-                                {{ (dataForm.money * tar / 100).toFixed(2) }} RS</span>
-                        </li>
-                    </ul>
-                </div>
                 <div style="display: flex;align-items: center;">
                     <van-field class="fieldbox" v-model="dataForm.money" :placeholder="t('请输入金额')"
-                        style="background-color:#fff ;">
-                        <template #left-icon>
-                            <van-image :src="jb" style="width: 1.4rem;height: 1.4rem;margin-left: 0.5rem;" />
-                        </template>
+                               style="background-color:#fff ;">
+                        <!--<template #left-icon>
+                <van-image :src="jb" style="width: 1.4rem;height: 1.4rem;margin-left: 0.5rem;" />
+            </template>-->
                         <template #button>
-                            <van-button size="small" type="primary" color="#bf9567" style="border-radius:4px;"
-                                @click="onClickAll">ALL</van-button>
+                            <van-button size="small" type="primary" color="rgb(204 23 0)" style="border-radius:4px;"
+                                        @click="onClickAll">ALL</van-button>
                         </template>
                     </van-field>
                 </div>
@@ -55,13 +33,38 @@
                     </div>
                 </div>
                 <van-field class="fieldbox" v-model="password2" :placeholder="t('请输入提现密码')"
-                    :type="showPassword ? 'text' : 'password'"
-                    style="height: 1.75rem;font-size: 0.75rem;margin-top: 0.875rem;">
+                           :type="showPassword ? 'text' : 'password'"
+                           style="height: 1.75rem;font-size: 0.75rem;margin-top: 0.875rem;">
                     <template #right-icon>
                         <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6" @click="showPassword = false"></van-icon>
                         <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
                     </template>
                 </van-field>
+
+                <div class="payinfo" style="margin-top: 1rem;">
+                    <p class="tit">{{ t('银行账户') }}</p>
+                    <ul>
+                        <!-- <li><span>{{ dataForm.money * tar / 100 }}RS</span>{{ t('税收') }}</li>
+            <li><span>{{ tar }}%</span>{{ t('费用比率') }}</li>
+            <li><span>{{ min }} RS</span>{{ t('最小提现金额') }}</li>
+            <li><span>{{ max }} RS</span>{{ t('最大提现金额') }}</li> -->
+                        <li><span>{{ t('银行名称') }}</span> <span>{{ banklog.bank_name }}</span> </li>
+                        <li><span>{{ t('真实姓名') }}</span> <span>{{ banklog.realname }}</span> </li>
+                        <li><span>{{ t('银行账号') }}</span> <span>{{ banklog.account }}</span></li>
+                        <li><span>{{ t('IFSC ') }} </span> <span>{{ banklog.ifsc }}</span> </li>
+                        <li>
+                            <span>{{ t('账户余额') }} </span>
+                            <span>{{ wallet.balance }}</span>
+                        </li>
+                        <li>
+                            <span>{{ t('Quantity') }}: </span>
+                            <span style="font-size: 12px;">
+                                Withdrawal Handling Fee({{ tar }}%):
+                                {{ (dataForm.money * tar / 100).toFixed(2) }} RS
+                            </span>
+                        </li>
+                    </ul>
+                </div>
                 <van-button class="submitBtn" @click="onSubmit">{{ t('提现') }}</van-button>
             </div>
 
@@ -103,23 +106,28 @@
             <div class="withdrawalNotes">
                 <div class="notice">
                     <!-- <img :src="hexagon"> -->
-                    <span class="noticeText">Kind tips:</span>
+                    <van-image style=" width: 6vw;" :src="light"></van-image>
+                    <span class="noticeText"> Kind tips:</span>
                 </div>
                 <div class="noticeList">
 
                     <div class="noticeListItem">
-                        <span>1: Valid members can apply to withdraw money. There is no limit on the number of withdrawals.
-                            The minimum withdrawal amount is Rs {{ min }}. </span>
+                        <span>1. Minimum withdrawal amount is Rs {{ min }}. </span>
                     </div>
                     <div class="noticeListItem">
-                        <span>2: IFSC must be 11 characters, the 5th character is 0. If the bank information is filled in
-                            incorrectly, the withdrawal will fail.</span>
+                        <span>2. You can withdraw once a day.</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>3: Withdrawal fee:{{ tar }} %</span>
+                        <span>3. Withdrawal will reach your account within 24-72</span>
                     </div>
                     <div class="noticeListItem">
-                        <span>4: Withdrawal time: 1-3 days </span>
+                        <span>4. Withdrawal tax {{ tar }} %</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>5.lf the withdrawal fails, please reapply or check whether your bankaccount information is correct.</span>
+                    </div>
+                    <div class="noticeListItem">
+                        <span>6.lFSC should be 11 characters, and the 5th character should be "0"not "O". lf you fill in incorrect bank information, your withdrawal will fail.</span>
                     </div>
                 </div>
             </div>
@@ -136,186 +144,203 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, reactive, onMounted } from "vue";
-import MyNav from "../../components/Nav.vue";
-import Service from '../../components/service.vue';
-import MyTab from "../../components/Tab.vue";
-import MyLoading from "../../components/Loading.vue";
-import { goRoute } from "../../global/common";
-import { Button, Field, CellGroup, Cell, Checkbox, RadioGroup, Radio, Tag, Picker, Popup, Icon, Image } from "vant";
-import dpimg from '../../assets/img/dp.png';
-export default defineComponent({
-    name: "withdrawal",
-    components: {
-        MyNav, MyLoading,
-        [Button.name]: Button,
-        [Field.name]: Field,
-        [CellGroup.name]: CellGroup,
-        [Cell.name]: Cell,
-        [Checkbox.name]: Checkbox,
-        [RadioGroup.name]: RadioGroup,
-        [Radio.name]: Radio,
-        [Tag.name]: Tag,
-        [Picker.name]: Picker,
-        [Popup.name]: Popup,
-        [Icon.name]: Icon,
-        [Image.name]: Image,
-    }
-})
+    import { defineComponent, ref, reactive, onMounted } from "vue";
+    import MyNav from "../../components/Nav.vue";
+    import Service from '../../components/service.vue';
+    import MyTab from "../../components/Tab.vue";
+    import MyLoading from "../../components/Loading.vue";
+    import { goRoute } from "../../global/common";
+    import { Button, Field, CellGroup, Cell, Checkbox, RadioGroup, Radio, Tag, Picker, Popup, Icon, Image } from "vant";
+    import dpimg from '../../assets/img/dp.png';
+    import light from '/src/assets/img/user/light.png'
+    export default defineComponent({
+        name: "withdrawal",
+        components: {
+            MyNav, MyLoading,
+            [Button.name]: Button,
+            [Field.name]: Field,
+            [CellGroup.name]: CellGroup,
+            [Cell.name]: Cell,
+            [Checkbox.name]: Checkbox,
+            [RadioGroup.name]: RadioGroup,
+            [Radio.name]: Radio,
+            [Tag.name]: Tag,
+            [Picker.name]: Picker,
+            [Popup.name]: Popup,
+            [Icon.name]: Icon,
+            [Image.name]: Image,
+        }
+    })
 </script>
 <script lang="ts" setup>
 
-import { img_banner } from '../../global/assets';
-import jb from '../../assets/ico/114.png'
-import bird from '../../assets/ico/bird.png'
-import qb from '../../assets/ico/113.png'
+    import { img_banner } from '../../global/assets';
+    import jb from '../../assets/ico/114.png'
+    import bird from '../../assets/ico/bird.png'
+    import qb from '../../assets/ico/113.png'
 
-import { http } from "../../global/network/http";
-import { _alert, lang } from "../../global/common";
-import { useRouter } from "vue-router";
-import md5 from "md5";
-import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+    import { http } from "../../global/network/http";
+    import { _alert, lang } from "../../global/common";
+    import { useRouter } from "vue-router";
+    import md5 from "md5";
+    import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
-let isRequest = false
-const router = useRouter()
-const loadtitle = ref("Loading...")
-const loadingShow = ref(false);
-const showPassword = ref(false)
-const showPayOnlinePicker = ref<boolean>(false)
-const payOnlineColumns = ref<Array<string>>(['Pay Online D', 'Pay Online D1'])
-const payOnlineResult = ref('Pay Online D')
+    let isRequest = false
+    const router = useRouter()
+    const loadtitle = ref("Loading...")
+    const loadingShow = ref(false);
+    const showPassword = ref(false)
+    const showPayOnlinePicker = ref<boolean>(false)
+    const payOnlineColumns = ref<Array<string>>(['Pay Online D', 'Pay Online D1'])
+    const payOnlineResult = ref('Pay Online D')
 
-const payOnlineOnConfirm = (value: string) => {
-    payOnlineResult.value = value
-    showPayOnlinePicker.value = false
-};
+    const payOnlineOnConfirm = (value: string) => {
+        payOnlineResult.value = value
+        showPayOnlinePicker.value = false
+    };
 
-const showOnlineBankingPicker = ref<boolean>(false)
-const onlineBankingColumns = ref<Array<string>>(['Online banking 1', 'Online banking 3'])
-const onlineBankingResult = ref('Online banking 3')
+    const showOnlineBankingPicker = ref<boolean>(false)
+    const onlineBankingColumns = ref<Array<string>>(['Online banking 1', 'Online banking 3'])
+    const onlineBankingResult = ref('Online banking 3')
 
-const onlineBankingConfirm = (value: string) => {
-    onlineBankingResult.value = value
-    showOnlineBankingPicker.value = false
-};
+    const onlineBankingConfirm = (value: string) => {
+        onlineBankingResult.value = value
+        showOnlineBankingPicker.value = false
+    };
 
-const withdrawerName = ref<string>('')
-const accountNumber = ref<string>('')
-const password2 = ref<string>('')
+    const withdrawerName = ref<string>('')
+    const accountNumber = ref<string>('')
+    const password2 = ref<string>('')
 
-const dataForm = reactive({
-    password2: '',
-    money: '0'
-})
+    const dataForm = reactive({
+        password2: '',
+        money: ''
+    })
 
-const sys_pset = reactive({
-    cash: {
+    const sys_pset = reactive({
+        cash: {
 
-    }
-})
-
-const onLink = (to: any) => {
-    goRoute(to)
-}
-
-// { "code": 1, "msg": "ok", "data": { "wallet": { "id": 6, "waddr": "76871059f3e257d4", "uid": 107902, "cid": 2, "balance": "601880.84", "fz_balance": "0.00", "create_time": 1671869738, "lasttime": "0" }, "banklog": { "type": 1, "uid": 107902, "ifsc": "87898", "upi": null, "province_id": 0, "city_id": 0, "bank_id": "IDPT0001", "bank_name": "Canara Bank", "account": "00009989887867878", "realname": "aaa", "routing": null, "phone": "", "idcard": "", "email": null, "branch_name": null, "create_time": 1672489005, "create_id": 107902, "sort": 1000, "status": 1, "currency_id": null, "protocal": 0, "address": null, "qrcode": null, "remark": null }, "sys_pset": { "pay": { "min": "100", "max": "100000", "kmin": "1000", "kmax": "100000" }, "cash": { "min": "120", "max": "50000", "fee": { "percent": "5", "money": "0", "mode": "1" }, "time": { "from": "00:00:00", "to": "23:59:59", "weekend": "1" } } } } }
-
-const doService = () => {
-    console.log('im service')
-}
-
-const checked = ref(1)
-const wallet = ref({})
-const banklog = ref({})
-const min = ref(0)
-const max = ref(0)
-const tar = ref(0)
-const ptypeArr = ref([])
-const onClickAll = () => {
-    dataForm.money = wallet.value.balance * 1
-}
-
-const onSubmit = () => {
-    if (isRequest) {
-        return
-    } else {
-        isRequest = true
-    }
-
-    let ptype: any = {}
-    for (let i in ptypeArr.value) {
-        if (ptypeArr.value[i].id == checked.value) {
-            ptype = ptypeArr.value[i];
-            break
         }
+    })
+
+    const onLink = (to: any) => {
+        goRoute(to)
     }
 
-    if (dataForm.money-0 < min.value-0) {
-        isRequest = false
-        _alert(' Minimum withdrawal amount is ' + min.value)
-        return
-    }
-    
-    if (dataForm.money-0 > max.value-0) {
-        isRequest = false
-        _alert(' Maximum withdrawal amount is ' + max.value)
-        return
+    // { "code": 1, "msg": "ok", "data": { "wallet": { "id": 6, "waddr": "76871059f3e257d4", "uid": 107902, "cid": 2, "balance": "601880.84", "fz_balance": "0.00", "create_time": 1671869738, "lasttime": "0" }, "banklog": { "type": 1, "uid": 107902, "ifsc": "87898", "upi": null, "province_id": 0, "city_id": 0, "bank_id": "IDPT0001", "bank_name": "Canara Bank", "account": "00009989887867878", "realname": "aaa", "routing": null, "phone": "", "idcard": "", "email": null, "branch_name": null, "create_time": 1672489005, "create_id": 107902, "sort": 1000, "status": 1, "currency_id": null, "protocal": 0, "address": null, "qrcode": null, "remark": null }, "sys_pset": { "pay": { "min": "100", "max": "100000", "kmin": "1000", "kmax": "100000" }, "cash": { "min": "120", "max": "50000", "fee": { "percent": "5", "money": "0", "mode": "1" }, "time": { "from": "00:00:00", "to": "23:59:59", "weekend": "1" } } } } }
+
+    const doService = () => {
+        console.log('im service')
     }
 
-    loadingShow.value = true;
-    const delayTime = Math.floor(Math.random() * 1000);
-    setTimeout(() => {
-        http({
-            url: 'c=Finance&a=withdrawAct',
-            data: {
-                //banklog_id:banklog.value.id,
-                money: dataForm.money,
-                password2: md5(password2.value)
+    const checked = ref(1)
+    const wallet = ref({})
+    const banklog = ref({})
+    const min = ref(0)
+    const max = ref(0)
+    const tar = ref(0)
+    const ptypeArr = ref([])
+    const onClickAll = () => {
+        dataForm.money = wallet.value.balance * 1
+    }
+
+    const onSubmit = () => {
+        if (isRequest) {
+            return
+        } else {
+            isRequest = true
+        }
+
+        let ptype: any = {}
+        for (let i in ptypeArr.value) {
+            if (ptypeArr.value[i].id == checked.value) {
+                ptype = ptypeArr.value[i];
+                break
             }
-        }).then((res: any) => {
-            loadingShow.value = false;
-            if (res.code != 1) {
-                isRequest = false
-                _alert(res.msg)
-                return
-            }
-            _alert(res.msg, function () {
-                location.reload()
-            })
-        })
-    }, delayTime)
+        }
 
-}
-
-onMounted(() => {
-    var delayTime = Math.floor(Math.random() * 1000);
-    // setTimeout((() => {
-    http({
-        url: 'c=Finance&a=withdraw'
-    }).then((res: any) => {
-        if (res.code != 1) {
-            _alert(res.msg, function () {
-                router.go(-1)
-            })
+        if (dataForm.money - 0 < min.value - 0) {
+            isRequest = false
+            _alert(' Minimum withdrawal amount is ' + min.value)
             return
         }
-        console.log(res.data.sys_pset.cash.max);
-        ptypeArr.value = res.data.ptms
-        wallet.value = res.data.wallet
-        banklog.value = res.data.banklog
-        min.value = res.data.sys_pset.cash.min
-        max.value = res.data.sys_pset.cash.max
-        tar.value = res.data.sys_pset.cash.fee.percent
-    })
-    // }), delayTime)
 
-})
+        if (dataForm.money - 0 > max.value - 0) {
+            isRequest = false
+            _alert(' Maximum withdrawal amount is ' + max.value)
+            return
+        }
+
+        loadingShow.value = true;
+        const delayTime = Math.floor(Math.random() * 1000);
+        setTimeout(() => {
+            http({
+                url: 'c=Finance&a=withdrawAct',
+                data: {
+                    //banklog_id:banklog.value.id,
+                    money: dataForm.money,
+                    password2: md5(password2.value)
+                }
+            }).then((res: any) => {
+                loadingShow.value = false;
+                if (res.code != 1) {
+                    isRequest = false
+                    _alert(res.msg)
+                    return
+                }
+                _alert(res.msg, function () {
+                    location.reload()
+                })
+            })
+        }, delayTime)
+
+    }
+
+    onMounted(() => {
+        var delayTime = Math.floor(Math.random() * 1000);
+        // setTimeout((() => {
+        http({
+            url: 'c=Finance&a=withdraw'
+        }).then((res: any) => {
+            if (res.code != 1) {
+                _alert(res.msg, function () {
+                    router.go(-1)
+                })
+                return
+            }
+            console.log(res.data.sys_pset.cash.max);
+            ptypeArr.value = res.data.ptms
+            wallet.value = res.data.wallet
+            banklog.value = res.data.banklog
+            min.value = res.data.sys_pset.cash.min
+            max.value = res.data.sys_pset.cash.max
+            tar.value = res.data.sys_pset.cash.fee.percent
+        })
+        // }), delayTime)
+
+    })
 
 </script>
 <style lang="scss" scoped>
-.myNavBar {
-    height: 45px !important;
-}
+    .tit {
+        color:black;
+    }
+    .submitBtn {
+        display: block;
+        background: #cc1700;
+        border: 0;
+        width: 21rem;
+        margin: 1.5rem auto 0;
+        padding: 0;
+        height: 2.4rem;
+        font-size: 0.9rem;
+        color: #fff;
+        font-weight: bold;
+        border-radius: 20px;
+    }
+    .myNavBar {
+        height: 45px !important;
+    }
 
 .recharge {
     height: 100vh;
@@ -395,7 +420,7 @@ onMounted(() => {
 
         .noticeText {
             font-size: 0.875rem;
-            color: #6e523e;
+            color: black;
             font-weight: bold;
         }
 

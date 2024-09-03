@@ -54,9 +54,9 @@
 
     <div class="desc">
       <div class="desc_title">
-        <img :src="bird">
+        <!--<img :src="bird">-->
         <span>Project description</span>
-        <img :src="bird">
+        <!--<img :src="bird">-->
       </div>
       <div class="desc_notice">
         <div class="noticeList">

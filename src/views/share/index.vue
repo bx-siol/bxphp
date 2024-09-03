@@ -14,7 +14,7 @@
                 t('亲爱的会员，以下是您的邀请链接')
             }}</p>
             <div style="text-transform: lowercase !important;" class="link">{{ montage.urls }}</div>
-            <van-button class="copyLinkBtn" ref="linkCopyRef">{{ t('复制邀请链接') }}</van-button>
+            <van-button class="copyLinkBtn" style="background: #cc1700 " ref="linkCopyRef">{{ t('复制邀请链接') }}</van-button>
         </div>
     </div>
 </template>

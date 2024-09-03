@@ -17,20 +17,20 @@
                         <van-button size="mini" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
                             <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
                                 @finish="onTimerFinish" />
-                            <span v-else style="color:#c69c6d ;">{{ t('发送') }}</span>
+                            <span v-else style="color: #cc1700;">{{ t('发送') }}</span>
                         </van-button>
                     </template>
                 </van-field>
             </van-cell-group>
-            <div class="streamer"></div>
+            <!--<div class="streamer"></div>-->
 
-            <div class="article" style="display: block; padding: 0.8rem 0; font-size: 12px;">
+            <!--<div class="article" style="display: block; padding: 0.8rem 0; font-size: 12px;">
                 <p>Kind Tips:</p>
                 <p>1. Please fill in your real name</p>
                 <p>2. The bank card number cannot contain letters</p>
                 <p>3. Please fill in your payment account information correctly, among which IFSC must
                     be 11 digits, and the fifth digit must be 0</p>
-            </div>
+            </div>-->
             <div style="">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
             </div>
@@ -263,91 +263,91 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-.conBox { 
-    background: #fff;
-    color: #b2b2b2;
-    min-height: 100%;
-    position: sticky;
+    .conBox {
+        background: #fff;
+        color: #b2b2b2;
+        min-height: 100%;
 
-    .streamer {
-        padding: 0.3rem 0;
-        background-color: #f6f6f6;
-        width: 100%;
-        position: absolute;
-        right: 0;
-    }
-
-    .van-form {
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background-color: #fff;
-        border-radius: 8px;
-    }
-
-    :deep .van-cell-group {
-        position: initial;
-    }
-
-    :deep .van-cell {
-        margin-bottom: 1rem;
-        padding: 0;
-        color: #333;
-        text-align: left;
-        position: initial;
-        display: flex;
-        align-items: center;
-        border-bottom: 1px solid #ccc;
-
-        .label {
-            color: #c69c6d;
-            font-weight: bold;
-            text-align: left;
-            border-right: 1px solid #ccc;
-
+        .streamer {
+            padding: 0.3rem 0;
+            background-color: #f6f6f6;
+            width: 100%;
+            position: absolute;
+            right: 0;
         }
 
-        .van-cell__value {
-            padding: 0.6rem;
+        .van-form {
+            padding: 1rem;
+            margin-bottom: 1rem;
             background-color: #fff;
-            display: flex;
-            justify-content: space-between;
+            border-radius: 8px;
+        }
 
-            .van-field__control {
+        :deep .van-cell-group {
+            position: initial;
+        }
+
+        :deep .van-cell {
+            margin-bottom: 1rem;
+            padding: 0vh 4vw;
+            color: #333;
+            text-align: left;
+            position: initial;
+            display: flex;
+            align-items: center;
+            border: 1px solid #cc1700;
+            border-radius: 25px;
+
+            .label {
+                color: #c69c6d;
+                font-weight: bold;
+                text-align: left;
+                border-right: 1px solid #ccc;
+            }
+
+            .van-cell__value {
+                padding: 0.6rem;
+                background-color: #fff;
+                display: flex;
+                justify-content: space-between;
+
+                .van-field__control {
+                    color: #000;
+                }
+
+                .van-field__body {
+                    width: 100%;
+                }
+            }
+
+            .van-badge__wrapper {
+                top: 0.6rem;
+                display: none;
+            }
+        }
+
+        .myBtn {
+            border: 0;
+            color: #fff;
+            background: linear-gradient(to right, #cc1700 20%, #cc1700);
+            font-weight: bold;
+            border-radius: 21px;
+        }
+
+        .article {
+            line-height: 24px;
+            color: #666;
+
+            P:nth-child(1) {
+                font: bold 18px/48px "Rotobo";
                 color: #000;
             }
-            .van-field__body{
-                width: 100%;
+        }
+
+        .fieldcode {
+            :deep .van-cell__value {
+                flex-direction: column;
             }
         }
-
-        .van-badge__wrapper {
-            top: 0.6rem;
-            display: none;
-        }
     }
-
-    .myBtn {
-        position: absolute;
-        bottom: 8rem;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%;
-    }
-
-    .article {
-        line-height: 24px;
-        color: #666;
-
-        P:nth-child(1) {
-            font: bold 18px/48px "Rotobo";
-            color: #000;
-        }
-    }
-
-    .fieldcode{
-        :deep .van-cell__value{
-            flex-direction: column;
-        }
-    }
-}
 </style>

@@ -45,8 +45,8 @@ import { getSrcUrl, imgPreview } from "../../global/common";
 
 const service_arr = ref<any>({})
 
-onMounted(() => {
-
+    onMounted(() => {
+        console.info("½øÈëÁË")
     http({
         url: 'c=Service&a=online'
     }).then((res: any) => {

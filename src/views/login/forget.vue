@@ -206,7 +206,7 @@ onMounted(() => {
 </style>
 <style lang="scss" scoped>
 .forgetPass {
-    background-size: 100% 38rem;
+    background-size: 100% 100%;
 
     :deep(.van-nav-bar__left) {
         .alter {

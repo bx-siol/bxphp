@@ -9,10 +9,10 @@
                         <div class="goods">
                             <ul class="ul_top">
                                 <li>{{ t('订单号') }}: {{ item.osn }}</li>
-                                <li>{{ item.money }} Rs</li>
+                                <li style="color: #cc1700 ">{{ item.money }} Rs</li>
                             </ul>
                             <ul class="ul_bot">
-                                <li>{{ item.create_time }}</li>
+                                <li style="color:gray">{{ item.create_time }}</li>
                                 <li @click="onGoPayinfo(item)">{{ t('详情') }}</li>
                             </ul>
                         </div>
@@ -91,7 +91,7 @@ onMounted(() => {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #6e523e;
+        color: black;
         line-height: 22px;
     }
 
@@ -104,7 +104,7 @@ onMounted(() => {
         }
 
         li:nth-child(2) {
-            background-color: #6e523e;
+            background-color: #cc1700;
             padding: 0.1rem 0.8rem;
             border-radius: 1rem;
             color: #fff;

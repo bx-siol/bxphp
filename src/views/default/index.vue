@@ -5,14 +5,14 @@
       <div class="index_top">
         <div class="headbox">
           <!-- <van-image :src="nestie" style="width: 1.8rem; height: 1.8rem;" class="logs"></van-image> -->
-
-          <van-image :src="illustration" style="width: 5rem; height: 1.4rem;left:-2px;"></van-image>
-
+          <van-image :src="illustration" style=" width: 6rem; height: 1.8rem; left: 37%;"></van-image>
           <div class="u-flex u-center">
             <MyLanguage :showIcon="true" top="unset" :switchLanStyle="switchLanStyle"></MyLanguage>
           </div>
           <van-image @click="tipShow = true" :src="hasMsg ? Msg : NoMsg"
-            style="width: 1.5rem; height: 1.5rem;left:0.3rem;" v-if="false"></van-image>
+            style="        width: 1.5rem;
+        height: 1.5rem;
+        left: 0.3rem;" v-if="false"></van-image>
         </div>
 
         <div class="money" v-if="false">
@@ -51,12 +51,16 @@
           <div class="index_cer">
             <div class="menubox">
               <div
-                style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;"
+                style="        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        justify-content: space-between;
+        width: 100%">
+                <a class="divs" href="javascript:;" style="        justify-content: flex-end;"
                   @click="onLink({ name: 'Finance_recharge' })">
                   <div>
                     <div>
-                      <van-image :src="m1"></van-image>
+                      <van-image :src="m1" class="topIndexMenuIcon"></van-image>
                     </div>
                     <div class="desc">{{ t('充值') }}</div>
                   </div>
@@ -67,33 +71,33 @@
 
                   <div>
                     <div>
-                      <van-image :src="m2"></van-image>
+                      <van-image :src="m2" class="topIndexMenuIcon"></van-image>
                     </div>
                     <div class="desc">{{ t('提现') }}</div>
                   </div>
 
                 </a>
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Share' })">
                   <div>
                     <div>
-                      <van-image :src="m3"></van-image>
+                      <van-image :src="m3" class="topIndexMenuIcon"></van-image>
                     </div>
                     <div class="desc">invitation</div>
                   </div>
                 </a>
-                <a class="divs" href="javascript:;" style="justify-content: flex-start;"
+                <a class="divs" href="javascript:;"
                   @click="onLink({ name: 'News' })">
                   <div>
                     <div>
-                      <van-image :src="m4"></van-image>
+                      <van-image :src="m4" class="topIndexMenuIcon"></van-image>
                     </div>
                     <div class="desc">Notify</div>
                   </div>
                 </a>
-                <a class="divs" href="javascript:;" style="justify-content: flex-end;" @click="onLinkapp({})">
+                <a class="divs" href="javascript:;" @click="onLinkapp({})">
                   <div>
                     <div>
-                      <van-image :src="m5"></van-image>
+                      <van-image :src="m5" class="topIndexMenuIcon"></van-image>
                     </div>
                     <div class="desc">Download</div>
                   </div>
@@ -132,18 +136,23 @@
       </div>
     </div>
 
-    <van-dialog v-model:show="tipShow" style="border-radius:16px" :showConfirmButton="false" class-name="home_tip_show"
+    <van-dialog v-model:show="tipShow" style="        border-radius: 16px" :showConfirmButton="false" class-name="home_tip_show"
       class="home_tip_shows">
       <div class="dialog_top">
-        <img :src="bulletin" style="width: 20rem;margin-bottom: -1px;">
+        <img :src="bulletin" style="        width: 20rem;
+        margin-bottom: -1px;">
         <!-- <p>OFFICIAL TIPS</p> -->
-        <div @click="tipShow = false" style="position: absolute; top: 1rem; right: 1rem">
+        <div @click="tipShow = false" style="        position: absolute;
+        top: 1rem;
+        right: 1rem">
           <!-- <van-icon style="color:#64523e;font-size:26px;" name="close" /> -->
         </div>
       </div>
       <div class="dialog_content">
         <div class="notice_list">
-          <div v-html="tdata.tip.content" style="padding: 0 1rem 1rem; max-height: 14rem; overflow-y: auto"></div>
+          <div v-html="tdata.tip.content" style="        padding: 0 1rem 1rem;
+        max-height: 14rem;
+        overflow-y: auto"></div>
         </div>
       </div>
       <div class="dialog_confirm_btn" @click="confirmTip">
@@ -151,30 +160,45 @@
       </div>
     </van-dialog>
     <!-- <Service @doService="doService" /> -->
-    <div style="bottom: 10rem" class="service" @click="doService76">
+    <div style="        bottom: 10rem" class="service" @click="doService76">
       <img :src="i76" />
     </div>
 
-    <van-dialog v-model:show="tipShow1" style="border-radius: 0" :showConfirmButton="false" class-name="home_tip_show">
+    <van-dialog v-model:show="tipShow1" style="        border-radius: 0" :showConfirmButton="false" class-name="home_tip_show">
       <div class="dialog_top">
         <img :src="DialogBg1" />
       </div>
-      <div style="margin-top: -6.05rem; margin-bottom: 3.4rem" class="dialog_confirm_btn" @click="t120lq()">
+      <div style="        margin-top: -6.05rem;
+        margin-bottom: 3.4rem" class="dialog_confirm_btn" @click="t120lq()">
         <span
-          style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
+          style="        height: 2.7rem;
+        font-size: 1.5rem;
+        color: #ffea75;
+        border-radius: 13rem;
+        text-transform: uppercase !important;
+        line-height: 2.7rem">{{
       t('收到') }}</span>
       </div>
     </van-dialog>
 
-    <van-dialog v-model:show="tipShow2" style="border-radius: 0; background: none" :showConfirmButton="false"
+    <van-dialog v-model:show="tipShow2" style="        border-radius: 0;
+        background: none" :showConfirmButton="false"
       class-name="home_tip_show">
       <div class="dialog_top">
         <img :src="DialogBg120" />
       </div>
-      <div style="height: 3.4rem; width: 100%; margin-top: -4.9rem; margin-bottom: 3.4rem" class="dialog_confirm_btn"
+      <div style="        height: 3.4rem;
+        width: 100%;
+        margin-top: -4.9rem;
+        margin-bottom: 3.4rem" class="dialog_confirm_btn"
         @click="t120()">
         <span
-          style="height: 2.7rem; font-size: 1.5rem; color: #ffea75; border-radius: 13rem; text-transform: uppercase !important; line-height: 2.7rem">{{
+          style="        height: 2.7rem;
+        font-size: 1.5rem;
+        color: #ffea75;
+        border-radius: 13rem;
+        text-transform: uppercase !important;
+        line-height: 2.7rem">{{
       t('收到') }}</span>
       </div>
     </van-dialog>
@@ -536,41 +560,45 @@ onMounted(() => {
 
 
 <style scoped>
-.backg {
-  padding: 1rem;
-  margin-top: -10rem;
-}
+    .topIndexMenuIcon {
+        width:9vw;
+    }
 
-.service {
-  width: 2.5rem;
-  height: 2.5rem;
-  position: fixed;
-  right: 0.625rem;
-  bottom: 6.75rem;
-  z-index: 10;
-}
+    .backg {
+        padding: 1rem;
+        margin-top: -10rem;
+    }
 
-.van-stepper__input,
-.invest_wrap .cont .van-stepper button {
-  color: #3d3d3d;
-}
+    .service {
+        width: 2.5rem;
+        height: 2.5rem;
+        position: fixed;
+        right: 0.625rem;
+        bottom: 6.75rem;
+        z-index: 10;
+    }
 
-.invest_wrap .cont .van-cell__title,
-.invest_wrap .cont .van-cell__value {
-  color: #3d3d3d;
-}
+    .van-stepper__input,
+    .invest_wrap .cont .van-stepper button {
+        color: #3d3d3d;
+    }
 
-.invest .van-field__control {
-  color: white;
-}
+    .invest_wrap .cont .van-cell__title,
+    .invest_wrap .cont .van-cell__value {
+        color: #3d3d3d;
+    }
 
-.invest_wrap .cont .van-cell::after {
-  border-color: #544c4c;
-}
+    .invest .van-field__control {
+        color: white;
+    }
 
-.goodsBuyPop {
-  right: 0;
-}
+    .invest_wrap .cont .van-cell::after {
+        border-color: #544c4c;
+    }
+
+    .goodsBuyPop {
+        right: 0;
+    }
 </style>
 <style lang="scss" scoped>
 @keyframes bg-pan-left {

@@ -2,12 +2,11 @@
   <div class="project" style="height: 100%;overflow-y: auto;">
     <Nav leftText=''>
       <template #left>
-        <div></div>
+          <div></div>
       </template>
     </Nav>
     <div class="projectWrapper">
       <Projects />
-
       <!-- <van-tabs v-model:active="active" class="projectTab">
         <van-tab name="0" title="Projects">
           <Projects />
@@ -20,7 +19,6 @@
         </van-tab>
       </van-tabs> -->
     </div>
-
   </div>
   <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
 </template>

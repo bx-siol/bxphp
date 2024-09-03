@@ -7,38 +7,43 @@
 
           <div class="basicProjectsList">
             <div v-for="(item, index) in list" :key="index" class="bottom">
-              <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }"
-                class="basicItem">
-                <table style="width:100%;color: #f5f7fd;">
-                  <tr>
-                    <td style="padding-left: 0.5rem;width: 80%;line-height: 22px;">
-                      <div style="font-size:14px;font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
-                      <div style="font-size:14px;font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-
-                      <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
-                    </td>
-                    <td>
-                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money != 0">{{ item.money }} RS</div>
-                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money == 0">{{ 100 - item.discount }}%</div>
-                      <p class="Expired"> {{ t("已过期") }}</p>
-                    </td>
-                  </tr>
-                </table>
-              </div>
-              <div class="remark" v-if="false" style="font-size: 12px; margin-top: -2.1rem;">
-                <van-collapse :border="false" v-model="activeNames">
-                  <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
-                    <!-- {{ item.remark }} -->
-                   <p> 1. Invite friends to buy any equipment to get an extra 50 Rs</p>
-                    <p>2. You can only use 1 card each time you invite friends</p>
-                   <p> 3. It can be directly exchanged and recharged to the balance</p>
-                  </van-collapse-item>
-                </van-collapse>
-              </div>
-            </div>
+                    <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }"
+                         class="basicItem">
+                        <div style=" color: white; line-height: 1.4vh;">
+                            <div style="display: inline-block; width: 44vw; font-size: 1rem; font-weight: bold; margin-left: 13vw; vertical-align: text-top; }" v-if="item.money != 0">
+                                {{ t("邀请券") }}
+                            </div>
+                            <div style="display: inline-block; width: 44vw; font-size: 1rem; font-weight: bold; margin-left: 13vw; vertical-align: text-top; }" v-if="item.money == 0">
+                                {{ t("折扣券") }}
+                            </div>
+                            <div style="display: inline-block; width: 30vw; font-size: .7rem; text-align: right;">{{ t("有效期至") }}<br />{{ item.effective_time }}</div>
+                        </div>
+                        <div style=" margin-top: 1vh;">
+                            <div style="display: inline-block; width: 56vw; font-size: 3.8rem; font-weight: bold; vertical-align: super; margin-top: -7vh; text-align: center; color: rgb(153 153 153); " v-if="item.money != 0">{{item.money }} RS</div>
+                            <div style=" display: inline-block; width: 56vw; font-size: 3.8rem; font-weight: bold; vertical-align: super; margin-top: -7vh; text-align: center; color: rgb(153 153 153);" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
+                            <div style="display: inline-block; width: 29vw; font-size: 0.5rem; margin-left: 3vw; color: rgb(153 153 153);">
+                                <div>
+                                    1. Invite friends to buy anyequipment to get an extra 50 Rs<br />
+                                    2. You can only use 1 card eachtime you invite friends<br />
+                                    3. it can be directly exchanged and recharged to the balance
+                                </div>
+                                <div style="margin-top: .4vh; text-align: center; border: 1px solid; border-radius: 20px; width: 20vw; height: 2vh; line-height: 2vh; margin-left: 1vw; color: rgb(153 153 153); font-weight: bold; font-size: .8rem; ">
+                                    {{ t('已过期') }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="remark" v-if="false" style="font-size: 12px; margin-top: -2.1rem;">
+                        <van-collapse :border="false" v-model="activeNames">
+                            <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
+                                <!-- {{ item.remark }} -->
+                                <p> 1. Invite friends to buy any equipment to get an extra 50 Rs</p>
+                                <p>2. You can only use 1 card each time you invite friends</p>
+                                <p> 3. It can be directly exchanged and recharged to the balance</p>
+                            </van-collapse-item>
+                        </van-collapse>
+                    </div>
+                </div>
 
 
 
@@ -78,7 +83,7 @@ import MyTab from "./Tab.vue";
 import http from "../global/network/http";
 import { getSrcUrl, goRoute, imgPreview } from "../global/common";
 import { _alert, lang } from "../global/common";
-import hs from "../assets/c/hs.png";
+    import hs from "../assets/c/cp0.png";
 import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 
@@ -112,188 +117,188 @@ const getProjectDetail = (item: any) => {
 
 </script>
 <style lang="scss"  scoped >
-.Projects {
-  .detail {
-    font-size: 1rem;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    margin-top: 0.625rem;
-    width: 100%;
+    .Projects {
+        .detail {
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-top: 0.625rem;
+            width: 100%;
 
-    .detailLeft {
-      font-size: 1rem;
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: flex-start;
-      margin-right: 1.25rem;
+            .detailLeft {
+                font-size: 1rem;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: flex-start;
+                margin-right: 1.25rem;
 
-      &>div {
-        margin-bottom: 0.3125rem;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+                & > div {
+                    margin-bottom: 0.3125rem;
+                    width: 100%;
+                    display: flex;
+                    justify-content: space-between;
 
-        span {
-          font-size: 0.75rem;
-        }
-      }
-    }
+                    span {
+                        font-size: 0.75rem;
+                    }
+                }
+            }
 
-    .detailRight {
-      width: 3rem;
-      height: 3rem;
+            .detailRight {
+                width: 3rem;
+                height: 3rem;
 
-      .pay {
-        width: 3rem;
-        height: 3rem;
-        background: #bd312d;
-        color: #fff;
-        border-radius: 0.3125rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-    }
-  }
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    height: auto;
-    font-size: 0.75rem;
-    color: #6c6b6a;
-    position: relative;
-    width: 100%;
-
-    span {
-      padding: 0.25rem 0.25rem;
-      border-radius: 0.375rem;
-      background: #e0e0e0;
-      display: inline-block;
-      color: #bd312d;
-      zoom: 0.5;
-      margin-top: 0.25rem;
-      -moz-transform: scale(0.5);
-      -moz-transform-origin: top left;
-      -o-transform: scale(0.5);
-      -o-transform-origin: top left;
-      margin-right: 0.625rem;
-    }
-  }
-
-  .basicProjects {
-    margin-top: 1rem;
-
-    .basicProjectsSplit {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .splitLine {
-        height: 1px;
-        border-top: 1px dashed #bcbbbc;
-        width: 6.875rem;
-        display: inline-block;
-      }
-
-      .splitName {
-        font-size: 0.75rem;
-        color: #bd312d;
-      }
-    }
-
-    .basicProjectsList {
-      .basicItem {
-        margin-top: 1.25rem;
-        padding: 0.675rem 0.625rem;
-        box-sizing: border-box;
-        height: auto;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        background: #fff;
-        position: relative;
-
-        .Expired {
-          font-size: 12px;
-          border: 1px solid #fff;
-          border-radius: 4px;
-          padding: 4px;
-          // margin-bottom: -1rem;
-          text-align: center;
-        }
-      }
-      .bottom:last-child{
-        margin-bottom: 1rem;
-      }
-    }
-  }
-
-  .coreProjects {
-    margin-top: 1rem;
-
-    .coreProjectsSplit {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .splitLine {
-        height: 1px;
-        border-top: 1px dashed #bcbbbc;
-        width: 6.875rem;
-        display: inline-block;
-      }
-
-      .splitName {
-        font-size: 0.75rem;
-        color: #bd312d;
-      }
-    }
-
-    .coreProjectsList {
-      .coreItem {
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 0.25rem 0px, rgba(14, 30, 37, 0.32) 0px 2px 1rem 0px;
-        margin-top: 1.25rem;
-        padding: 1.375rem 0.625rem;
-        box-sizing: border-box;
-        // height: 8.5rem;
-        height: auto;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        background: #fff;
-        border-radius: 0.875rem;
-        position: relative;
-
-        .coreItemLeft {
-          width: 5.9375rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          img {
-            width: 5.9375rem;
-          }
+                .pay {
+                    width: 3rem;
+                    height: 3rem;
+                    background: #bd312d;
+                    color: #fff;
+                    border-radius: 0.3125rem;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+            }
         }
 
-        .coreItemRight {
-          display: flex;
-          flex-direction: column;
-          margin-left: 0.375rem;
-          flex: 1;
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+            font-size: 0.75rem;
+            color: #6c6b6a;
+            position: relative;
+            width: 100%;
 
-          .name {
-            font-size: 0.875rem;
-            font-weight: bold;
-          }
+            span {
+                padding: 0.25rem 0.25rem;
+                border-radius: 0.375rem;
+                background: #e0e0e0;
+                display: inline-block;
+                color: #bd312d;
+                zoom: 0.5;
+                margin-top: 0.25rem;
+                -moz-transform: scale(0.5);
+                -moz-transform-origin: top left;
+                -o-transform: scale(0.5);
+                -o-transform-origin: top left;
+                margin-right: 0.625rem;
+            }
         }
-      }
+
+        .basicProjects {
+            margin-top: 1rem;
+
+            .basicProjectsSplit {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .splitLine {
+                    height: 1px;
+                    border-top: 1px dashed #bcbbbc;
+                    width: 6.875rem;
+                    display: inline-block;
+                }
+
+                .splitName {
+                    font-size: 0.75rem;
+                    color: #bd312d;
+                }
+            }
+
+            .basicProjectsList {
+                .basicItem {
+                    margin-top: 1.25rem;
+                    padding: 0.3rem 0.3rem;
+                    box-sizing: border-box;
+                    height: 9rem;
+                    align-items: center;
+                    width: 100%;
+                    background: #fff;
+                    position: relative;
+
+                    .Expired {
+                        font-size: 12px;
+                        border: 1px solid #fff;
+                        border-radius: 4px;
+                        padding: 4px;
+                        // margin-bottom: -1rem;
+                        text-align: center;
+                    }
+                }
+
+                .bottom:last-child {
+                    margin-bottom: 1rem;
+                }
+            }
+        }
+
+        .coreProjects {
+            margin-top: 1rem;
+
+            .coreProjectsSplit {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .splitLine {
+                    height: 1px;
+                    border-top: 1px dashed #bcbbbc;
+                    width: 6.875rem;
+                    display: inline-block;
+                }
+
+                .splitName {
+                    font-size: 0.75rem;
+                    color: #bd312d;
+                }
+            }
+
+            .coreProjectsList {
+                .coreItem {
+                    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 0.25rem 0px, rgba(14, 30, 37, 0.32) 0px 2px 1rem 0px;
+                    margin-top: 1.25rem;
+                    padding: 1.375rem 0.625rem;
+                    box-sizing: border-box;
+                    // height: 8.5rem;
+                    height: auto;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    background: #fff;
+                    border-radius: 0.875rem;
+                    position: relative;
+
+                    .coreItemLeft {
+                        width: 5.9375rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 5.9375rem;
+                        }
+                    }
+
+                    .coreItemRight {
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: 0.375rem;
+                        flex: 1;
+
+                        .name {
+                            font-size: 0.875rem;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
     }
-  }
-}
 </style>
 
 <style  scoped>

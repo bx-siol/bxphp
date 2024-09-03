@@ -1,172 +1,179 @@
 <template>
-  <div class="Projects">
-    <van-tabs v-model:active="active" swipe-threshold="2" animated>
-      <div v-for="(itemc, indexc) in newsdata">
-        <van-tab :key="indexc" :title="itemc.name"
-          v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name && itemc.id != 1019) > -1">
-          <div class="basicProjects">
-            <div class="basicProjectsList">
-              <div v-for="(item, index) in tableData" :key="index">
-                <div v-if="itemc.name == item.category_name" class="basicItem">
-                  <div style="display: flex;">
-                    <div class="basicItemLeft">
-                      <img :src="imgFlag(item.icon)" class="productImg ">
-                      <img :key="item.key" v-if="item.status == 9" :src="sold_out" class="sold_out">
-                    </div>
-                    <div class="basicItemRight">
-                      <div class="detail">
-                        <div class="detailLeft">
-                          <div class="name">
-                            {{ item.name }}
-                            <div class="djs">
-                              <span v-if="item.djs > now">
-                                <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"
-                                  style="color:#fff;font-size: 12px;"> </van-count-down>
-                              </span>
-                              <span v-if="item.dssj > now">
-                                <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.dssj)"
-                                  style="color:#fff;font-size: 12px;"> </van-count-down>
-                              </span>
+    <div class="Projects">
+        <van-tabs v-model:active="active" swipe-threshold="2" animated>
+            <div v-for="(itemc, indexc) in newsdata">
+                <van-tab :key="indexc" :title="itemc.name"
+                         v-if="tableData.findIndex((itemsc: { category_name: any; }) => itemsc.category_name == itemc.name && itemc.id != 1019) > -1">
+                    <div class="basicProjects">
+                        <div class="basicProjectsList">
+                            <div v-for="(item, index) in tableData" :key="index">
+                                <div v-if="itemc.name == item.category_name" class="basicItem">
+                                    <div style="display: flex;">
+                                        <div class="basicItemLeft">
+                                            <img :src="imgFlag(item.icon)" class="productImg ">
+                                            <img :key="item.key" v-if="item.status == 9" :src="sold_out" class="sold_out">
+                                        </div>
+                                        <div class="basicItemRight">
+                                            <div class="detail">
+                                                <div class="detailLeft">
+                                                    <div class="name">
+                                                        {{ item.name }}
+                                                        <div class="djs">
+                                                            <span v-if="item.djs > now">
+                                                                <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"
+                                                                                style="color:#fff;font-size: 12px;"> </van-count-down>
+                                                            </span>
+                                                            <span v-if="item.dssj > now">
+                                                                <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.dssj)"
+                                                                                style="color:#fff;font-size: 12px;"> </van-count-down>
+                                                            </span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="unitprice">
+                                                        <span v-if="itemc.id == 1019">Points</span>
+                                                        <span v-else>Unit Price</span>
+                                                        <span v-if="itemc.id == 1019" style="color:#64503e">{{ cutOutNum(item.price) }} IG</span>
+                                                        <span v-else style="color:#64503e">₹{{ cutOutNum(item.price) }}</span>
+                                                    </div>
+                                                    <div class="dailyearnings">
+                                                        <span>Daily earnings</span>
+                                                        <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price / 100) }}</span>
+                                                    </div>
+                                                    <div class="dailyearnings">
+                                                        <span>Days</span>
+                                                        <span style="color:#64503e">{{ item.days }}</span>
+                                                    </div>
+                                                    <div class="totalrevenue">
+                                                        <span>Total revenue</span>
+                                                        <span style="color:#64503e">
+                                                            ₹{{
+ (item.rate * item.price * item.days / 100).toFixed(2)
+                                                            }}
+                                                        </span>
+                                                    </div>
+                                                    <div v-if="false" class="totalrevenue">
+                                                        <span>Current inventory</span>
+                                                        <span style="color:#64503e">{{ item.status == 9 ? 0 : item.kc }} </span>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="detailRight" @click="getProjectDetail(item)">
+                                        <div class="pay">
+                                            <span>BUY</span>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-                          <div class="unitprice">
-                            <span v-if="itemc.id == 1019">Points</span>
-                            <span v-else>Unit Price</span>
-                            <span v-if="itemc.id == 1019" style="color:#64503e">{{ cutOutNum(item.price) }} IG</span>
-                            <span v-else style="color:#64503e">₹{{ cutOutNum(item.price) }}</span>
-                          </div>
-                          <div class="dailyearnings">
-                            <span>Daily earnings</span>
-                            <span style="color:#64503e">₹{{ cutOutNum(item.rate * item.price / 100) }}</span>
-                          </div>
-                          <div class="dailyearnings">
-                            <span>Days</span>
-                            <span style="color:#64503e">{{ item.days }}</span>
-                          </div>
-                          <div class="totalrevenue">
-                            <span>Total revenue</span>
-                            <span style="color:#64503e">₹{{ (item.rate * item.price * item.days / 100).toFixed(2)
-                              }}</span>
-                          </div>
-                          <div v-if="false" class="totalrevenue">
-                            <span>Current inventory</span>
-                            <span style="color:#64503e">{{ item.status == 9 ? 0 : item.kc }} </span>
-                          </div>
                         </div>
 
-                      </div>
                     </div>
-                  </div>
+                </van-tab>
 
-                  <div class="detailRight" @click="getProjectDetail(item)">
-                    <div class="pay">
-                      <span>BUY</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
 
-          </div>
-        </van-tab>
+        </van-tabs>
 
-      </div>
-
-    </van-tabs>
-
-    <!--<div v-for="(itemc, indexc) in newsdata  " :key="indexc" >
+        <BuyProject ref="buyp"></BuyProject>
+        <!--<div v-for="(itemc, indexc) in newsdata  " :key="indexc" >
     </div>-->
-    <MyTab></MyTab>
-  </div>
+        <MyTab></MyTab>
+    </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
 <script lang="ts">
-import { onMounted, ref, defineComponent, onUnmounted, watchEffect, reactive, computed } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import Product from '../assets/img/project/product.png';
-import MyListBase from './ListBase.vue';
-import MyLoading from './Loading.vue';
-// import countdown from './countdown.vue'
-import MyTab from "./Tab.vue";
-import http from "../global/network/http";
-import sqimg from '../assets/sq.png';
-import sold_out from '../assets/img/project/sold_out.png'
+    import { onMounted, ref, defineComponent, onUnmounted, watchEffect, reactive, computed } from "vue";
+    import { useRoute, useRouter } from "vue-router";
+    import Product from '../assets/img/project/product.png';
+    import MyListBase from './ListBase.vue';
+    import MyLoading from './Loading.vue';
+    // import countdown from './countdown.vue'
+    import MyTab from "./Tab.vue";
+    import http from "../global/network/http";
+    import sqimg from '../assets/sq.png';
+    import sold_out from '../assets/img/project/sold_out.png'
 
-import { getSrcUrl, goRoute, imgPreview } from "../global/common";
-import { _alert, lang, cutOutNum } from "../global/common";
-import { Tab, Tabs, CountDown } from "vant";
-import { number, time } from "echarts";
-export default defineComponent({
-  components: {
-    MyListBase,
-    [Image.name]: Image,
-    [Tab.name]: Tab,
-    [Tabs.name]: Tabs,
-    [CountDown.name]: CountDown
-  },
-})
+    import { getSrcUrl, goRoute, imgPreview } from "../global/common";
+    import { _alert, lang, cutOutNum } from "../global/common";
+    import { Tab, Tabs, CountDown } from "vant";
+    import { number, time } from "echarts";
+    import BuyProject from "../components/BuyProject.vue";
+    export default defineComponent({
+        components: {
+            MyListBase,
+            BuyProject,
+            [Image.name]: Image,
+            [Tab.name]: Tab,
+            [Tabs.name]: Tabs,
+            [CountDown.name]: CountDown
+        },
+    })
 </script>
 
 <script lang="ts" setup>
-const now = Date.parse(new Date()) / 1000;
+    const now = Date.parse(new Date()) / 1000;
 
-const onFinish = (item: any) => {
-  item.status = 9;
-  item.key++;
+    const onFinish = (item: any) => {
+        item.status = 9;
+        item.key++;
 
-}
-
-const djs = (time: number) => {
-  time = time * 1000;
-  var djs = time - (now * 1000);
-  return djs;
-}
-
-
-const imgFlag = (src: string) => {
-  return getSrcUrl(src, 1)
-}
-const router = useRouter()
-const loadingShow = ref(true)
-const newsdata = ref<any>([])
-const tableData = ref<any>({})
-
-const active = ref('0')
-
-const onPageSuccess = (res: any) => {
-  tableData.value = res.data
-  loadingShow.value = false
-}
-const getProjectDetail = (item: any) => {
-  router.push({ name: 'Project_detail', params: { pid: item.gsn } })
-
-}
-
-onMounted(() => {
-  //自己封装的接口请求方法 aiox
-  const delayTime = Math.floor(Math.random() * 1000);
-  // setTimeout(() => {
-  http({
-    //url 就是请求的地址
-    url: 'c=Product&a=list',
-  }).then((res: any) => {
-    if (res.code != 1) {
-      _alert({
-        type: 'error',
-        message: res.msg,
-        onClose: () => {
-          router.go(-1)
-        }
-      })
-      return
     }
-    newsdata.value = res.data.category_arr;
-    tableData.value = res.data.list
-    loadingShow.value = false
-  })
-  // }, delayTime)
 
-})
+    const djs = (time: number) => {
+        time = time * 1000;
+        var djs = time - (now * 1000);
+        return djs;
+    }
+
+
+    const imgFlag = (src: string) => {
+        return getSrcUrl(src, 1)
+    }
+    const router = useRouter()
+    const loadingShow = ref(true)
+    const newsdata = ref<any>([])
+    const tableData = ref<any>({})
+
+    const active = ref('0')
+
+    const onPageSuccess = (res: any) => {
+        tableData.value = res.data
+        loadingShow.value = false
+    }
+    const buyp = ref()
+    const getProjectDetail = (item: any) => {
+        //router.push({ name: 'Project_detail', params: { pid: item.gsn } })
+        buyp.value.init(item.gsn);
+    }
+
+    onMounted(() => {
+        //自己封装的接口请求方法 aiox
+        const delayTime = Math.floor(Math.random() * 1000);
+        // setTimeout(() => {
+        http({
+            //url 就是请求的地址
+            url: 'c=Product&a=list',
+        }).then((res: any) => {
+            if (res.code != 1) {
+                _alert({
+                    type: 'error',
+                    message: res.msg,
+                    onClose: () => {
+                        router.go(-1)
+                    }
+                })
+                return
+            }
+            newsdata.value = res.data.category_arr;
+            tableData.value = res.data.list
+            loadingShow.value = false
+        })
+        // }, delayTime)
+
+    })
 </script>
 <style lang="scss" scoped>
 .Projects {

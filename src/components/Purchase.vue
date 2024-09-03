@@ -38,11 +38,11 @@
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('收到的天数') }}</span>
-                                  <span style="color: #64503e;">{{ item.total_days }}</span>
+                                  <span>{{ item.total_days }}</span>
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('数量') }}</span>
-                                  <span style="color: #64503e;">{{ item.num }}</span>
+                                  <span>{{ item.num }}</span>
                                 </div>
                               </div>
                             </div>
@@ -101,7 +101,7 @@
                                 </div>       -->
                                 <div class="dailyearnings">
                                   <span>{{ t('剩余天数') }}</span>
-                                  <span style="color: #64503e;">{{ item.days-item.total_days }}</span>
+                                  <span>{{ item.days-item.total_days }}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
@@ -111,7 +111,7 @@
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('数量') }}</span>
-                                  <span style="color: #64503e;">{{ item.num }}</span>
+                                  <span>{{ item.num }}</span>
                                 </div>
                               </div>
                             </div>
@@ -169,7 +169,7 @@
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('剩余天数') }}</span>
-                                  <span style="color: #64503e;">{{ item.days-item.total_days }}</span>
+                                  <span>{{ item.days-item.total_days }}</span>
                                 </div>
                                 <div class="totalrevenue">
                                   <span>{{ t('总收入') }}</span>
@@ -179,7 +179,7 @@
                                 </div>
                                 <div class="dailyearnings">
                                   <span>{{ t('数量') }}</span>
-                                  <span style="color: #64503e;">{{ item.num }}</span>
+                                  <span>{{ item.num }}</span>
                                 </div>
                               </div>
                             </div>
@@ -397,469 +397,482 @@ onMounted(() => {
 }
 </style>
 <style lang="scss" scoped>
-.Projects {
+    .Projects {
+        color: #000;
 
-  color: #000;
+        :deep(.van-tab) {
+            padding: 0;
 
-  .van-tabs__nav--card {
-    border: none;
-    border-color: #00a8a9;
-    border-radius: 3px;
-    overflow: hidden;
-  }
+            &.van-tab--active {
+                position: relative;
+                background-color: transparent;
+                // &::after {
+                //     position: absolute;
+                //     bottom: -0.3rem;
+                //     content: ' ';
+                //     border: 2px solid #00b57e;
+                //     width: 1rem;
+                //     border-radius: 6px;
+                //     // border-top: 0.5rem solid ;
+                // }
+            }
 
-  .total {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    top: 3.6rem;
-    left: 50%;
-    transform: translateX(-50%);
-    padding-bottom: 1rem;
-    color: #64523e;
-  }
-
-  :deep(.van-tab) {
-    &.van-tab--active {
-      position: relative;
-      background-color: transparent;
-
-      // &::after {
-      //   position: absolute;
-      //   bottom: -0.3rem;
-      //   content: ' ';
-      //   border: 2px solid #00b57e;
-      //   width: 1rem;
-      //   border-radius: 5px;
-      //   // border-top: 0.5rem solid ;
-      // }
-    }
-
-    .van-tab__text {
-      border: none !important;
-      background-color: #e6e6e6 !important;
-      color: #222 !important;
-      padding: 0.3rem 0.4rem;
-      width: 6rem;
-      border-radius: 1rem;
-      text-align: center;
-      white-space: nowrap;
-    }
-  }
-
-  :deep(.van-tab--active) {
-    .van-tab__text {
-      border: none !important;
-      background-color: #64523e !important;
-      color: #fff !important;
-      padding: 0.3rem 0.4rem;
-      width: 6rem;
-      border-radius: 1rem;
-      text-align: center;
-      white-space: nowrap;
-    }
-  }
-
-
-  .projectList {
-    display: flex;
-    flex-direction: column;
-
-    .back {
-      border-radius: 1rem;
-      margin-bottom: 1rem;
-      margin: 0 0.6rem 1rem;
-      box-shadow: 0px 0px 12px 2px rgb(235, 225, 235);
-      // width: 10.258rem;
-
-      .title {
-        padding: 0.6rem 1.2rem;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        color: #fff;
-        justify-content: space-around;
-
-        p {
-          font-weight: lighter;
-          margin-left: 2rem;
-          font-size: 14px;
+            .van-tab__text {
+                border: none !important;
+                background-color: #000000 !important;
+                color: #fffdfd !important;
+                padding: 0.3rem 0.5rem;
+                white-space: nowrap;
+                width: 6rem;
+                border-radius: 4rem;
+                text-align: center;
+            }
         }
 
-        img {
-          width: 1.5rem;
-          margin-right: 0.8rem;
+        :deep(.van-tab--grow:first-of-type) {
+            margin-left: -1rem;
         }
-      }
 
-      .projectItem {
-        background: #fff;
-        border-radius: 8px;
-        padding: 0.4rem 0.8rem 0.8rem;
-        display: flex;
-        justify-content: space-around;
-        align-items: center;
-        flex-direction: column;
+        :deep(.van-tab--active) {
+            .van-tab__text {
+                border: none !important;
+                background-color: #cc1700 !important;
+                color: #fff !important;
+                padding: 0.3rem 0.5rem;
+                white-space: nowrap;
+                width: 12rem;
+                border-radius: 4rem;
+                text-align: center;
+            }
+        }
 
-        .head {
-          display: flex;
-          align-items: center;
-          justify-content: space-between;
-          width: 5rem;
-          height: 4rem;
+        :deep(.van-tabs__line) {
+            display: none;
+            background-color: #fff;
+        }
 
-          .productImg {
-            max-width: 100%;
-            max-height: 100%;
-            width: auto;
-            height: auto;
-            position: relative;
+        :deep(.van-tabs__nav--line) {
+            padding-top: 0.425rem;
+        }
+
+        :deep(.van-tabs__nav) {
+            background-color: #000;
+            border-radius: 9rem;
+            padding: 0rem !important;
+        }
+
+        .van-tabs__nav--card {
+            border: none;
+            border-color: #00a8a9;
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .total {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            top: 3.6rem;
             left: 50%;
             transform: translateX(-50%);
-          }
-
-          .addRs {
-            color: #ff6b44;
-            margin-top: 0.4rem;
-          }
-
+            padding-bottom: 1rem;
+            color: black;
         }
 
-        .tag {
-          background: #010127;
-          color: #fff;
-          padding: 0.3rem 0.4rem;
-          font-size: 0.6rem;
 
-          >span {
-            margin-right: 0.625rem;
-          }
-        }
-
-        .info {
-          color: #333;
-          padding: 0 2px;
-          width: 68%;
-        }
-      }
-
-    }
-
-    .detail {
-      flex: 1;
-      min-width: 0;
-
-      .goodname {
-        font: bold 16px/30px "Rotobo";
-        color: #64503e;
-      }
-
-      .detailLeft {
-        display: flex;
-        flex-direction: column;
-
-        &>div {
-          display: flex;
-          justify-content: space-between;
-          padding: 1px;
-
-          span {
-            font-size: 0.7rem;
-          }
-
-          span:nth-child(1) {
-            white-space: nowrap;
-            margin-right: 1rem;
-            color: #222;
-          }
-
-          span:nth-child(2) {
-            color: #64503e;
-            font-weight: bold
-          }
-
-
-        }
-      }
-
-      .add {
-        margin-top: 0.7rem;
-        display: flex;
-        justify-content: space-between;
-      }
-
-
-      .addIcon {
-        display: inline-block;
-        width: 5.4rem;
-        height: 1.4rem;
-        background: #e22e2f;
-        color: #fff;
-        text-align: center;
-        line-height: 1.4rem;
-        border-radius: 12px;
-      }
-
-
-      .detailRight {
-        width: 3rem;
-        height: 3rem;
-
-        .pay {
-          width: 3rem;
-          height: 3rem;
-          background: #1e1e2a;
-          color: #fff;
-          border-radius: 0.3125rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          .disabled {
-            cursor: not-allowed;
-            background-color: #6c6b6a;
-            color: #6c6b6a;
-            opacity: 0.5;
-          }
-        }
-      }
-    }
-  }
-
-
-
-  .tags {
-    display: flex;
-    flex-wrap: wrap;
-    height: auto;
-    font-size: 0.75rem;
-    color: #6c6b6a;
-    position: relative;
-    width: 100%;
-
-    span {
-      padding: 0.25rem 0.25rem;
-      border-radius: 0.375rem;
-      background: #e0e0e0;
-      display: inline-block;
-      color: #bd312d;
-      zoom: 0.5;
-      margin-top: 0.25rem;
-      -moz-transform: scale(0.5);
-      -moz-transform-origin: top left;
-      -o-transform: scale(0.5);
-      -o-transform-origin: top left;
-      margin-right: 0.625rem;
-    }
-  }
-
-  .basicProjects {
-    margin-top: 3rem;
-
-    .basicProjectsSplit {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .splitLine {
-        height: 1px;
-        border-top: 1px dashed #bcbbbc;
-        width: 6.875rem;
-        display: inline-block;
-      }
-
-      .splitName {
-        font-size: 0.75rem;
-        color: #bd312d;
-      }
-    }
-
-    .basicProjectsList {
-      .basicItem {
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 0.25rem 0px,
-          rgba(14, 30, 37, 0.32) 0px 2px 1rem 0px;
-        margin-top: 1.25rem;
-        padding: 1.375rem 0.625rem;
-        box-sizing: border-box;
-        // height: 8.5rem;
-        height: auto;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        background: #fff;
-        border-radius: 0.875rem;
-        position: relative;
-
-        .basicItemLeft {
-          width: 5.9375rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          img {
-            width: 5.9375rem;
-          }
-        }
-
-        .basicItemRight {
-          display: flex;
-          flex-direction: column;
-          margin-left: 0.375rem;
-          background: #FFD337;
-          flex: 1;
-
-          .name {
-            font-size: 0.875rem;
-            font-weight: bold;
+        .projectList {
             display: flex;
-            align-items: center;
-            padding-bottom: 5px;
+            flex-direction: column;
+
+            .back {
+                border-radius: 1rem;
+                margin-bottom: 1rem;
+                margin: 0 0.6rem 1rem;
+                box-shadow: 0px 0px 12px 2px rgb(235, 225, 235);
+                // width: 10.258rem;
+
+                .title {
+                    padding: 0.6rem 1.2rem;
+                    font-weight: bold;
+                    display: flex;
+                    align-items: center;
+                    color: #fff;
+                    justify-content: space-around;
+
+                    p {
+                        font-weight: lighter;
+                        margin-left: 2rem;
+                        font-size: 14px;
+                    }
+
+                    img {
+                        width: 1.5rem;
+                        margin-right: 0.8rem;
+                    }
+                }
+
+                .projectItem {
+                    background: #fff;
+                    border-radius: 8px;
+                    padding: 0.4rem 0.8rem 0.8rem;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+                    flex-direction: column;
+
+                    .head {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        width: 5rem;
+                        height: 4rem;
+
+                        .productImg {
+                            max-width: 100%;
+                            max-height: 100%;
+                            width: auto;
+                            height: auto;
+                            position: relative;
+                            left: 50%;
+                            transform: translateX(-50%);
+                        }
+
+                        .addRs {
+                            color: #ff6b44;
+                            margin-top: 0.4rem;
+                        }
+                    }
+
+                    .tag {
+                        background: #010127;
+                        color: #fff;
+                        padding: 0.3rem 0.4rem;
+                        font-size: 0.6rem;
+
+                        > span {
+                            margin-right: 0.625rem;
+                        }
+                    }
+
+                    .info {
+                        color: #333;
+                        padding: 0 2px;
+                        width: 68%;
+                    }
+                }
+            }
+
+            .detail {
+                flex: 1;
+                min-width: 0;
+
+                .goodname {
+                    font: bold 16px/30px "Rotobo";
+                    color: black;
+                }
+
+                .detailLeft {
+                    display: flex;
+                    flex-direction: column;
+
+                    & > div {
+                        display: flex;
+                        justify-content: space-between;
+                        padding: 1px;
+
+                        span {
+                            font-size: 0.7rem;
+                        }
+
+                        span:nth-child(1) {
+                            white-space: nowrap;
+                            margin-right: 1rem;
+                            color: #222;
+                        }
+
+                        span:nth-child(2) {
+                            color: black;
+                            font-weight: bold
+                        }
+                    }
+                }
+
+                .add {
+                    margin-top: 0.7rem;
+                    display: flex;
+                    justify-content: space-between;
+                }
+
+
+                .addIcon {
+                    display: inline-block;
+                    width: 5.4rem;
+                    height: 1.4rem;
+                    background: #e22e2f;
+                    color: #fff;
+                    text-align: center;
+                    line-height: 1.4rem;
+                    border-radius: 12px;
+                }
+
+
+                .detailRight {
+                    width: 3rem;
+                    height: 3rem;
+
+                    .pay {
+                        width: 3rem;
+                        height: 3rem;
+                        background: #1e1e2a;
+                        color: #fff;
+                        border-radius: 0.3125rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        .disabled {
+                            cursor: not-allowed;
+                            background-color: #6c6b6a;
+                            color: #6c6b6a;
+                            opacity: 0.5;
+                        }
+                    }
+                }
+            }
+        }
+
+
+
+        .tags {
+            display: flex;
+            flex-wrap: wrap;
+            height: auto;
+            font-size: 0.75rem;
+            color: #6c6b6a;
+            position: relative;
+            width: 100%;
 
             span {
-              background: rgb(189, 49, 45) url(../assets/djs.png) 3px center no-repeat;
-              background-size: 18px;
-              padding: 2px 3px 2px 25px;
-              border-radius: 10px;
-
-              .van-count-down {
-                color: #fff;
-              }
+                padding: 0.25rem 0.25rem;
+                border-radius: 0.375rem;
+                background: #e0e0e0;
+                display: inline-block;
+                color: #bd312d;
+                zoom: 0.5;
+                margin-top: 0.25rem;
+                -moz-transform: scale(0.5);
+                -moz-transform-origin: top left;
+                -o-transform: scale(0.5);
+                -o-transform-origin: top left;
+                margin-right: 0.625rem;
             }
-          }
-        }
-      }
-    }
-  }
-
-  .coreProjects {
-    margin-top: 1rem;
-
-    .coreProjectsSplit {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-
-      .splitLine {
-        height: 1px;
-        border-top: 1px dashed #bcbbbc;
-        width: 6.875rem;
-        display: inline-block;
-      }
-
-      .splitName {
-        font-size: 0.75rem;
-        color: #bd312d;
-      }
-    }
-
-    .coreProjectsList {
-      .coreItem {
-        box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 0.25rem 0px,
-          rgba(14, 30, 37, 0.32) 0px 2px 1rem 0px;
-        margin-top: 1.25rem;
-        padding: 1.375rem 0.625rem;
-        box-sizing: border-box;
-        // height: 8.5rem;
-        height: auto;
-        display: flex;
-        align-items: center;
-        width: 100%;
-        background: #fff;
-        border-radius: 0.875rem;
-        position: relative;
-
-        .coreItemLeft {
-          width: 5.9375rem;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-
-          img {
-            width: 5.9375rem;
-          }
         }
 
-        .coreItemRight {
-          display: flex;
-          flex-direction: column;
-          margin-left: 0.375rem;
-          flex: 1;
+        .basicProjects {
+            margin-top: 3rem;
 
-          .name {
-            font-size: 0.875rem;
-            font-weight: bold;
-          }
+            .basicProjectsSplit {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .splitLine {
+                    height: 1px;
+                    border-top: 1px dashed #bcbbbc;
+                    width: 6.875rem;
+                    display: inline-block;
+                }
+
+                .splitName {
+                    font-size: 0.75rem;
+                    color: #bd312d;
+                }
+            }
+
+            .basicProjectsList {
+                .basicItem {
+                    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 0.25rem 0px, rgba(14, 30, 37, 0.32) 0px 2px 1rem 0px;
+                    margin-top: 1.25rem;
+                    padding: 1.375rem 0.625rem;
+                    box-sizing: border-box;
+                    // height: 8.5rem;
+                    height: auto;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    background: #fff;
+                    border-radius: 0.875rem;
+                    position: relative;
+
+                    .basicItemLeft {
+                        width: 5.9375rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 5.9375rem;
+                        }
+                    }
+
+                    .basicItemRight {
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: 0.375rem;
+                        background: #FFD337;
+                        flex: 1;
+
+                        .name {
+                            font-size: 0.875rem;
+                            font-weight: bold;
+                            display: flex;
+                            align-items: center;
+                            padding-bottom: 5px;
+
+                            span {
+                                background: rgb(189, 49, 45) url(../assets/djs.png) 3px center no-repeat;
+                                background-size: 18px;
+                                padding: 2px 3px 2px 25px;
+                                border-radius: 10px;
+
+                                .van-count-down {
+                                    color: #fff;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
-      }
+
+        .coreProjects {
+            margin-top: 1rem;
+
+            .coreProjectsSplit {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                .splitLine {
+                    height: 1px;
+                    border-top: 1px dashed #bcbbbc;
+                    width: 6.875rem;
+                    display: inline-block;
+                }
+
+                .splitName {
+                    font-size: 0.75rem;
+                    color: #bd312d;
+                }
+            }
+
+            .coreProjectsList {
+                .coreItem {
+                    box-shadow: rgba(14, 30, 37, 0.12) 0px 2px 0.25rem 0px, rgba(14, 30, 37, 0.32) 0px 2px 1rem 0px;
+                    margin-top: 1.25rem;
+                    padding: 1.375rem 0.625rem;
+                    box-sizing: border-box;
+                    // height: 8.5rem;
+                    height: auto;
+                    display: flex;
+                    align-items: center;
+                    width: 100%;
+                    background: #fff;
+                    border-radius: 0.875rem;
+                    position: relative;
+
+                    .coreItemLeft {
+                        width: 5.9375rem;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+
+                        img {
+                            width: 5.9375rem;
+                        }
+                    }
+
+                    .coreItemRight {
+                        display: flex;
+                        flex-direction: column;
+                        margin-left: 0.375rem;
+                        flex: 1;
+
+                        .name {
+                            font-size: 0.875rem;
+                            font-weight: bold;
+                        }
+                    }
+                }
+            }
+        }
+
+        .receive {
+            width: 100%;
+            margin-top: 0.4rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+
+            .receiveBtn {
+                width: 100%;
+                padding: 0.875rem 0;
+                background: linear-gradient(to right, #db1000 20%, #db1000);
+                border: none;
+                font-size: 0.8rem;
+            }
+
+            .receiveBtnNo {
+                width: 100%;
+                padding: 0.875rem 0;
+                background: rgb(77, 77, 77);
+                border: none;
+                font-size: 0.8rem;
+            }
+
+            .receiveto {
+                width: 100%;
+                padding: 0.875rem 0;
+                background: rgb(77, 77, 77);
+                border: none;
+                font-size: 0.8rem;
+            }
+        }
+
+        .receiveBtns {
+            padding: 1rem;
+            background: #FFF;
+            color: #008260;
+            border: none;
+            font-size: 0.7rem;
+        }
+
+        .receives {
+            position: fixed;
+            bottom: 6rem;
+            right: 0.5rem;
+
+            .receiveBtns {
+                background: url(../assets/img/home/receiveall2.png);
+                background-size: 100% 100%;
+                border: none;
+                width: 5rem;
+                height: 5rem;
+                // font-size: 0.7rem;
+                // position: relative;
+                // left: 50%;
+                // transform: translateX(-50%);
+            }
+
+            :before {
+                width: 0;
+                height: 0;
+            }
+        }
+
+        .w100 {
+            width: 80%;
+        }
     }
-  }
-
-  .receive {
-    width: 100%;
-    margin-top: 0.4rem;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: #fff;
-
-    .receiveBtn {
-      width: 100%;
-      padding: 0.875rem 0;
-      background: linear-gradient(to right, #db1000 20%, #db1000);
-      border: none;
-      font-size: 0.8rem;
-    }
-
-    .receiveBtnNo {
-      width: 100%;
-      padding: 0.875rem 0;
-      background: rgb(77, 77, 77);
-      border: none;
-      font-size: 0.8rem;
-    }
-
-    .receiveto {
-      width: 100%;
-      padding: 0.875rem 0;
-      background: rgb(77, 77, 77);
-      border: none;
-      font-size: 0.8rem;
-    }
-  }
-
-  .receiveBtns {
-    padding: 1rem;
-    background: #FFF;
-    color: #008260;
-    border: none;
-    font-size: 0.7rem;
-  }
-
-  .receives {
-    position: fixed;
-    bottom: 6rem;
-    right: 0.5rem;
-
-    .receiveBtns {
-      background: url(../assets/img/home/receiveall2.png);
-      background-size: 100% 100%;
-      border: none;
-      width: 5rem;
-      height: 5rem;
-      // font-size: 0.7rem;
-      // position: relative;
-      // left: 50%;
-      // transform: translateX(-50%);
-    }
-
-    :before {
-      width: 0;
-      height: 0;
-    }
-  }
-
-  .w100 {
-    width: 80%;
-  }
-}
 </style>
