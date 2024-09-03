@@ -343,7 +343,7 @@ class UserController extends BaseController
 					->leftJoin('sys_user u','log.create_id = u.id')
 					->field('log.create_id,sum(log.money) as totalmomey')
 					->where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
-					->group('logcreate_id')
+					->group('log.create_id')
 					->select()
 					->toArray();
 
