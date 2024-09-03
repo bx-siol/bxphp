@@ -354,12 +354,17 @@ class UserController extends BaseController
 			$item['newmember3'] = false;
 
 			if ($item['reg_time_day'] == $today)
+			{
 				if ($item["level"] == 1)
 					$item["newmember1"] = true;
-			if ($item["level"] == 2)
-				$item["newmember2"] = true;
-			if ($item["level"] == 3)
-				$item["newmember3"] = true;
+
+				if ($item["level"] == 2)
+					$item["newmember2"] = true;
+				
+				if ($item["level"] == 3)
+					$item["newmember3"] = true;
+			}
+				
 		}
 		$return_data = [
 			'list' => $list,
