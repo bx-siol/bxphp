@@ -336,8 +336,6 @@ class UserController extends BaseController
 			$where .= " and first_pay_day =0 ";
 
 		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' {$where} ")->field('id,pids,reg_time,account')->order("reg_time")->select()->toArray();
-		$start_time = strtotime(date('Y-m-d 00:00:01'));
-		$end_time = strtotime(date('Y-m-d 23:59:59'));
 
 		$pro_order =  Db::table('pro_order od')
 					-> leftJoin('sys_user u' ,'od.uid = u.id')
@@ -345,6 +343,11 @@ class UserController extends BaseController
 					-> where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
 					-> group('od.uid')
 					->select()->toArray();
+
+		$totalpay = Db::table('fin_paylog pl')
+					-> leftJoin('sys_user u' ,'pl.uid = u.id')
+					-> where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 and pl.status = 9 ")
+					->sum('pl.money');
 
 		$today = date('Ymd', NOW_TIME);
 		$newmember = Db::table('sys_user')
@@ -389,6 +392,7 @@ class UserController extends BaseController
 			'list' => $list,
 			'newmember' => $newmember,
 			'fy' => getConfig('FYSZ'),
+			'totalpay' => $totalpay
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
