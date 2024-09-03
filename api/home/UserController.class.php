@@ -341,9 +341,9 @@ class UserController extends BaseController
 
 		$walllog_8 = Db::table('wallet_log log')
 					->leftJoin('sys_user u','log.create_id == u.id')
-					->field('create_id,sum(money) as totalmomey')
-					->where("pids like '%{$pageuser['id']}%' {$where} ")
-					->group('create_id')
+					->field('log.create_id,sum(log.money) as totalmomey')
+					->where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
+					->group('logcreate_id')
 					->select()
 					->toArray();
 
