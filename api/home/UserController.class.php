@@ -339,14 +339,6 @@ class UserController extends BaseController
 		$start_time = strtotime(date('Y-m-d 00:00:01'));
 		$end_time = strtotime(date('Y-m-d 23:59:59'));
 
-		$walllog_8 = Db::table('wallet_log log')
-					->leftJoin('sys_user u','log.create_id = u.id')
-					->field('log.create_id,sum(log.money) as totalmomey')
-					->where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
-					->group('log.create_id')
-					->select()
-					->toArray();
-
 		$today = date('Ymd', NOW_TIME);
 		$newmember = Db::table('sys_user')
 			->where(" pids like '%{$pageuser['id']}%' and first_pay_day ={$today} ")->count();
@@ -356,9 +348,6 @@ class UserController extends BaseController
 			$pidsArr = explode(",", $item["pids"]);
 			$item["level"] = array_search($pageuser['id'], $pidsArr) + 1;
 			$item['reg_time_day'] = date('Ymd', $item['reg_time']);
-			$CommissionRevenueB = 0;
-			$CommissionRevenueC = 0;
-			$CommissionRevenueD = 0;
 
 			if ($item['reg_time_day'] == $today)
 			{
@@ -370,19 +359,7 @@ class UserController extends BaseController
 
 				if ($item["level"] == 3)
 					$item["newmember3"] = true;
-			}
-			foreach($walllog_8 as &$it){
-				if($it['create_id'] == $item['id']){
-					if ($item["level"] == 1)
-						$CommissionRevenueB += $it['totalmomey'] ;
-
-					if ($item["level"] == 2)
-						$CommissionRevenueC += $it['totalmomey'] ;
-
-					if ($item["level"] == 3)
-						$CommissionRevenueD += $it['totalmomey'] ;
-				}
-			}
+			}				
 		}
 		
 		$return_data = [
