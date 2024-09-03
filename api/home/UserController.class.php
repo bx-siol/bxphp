@@ -368,6 +368,9 @@ class UserController extends BaseController
 					$item["newmember3"] = true;
 			}
 
+			$item["pro_order_B"] = 0;
+			$item["pro_order_C"] = 0;
+			$item["pro_order_D"] = 0;
 			foreach($pro_order as &$it){
 				if($it['uid'] == $item['id']){
 					if ($item["level"] == 1)
