@@ -344,7 +344,7 @@ class UserController extends BaseController
 					-> group('od.uid')
 					->select()->toArray();
 
-		$totalpay = Db::table('fin_paylog pl')
+		$TotalRecharge = Db::table('fin_paylog pl')
 					-> leftJoin('sys_user u' ,'pl.uid = u.id')
 					-> where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 and pl.status = 9 ")
 					->sum('pl.money');
@@ -392,7 +392,7 @@ class UserController extends BaseController
 			'list' => $list,
 			'newmember' => $newmember,
 			'fy' => getConfig('FYSZ'),
-			'totalpay' => $totalpay
+			'TotalRecharge' => $TotalRecharge
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
