@@ -340,7 +340,7 @@ class UserController extends BaseController
 		$end_time = strtotime(date('Y-m-d 23:59:59'));
 
 		$walllog_8 = Db::table('wallet_log log')
-					->leftJoin('sys_user u','log.create_id == u.id')
+					->leftJoin('sys_user u','log.create_id = u.id')
 					->field('log.create_id,sum(log.money) as totalmomey')
 					->where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
 					->group('logcreate_id')
