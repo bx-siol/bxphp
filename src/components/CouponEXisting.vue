@@ -13,7 +13,7 @@
                         {{ item.money }}
                         <span style="font-size: 0.8rem; margin-left: -7px;">RS</span>
                       </div>
-                      <div style="font-size: 2rem;font-weight: bold;text-align: center;margin:0.5rem 0 0 2.5rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
+                      <div style="font-size: 1.8rem;font-weight: bold;text-align: center;margin:0.5rem 0 0 2.5rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                     </td>
                     <td style="width: 90%;text-align: right;height: 7.5rem;display: flex;flex-direction: column;margin-left: 10%;">
                       <div style="font-size: 1.4rem;font-weight: bold;color: #f7af4b;" v-if="item.money != 0">{{ t("邀请券") }}</div>
