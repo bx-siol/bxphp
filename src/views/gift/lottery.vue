@@ -64,6 +64,9 @@ export default defineComponent({
 import http from '../../global/network/http'
 import { _alert, lang } from '../../global/common'
 
+import cj_bg from "../../assets/img/lottery/cj_bg.png";
+import draw from "../../assets/img/lottery/draw.png";
+
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1);
 }
@@ -82,7 +85,7 @@ const blocks = ref([
         padding: '2rem',
         imgs: [
             {
-                src: '/src/assets/img/lottery/cj_bg.png',   //图片url
+                src: cj_bg,   //图片url
                 top: '0',     //图片距顶部距离
                 width: '300px',  //图片宽
                 height: '300px', //图片高
@@ -96,7 +99,7 @@ const buttons = ref([
         x: 1, y: 1,
         imgs: [
             {
-                src: '/src/assets/img/lottery/draw.png',
+                src:  draw,
                 width: '100%',
                 height: '100%',
             }
