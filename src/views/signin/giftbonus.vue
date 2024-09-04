@@ -3,9 +3,9 @@
     <div class="mission">
         <div class="introduce">
             <h1 style="padding-top: 0.7rem;color: #703e2f;display: flex;justify-content: center;align-items: center;">
-                <img :src="h1" style="width: 1rem;height: 1rem;margin-right: 1.5rem;" />
+                <!-- <img :src="h1" style="width: 1rem;height: 1rem;margin-right: 1.5rem;" /> -->
                 NESTLE GIFTS
-                <img :src="h1" style="width: 1rem;height: 1rem;margin-left: 1.5rem;" />
+                <!-- <img :src="h1" style="width: 1rem;height: 1rem;margin-left: 1.5rem;" /> -->
             </h1>
             <h6 style="color: #724031;margin-top: 0.3rem;">Every time you invite a friend to join the corresponding Nestle </h6>
             <h6 style="color: #724031;margin-top: 0.3rem;">projext,you can get a corresponding goft for free</h6>
@@ -87,8 +87,8 @@
 </script>
   
 <script lang="ts" setup>
-    import h1 from '../../assets/img/signin/h1.png'    
-    import h2 from '../../assets/img/signin/h2.png'
+    // import h1 from '../../assets/img/signin/h1.png'    
+    // import h2 from '../../assets/img/signin/h2.png'
     import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
     const imgFlag = (src: string) => {
