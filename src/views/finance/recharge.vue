@@ -2,7 +2,7 @@
     <div class="recharge">
         <MyNav leftText=''> 
             <template #right>
-                <span @click="onLink({ name: 'Finance_rechargelog' })">Record</span>
+                <span style="color:black" @click="onLink({ name: 'Finance_rechargelog' })">Record</span>
             </template>
         </MyNav>
         <div class="recharge_wrap">

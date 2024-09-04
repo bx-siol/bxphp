@@ -19,7 +19,7 @@
                 <div class="money">
                     <div class="money_body">
                         <div class="flex">
-                            <div class="imgs">{{t('充值钱包')}}:<span style="color: #db1000"  @click="onLink({ name: 'Finance_rechargelog' })">₹{{ wallet.balance }}</span></div>
+                            <div class="imgs">{{t('充值钱包')}}:<span style="color: #db1000">₹{{ wallet.balance }}</span></div>
                             <div class="finance2" @click="onLink({ name: 'Finance_recharge' })">
                                 {{ t('充值') }}
                             </div>
@@ -27,7 +27,7 @@
                     </div>
                     <div class="money_body">
                         <div class="flex">
-                            <div class="imgs">{{t('余额钱包')}}:<span style="color: #db1000"  @click="onLink({ name: 'Finance_withdrawlog' })">₹{{ wallet2.balance }}</span></div>
+                            <div class="imgs">{{t('余额钱包')}}:<span style="color: #db1000">₹{{ wallet2.balance }}</span></div>
                             <div class="finance1" @click="onLink({ name: 'Finance_withdraw' })">
                                 {{ t('提现') }}
                             </div>

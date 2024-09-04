@@ -9,7 +9,7 @@
         <template #right-icon v-if="slots['right-icon']">
         </template>
     </van-notice-bar>
-    <van-image style=" width: 6vw; right: 3vw; float: right; top: -2.8vh;" :src="m1"></van-image>
+    <van-image v-if="false" style=" width: 6vw; right: 3vw; float: right; top: -2.8vh;" :src="m1"></van-image>
 
     <MyPop v-model:show="popShow" title="Notice" :style="{ color: '#cbac8c' }" :close-type="2"
            :wrapper-style="{ marginTop: '5rem', height: '60%', width: '80%', borderRadius: '10px' }"

@@ -1,20 +1,20 @@
 ﻿<template>
     <van-popup v-model:show="investShow" close-icon="close" position="bottom" closeable round class="goodsBuyPop"
-               :style="{ height: 'auto', background: '#ffffff' }">
+        :style="{ height: 'auto', background: '#ffffff' }">
         <div class="invest" style="background: #f4f7ff">
             <div class="invest_wrap">
-                <div class="title2">Order Confirmation</div>
+                <div class="title2" style="color:#000">Order Confirmation</div>
                 <div class="cont">
                     <div class="flex">
                         <div class="imgbox">
                             <img :src="imgFlag(info.icon)" />
                         </div>
                         <van-cell-group>
-                            <div style="color: #64523e;font-weight: bold;padding:0.4rem 0;">
+                            <div style="color: black;font-weight: bold;padding:0.4rem 0;">
                                 <p>{{ info.name }}</p>
                             </div>
                             <van-cell v-if="info.cid != 1019" :title="t('价格')"
-                                      style="padding-bottom: 0;margin: 0;background: transparent;">
+                                style="padding-bottom: 0;margin: 0;background: transparent;">
                                 <template #value v-if="couponId === -1">
                                     <span style="color: #f00;font-weight: bold;">₹{{ info.price }}</span>
                                 </template>
@@ -34,14 +34,14 @@
                                     <span v-else class="gold">{{ t('无限制') }}</span>
                                 </template>
                             </van-cell>
-                            <van-coupon-cell :title="t('折扣券')" currency="%" :coupons="coupons" :chosen-coupon="chosenCoupon"
-                                             @click="showList = true" v-if="false" />
+                            <van-coupon-cell :title="t('折扣券')" currency="%" :coupons="coupons"
+                                :chosen-coupon="chosenCoupon" @click="showList = true" v-if="false" />
                             <van-popup v-if="info.cid != 1019" v-model:show="showList" round position="bottom"
-                                       style="height: 90%; padding-top: 4px">
+                                style="height: 90%; padding-top: 4px">
                                 <van-coupon-list :empty-image="' '" :show-close-button="false" enabled-title="Available"
-                                                 :show-exchange-bar="false" disabled-title="Not Available" :coupons="coupons"
-                                                 :chosen-coupon="chosenCoupon" :disabled-coupons="disabledCoupons" @change="onChange"
-                                                 @exchange="onExchange" />
+                                    :show-exchange-bar="false" disabled-title="Not Available" :coupons="coupons"
+                                    :chosen-coupon="chosenCoupon" :disabled-coupons="disabledCoupons" @change="onChange"
+                                    @exchange="onExchange" />
                             </van-popup>
                             <van-cell title="" v-if="false">
                                 <template #value>
@@ -49,7 +49,7 @@
                                 </template>
                             </van-cell>
                             <van-field v-show="false" label-width="4rem" input-align="right" label="Password"
-                                       v-model="dataForm.password2" type="password" placeholder="Enter payment password " />
+                                v-model="dataForm.password2" type="password" placeholder="Enter payment password " />
                         </van-cell-group>
                     </div>
                     <!-- 新版优惠卷 -->
@@ -57,14 +57,15 @@
                         <van-collapse-item :title="t('折扣券')" name="1">
                             <div class="Discount">
                                 <div v-for="(item, index) in coupons" :key="index" :style="styles[index]">
-                                    <label :for="forid(item.id)" style="display: flex;align-items: center;justify-content: flex-start;">
-                                        <input type="radio" :value="item.id" v-model="couponId" :id="forid(item.id)" name="isOpen"
-                                               @click="changeColor(item, index, info)">
+                                    <label :for="forid(item.id)"
+                                        style="display: flex;align-items: center;justify-content: flex-start;">
+                                        <input type="radio" :value="item.id" v-model="couponId" :id="forid(item.id)"
+                                            name="isOpen" @click="changeColor(item, index, info)">
                                         <span>Discount Coupon</span>
                                         <span style="color: #f00;font-weight:bold;width: 50%;text-align: right;">
                                             {{
-                        item.valueDesc
-                                            }}{{ item.unitDesc }}
+        item.valueDesc
+    }}{{ item.unitDesc }}
                                         </span>
                                     </label>
                                 </div>
@@ -74,8 +75,8 @@
 
                     <van-cell class="purchase_quantity" :title="t('采购数量')">
                         <template #value>
-                            <van-stepper v-model="quantity" :step="1" :min="1" :max="info.invest_limit" button-size="20px"
-                                         input-width="40px" />
+                            <van-stepper v-model="quantity" :step="1" :min="1" :max="info.invest_limit"
+                                button-size="20px" input-width="40px" />
                         </template>
                     </van-cell>
 
@@ -104,14 +105,14 @@
                         <div v-if="couponId === -1" class="Actual">
                             Actual amount <span style="color: #f00;">
                                 ₹{{
-                info.price
-                                }}
+        info.price * quantity
+    }}
                             </span>
                         </div>
                         <div v-else class="Actual">
                             Discount amount<span style="color: #f00; margin-left: 0.4rem;">
                                 ₹{{
-                info.prices
+                                info.prices *quantity
                                 }}
                             </span>
                         </div>
@@ -121,7 +122,7 @@
                             Wealth Value<span style="color: #f00;margin-left: 0.4rem;">{{ info.price }}</span>
                         </div>
                     </div>
-                    <van-button class="touziBtn" @click="onSubmit">Confirm buy</van-button>
+                    <van-button class="touziBtn" style="background: #cc0f00 " @click="onSubmit">Confirm buy</van-button>
                 </div>
             </div>
         </div>
@@ -129,270 +130,270 @@
 </template>
 
 <script lang="ts">
-    import { defineComponent } from "vue";
-    import {
-        Swipe, SwipeItem, Button, Grid, GridItem, Image, Tab, Tabs, Cell,
-        CellGroup, Stepper, Icon, Field, Popup, CouponCell, CouponList, Collapse, CollapseItem
-    } from "vant";
-    import { getSrcUrl, goRoute } from "../global/common";
-    import Nav from '../components/Nav.vue';
-    import MyLoading from "../components/Loading.vue";
+import { defineComponent } from "vue";
+import {
+    Swipe, SwipeItem, Button, Grid, GridItem, Image, Tab, Tabs, Cell,
+    CellGroup, Stepper, Icon, Field, Popup, CouponCell, CouponList, Collapse, CollapseItem
+} from "vant";
+import { getSrcUrl, goRoute } from "../global/common";
+import Nav from '../components/Nav.vue';
+import MyLoading from "../components/Loading.vue";
 
-    import MySwiper from '../components/Swiper.vue'
-    const imgFlag = (src: string) => {
-        return getSrcUrl(src, 1);
+import MySwiper from '../components/Swiper.vue'
+const imgFlag = (src: string) => {
+    return getSrcUrl(src, 1);
+}
+export default defineComponent({
+    name: "productDet",
+    components: {
+        MySwiper, Nav, MyLoading,
+        [Swipe.name]: Swipe,
+        [SwipeItem.name]: SwipeItem,
+        [Image.name]: Image,
+        [Button.name]: Button,
+        [Grid.name]: Grid,
+        [GridItem.name]: GridItem,
+        [Tab.name]: Tab,
+        [Tabs.name]: Tabs,
+        [Cell.name]: Cell,
+        [Field.name]: Field,
+        [Stepper.name]: Stepper,
+        [CellGroup.name]: CellGroup,
+        [Icon.name]: Icon,
+        [Popup.name]: Popup,
+        [CouponCell.name]: CouponCell,
+        [CouponList.name]: CouponList,
+        [Collapse.name]: Collapse,
+        [CollapseItem.name]: CollapseItem,
     }
-    export default defineComponent({
-        name: "productDet",
-        components: {
-            MySwiper, Nav, MyLoading,
-            [Swipe.name]: Swipe,
-            [SwipeItem.name]: SwipeItem,
-            [Image.name]: Image,
-            [Button.name]: Button,
-            [Grid.name]: Grid,
-            [GridItem.name]: GridItem,
-            [Tab.name]: Tab,
-            [Tabs.name]: Tabs,
-            [Cell.name]: Cell,
-            [Field.name]: Field,
-            [Stepper.name]: Stepper,
-            [CellGroup.name]: CellGroup,
-            [Icon.name]: Icon,
-            [Popup.name]: Popup,
-            [CouponCell.name]: CouponCell,
-            [CouponList.name]: CouponList,
-            [Collapse.name]: Collapse,
-            [CollapseItem.name]: CollapseItem,
-        }
-    })
+})
 </script>
 <script lang="ts" setup>
-    import { ref, onMounted, reactive } from "vue";
-    import { useRoute, useRouter } from "vue-router";
-    import md5 from "md5";
-    import { _alert, lang, cutOutNum } from "../global/common";
-    import http from "../global/network/http";
-    import sold_out from '../assets/img/project/sold_out.png';
-    import chocolate from '../assets/img/project/chocolate.png';
+import { ref, onMounted, reactive } from "vue";
+import { useRoute, useRouter } from "vue-router";
+import md5 from "md5";
+import { _alert, lang, cutOutNum } from "../global/common";
+import http from "../global/network/http";
+import sold_out from '../assets/img/project/sold_out.png';
+import chocolate from '../assets/img/project/chocolate.png';
 
-    import bird from '../assets/ico/bird.png'
+import bird from '../assets/ico/bird.png'
 
-    import MyTab from "../components/Tab.vue";
-    import { useI18n } from 'vue-i18n'; const { t } = useI18n();
-
-
-    const route = useRoute()
-    const router = useRouter()
-    const pid = ref(route.params.pid)
-    const detailData = ref<any>({})
-    const dataForm = reactive({
-        password2: ''
-    })
-    const info = ref({
-        invest_min: 0,
-        covers: []
-    })
+import MyTab from "../components/Tab.vue";
+import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
 
-    const styles = reactive<any>({});
+const route = useRoute()
+const router = useRouter()
+const pid = ref(route.params.pid)
+const detailData = ref<any>({})
+const dataForm = reactive({
+    password2: ''
+})
+const info = ref({
+    invest_min: 0,
+    covers: []
+})
 
-    const changeColor = (item: any, index: number, info: any) => {
-        for (let key in styles) {
-            styles[key] = {};
-        }
-        styles[index] = {
-            border: 'none',
-            color: '#000',
-        };
-        if (couponId.value == item.id) {
-            // 取消选择
-            styles[index] = {};
 
-            couponId.value = -1
-            info.prices = info.price;
+const styles = reactive<any>({});
 
-        } else
-            couponId.value = item.id
-        info.prices = info.price - (info.price * (item.valueDesc / 100))
+const changeColor = (item: any, index: number, info: any) => {
+    for (let key in styles) {
+        styles[key] = {};
+    }
+    styles[index] = {
+        border: 'none',
+        color: '#000',
     };
-    const activeNames = ref(['0'])
-    const wallet1 = ref({})
-    const wallet2 = ref({})
-    const wallet3 = ref({})
-    const investShow = ref(false)
-    const quantity = ref(1)
-    const step = ref(1)
-    let isRequest = false
-    const money = ref(info.value.invest_min)
-    const loadingShow = ref(false);
+    if (couponId.value == item.id) {
+        // 取消选择
+        styles[index] = {};
 
-    const disabledCouponsc = {};
-    const coupon = {};
-    const disabledCoupons = ref([disabledCouponsc]);
-    const coupons = ref([coupon]);
-    const showList = ref(false);
-    const chosenCoupon = ref(0);
-    const couponId = ref(-1);
-    const onChange = (index) => {
-        showList.value = false;
-        chosenCoupon.value = index;
-        couponId.value = coupons.value[chosenCoupon.value].id;
+        couponId.value = -1
+        info.prices = info.price;
+
+    } else
+        couponId.value = item.id
+    info.prices = info.price - (info.price * (item.valueDesc / 100))
+};
+const activeNames = ref(['0'])
+const wallet1 = ref({})
+const wallet2 = ref({})
+const wallet3 = ref({})
+const investShow = ref(false)
+const quantity = ref(1)
+const step = ref(1)
+let isRequest = false
+const money = ref(info.value.invest_min)
+const loadingShow = ref(false);
+
+const disabledCouponsc = {};
+const coupon = {};
+const disabledCoupons = ref([disabledCouponsc]);
+const coupons = ref([coupon]);
+const showList = ref(false);
+const chosenCoupon = ref(0);
+const couponId = ref(-1);
+const onChange = (index) => {
+    showList.value = false;
+    chosenCoupon.value = index;
+    couponId.value = coupons.value[chosenCoupon.value].id;
 
 
-    };
-    const onExchange = (code) => {
-        coupons.value.push(coupon);
-    };
+};
+const onExchange = (code) => {
+    coupons.value.push(coupon);
+};
 
 
 
-    const getProjectDetail = () => {
-        // 根据id查询详细信息
-        // doSearch(pid.value)
-        // 查询结赋值
-        // detailData.value = res
-        // 模拟数据返回
-        detailData.value = {
-            id: 1,
-            img: '',
-            name: 'CS3Y-MB-AG',
-            tags: ['45 Days', 'Daily interest rate 4.5%', 'Return rate 200%'],
-            remainingCycle: '19 Day',
-            price: '450',
-            totalRevenue: '1,000',
-            dailyIncome: '15',
-            cumulativeIncome: '150',
-            content: ''
-        }
+const getProjectDetail = () => {
+    // 根据id查询详细信息
+    // doSearch(pid.value)
+    // 查询结赋值
+    // detailData.value = res
+    // 模拟数据返回
+    detailData.value = {
+        id: 1,
+        img: '',
+        name: 'CS3Y-MB-AG',
+        tags: ['45 Days', 'Daily interest rate 4.5%', 'Return rate 200%'],
+        remainingCycle: '19 Day',
+        price: '450',
+        totalRevenue: '1,000',
+        dailyIncome: '15',
+        cumulativeIncome: '150',
+        content: ''
     }
+}
 
-    const onPresale = () => {
-        _alert('Unable to activate during pre-sale')
-    }
-    const onPresale1 = () => {
-        _alert('This product is not for sale')
-    }
+const onPresale = () => {
+    _alert('Unable to activate during pre-sale')
+}
+const onPresale1 = () => {
+    _alert('This product is not for sale')
+}
 
-    // Not for sale
-    const onInvest = () => {
-        // step.value=2
-        investShow.value = true
-    }
+// Not for sale
+const onInvest = () => {
+    // step.value=2
+    investShow.value = true
+}
 
-    const onSubmit = () => {
-        if (isRequest) {
-            return
-        } else {
-            isRequest = true
-        }
-        if (info.value.gift == 1) {
-            isRequest = false
-            _alert("Please invite members to join and contact customer service manager to redeem.");
-            return
-        }
-        loadingShow.value = true;
-        const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
-            http({
-                url: 'c=Product&a=invest',
-                data: {
-                    gsn: info.value.gsn,
-                    money: money.value,
-                    coupon: couponId.value,
-                    quantity: quantity.value,
-                    password2: md5(dataForm.password2)
-                }
-            }).then((res: any) => {
-                loadingShow.value = false;
-                if (res.code != 1) {
-                    isRequest = false
-                    _alert(res.msg)
-                    return
-                }
-                dataForm.password2 = ''
-                _alert({
-                    type: 'success',
-                    message: res.msg,
-                    onClose: () => {
-                        init()
-                        isRequest = false
-                        step.value = 1
-                        investShow.value = false
-                    }
-                })
-            })
-        }, delayTime)
+const onSubmit = () => {
+    if (isRequest) {
+        return
+    } else {
+        isRequest = true
     }
-
-    const init = (_gsn) => {
-        const delayTime = Math.floor(Math.random() * 1000);
-        // setTimeout(() => {
+    if (info.value.gift == 1) {
+        isRequest = false
+        _alert("Please invite members to join and contact customer service manager to redeem.");
+        return
+    }
+    loadingShow.value = true;
+    const delayTime = Math.floor(Math.random() * 1000);
+    setTimeout(() => {
         http({
-            url: 'c=Product&a=goods',
-            //data: { gsn: route.params.pid }
-            data: { gsn: _gsn }
+            url: 'c=Product&a=invest',
+            data: {
+                gsn: info.value.gsn,
+                money: money.value,
+                coupon: couponId.value,
+                quantity: quantity.value,
+                password2: md5(dataForm.password2)
+            }
         }).then((res: any) => {
+            loadingShow.value = false;
             if (res.code != 1) {
-                _alert({
-                    type: 'error',
-                    message: res.msg,
-                })
+                isRequest = false
+                _alert(res.msg)
                 return
             }
-
-
-            info.value = res.data.info
-
-            if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
-                info.value.status = 10;
-            }
-            detailData.value.name = res.data.info.name
-            detailData.value.price = res.data.info.price
-            detailData.value.dailyIncome = (res.data.info.price * res.data.info.rate / 100).toFixed(2)
-            detailData.value.totalRevenue = (res.data.info.price * res.data.info.rate * res.data.info.days / 100).toFixed(2)
-            detailData.value.content = res.data.info.content
-            detailData.value.tags = [
-                res.data.info.days + ' Days',
-                'Daily interest rate ' + res.data.info.rate + '%',
-                'Return rate ' + cutOutNum(res.data.info.price * res.data.info.rate * res.data.info.days / res.data.info.price, 1) + '%',
-            ]
-            wallet1.value = res.data.wallet1
-            wallet2.value = res.data.wallet2
-            wallet3.value = res.data.wallet3
-
-            coupons.value = [];
-
-            for (let index = 0; index < res.data.coupon_arr.length; index++) {
-                const element = res.data.coupon_arr[index];
-                coupons.value.push({
-                    available: 1,
-                    condition: t('折扣券'),
-                    reason: '',
-                    value: (100 - element.discount) * 100,
-                    name: element.coupon_name,
-                    startAt: element.create_time,
-                    endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
-                    valueDesc: (100 - element.discount).toString(),
-                    unitDesc: '%',
-                    id: element.id
-                });
-            }
-            investShow.value = true
+            dataForm.password2 = ''
+            _alert({
+                type: 'success',
+                message: res.msg,
+                onClose: () => {
+                    init()
+                    isRequest = false
+                    step.value = 1
+                    investShow.value = false
+                }
+            })
         })
-        // }, delayTime)
+    }, delayTime)
+}
 
-    }
-    const forid = (id: number) => {
-        return "forid_" + id;
-    }
+const init = (_gsn) => {
+    const delayTime = Math.floor(Math.random() * 1000);
+    // setTimeout(() => {
+    http({
+        url: 'c=Product&a=goods',
+        //data: { gsn: route.params.pid }
+        data: { gsn: _gsn }
+    }).then((res: any) => {
+        if (res.code != 1) {
+            _alert({
+                type: 'error',
+                message: res.msg,
+            })
+            return
+        }
 
-    onMounted(() => {
-        //init()
-        getProjectDetail()
+
+        info.value = res.data.info
+
+        if (info.value.djs != 0 && info.value.djs != null && info.value.djs <= info.value.djss) {
+            info.value.status = 10;
+        }
+        detailData.value.name = res.data.info.name
+        detailData.value.price = res.data.info.price
+        detailData.value.dailyIncome = (res.data.info.price * res.data.info.rate / 100).toFixed(2)
+        detailData.value.totalRevenue = (res.data.info.price * res.data.info.rate * res.data.info.days / 100).toFixed(2)
+        detailData.value.content = res.data.info.content
+        detailData.value.tags = [
+            res.data.info.days + ' Days',
+            'Daily interest rate ' + res.data.info.rate + '%',
+            'Return rate ' + cutOutNum(res.data.info.price * res.data.info.rate * res.data.info.days / res.data.info.price, 1) + '%',
+        ]
+        wallet1.value = res.data.wallet1
+        wallet2.value = res.data.wallet2
+        wallet3.value = res.data.wallet3
+
+        coupons.value = [];
+
+        for (let index = 0; index < res.data.coupon_arr.length; index++) {
+            const element = res.data.coupon_arr[index];
+            coupons.value.push({
+                available: 1,
+                condition: t('折扣券'),
+                reason: '',
+                value: (100 - element.discount) * 100,
+                name: element.coupon_name,
+                startAt: element.create_time,
+                endAt: element.effective_time == 0 ? element.create_time + (60 * 60 * 24 * 3650) : element.effective_time,
+                valueDesc: (100 - element.discount).toString(),
+                unitDesc: '%',
+                id: element.id
+            });
+        }
+        investShow.value = true
     })
+    // }, delayTime)
 
-    defineExpose({
-        init,
-    })
+}
+const forid = (id: number) => {
+    return "forid_" + id;
+}
+
+onMounted(() => {
+    //init()
+    getProjectDetail()
+})
+
+defineExpose({
+    init,
+})
 </script>

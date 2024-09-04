@@ -23,9 +23,16 @@
                 <img :src="winURight" style=" width: 8vw; display: inline-block">
             </div>
             <div class="lotWinUsers">
-                <div class="lotWinUsersContent">
-                    <div v-for="(item, index) in tdata.notice" :key="index">
-                        <div style="color: #622fb5;display:inline-block;float:left">{{item.account}} ········· <span v-if="item.RS!='Thank You'" >WIN</span></div><div style="color: #e20000; display: inline-block; text-align: right;">{{item.RS}}</div>
+                <div style=" height: 100%; overflow: hidden;">
+                    <div class="lotWinUsersContent">
+                        <div v-for="(item, index) in tdata.notice" :key="index">
+                            <div style="color: #622fb5;display:inline-block;float:left">{{item.account}} ········· <span v-if="item.RS!='Thank You'">WIN</span></div><div style="color: #e20000; display: inline-block; text-align: right;">{{item.RS}}</div>
+                        </div>
+                    </div>
+                    <div class="lotWinUsersContent2">
+                        <div v-for="(item, index) in tdata.notice" :key="index">
+                            <div style="color: #622fb5;display:inline-block;float:left">{{item.account}} ········· <span v-if="item.RS!='Thank You'">WIN</span></div><div style="color: #e20000; display: inline-block; text-align: right;">{{item.RS}}</div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -104,25 +111,6 @@
         created() {
             vm = this;
         }
-        //methods: {
-        //    // 点击抽奖按钮会触发star回调
-        //    startCallback() {
-        //        console.info("执行demo")
-        //        // 调用抽奖组件的play方法开始游戏
-        //        this.$refs.myLucky.play()
-        //        // 模拟调用接口异步抽奖
-        //        setTimeout(() => {
-        //            // 假设后端返回的中奖索引是0
-        //            const index = 0
-        //            // 调用stop停止旋转并传递中奖索引
-        //            this.$refs.myLucky.stop(index)
-        //        }, 3000)
-        //    },
-        //    // 抽奖结束会触发end回调
-        //    endCallback(prize) {
-        //        console.log(prize)
-        //    },
-        //}
     })
 </script>
 <script lang="ts" setup>
@@ -144,8 +132,6 @@
     const lotData = ref({
         prizes: [
             //{ fonts: [{ text: '0', top: '10%' }] },
-            //{ fonts: [{ text: '1', top: '10%' }] },
-            //{ fonts: [{ text: '2', top: '10%' }] },
         ]
     })
     const store = useStore()
@@ -218,11 +204,8 @@
             let delayTime = Math.floor((Math.random() * 2 + 2) * 1000)
             setTimeout(() => {
                 //flipitback();
-                // 假设后端返回的中奖索引是0
                 let index = 0;
                 index = tdata.value.prize_arr.indexOf(res.data.giftprizelog.prize_name);
-                console.info(index);
-                console.info(res.data.giftprizelog.prize_name);
                 // 调用stop停止旋转并传递中奖索引
                 myLucky.value.stop(index)
             }, delayTime)
@@ -296,15 +279,16 @@
     }
 </style>
 <style lang="scss" scoped>
-    @keyframes scroll-text {
+    @keyframes myMove {
         0% {
-            transform: translateY(0);  
+            transform: translateY(0px);
         }
 
         100% {
             transform: translateY(-100%);
         }
     }
+
     .lotbox {
         background-image: url(../../assets/img/lottery/lotCircleBG.png);
         background-repeat: no-repeat;
@@ -366,7 +350,25 @@
                 height: 100%;
                 overflow: hidden;
                 padding: 0 2vw;
-                /*animation: scroll-text 12s linear infinite;*/
+                animation-name: myMove;
+                animation-duration: 10s;
+                animation-delay: 0s;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+                animation-fill-mode: both;
+                animation-direction: normal;
+            }
+            .lotWinUsersContent2 {
+                height: 100%;
+                overflow: hidden;
+                padding: 0 2vw;
+                animation-name: myMove;
+                animation-duration: 10s;
+                animation-delay: 0s;
+                animation-iteration-count: infinite;
+                animation-timing-function: linear;
+                animation-fill-mode: both;
+                animation-direction: normal;
             }
         }
 

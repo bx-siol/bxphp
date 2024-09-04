@@ -31,7 +31,7 @@ import yebimg1 from '../assets/img/yebimg1.png';
 // import img_i4 from '../assets/img/i4.png';
 // import img_i5 from '../assets/img/i5.png';
 // import img_i6 from '../assets/img/i6.png';
-import img_index_bg from '../assets/img/index_bg.png';
+// import img_index_bg from '../assets/img/index_bg.png';
 // import img_line from '../assets/img/line.png';
 // import img_task from '../assets/img/task.png';
 import img_telegram from '../assets/img/telegram.png';
@@ -75,13 +75,13 @@ export {
 	// img_i4,
 	// img_i5,
 	// img_i6,
-	img_index_bg,
-	img_line,
-	img_task,
+	// img_index_bg,
+	// img_line,
+	// img_task,
 	img_telegram,
-	img_video,
+	// img_video,
 	img_voice,
 	img_whatsapp,
-	img_yzm,
+	// img_yzm,
 	logo,
 };
