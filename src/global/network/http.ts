@@ -1,13 +1,20 @@
-import axios, { AxiosPromise, AxiosRequestConfig } from 'axios';
+import axios, { AxiosPromise, AxiosRequestConfig, AxiosResponse } from 'axios';
 import qs from 'qs';
-import { getLocalToken, doLogout } from "../user";
+import { doLogout, getLocalToken } from "../user";
+import { _alert } from "../common";
+
+interface httpResult {
+    code: number,
+    msg: string,
+    data?: any
+}
 
 const http = (config: AxiosRequestConfig): AxiosPromise => {
-    let url = '/api/?m=Admin&';
+    let url = '/api/?';
     config.url = url + config.url
     const instance = axios.create({
-        //baseURL: '/api/',
-        timeout: 100000,
+        //baseURL: '/api',
+        timeout: 120000,
         method: 'POST',
         transformRequest: [function (data) {
             // 对 data 进行任意转换处理
@@ -24,9 +31,7 @@ const http = (config: AxiosRequestConfig): AxiosPromise => {
         const token = getLocalToken()
         if (config.headers) {
             config.headers['Token'] = token ? token : ''
-            if (!config.headers['Content-Type']) {
-                config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
-            }
+            config.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8'
             config.headers['X-Requested-With'] = 'XMLHttpRequest'
         }
         return config
@@ -38,11 +43,10 @@ const http = (config: AxiosRequestConfig): AxiosPromise => {
     //响应拦截
     instance.interceptors.response.use(res => {
         let data = res.data as any
-        if (data.code == -98 || data.code == -99) {
-            console.log(data.msg)
+        if (data.code == -98) {
             doLogout()
         }
-        return data
+        return res.data
     }, error => {
         //return Promise.reject(error)
         console.log(error)
@@ -50,5 +54,7 @@ const http = (config: AxiosRequestConfig): AxiosPromise => {
 
     return instance(config);
 }
+
+export { http, httpResult }
 
 export default http

@@ -1,32 +1,152 @@
-import { ElMessage, ElMessageBox } from 'element-plus'
 import store from '../store'
+import router from "../router";
+import { Toast, Dialog, ImagePreview } from "vant";
+import http from "../global/network/http";
 import Config from "./interface/config";
 import ClipboardJS from "clipboard";
 
-export const _alert = (options: any) => {
-    ElMessage.closeAll()
+export const _httpByLoading = (url: string, data: any,
+    callback?: (res: any, toast: { clear: () => void, setMessage: (message: string) => void }) => void,
+    errortime: number = 3000) => {
+    // 显示加载toast
+    const toast = Toast.loading({
+        message: "LOADING...",
+        forbidClick: true,
+        loadingType: 'spinner',
+        duration: 3000,
+        className: 'toastBox',
+        overlay: true,
+    });
+    // 执行http请求
+    http({ url: url, data: data }).then((res: any) => {
+        // 设置延迟，模拟加载时间
+        setTimeout(() => {
+            // 调用callback，并提供一个对象，使调用者能够控制Toast
+            // 包括清除和更新消息的方法
+            callback?.(res, {
+                clear: () => toast.clear(),
+                setMessage: (message: string) => {
+                    // 更新Toast消息的建议方法
+                    toast.message = message;
+                }
+            });
+            // 设置额外延迟来清除Toast
+            setTimeout(() => {
+                toast.clear();
+            }, errortime);
+        }, 1000);
+    });
+}
+
+export const _alert = (options: any, callback: any = null, type: number = 0) => {
+
+    var message = '';
     if (typeof (options) == 'string') {
-        ElMessage({
-            type: 'warning',
-            message: options
-        })
+        message = options;
     } else {
-        ElMessage(options)
+        message = options.message ?? "Loading failed. Please try again later"
+    }
+    switch (type) {
+        case 1://加载中
+            Toast.loading({
+                duration: 3000,
+                className: 'toastBox',
+                message: message,
+                forbidClick: true,
+                overlay: true,
+                loadingType: 'spinner',
+                onClose: () => {
+                    if (callback != null) callback()
+                }
+            });
+            break;
+        case 2://成功
+            Toast.success({
+                duration: 3000,
+                className: 'toastBox',
+                message: message,
+                forbidClick: true,
+                overlay: true,
+                loadingType: 'spinner',
+                onClose: () => {
+                    if (callback != null) callback()
+                }
+            });
+            break;
+        case 3://失败
+            Toast.fail({
+                duration: 3000,
+                className: 'toastBox',
+                message: message,
+                forbidClick: true,
+                overlay: true,
+                loadingType: 'spinner',
+                onClose: () => {
+                    if (callback != null) callback()
+                }
+            });
+            break;
+        default://提示
+            Toast({
+                closeOnClick: true,
+                overlay: true,
+                closeOnClickOverlay: true,
+                className: 'toastBox',
+                overlayClass: 'van-overlay',
+                message: message,
+                transition: "bounce",
+                loadingType: 'spinner',
+                duration: 3000,
+                onClose: () => {
+                    if (callback != null) callback()
+                }
+            });
+            break;
     }
 }
 
-export const showImg = (src: string) => {
-    ElMessageBox.close()
-    let html = '<div style="text-align: center;">'
-    html += '<img src="' + src + '" style="max-width: 90%;max-height: 90%;"/>'
-    html += '</div>'
-    ElMessageBox.alert(html, '图片预览', {
-        dangerouslyUseHTMLString: true,
-        customClass: 'el-message-box-showimg',
-        confirmButtonText: '关闭'
-    }).catch(() => {
+export const _clearloading = (callback: any = null) => {
+    Toast.clear();
+    if (callback != null) callback()
+}
+export const _showloading = (callback: any = null) => {
+    Toast.loading({
+        duration: 0,
+        overlay: true,
+        className: 'toastBox',
+        message: "LOADING...",
+        forbidClick: true,
+        loadingType: 'spinner',
+        onClose: () => {
+            if (callback != null) callback()
+        }
+    });
+}
 
-    })
+export const showImg = (src: string) => {
+    Dialog.alert({
+        message: '<img src="' + src + '" style="width: 100%;"/>',
+        confirmButtonText: 'close',
+        // confirmButtonColor:'#07c160',
+        allowHtml: true,
+        closeOnClickOverlay: true
+    }).catch(() => { })
+}
+
+//srcs可以是单个资源，也可以是多个资源的数组
+//startPosition 当srcs是多个资源时，指定开始预览的索引
+export const imgPreview = (srcs: string | string[], startPosition?: number) => {
+    let urls = []
+    if (typeof srcs == 'string') {
+        srcs = getSrcUrl(srcs)
+        urls.push(srcs)
+        startPosition = 0
+    } else {
+        for (let i in srcs) {
+            urls.push(getSrcUrl(srcs[i]))
+        }
+    }
+    ImagePreview(urls, startPosition)
 }
 
 export const getZero = (data: any) => {
@@ -49,20 +169,37 @@ export const getZero = (data: any) => {
 }
 
 //获取资源全路径
-export const getSrcUrl = (path: string): string => {
+// export const getSrcUrl = (path: string): string => {
+//     if (!path) {
+//         return ''
+//     }
+//     path = path.replace(/^\/|\/$/g, '');
+//     let url = store.state.config.img_url + '/' + path
+//     return url
+// }
+export const getSrcUrl = (path: string, img: number = 0): string => {
     if (!path) {
         return ''
     }
-    //let url = store.state.config.img_url + '/' + path
+    path = path.replace(/^\/|\/$/g, '');
     let url = location.origin + '/' + path
+
     return url
+}
+
+export const goRoute = (target: string | object) => {
+    if (typeof target == 'string') {
+        router.push({ name: target })
+    } else {
+        router.push(target)
+    }
 }
 
 //复制
 export const copy = (el: HTMLElement, options?: any) => {
     let clipboard = new ClipboardJS(el, options);
     clipboard.on('success', function (e) {
-        _alert('复制成功')
+        _alert('Copy succeeded')
         e.clearSelection()
     });
 }
@@ -74,20 +211,15 @@ export const getConfig = (): Config | null => {
     try {
         if (cnfJson) {
             cnf = JSON.parse(cnfJson)
-            if (!cnf) {
+            if (!cnf || !cnf.img_url) {
                 cnf = null
             }
         }
     } catch (e) {
 
     }
-    if (cnf) {
-        if (!cnf.tab) {
-            cnf.tab = 'first'
-        }
-        if (!cnf.active) {
-            cnf.active = {}
-        }
+    if (cnf && !cnf.tab) {
+        cnf.tab = 'first'
     }
     return cnf
 }
@@ -104,7 +236,84 @@ export const setConfig = (cnf: Config) => {
     store.commit('setConfig', config)
 }
 
+//更新本地存储配置
+export const updateStoreConfig = (obj: Config) => {
+    let config = getConfig()
+    if (config) {
+        for (let i in obj) {
+            config[i] = obj[i]
+        }
+        setConfig(config)
+    }
+}
+
 export const clearLocalConfig = () => {
     window.localStorage.removeItem('config')
     store.commit('setConfig', {})
 }
+
+//检测是否是邮箱
+export const isEmail = (email: string): Boolean => {
+    if (!email) {
+        return false
+    }
+    let reg = new RegExp("^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$");
+    return reg.test(email)
+}
+
+export const isWx = () => {
+    let ua = window.navigator.userAgent.toLowerCase()
+    let match = ua.match(/MicroMessenger/i)
+    if (match === null) {
+        return false
+    }
+    return true
+}
+
+//翻译
+export const lang = (str: string) => {
+    if (!store.state.config.language || !str) {
+        return str
+    }
+    let langStr = store.state.config.language[str]
+    if (!langStr) {
+        return str
+    }
+    return langStr
+}
+
+export const cutOutNum = (num, decimals) => {
+    if (isNaN(num) || (!num && num !== 0)) {
+        return '--'
+    }
+    // 默认为保留的小数点后两位
+    let dec = decimals ? decimals : 2
+    let tempNum = Number(num)
+    let pointIndex = String(tempNum).indexOf('.') + 1 // 获取小数点的位置 + 1
+    let pointCount = pointIndex ? String(tempNum).length - pointIndex : 0 // 获取小数点后的个数(需要保证有小数位)
+    // 源数据为整数或者小数点后面小于decimals位的作补零处理
+    if (pointIndex === 0 || pointCount <= dec) {
+        let tempNumA = tempNum
+        if (pointIndex === 0) {
+            tempNumA = `${tempNumA}.`
+            for (let index = 0; index < dec - pointCount; index++) {
+                tempNumA = `${tempNumA}0`
+            }
+        } else {
+            for (let index = 0; index < dec - pointCount; index++) {
+                tempNumA = `${tempNumA}0`
+            }
+        }
+        return tempNumA
+    }
+    let realVal = ''
+    // 截取当前数据到小数点后decimals位
+    realVal = `${String(tempNum).split('.')[0]}.${String(tempNum)
+        .split('.')[1]
+        .substring(0, dec)}`
+    // 判断截取之后数据的数值是否为0
+    if (realVal == 0) {
+        realVal = 0
+    }
+    return realVal
+} 

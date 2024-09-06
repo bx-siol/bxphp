@@ -1,233 +1,223 @@
 <template>
-    <Page :url="pageUrl" ref="pageRef" @success="onPageSuccess">
-        <template #table="myScope">
-            <el-table-column prop="id" label="ID" width="80"></el-table-column>
-            <el-table-column prop="typename" label="类型"></el-table-column>
-            <el-table-column prop="name" label="名称"></el-table-column>
-            <el-table-column prop="cover" label="图标">
-                <template #default="scope">
-                    <el-image style="width: 100px; height: 100px" :src="imgFlag(scope.row.cover)"
-                        :fit="(scope.row.cover)"></el-image>
-                </template>
-            </el-table-column>
-            <el-table-column prop="probability" label="中奖概率（%）"></el-table-column>
-            <el-table-column prop="from_money" label="最小金额"></el-table-column>
-            <el-table-column prop="to_money" label="最大金额"></el-table-column>
-            <el-table-column prop="goodname" label="产品名称"></el-table-column>
-            <el-table-column prop="couponname" label="奖券名称"></el-table-column>
-            <el-table-column prop="buyAmountStart" label="必中奖起始购买金额"></el-table-column>
-            <el-table-column prop="buyAmountEnd" label="必中奖结束购买金额"></el-table-column>
-            <el-table-column label="操作" width="160">
-                <template #default="scope">
-                    <el-button v-if="power.update" size="mini" @click="edit(scope.$index, scope.row)">编辑</el-button>
-                </template>
-            </el-table-column>
-        </template>
+    <div class="choujiang">
+        <MyNav leftText=''>
+            <template #left>
+                <div></div>
+            </template>
+        </MyNav>
+        <div class="cj_center">
+            <div class="title">
+                Number of draws remaining: {{ num }}
+            </div>
+            <div class="cj_bg">
+                <LuckyGrid ref="myLucky" width="300px" height="300px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
+            </div>
 
-        <template #layer="{ tdata }">
-            <!--弹出层-->
-            <el-dialog :title="configForm.title" v-model="configForm.visible" :close-on-click-modal="false"
-                :width="configForm.width" :top="configForm.top" @opened="dialogOpened">
-                <el-form :label-width="configForm.labelWidth">
-                    <el-form-item label="奖品名称">
-                        <el-input size="small" v-model="dataForm.name" autocomplete="off" placeholder=""></el-input>
-                    </el-form-item>
-                    <el-form-item label="图标">
-                        <MyUpload v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;">
-                        </MyUpload>
-                    </el-form-item>
-                    <el-form-item label="购买必中奖">
-                        <el-input size="small" v-model="dataForm.buyAmountStart" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                        &nbsp;&nbsp;至&nbsp;&nbsp;
-                        <el-input size="small" v-model="dataForm.buyAmountEnd" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                    </el-form-item>
-                    <el-form-item label="中奖概率">
-                        <el-input size="small" v-model="dataForm.probability" autocomplete="off" placeholder=""></el-input>
-                    </el-form-item>
-                    <el-form-item label="奖品类型">
-                        <el-radio-group v-model="dataForm.type">
-                            <el-radio :label="1">余额</el-radio>
-                            <el-radio :label="2">产品</el-radio>
-                            <el-radio :label="3">实物</el-radio>
-                            <el-radio :label="4">空</el-radio>
-                            <el-radio :label="5">奖券</el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item label="中奖余额" v-if="dataForm.type == 1">
-                        <el-input size="small" v-model="dataForm.from_money" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                        &nbsp;&nbsp;至&nbsp;&nbsp;
-                        <el-input size="small" v-model="dataForm.to_money" autocomplete="off" placeholder=""
-                            style="width: 310px;"></el-input>
-                    </el-form-item>
-                    <el-form-item label="产品" v-if="dataForm.type == 2">
-                        <el-select size="small" style="width: 100%;" v-model="dataForm.gid" placeholder="选择产品">
-                            <el-option v-for="(item, idx) in tdata.goods" :key="item.id" :label="item.name"
-                                :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="中奖描述" v-if="dataForm.type == 3">
-                        <el-input size="small" v-model="dataForm.remark" autocomplete="off" placeholder=""></el-input>
-                    </el-form-item>
-                    <el-form-item label="奖券" v-if="dataForm.type == 5">
-                        <el-select size="small" style="width: 100%;" v-model="dataForm.coupon_id" placeholder="选择奖券">
-                            <el-option v-for="(item, idx) in tdata.coupons" :key="item.id" :label="item.name"
-                                :value="item.id"></el-option>
-                        </el-select>
-                    </el-form-item>
-                </el-form>
-                <template #footer>
-                    <span class="dialog-footer">
-                        <input type="hidden" v-model="dataForm.id" />
-                        <el-button @click="onDialogClosed">取消</el-button>
-                        <el-button type="primary" @click="save">保存</el-button>
-                    </span>
-                </template>
-            </el-dialog>
-        </template>
-
-    </Page>
+            <div class="lotteryNum">Activity Rules </div>
+            <div class="introduce">
+                <p>New members can get 1 chance to win a lottery by joining and activating the product.</p>
+                <p>Invite new members to join and get 1 chance to win a lottery. Get 1 chance to win a lottery for every
+                    product
+                    purchased.</p>
+                <p>How to use [cash coupons]: After receiving the cash coupons, the amount will be directly transferred
+                    to your
+                    account.</p>
+                <p>How to use [discount coupons]: After receiving the [discount coupons], you can use them when
+                    purchasing
+                    products to enjoy discounts.</p>
+                <p>How to use [invitation coupons]: After obtaining the invitation coupons, you can get additional cash
+                    rewards
+                    by inviting new members to join.</p>
+                <p>Note: The number of draws will be reset to 0 at 0:00 every day. If you have a chance to win a
+                    lottery, please
+                    use it immediately.</p>
+                <div style="width: 100%;height: 5rem;"></div>
+            </div>
+        </div>
+    </div>
+    <van-popup v-model:show="showLotteryPop" style="border-radius: 10px;">
+        <div class="LotteryPop" @click="receiveGift">
+            <img :src="result" />
+        </div>
+    </van-popup>
+    <MyTab></MyTab>
 </template>
-
 <script lang="ts">
-import { defineComponent } from 'vue'
-import Page from '../../components/Page.vue';
-import MyUpload from '../../components/Upload.vue';
-
+import { defineComponent, ref, onMounted, onBeforeMount } from 'vue'
+import { getSrcUrl } from '../../global/common'
+import MyNav from '../../components/Nav.vue'
+import { Tab, Image, Popup } from 'vant'
+import MyTab from '../../components/Tab.vue'
+import MyPop from '../../components/Pop.vue'
 export default defineComponent({
     components: {
-        Page
-    }
+        MyPop,
+        MyTab,
+        [Tab.name]: Tab,
+        [Image.name]: Image,
+        [Popup.name]: Popup,
+    },
 })
 </script>
 
 <script lang="ts" setup>
-import { ref, onMounted, reactive, getCurrentInstance } from 'vue';
-import { useStore } from "vuex";
-import { _alert, getSrcUrl } from "../../global/common";
-import http from "../../global/network/http";
-import { checkPower } from '../../global/user';
+import http from '../../global/network/http'
+import { _alert, lang } from '../../global/common'
 
-let isRequest = false
-const store = useStore()
-const pageRef = ref()
-const insObj = getCurrentInstance()
-const editor = ref()
-const actItem = ref<any>()
-const iconList = ref<any>([])
-
-const tableData = ref<any>({
-    goods_arr: []
-})
-
-//权限控制
-const power = reactive({
-    //delete:checkPower('Shop_order_delete'),
-    update: checkPower('Gift_lottery_update'),    
-})
+import cj_bg from "../../assets/img/lottery/cj_bg.png";
+import draw from "../../assets/img/lottery/draw.png";
 
 const imgFlag = (src: string) => {
-    return getSrcUrl(src)
+    return getSrcUrl(src, 1);
 }
 
-const pageUrl = ref('c=Gift&a=lottery')
-const onPageSuccess = (td: any) => {
-    tableData.value = td
+const showLotteryPop = ref<boolean>(false)
+const prizes = ref([{ imgs: [] }])
+const result = ref('')
+const num = ref(0)
+const myLucky = ref()
+const tdata = ref([])
+const LotteryResults = ref()
+
+const blocks = ref([
+    {
+        borderRadius: '15px',
+        padding: '2rem',
+        imgs: [
+            {
+                src: cj_bg,   //图片url
+                top: '0',     //图片距顶部距离
+                width: '300px',  //图片宽
+                height: '300px', //图片高
+            }
+        ],
+    }
+])
+
+const buttons = ref([
+    {
+        x: 1, y: 1,
+        imgs: [
+            {
+                src:  draw,
+                width: '100%',
+                height: '100%',
+            }
+        ]
+    }
+])
+
+const prizesInitialization = () => {
+    prizes.value = [
+        { x: 0, y: 0, imgs: [{ src: imgFlag(tdata.value[0].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 1, y: 0, imgs: [{ src: imgFlag(tdata.value[1].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 2, y: 0, imgs: [{ src: imgFlag(tdata.value[2].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 2, y: 1, imgs: [{ src: imgFlag(tdata.value[3].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 2, y: 2, imgs: [{ src: imgFlag(tdata.value[4].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 1, y: 2, imgs: [{ src: imgFlag(tdata.value[5].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 0, y: 2, imgs: [{ src: imgFlag(tdata.value[6].cover), width: '90%', height: '85%', top: '8%' }] },
+        { x: 0, y: 1, imgs: [{ src: imgFlag(tdata.value[7].cover), width: '90%', height: '85%', top: '8%' }] },
+    ]
 }
 
-const configForm = reactive({
-    title: '',
-    width: '800px',
-    labelWidth: '100px',
-    top: '1%',
-    visible: false,
-    isEdit: false
-})
+const startCallback = (val: any) => {
+    buttons.value[0].imgs[0].width = "95%";
+    buttons.value[0].imgs[0].height = "95%";
+    setTimeout(() => {
+        buttons.value[0].imgs[0].width = "100%";
+        buttons.value[0].imgs[0].height = "100%";
+    }, 300)
 
-//弹层打开后回调
-const dialogOpened = () => {
-    if (insObj) {
-        editor.value = insObj.refs['editor']
-    }
-    if (configForm.isEdit) {
+    const delayTime = Math.floor(Math.random() * 1000);
+    setTimeout(() => {
+        http({
+            url: 'c=Gift&a=turntableAct',
+        }).then((res: any) => {
+            if (res.code != 1) {
+                _alert(res.msg)
+                myLucky.value.init();
+                return
+            }
 
-    } else {
-        editor.value.clear()
-    }
-}
-//弹层关闭后
-const onDialogClosed = () => {
-    iconList.value = [];
-    configForm.visible = false
-}
-const dataForm = reactive<any>({
-    id: 0,
-    type: 0,
-    name: '',
-    cover: [],
-    probability: 0,
-    from_money: 0,
-    to_money: 0,
-    gid: 0,
-    coupon_id: 0,
-    remark: '',
-    buyAmountStart: 0,
-    buyAmountEnd: 0,
-})
-
-const edit = (idx: number, item: any) => {
-    actItem.value = item
-    dataForm.id = item.id
-    dataForm.type = item.type
-    dataForm.name = item.name
-    dataForm.cover = item.cover
-    dataForm.probability = item.probability
-    dataForm.from_money = item.from_money
-    dataForm.to_money = item.to_money
-    dataForm.gid = item.gid
-    dataForm.coupon_id = item.coupon_id
-    dataForm.remark = item.remark,
-        dataForm.buyAmountStart = item.buyAmountStart
-    dataForm.buyAmountEnd = item.buyAmountEnd
-    configForm.visible = true
-    configForm.title = '编辑奖品'
-    configForm.isEdit = true,
-        iconList.value.push({ src: item.cover })
+            myLucky.value.play()
+            LotteryResults.value = res.data.giftprizelog
+            myLucky.value.stop(LotteryResults.value.gift_prize_id - 1);
+            num.value = res.data.lottery;
+        })
+    }, delayTime)
 }
 
-const save = () => {
-    if (iconList.value[0]) {
-        dataForm.icon = iconList.value[0].src;
-        dataForm.cover = iconList.value[0].src;
-    }
-    if (isRequest) {
-        return
-    } else {
-        isRequest = true
-    }
-    const pdata = {}
-    for (let i in dataForm) {
-        pdata[i] = dataForm[i]
-    }
+const endCallback = () => {
+    result.value = imgFlag(LotteryResults.value.prize_cover);
+    showLotteryPop.value = true;
+}
+
+const receiveGift = () => {
+    showLotteryPop.value = false
+}
+
+onBeforeMount(() => {
     http({
-        url: 'c=Gift&a=lottery_save',
-        data: pdata
+        url: 'c=Gift&a=turntable',
+        data: { page: 1 }
     }).then((res: any) => {
-        isRequest = false
         if (res.code != 1) {
             _alert(res.msg)
             return
         }
-        iconList.value = [];
-        configForm.visible = false  //关闭弹层
-        pageRef.value.doSearch()
+        num.value = res.data.user.lottery
+        tdata.value = res.data.prize_arr
+
+        prizesInitialization()
     })
-}
-
-onMounted(() => {
-
 })
 
 </script>
+
+<style lang="scss" scoped>
+.choujiang {
+    background: url(/src/assets/img/lottery/bg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+
+    .cj_center {
+        margin-top: 10rem;
+        display: flex;
+        justify-content: center;
+        padding: 0 1rem;
+        flex-direction: column;
+        align-items: center;
+
+        .title {
+            width: 80%;
+            height: 2.5rem;
+            background-color: #fe9522;
+            margin-bottom: 1rem;
+            color: white;
+            line-height: 2.5rem;
+            text-align: center;
+            font-weight: bold;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .lotteryNum {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 1rem 0 0.5rem;
+            color: red;
+        }
+
+        .introduce {
+            font-size: 0.8rem;
+            padding: 0 0.8rem;
+            color: #fddd50;
+
+            p {
+                margin-bottom: 0.5rem;
+            }
+        }
+
+    }
+}
+</style>
