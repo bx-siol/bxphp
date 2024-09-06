@@ -7,7 +7,7 @@
         <div class="formbox">
             <van-cell-group>
                 <van-field style="margin-top: 1rem;" class="accountItem" v-model="dataForm.account" :left-icon="phone"
-                    label="+91" label-width="30" :placeholder="t('请输入手机号')"  maxlength="10"></van-field>
+                    label="+91" label-width="25" :placeholder="t('请输入手机号')"  maxlength="10"></van-field>
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')">
                     <template #left-icon>
                         <van-image :src="lock" fit="cover" style="top:4px;width: 1.5rem;" />
@@ -69,9 +69,6 @@ export default defineComponent({
 })
 </script>
 <script lang="ts" setup>
-import {
-    ico_1, ico_2, ico_3, ico_4, ico_5, ico_6, ico_103, img_yzm
-} from '../../global/assets';
 import { defineComponent, ref, reactive, toRefs, onMounted } from 'vue';
 import { useStore } from "vuex";
 import { useRouter } from "vue-router";
@@ -212,26 +209,23 @@ onMounted(() => {
         padding-top: 1rem;
 
         img {
-            width: 16rem;
-            height: 3rem;
-            margin: 16vh 0 5vh 0;
+            width: 4rem;
+            height: 5rem;
+            margin: 0vh 0 1vh 66%;
         }
     }
 
     .formbox {
-        width: 90%;
-        margin-left: 5%;
-        height: 22rem;
-        padding: 0.5rem 1rem;
-        box-sizing: border-box;
-        border-radius: 15px;
-        background: white;
+        width: 74%;
+        margin-left: 21%;
+        height: 21rem;
+        margin-top: 3rem;
 
         .sendCodeBtn {
             border: none;
             font-weight: bold;
             font-size: 16px;
-            color: #cb1a00;
+            color: #009900;
         }
 
         .van-field {
@@ -252,14 +246,13 @@ onMounted(() => {
             justify-content: space-around;
 
             .onLogin_btn{
-                background: url(/src/assets/img/login/login_btn.png);
-                background-repeat: no-repeat;
-                background-size: 100% 100%;
                 height: 2.5rem;
                 width: 16rem;
                 text-align: center;
                 line-height: 2.5rem;
                 color: white;
+                background-color: #009900;
+                border-radius: 20px;
             }
         }
     }
@@ -269,7 +262,7 @@ onMounted(() => {
         padding: 0.4rem;
         border-radius: 8px;
         background-color: transparent;
-        border: 1px solid #d7d2d0;
+        border: 1px solid #009900;
     }
 
     .accountItem .van-field__label label {
@@ -289,7 +282,7 @@ onMounted(() => {
         color: #d7d2d0;
         display: flex;
         justify-content: flex-end;
-        margin: 0rem 0 1.5rem 0;
+        margin: 0rem 0 1rem 0;
         font-size: 1rem;
     }
 }

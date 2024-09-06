@@ -10,7 +10,7 @@
                 <p @click="onLink({ name: 'Register' })"> {{ t('注册') }}</p>
             </div>
             <van-cell-group>
-                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="30"
+                <van-field v-model="dataForm.account" class="accountItem" :left-icon="phone" label="+91" label-width="25"
                     maxlength="10" :placeholder="t('请输入手机号')"></van-field>
 
                 <van-field v-model="dataForm.scode" :placeholder="t('短信验证码')" maxlength="6">
@@ -238,14 +238,14 @@ onMounted(() => {
     padding: 0.4rem;
     border-radius: 8px;
     background-color: transparent;
-    border: 1px solid #d7d2d0;
+    border: 1px solid #009900;
 }
 
 .sendCodeBtn {
     border: none;
     font-weight: bold;
     font-size: 16px;
-    color: #cb1a00;
+    color: #009900;
 }
 
 .register {
@@ -256,9 +256,9 @@ onMounted(() => {
         padding-top: 1rem;
 
         img {
-            width: 16rem;
-            height: 3rem;
-            margin: 16vh 0 5vh 0;
+            width: 4rem;
+            height: 5rem;
+            margin: 0vh 0 1vh 66%;
         }
     }
 
@@ -268,7 +268,6 @@ onMounted(() => {
         display: flex;
         justify-content: center;
         align-items: center;
-        margin-bottom: 1rem;
 
 
         p:nth-child(1) {
@@ -282,8 +281,8 @@ onMounted(() => {
 
         p:nth-child(2) {
             font-weight: bold;
-            color: #cd1f14;
-            border-bottom: 1px solid #cd1f14;
+            color: #009900;
+            border-bottom: 1px solid #009900;
             width: 6rem;
             text-align: center;
             padding-bottom: 0.5rem;
@@ -291,14 +290,13 @@ onMounted(() => {
     }
 
     .formbox {
-        width: 90%;
-        margin-left: 5%;
-        height: 25rem;
-        padding: 0 1rem;
-        box-sizing: border-box;
-        padding-bottom: 1.25rem;
-        border-radius: 15px;
-        background: white;
+        width: 74%;
+        margin-left: 21%;
+        height: 21rem;
+
+        :deep(.van-cell-group){
+            border-radius: 10px;
+        }
 
         .van-field {
             &.accountItem {
@@ -319,14 +317,13 @@ onMounted(() => {
             margin-top: 1.5rem;
 
             .onLogin_btn{
-                background: url(/src/assets/img/login/login_btn.png);
-                background-repeat: no-repeat;
-                background-size: 100% 100%;
                 height: 2.5rem;
                 width: 16rem;
                 text-align: center;
                 line-height: 2.5rem;
                 color: white;
+                background-color: #009900;
+                border-radius: 20px;
             }
         }
     }
