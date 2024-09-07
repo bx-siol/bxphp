@@ -323,9 +323,7 @@ onMounted(() => {
             justify-content: space-around;
 
             .onbtn{
-                background: url(/src/assets/img/login/login_btn.png);
-                background-repeat: no-repeat;
-                background-size: 100% 100%;
+                background-color: #009900;
                 height: 2.5rem;
                 width: 16rem;
                 text-align: center;

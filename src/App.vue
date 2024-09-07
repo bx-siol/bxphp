@@ -38,9 +38,7 @@ onMounted(() => {
     background-size: 100% 100%;
     border: 0;
     color: #fff;
-    background: url(/src/assets/img/login/login_btn.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background-color: #009900;
     font-weight: bold;
     border-radius: 4px;
 }

@@ -36,7 +36,7 @@ export default defineComponent({
 import { useRoute, useRouter } from "vue-router"
 import { ref, reactive } from "vue"
 
-const foregroundColor = ref('#ca0e00')  //前景色
+const foregroundColor = ref('#fff')  //前景色
 
 const route = useRoute()
 const router = useRouter()
@@ -90,11 +90,11 @@ const onLeftClick = () => {
 
 <style>
 .myNavBar .van-nav-bar {
-    background-color: white;
+    background-color: #009900;
     max-width: 640px;
     margin: 0 auto;
     right: 0;
-    color: #cb1a00;
+    color: #fff;
     box-shadow: 0 1px 4px 0 #c3c3c3;
     z-index: 300;
 }

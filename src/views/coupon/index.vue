@@ -128,9 +128,7 @@ onMounted(() => {
           display: flex;
           justify-content: center;
           align-items: center;
-          background: url(/src/assets/img/login/login_btn.png);
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
+          background-color: #009900;
           font-weight: bold;
         }
 

@@ -4,9 +4,7 @@
         <van-tabbar-item v-for="(item, idx) in menu.tabs" :to="!item.url ? item.path : ''" :url="item.url" style="line-height: 0.6;" :dot="item.dot" :badge="item.badge">
             <span>{{ item.text }}</span>
             <template #icon="{ active }">
-                <van-image :src="(active ? item.iconOn : item.icon)" v-if="idx == 1" class="activeimg" style="width:1.8rem;" />
-                <van-image :src="(active ? item.iconOn : item.icon)" v-else-if="idx == 2" class="activeimg" style="width:3rem;height: 3.55rem;margin-top: -2rem;" />
-                <van-image :src="(active ? item.iconOn : item.icon)" v-else class="activeimg" style="width:1.8rem;" />
+                <van-image :src="(active ? item.iconOn : item.icon)" class="activeimg" />
             </template>
         </van-tabbar-item>
     </van-tabbar>
@@ -106,12 +104,12 @@ const tabs: Tab[] = [
         iconOn: projectactive,
         path: '/project'
     },
-    {
-        text: t('幸运抽奖'),
-        icon: prizes,
-        iconOn: prizesactive,
-        path: '/gift/lottery'
-    },
+    // {
+    //     text: t('幸运抽奖'),
+    //     icon: prizes,
+    //     iconOn: prizesactive,
+    //     path: '/gift/lottery'
+    //},
 
     {
         text: t('新闻资讯'),
@@ -131,7 +129,7 @@ const tabs: Tab[] = [
 const menu = ref<any>({
     active: 0,
     inactiveColor: '#686868',//未选中颜色
-    activeColor: '#cb1a00',//选中颜色
+    activeColor: '#009900',//选中颜色
     tabs: tabs
 })
 
@@ -163,6 +161,7 @@ const onClickLogo = () => {
     .activeimg {
         width: 1.4rem;
         height: 1.4rem;
+        margin-bottom: 0.3rem;
     }
 
     .activeimg :deep(.van-image__img) {

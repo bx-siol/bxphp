@@ -4,59 +4,47 @@
       <template #default="{ list }">
         <div class="basicProjects">
           <div class="projectList">
-            <div v-for="(item, index) in tableDatao.list" :key="index">
+            <div v-for="(item, index) in tableDatao.list" :key="index" class="projectItem">
 
-              <div class="projectItem">
-                <div class="detailLeft">
+              <div class="basicItemLeft">
+                <img :src="imgFlag(item.icon)" class="imgs" />
+                <span style="position: relative;color: #009900;left: 20%;left: 0.5rem;top: -6.5rem;font-weight: bold;">{{item.goods_name }}</span>
+              </div>
 
-                  <div class="basicItemLeft">
-                    <div class="detail">
-                      <img :src="logo" style="height: 1.5rem;width: 7rem;margin: 0.5rem 0;">
-                      <div class="detailLeft_left">
-                        <div class="unitprice">
-                          <span>{{ item.goods_name }}</span>
-                          <span style="color:#cb1a00">₹{{ cutOutNum(item.price) }}</span>
-                        </div>
-                        <div class="dailyearnings">
-                          <span>{{ t('周期') }}</span>
-                          <span>{{ item.total_days }}/{{item.days}}</span>
-                        </div>
-                        <div class="totalrevenue">
-                          <span>{{ t('总收入') }}</span>
-                          <span>
-                            ₹{{ (item.rate * item.price * item.total_days * item.num / 100).toFixed(2) }}
-                          </span>
-                        </div>
-                        <div class="dailyearnings">
-                          <span>{{ t('数量') }}</span>
-                          <span>{{ item.num }}</span>
-                        </div>
-                      </div>
+              <div class="basicItemRight">
+                <div class="detail">
+                  <div class="detailLeft_left">
+                    <div class="dailyearnings">
+                      <span>{{ t('周期') }}</span>
+                      <span>{{ item.total_days }}/{{ item.days }}</span>
+                    </div>
+                    <div class="totalrevenue">
+                      <span>{{ t('总收入') }}</span>
+                      <span>
+                        ₹{{ (item.rate * item.price * item.total_days * item.num / 100).toFixed(2) }}
+                      </span>
+                    </div>
+                    <div class="dailyearnings">
+                      <span>{{ t('数量') }}</span>
+                      <span>{{ item.num }}</span>
+                    </div>
+                    <div class="totalrevenue" style="height: 2.5rem;margin-bottom: 0;">
+                      <span style="color: #ede000;font-weight: bold;font-size: 1rem;"> </span>
+                      <template v-if="item.status == 1">
+                        <template v-if="item.receive == 1">
+                          <div class="buy" @click="onReceive(item)">{{t('领取')}} </div>
+                        </template>
+                        <template v-else>
+                          <div class="buy" @click="onReceiveNo(item)" style="background-color: #808080;color:white;">{{t('明天领取')}}</div>
+                        </template>
+                      </template>
+                      <template v-else>
+                        <div></div>
+                      </template>
                     </div>
                   </div>
-
-                  <div class="basicItemRight">
-                    <img :src="imgFlag(item.icon)" class="productImg" />
-                  </div>
                 </div>
 
-                <div class="detailRight">
-                  <template v-if="item.status == 1">
-                    <template v-if="item.receive == 1">
-                      <div class="receiveBtn" @click="onReceive(item)">
-                        <img :src="receive" style="height: 1.5rem; width: 1.5rem;">
-                      </div>
-                    </template>
-                    <template v-else>
-                      <div class="receiveBtnNo" @click="onReceiveNo(item)">
-                        <img :src="receive" style="height: 1.5rem; width: 1.5rem;">
-                      </div>
-                    </template>
-                  </template>
-                  <template v-else>
-                    <div class="receiveto"></div>
-                  </template>
-                </div>
               </div>
 
             </div>
@@ -96,8 +84,6 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { useI18n } from 'vue-i18n';
-import receive from '../assets/img/project/receive.png';
-import logo from '../assets/img/home/home_top.png';
 
 const { t } = useI18n();
 
@@ -266,146 +252,86 @@ const onReceivehttp = () => {
   .basicProjects {
     .projectList {
       margin-bottom: 2rem;
+      margin-top: 1rem;
 
       .projectItem {
-        height: 7.5rem;
+        width: 100%;
+        height: 7rem;
+        box-shadow: 0px 0px 10px 0px #afa9a9;
         margin-bottom: 1rem;
-        display: flex;
-        flex-direction: row;
-        position: relative;
+        background: url(../assets/img/project/peroject_bg.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 10px;
+        overflow: hidden;
 
-        .detailLeft {
-          height: 7.5rem;
+        .basicItemLeft {
+          width: 45%;
+          height: 7rem;
           float: left;
-          width: 88%;
-          background: url(../assets/img/project/peroject_bg.png);
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-          display: flex;
-          align-items: center;
 
-          .basicItemLeft {
-            height: 7.5rem;
-            padding-left: 3%;
-            width: 50%;
-            float: left;
-
-            .detail {
-              font-size: 1rem;
-              display: flex;
-              align-items: flex-start;
-              flex-direction: column;
-              justify-content: center;
-              margin-top: 0.2rem;
-
-              .detailLeft_left {
-                font-size: 1rem;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                color: #fff;
-                width: 100%;
-
-                &>div {
-                  margin-bottom: 0.3125rem;
-                  width: 100%;
-                  display: flex;
-                  justify-content: space-between;
-                  flex-direction: row;
-                  align-items: center;
-
-                  span:first-child {
-                    font-size: 0.75rem;
-                    white-space: nowrap;
-                    font-weight: normal;
-                  }
-
-                  span {
-                    font-size: 0.75rem;
-                    font-weight: bold;
-                  }
-                }
-              }
-
-
-              .detailRight {
-                width: 3rem;
-                height: 3rem;
-
-                .pay {
-                  width: 3rem;
-                  height: 3rem;
-                  background: #1e1e2a;
-                  color: #fff;
-                  border-radius: 0.3125rem;
-                  display: flex;
-                  justify-content: center;
-                  align-items: center;
-
-                  .disabled {
-                    cursor: not-allowed;
-                    background-color: #6c6b6a;
-                    color: #6c6b6a;
-                    opacity: 0.5;
-                  }
-                }
-              }
-            }
-          }
-
-          .basicItemRight {
-            width: 35%;
-            height: 6.5rem;
-            float: left;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            margin-left: 11%;
-
-            .sold_out {
-              position: relative;
-              z-index: 1;
-              width: 4rem;
-              height: 4rem;
-              opacity: 0.6;
-              left: -47%;
-              top: 29%;
-              transform: translate(-50%, -50%);
-            }
+          .imgs {
+            height: 7rem;
+            border-radius: 10px;
           }
         }
 
-        .detailRight {
-          height: 7.5rem;
-          width: 10%;
-          margin-left: 2%;
+        .basicItemRight {
+          height: 7rem;
+          margin-left: 3%;
+          width: 48%;
+          float: left;
 
-          .receiveBtn {
-            height: 7.5rem;
-            width: 100%;
-            background-color: black;
+          .detail {
+            font-size: 1rem;
             display: flex;
-            align-items: center;
-            justify-content: space-around;
+            align-items: flex-start;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 0.6rem;
+
+            .detailLeft_left {
+              font-size: 1rem;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: flex-start;
+              color: #fff;
+              width: 100%;
+
+              &>div {
+                margin-bottom: 0.3125rem;
+                width: 100%;
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items: center;
+
+                span:first-child {
+                  font-size: 0.75rem;
+                  white-space: nowrap;
+                  font-weight: normal;
+                }
+
+                span {
+                  font-size: 0.75rem;
+                  font-weight: bold;
+                }
+
+                .buy {
+                  width: 6rem;
+                  background-color: white;
+                  color: #009900;
+                  height: 1.6rem;
+                  line-height: 1.6rem;
+                  text-align: center;
+                  border-radius: 30px;
+                  font-weight: bold;
+                }
+              }
+            }
           }
 
-          .receiveBtnNo {
-            height: 7.5rem;
-            width: 100%;
-            background: #c3c3c3;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-          }
-
-          .receiveto {height: 7.5rem;
-            width: 100%;
-            background: #c3c3c3;
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-          }
         }
       }
     }

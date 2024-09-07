@@ -5,49 +5,44 @@
         <template #default="{ list }">
           <div class="basicProjectsList">
             <div class="basicItem" v-for="(item, index) in tableData.list" :key="index">
-              <div class="detailLeft">
-                
-                <div class="basicItemLeft">
-                  <div class="Countdown">
-                    <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
-                      <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"> </van-count-down>
-                    </span>
-                    <span v-if="item.dssj > now" style="position: absolute; right:6px; top: 8px;font-size: 12px;">
-                      <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.dssj)"> </van-count-down>
-                    </span>
-                  </div>
-                  <div class="detail">
-                    <img :src="logo" style="height: 1.5rem;width: 7rem;margin: 0.5rem 0;" >
-                    <div class="detailLeft_left">
-                      <div class="unitprice">
-                        <span>{{ item.name }}</span>
-                        <span style="color: #cb1a00;">₹{{ cutOutNum(item.price) }}</span>
-                      </div>
-                      <div class="unitprice">
-                        <span>{{ t('收入天数') }}</span>
-                        <span>{{ item.days }} days</span>
-                      </div>
-                      <div class="dailyearnings">
-                        <span>{{ t('每日收入') }}</span>
-                        <span>₹{{ cutOutNum(item.price * item.rate / 100) }}</span>
-                      </div>
-                      <div class="totalrevenue">
-                        <span>{{ t('总收入') }}</span>
-                        <span style="color: #cb1a00;">₹{{ (item.days * item.price * item.rate / 100).toFixed(2)  }}</span>
-                      </div>
+
+              <div class="basicItemLeft">
+                <img :src="imgFlag(item.icon)" class="imgs">
+                <span style="position: relative;color: #009900;left: 20%;left: 0.5rem;top: -6.5rem;font-weight: bold;">{{ item.name }}</span>
+                <div class="Countdown">
+                  <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
+                    <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"></van-count-down>
+                  </span>
+                  <span v-if="item.dssj > now" style="position: absolute; right:6px; top: 8px;font-size: 12px;">
+                    <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.dssj)"></van-count-down>
+                  </span>
+                </div>
+                <img v-if="item.status == 9" :src="sold_out" class="sold_out">
+              </div>
+
+              <div class="basicItemRight">
+                <div class="detail">
+                  <div class="detailLeft_left">
+                    <div class="unitprice">
+                      <span>{{ t('收入天数') }}</span>
+                      <span>{{ item.days }} days</span>
                     </div>
-                  </div>                 
-                </div>
-
-                <div class="basicItemRight">
-                  <img :src="imgFlag(item.icon)" class="imgs">
-                  <img v-if="item.status == 9" :src="sold_out" class="sold_out">
+                    <div class="dailyearnings">
+                      <span>{{ t('每日收入') }}</span>
+                      <span>₹{{ cutOutNum(item.price * item.rate / 100) }}</span>
+                    </div>
+                    <div class="totalrevenue">
+                      <span>{{ t('总收入') }}</span>
+                      <span style="color: #ede000;">₹{{ (item.days * item.price * item.rate / 100).toFixed(2) }}</span>
+                    </div>
+                    <div class="totalrevenue" style="height: 2.5rem;margin-bottom: 0;">
+                      <span style="color: #ede000;font-weight: bold;font-size: 1rem;">₹{{ item.price }}</span>
+                      <div class="buy" @click="getProjectDetail(item)">Buy</div>
+                    </div>
+                  </div>
                 </div>
               </div>
 
-              <div class="detailRight" @click="getProjectDetail(item)">
-                <img :src="pay" style="height: 1.5rem; width: 1.5rem;">
-              </div>
             </div>
           </div>
         </template>
@@ -58,8 +53,6 @@
 <script lang="ts">
 import { CountDown } from "vant";
 import sold_out from '../assets/img/project/sold_out.png'
-import pay from '../assets/img/project/pay.png';
-import logo from '../assets/img/home/home_top.png';
 
 export default defineComponent({
   components: {
@@ -76,7 +69,7 @@ import { useRoute, useRouter } from "vue-router";
 import MyListBase from './ListBase.vue';
 import { getSrcUrl, lang, _alert, cutOutNum } from "../global/common";
 import http from "../global/network/http";
-import { useI18n } from 'vue-i18n'; 
+import { useI18n } from 'vue-i18n';
 const { t } = useI18n();
 const now = Date.parse(new Date()) / 1000;
 
@@ -137,117 +130,113 @@ const basicProjects = ref<basicProjects>({
       margin-top: 1rem;
 
       .basicItem {
-        height: 7.5rem;
-        box-shadow: 0px 0px 12px 2px rgba(225, 225, 225);
-        margin-bottom: 1rem; 
+        width: 100%;
+        height: 7rem;
+        box-shadow: 0px 0px 10px 0px #afa9a9;
+        margin-bottom: 1rem;
+        background: url(../assets/img/project/peroject_bg.png);
+        background-repeat: no-repeat;
+        background-size: 100% 100%;
+        border-radius: 10px;
+        overflow: hidden;
 
-        .detailLeft{
-          height: 7.5rem;
+        .basicItemLeft {
+          width: 45%;
+          height: 7rem;
           float: left;
-          width: 88%;
-          background: url(../assets/img/project/peroject_bg.png);
-          background-repeat: no-repeat;
-          background-size:100% 100%;
-          display: flex;
-          align-items: center;
 
-          .basicItemLeft {
-            height: 7.5rem;
-            padding-left: 3%;
-            width: 50%;
-            float: left;
+          .imgs {
+            height: 7rem;
+            border-radius: 10px;
+          }
 
-            .Countdown {
-              position: absolute;
-              height: 2rem;
-              width: 6rem;
-              left: 9rem;
-              
-              span {
-                background: red url(../assets/djs.png) 3px center no-repeat;
-                background-size: 18px;
-                padding: 2px 3px 2px 25px;
-                border-radius: 10px;
+          .sold_out {
+            position: relative;
+            z-index: 1;
+            width: 4rem;
+            height: 4rem;
+            opacity: 0.6;
+            left: 3.5rem;
+            top: -8.5rem;
+          }
 
-                .van-count-down {
-                  color: #fff;
-                }
+          .Countdown {
+            position: relative;
+            height: 2rem;
+            width: 6rem;
+            left: 4rem;
+            top: -3.5rem;
+
+            span {
+              background: #009900 url(../assets/djs.png) 3px center no-repeat;
+              background-size: 18px;
+              padding: 2px 3px 2px 25px;
+              border-radius: 10px;
+
+              .van-count-down {
+                color: #fff;
               }
             }
+          }
+        }
 
-            .detail {
+        .basicItemRight {
+          height: 7rem;
+          margin-left: 3%;
+          width: 48%;
+          float: left;
+
+          .detail {
+            font-size: 1rem;
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            justify-content: center;
+            margin-top: 0.6rem;
+
+            .detailLeft_left {
               font-size: 1rem;
               display: flex;
-              align-items: flex-start;
               flex-direction: column;
               justify-content: center;
-              margin-top: 0.2rem;
+              align-items: flex-start;
+              color: #fff;
+              width: 100%;
 
-              .detailLeft_left {
-                font-size: 1rem;
-                display: flex;
-                flex-direction: column;
-                justify-content: center;
-                align-items: flex-start;
-                color: #fff;
+              &>div {
+                margin-bottom: 0.3125rem;
                 width: 100%;
+                display: flex;
+                justify-content: space-between;
+                flex-direction: row;
+                align-items: center;
 
-                &>div {
-                  margin-bottom: 0.3125rem;
-                  width: 100%;
-                  display: flex;
-                  justify-content: space-between;
-                  flex-direction: row;
-                  align-items: center;
+                span:first-child {
+                  font-size: 0.75rem;
+                  white-space: nowrap;
+                  font-weight: normal;
+                }
 
-                  span:first-child {
-                    font-size: 0.75rem;
-                    white-space: nowrap;
-                    font-weight: normal;
-                  }
+                span {
+                  font-size: 0.75rem;
+                  font-weight: bold;
+                }
 
-                  span {
-                    font-size: 0.75rem;
-                    font-weight: bold;
-                  }
+                .buy {
+                  width: 6rem;
+                  background-color: white;
+                  color: #009900;
+                  height: 1.6rem;
+                  line-height: 1.6rem;
+                  text-align: center;
+                  border-radius: 30px;
+                  font-weight: bold;
                 }
               }
-            }          
-          }
-
-          .basicItemRight {
-            width: 35%;
-            height: 6.5rem;
-            float: left;            
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            margin-left: 11%;
-
-            .sold_out {
-              position: relative;
-              z-index: 1;
-              width: 4rem;
-              height: 4rem;
-              opacity: 0.6;
-              left: -47%;
-              top: 29%;
-              transform: translate(-50%, -50%);
             }
           }
-
         }
-
-        .detailRight {
-          width: 10%;
-          height: 7.5rem;
-          float: right;
-          background-color: black;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
-        }
-      }     
+      }
     }
   }
 }

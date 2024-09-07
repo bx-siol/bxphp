@@ -10,7 +10,7 @@
         <van-tab name="0" title="Product">
           <Projects />
         </van-tab>
-        <van-tab name="1" title="Purchased">
+        <van-tab name="1" title="Product revenue">
           <Purchase />
         </van-tab>
       </van-tabs>
@@ -107,7 +107,7 @@ onMounted(() => {
 
         .van-tab__text {
           color: white;
-          background: #d9d9d9;
+          background: #808080;
           width: 100%;
           height: 2rem;
           box-sizing: border-box;
@@ -122,9 +122,6 @@ onMounted(() => {
       :deep(.van-tab--active) {
         .van-tab__text {
           color: #fff;
-          background: url(/src/assets/img/login/login_btn.png);
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
           width: 100%;
           height: 2rem;
           box-sizing: border-box;
@@ -133,6 +130,7 @@ onMounted(() => {
           align-items: center;
           border-radius: 30px;
           padding: 0 1.5rem;
+          background-color: #009900 !important;
         }
 
       }

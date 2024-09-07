@@ -8,37 +8,53 @@
           <div class="u-flex u-center">
             <MyLanguage :showIcon="true" top="unset" :switchLanStyle="switchLanStyle"></MyLanguage>
           </div>
-        </div>
-        <div class="backg" style="padding: 0 1rem 1rem 1rem;">
+        </div>        
+
+        <div class="backg" style="padding: 1rem;">
           <div class="index_cer">
+
+            <div class="myswiper">
+              <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
+            </div>
+
+            <div class="index_msg" style="margin-top: 1rem;">
+              <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" color="#009900" height="1rem"></MyNoticeBar>
+            </div>
+
+            <div style="display: flex;">
+              <img :src="recharge" style="width: 53.5%;margin-left: -0.8rem;"  @click="onLink({ name: 'Finance_recharge' })" />
+              <img :src="withdraw" style="width: 53.5%;"  @click="onLink({ name: 'Finance_withdraw' })" />
+            </div>
+
             <div class="menubox">
               <div style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_recharge' })">
-                  <van-image :src="m1"></van-image>
-                </a>
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Finance_withdraw' })">
-                  <van-image :src="m2"></van-image>
-                </a>
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'User_team' })">
-                  <van-image :src="m3"></van-image>
+                  <van-image :src="m1"></van-image>
+                  <p style="margin-left: -0.5rem;">{{ t('团队') }}</p>
                 </a>
-                <a class="divs" href="javascript:;" @click="onLink({ name: 'Service' })">
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Share' })">
+                  <van-image :src="m2"></van-image>
+                  <p>{{ t('邀请') }}</p>
+                </a>
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_lottery' })">
+                  <van-image :src="m3"></van-image>
+                  <p>{{ t('幸运抽奖') }}</p>
+                </a>
+                <a class="divs" href="javascript:;" @click="onLink({ name: 'Gift_redpack' })">
                   <van-image :src="m4"></van-image>
+                  <p>{{ t('红包') }}</p>
+                </a>
+                <a class="divs" href="javascript:;"  @click="appdload">
+                  <van-image :src="m5"></van-image>
+                  <p>{{ t('App') }}</p>
                 </a>
               </div>
             </div>
 
-            <div class="videobox">
-              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc" style="width: 100%;border-radius: 8px;"></video>
-            </div>
-
-            <div class="index_msg">
-              <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" color="#000" height="1rem"></MyNoticeBar>
-            </div>
-
-            <div>
+            <div style="margin-top: 1.5rem;">
               <div class="column_title2">
-                popular products
+                Recommended Project
+                <img :src="m6" style="width: 0.5rem;margin-left: 1rem;" >
               </div>
               <div class="products">
                 <HomeProjects />
@@ -50,8 +66,7 @@
       </div>
     </div>
 
-    <van-dialog v-model:show="tipShow" style="border-radius:16px" :showConfirmButton="false" class-name="home_tip_show"
-      class="home_tip_shows">
+    <van-dialog v-model:show="tipShow" style="border-radius:0;background-color:transparent;" :showConfirmButton="false" class-name="home_tip_show" class="home_tip_shows">
       <div class="dialog_top">
         <img :src="bulletin" style="width: 20rem;margin-bottom: -1px;">
         <div @click="tipShow = false" style="position: absolute; top: 1rem; right: 1rem">
@@ -87,7 +102,11 @@
   import m2 from '../../assets/img/home/home-icon-1-2.png'
   import m3 from '../../assets/img/home/home-icon-1-3.png'
   import m4 from '../../assets/img/home/home-icon-1-4.png'
-  import videosrc from '../../assets/video/video.mp4'
+  import m5 from '../../assets/img/home/home-icon-1-5.png'
+  import recharge from '../../assets/img/home/recharge.png'
+  import withdraw from '../../assets/img/home/withdraw.png'
+  import m6 from '../../assets/img/home/home-icon-1-6.png'
+  import videosrc from '../../assets/video/video.mp4'  
 
   export default defineComponent({
     name: "index",
@@ -282,36 +301,45 @@
       }
     }
 
+    .dialog_content{
+      background-color: #ebf9e8;
+    }
+
     .dialog_confirm_btn {
       width: 100%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin-bottom: 1.25rem;
       background-color: #fff;
 
       span {
         display: inline-block;
-        height: 2.25rem;
-        width: 14.0625rem;
-        line-height: 2.25rem;
+        height: 2.5rem;
+        width:100%;
+        line-height: 2.5rem;
         text-align: center;
         font-size: 0.875rem;
-        background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+        background-color: #009900;
         color: #fff;
-        border-radius: 1.3125rem;
       }
     }
   }
 
-  .index_wrap {   
+  .index_wrap {
+    background-color: #ebf9e8;
     
     .index_msg{
       height: 2.5rem;
       background-color: #d9d9d9;
       border-radius: 5px;
-      margin-bottom: 1.3rem;
       overflow: hidden;
+
+      :deep(.van-icon__image){
+        height: 1.5rem;
+        width: 1.5rem;
+        margin-left: -0.5rem;
+      }
+
+      :deep(.van-notice-bar){
+        background-color: white !important;
+      }
     }
   }
 </style>

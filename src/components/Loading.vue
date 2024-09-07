@@ -36,7 +36,7 @@
 
 <style scoped>
 /deep/.van-loading--vertical {
-    background: #cb1a00;
+    background: #009900;
     padding: 2rem;
     border-radius: 1rem;
 }

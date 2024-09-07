@@ -266,11 +266,10 @@ img {
 
 .index_top .headbox {
     padding: 0.6rem 1rem;
-    background-color: white;
+    background-color: #009900;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    box-shadow: 0 1px 4px 0 #c3c3c3;
 }
 
 .index_top .headbox p {
@@ -296,7 +295,7 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin: 0.8rem 0 0.6rem;
+    margin: 0rem 0 0.6rem;
     flex-wrap: wrap;
 }
 
@@ -314,15 +313,13 @@ img {
 
 .index_cer .menubox a {
     height: 3rem;
-    color: #3d3d3b;
+    color: #009900;
     font-size: 0.8rem;
     text-align: center;
     display: flex;
-    flex-direction: row-reverse;
-    align-items: center;
-    justify-content: center;
+    flex-direction: column;
     border-radius: 8px;
-    width: 23%;
+    width: 20%;
 }
 
 .index_cer .menubox .line {
@@ -332,16 +329,15 @@ img {
 }
 
 .index_cer .menubox p {
-    padding-bottom: 0.4rem;
-    font-weight: bold;
+    font-weight: 600;
     white-space: nowrap;
+    font-size: 0.7rem;
+    margin-top: 0.3rem;
 }
 
 .index_cer .menubox .van-image {
-    width: 6rem;
-    height: 3rem;
-    /* width: 2.75rem;
-    height: 2.75rem; */
+    width: 2rem;
+    height: 2rem;
 }
 
 .mynotice {
@@ -384,7 +380,7 @@ img {
     font-weight: bold;
     display: flex;
     align-items: center;
-    color: #cb1a00;
+    color: #009900;
 }
 
 .column_title2 img {
@@ -587,7 +583,7 @@ img {
 }
 
 .product_wrap .pro_name .hot {
-    background: #ff3c20;
+    background: #009900;
     font-style: normal;
     font-size: 0.75rem;
     width: 1.2rem;

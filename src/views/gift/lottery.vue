@@ -1,10 +1,6 @@
 <template>
     <div class="choujiang">
-        <MyNav leftText=''>
-            <template #left>
-                <div></div>
-            </template>
-        </MyNav>
+        <MyNav leftText=''></MyNav>
         <div class="cj_center">
             <div class="title">
                 Number of draws remaining: {{ num }}
@@ -40,7 +36,6 @@
             <img :src="result" />
         </div>
     </van-popup>
-    <MyTab></MyTab>
 </template>
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeMount } from 'vue'

@@ -298,6 +298,7 @@ export default {
     银行账户: 'Bank Account',
     财务记录: 'financial records',
     任务中心: 'mission center',
+    邀请: 'Invitation',
     邀请链接: 'Invitation link',
     我的团队: 'my team',
     团队规模: 'Team Size',

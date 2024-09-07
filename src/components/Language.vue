@@ -126,7 +126,7 @@ if (selectedLang) {
   justify-content: center;
   line-height: 0.75rem;
   font-weight: bold;
-  color: #cb1a00 !important;
+  color: white !important;
 
   :deep(.van-button) {
     background-color: #00b57e;
@@ -140,12 +140,12 @@ if (selectedLang) {
   :deep(.van-button__content) {
     .van-icon-arrow-down {
       font-size: 0.75rem;
-      color: #cb1a00;
+      color: white;
     }
 
     .van-icon-arrow-up {
       font-size: 0.75rem;
-      color: #cb1a00;
+      color: white;
     }
   }
 }
