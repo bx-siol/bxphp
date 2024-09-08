@@ -217,20 +217,24 @@ class FinanceController extends BaseController
 			ReturnToJson(-1, 'Please bind your bank card first.');
 		}
 
-		$pro_order = Db::table('pro_order log')
+		$sys_name =  getConfig('sys_name');
+		if($sys_name != "Nestle"){
+			$pro_order = Db::table('pro_order log')
 					->leftJoin('pro_goods c', 'log.gid=c.id')
 					->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->find();
-		if (!$pro_order) {
-			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
-		}
+					
+			if (!$pro_order) {
+				ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
+			}
 
-		$pro_order = Db::table('pro_order log')
-					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
+			$pro_order = Db::table('pro_order log')
+						->leftJoin('pro_goods c', 'log.gid=c.id')
+						->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
 
-		if (!$pro_order) {
-			ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
-		}
+			if (!$pro_order) {
+				ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
+			}			
+		}		
 
 		$sys_user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		if($sys_user["status"] != 2)
