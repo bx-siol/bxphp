@@ -806,9 +806,9 @@ class ProductController extends BaseController
 			} else {
 
 				$check_num = Db::table('pro_order log')
-							->leftJoin('pro_goods c', 'log.gid=c.id')
-							->where("log.uid={$pageuser['id']} and ( log.is_give=0 or c.is_normal = 1 )")
-							->count('log.id');
+					->leftJoin('pro_goods c', 'log.gid=c.id')
+					->where("log.uid={$pageuser['id']} and ( log.is_give=0 or c.is_normal = 1 )")
+					->count('log.id');
 
 				//$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
 				if ($check_num == 0)
@@ -1075,7 +1075,7 @@ class ProductController extends BaseController
 	{
 		//送抽奖
 		$lotterynum = $quantity * intval($item['cjcs']);
-		if($check_num != 0)
+		if ($check_num != 0)
 			$lotterynum = $quantity * intval($item['fgcjcs']);
 
 		Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $lotterynum)->update();
@@ -1218,7 +1218,7 @@ class ProductController extends BaseController
 				]);
 				$this->redis->rmall(RedisKeys::USER_ORDER . $puser['id']);
 			}
-			
+
 			//首次购买送自己
 			//if ($item['price1'] > 0)			
 			//updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
@@ -1235,7 +1235,7 @@ class ProductController extends BaseController
 		} else {
 			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'] * $quantity, 2, 10, 'Repeat purchase:' . $pro_order['osn']);
-			
+
 			//先正达活动
 			// $projectlogo = getConfig('sys_name');
 			// if($projectlogo == 'Syngenta')
@@ -1268,7 +1268,7 @@ class ProductController extends BaseController
 				]);
 			}
 		}
-		
+
 
 		if ($item['selfintegral'] > 0)   //送自己积分 
 			updateWalletBalanceAndLog($pageuser['id'], $item['selfintegral'] * $quantity, 3, 1019, 'Buy:' . $pro_order['osn']);
@@ -1339,8 +1339,7 @@ class ProductController extends BaseController
 		//判断这人是今日充值
 		$today = date('Ymd');
 		$UserInfo = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
-		if($UserInfo['first_pay_day'] == $today)
-		{			
+		if ($UserInfo['first_pay_day'] == $today) {
 			$giftitem = Db::table('pro_goods')->where("id=248")->find();
 			$UpUser = Db::table('sys_user')->where("id={$UserInfo['pid']}")->find();
 			$good = [
@@ -1366,8 +1365,7 @@ class ProductController extends BaseController
 				'is_exchange' => 0,
 			];
 
-			if($item['id'] ==218)
-			{
+			if ($item['id'] == 218) {
 				//今日邀请人购买【VS-490】的人数
 				$todayNum = Db::query("select count(*) as total from pro_order where 
 							uid in (select id from ( select id from sys_user where pid = {$UserInfo['pid']}  and first_pay_day={$today} ) as n) 
@@ -1376,27 +1374,26 @@ class ProductController extends BaseController
 					if ($k['total'] % 2 == 0) {
 						Db::table('pro_order')->insertGetId($good);
 					}
-				}		
-			}else{
-				if($item['id'] == 243 || $item['id'] == 244 || $item['id'] == 245 || $item['id'] == 246 )
-				{
+				}
+			} else {
+				if ($item['id'] == 243 || $item['id'] == 244 || $item['id'] == 245 || $item['id'] == 246) {
 					switch ($item['id']) {
 						case 243:
-								$good['num'] = 2;
+							$good['num'] = 2;
 							break;
 						case 244:
-								$good['num'] = 3;
+							$good['num'] = 3;
 							break;
 						case 245:
-								$good['num'] = 4;
+							$good['num'] = 4;
 							break;
 						case 246:
-								$good['num'] = 5;
+							$good['num'] = 5;
 							break;
 					}
-	
+
 					Db::table('pro_order')->insertGetId($good);
-				}				
+				}
 			}
 		}
 	}
@@ -1435,25 +1432,24 @@ class ProductController extends BaseController
 			'is_exchange' => 0,
 		];
 
-		if($item['id'] == 243 || $item['id'] == 244 || $item['id'] == 245 || $item['id'] == 246)
-		{
+		if ($item['id'] == 243 || $item['id'] == 244 || $item['id'] == 245 || $item['id'] == 246) {
 			switch ($item['id']) {
 				case 243:
 					$good['num'] = 2;
 					break;
 				case 244:
-						$good['num'] = 3;
+					$good['num'] = 3;
 					break;
 				case 245:
-						$good['num'] = 4;
+					$good['num'] = 4;
 					break;
 				case 246:
-						$good['num'] = 5;
+					$good['num'] = 5;
 					break;
 			}
-			
+
 			Db::table('pro_order')->insertGetId($good);
-		}		
+		}
 	}
 	/*******************购买产品相关***********************/
 
@@ -1479,7 +1475,7 @@ class ProductController extends BaseController
 			// 	$where .= ' or log.status=3';
 
 		}
-		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_{$params['page']}" .$params['status'];
+		$key = RedisKeys::USER_ORDER . $pageuser['id'] . "_{$params['page']}" . $params['status'];
 		$list = $this->redis->get($key);
 		// if ($list != false)
 		// 	ReturnToJson(1, 'ok1', $list);
@@ -1614,7 +1610,7 @@ class ProductController extends BaseController
 		if ($dayout > 0) {
 			if (intval($item['total_reward']) > 0)
 				ReturnToJson(-1, 'You have already received the income');
-			if ($this->makeTimeAgo($item['create_time']) <= $dayout)
+			if (((time() - $item['create_time']) / 86400)    <= $dayout)
 				ReturnToJson(-1, 'It is not time to collect');
 			$pro_order = [
 				'reward_time' => $now_time,
@@ -1681,7 +1677,7 @@ class ProductController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			if ($item['is_give'] == '0') {
 				//返佣
-				writeLog('开始进行返佣：' .$item['uid'], '收益记录');
+				writeLog('开始进行返佣：' . $item['uid'], '收益记录');
 				$up_users = getUpUser($item['uid'], true);
 				writeLog(json_encode($up_users), '收益记录');
 				foreach ($up_users as $uv) {
@@ -1700,7 +1696,7 @@ class ProductController extends BaseController
 					writeLog("{$uv['id']}_{$uv_order['price']}_{$item['price']}", '收益记录');
 					if (!$uv_order || $uv_order['price'] < $item['price'])
 						continue;
-					
+
 					writeLog("{$uv['id']}开始获得佣金", '收益记录');
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
