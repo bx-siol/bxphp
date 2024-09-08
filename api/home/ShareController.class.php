@@ -22,12 +22,14 @@ class ShareController extends BaseController
 			->sum('money');
 
 		$where = " log.pid='" . $pageuser['id'] . "'";
+		$avatar = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		$people = Db::table('sys_user log')
 			->where($where)
 			->count();
 
 		$return_data = [
 			'icode' => $pageuser['icode'],
+			'avatar' => $avatar['headimgurl'],
 			//'url' => $this->getQrcodeUrl($pageuser['icode']),
 			// 'qrcode' => $tg_img . '?rt=' . mt_rand(11111, 99999),
 			'RS' => $RS,
