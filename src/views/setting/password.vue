@@ -291,18 +291,18 @@ onMounted(() => {
 
 /deep/.van-cell {
     padding: 0.6rem;
-    border: 1px solid #cc1700;
+    border: 1px solid #009900;
     margin-bottom: 1rem;
     border-radius: 6px;
 }
 /deep/.van-field__right-icon {
-    color: #cc1700;
+    color: #009900;
 }
 
 /deep/.van-button--plain.van-button--warning {
     color: #fff !important;
     padding: 1.38rem 0.8rem;
-    background: #cc1700;
+    background: #009900;
     ;
 }
 
@@ -319,7 +319,7 @@ onMounted(() => {
     border: none;
     font-weight: bold;
     font-size: 16px;
-    color: #cb1a00 !important;
+    color: #009900 !important;
     padding: 0.8rem 0.6rem !important;
     border-radius: 6px !important;
 }

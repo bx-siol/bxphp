@@ -76,6 +76,7 @@ onMounted(() => {
 .project {
   width: 100%;
   overflow-x: hidden;
+  background-color: #ebf9e8;
 
   // :deep(.van-nav-bar) {
   //   background-color: #4eb848;

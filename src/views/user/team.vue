@@ -17,11 +17,11 @@
             <div class="teamtotal">
                 <div style="border-right: 1px solid #d1d1d1;">
                     <span style="font-size: 0.8rem">Team Size</span>
-                    <span style="color: #cc1700;font-weight: bold">{{teamusercount1}}</span>
+                    <span style="color: #009900;font-weight: bold">{{teamusercount1}}</span>
                 </div>
                 <div style="">
                     <span style="font-size: 0.8rem">Total Recharge</span>
-                    <span style="color: #cc1700;font-weight: bold">{{TotalRecharge}}</span>
+                    <span style="color: #009900;font-weight: bold">{{TotalRecharge}}</span>
                 </div>
             </div>
         </div>
@@ -276,7 +276,7 @@ onMounted(() => {
     flex-direction: column;
 
     .sendCodeBtn {
-      background-color: #cc1700;
+      background-color: #009900;
       color: white;
       font-weight: 100;
       border-radius: 8px;
@@ -334,7 +334,7 @@ onMounted(() => {
       }
 
       div:first-child{
-        background-color: #cc1700;
+        background-color: #009900;
         color: white;
         font-weight: bold;
         padding: 0; 

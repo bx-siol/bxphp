@@ -1,21 +1,12 @@
 <template>
     <div class="service_page">
         <MyNav leftText=''> </MyNav>
-        <div style="background-color: #fff;color: #002544;border-radius: 16px;">
-            <div class="content">
-                <div class="content1">
-                    <img :src="service_manage" style="height: 7rem;width: 10rem;position: absolute;left: 0rem;">
-                    <div class="Online">
-                       <div style="margin-bottom: 0.5rem;">Hello, I am dedicated customer service</div>
-                       <div style="color: #c3c3c3;">Glad to serve you</div>
-                    </div>
-                </div>
-            </div>
+        <div style="color: #002544;border-radius: 16px;margin-top: 1rem;">
             <div class="content2">
-                <div v-for="item in service_arr" :style="item.type ==1 ? 'background-color: #2cb742;' : 'background-color: #f1c759;'">
+                <div v-for="item in service_arr">
                     <img :src="item.type == 1 ? Telegram : WhatsApp">
                     <p>{{ item.name }}</p>
-                    <van-button class="infoBtn" @click="OnLink(item.account, item.type == 2 ? 0 : 1)" :style="item.type ==1 ? 'color: #2cb742;' : 'color: #f1c759;'" >Consult</van-button>
+                    <van-button class="infoBtn" @click="OnLink(item.account, item.type == 2 ? 0 : 1)" :style="item.type ==1 ? 'background-color: #37aee2;' : 'background-color: #25d366;'" >Consult</van-button>
                 </div>
             </div>
             <div class="content3">
@@ -88,9 +79,10 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .service_page {
-    padding: 0 1rem;
+    padding: 0 1.5rem;
     min-height: 100%;
     position: relative;
+    background-color: #ebf9e8;
 
 
     :deep(.van-nav-bar__left) {
@@ -102,30 +94,6 @@ onMounted(() => {
     :deep(.van-nav-bar__title) {
         .alter {
             color: #fff !important;
-        }
-    }
-
-    .content {
-        padding: 0.6rem 0 1.5rem;
-
-        .content1 {
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            padding: 1.5rem 0;
-            background: url(../../assets/img/user/backdrop.png);
-            background-repeat: no-repeat;
-            background-size: 100% 100%;
-            color: black;
-            box-shadow: 0 0px 10px 0 #d1d1d1;
-            margin-top: 0.5rem;
-            border-radius: 5px;
-
-            .Online {
-                width: 100%;
-                margin-left: 7rem;
-                font-size: 0.75rem;
-            }
         }
     }
 
@@ -142,8 +110,9 @@ onMounted(() => {
             display: flex;
             align-items: center;
             flex-direction: column;
-            width: 45%;
+            width: 47%;
             box-shadow: 0 0px 10px 0 #d1d1d1;
+            background-color: white;
 
             img {
                 width: 4rem;
@@ -151,14 +120,14 @@ onMounted(() => {
 
             p {
                 margin: 1rem 0;
-                color: white;
+                color: black;
             }
 
             .infoBtn {
                 border: none;
                 border-radius: 6px;
                 font-weight: bold;
-                background: white;
+                color: white;
                 width: 80%;
                 height: 2rem;
             }
@@ -168,9 +137,10 @@ onMounted(() => {
 
     .content3 {
         p {
-            color: #494444;
+            color: black;
             margin: 1rem 0;
             font-size: 0.75rem;
+            line-height: 1.1rem;
         }
     }
 

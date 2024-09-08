@@ -82,7 +82,7 @@ onMounted(() => {
         text-align: center;
         font-size: 0.9rem;
         font-weight: bold;
-        color: #cc1700;
+        color: #009900;
         display: flex;
         justify-content: space-between;
         align-items: center

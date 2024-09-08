@@ -45,14 +45,14 @@ onMounted(() => {
 
 .van-button.sendCodeBtn {
     border: none;
-    color: #cb1a00;
+    color: #009900;
     font-weight: bold;
     vertical-align: middle;
     font-size: 16px;
 }
 
 .sendCodeBtn .van-count-down {
-    color: #cb1a00 !important;
+    color: #009900 !important;
 }
 
 .navRightBtn {
@@ -70,7 +70,7 @@ onMounted(() => {
 }
 
 .toastBox {
-    background: #cb1a00 !important;
+    background: #009900 !important;
     padding: 1rem !important;
     /* font-size: 1.135rem !important; */
     word-break: break-word !important;

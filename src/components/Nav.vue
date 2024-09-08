@@ -97,6 +97,9 @@ const onLeftClick = () => {
     color: #fff;
     box-shadow: 0 1px 4px 0 #c3c3c3;
     z-index: 300;
+    background: url(/src/assets/img/login/nav_bg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
 }
 
 /* .myNavBar .van-nav-bar{background-color: #0098a2;max-width: 640px;margin: 0 auto;right: 0;} */

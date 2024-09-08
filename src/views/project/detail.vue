@@ -2,7 +2,7 @@
   <div class="project_detail">
     <Nav leftText=''></Nav>
     <div class="project_img">
-      <van-swipe indicator-color="#cb1a00" :autoplay="3000">
+      <van-swipe indicator-color="#009900" :autoplay="3000">
         <van-swipe-item v-if="info.covers == []">
           <img :src="imgFlag(info.icon)" style="max-height: 200px" />
         </van-swipe-item>
@@ -17,7 +17,7 @@
       </div>
       <div class="detail">
         <div class="index_cer_title n_p_name">
-          <span class="bold" style="color: #cb1a00;">₹ {{ cutOutNum(detailData?.price, 2) }}</span>
+          <span class="bold" style="color: #009900;">₹ {{ cutOutNum(detailData?.price, 2) }}</span>
           <span> {{ t('价格') }}</span>
         </div>
         <div class="totalrevenue" v-if="info.is_xskc == 1 ? true : false">
@@ -404,7 +404,7 @@ onMounted(() => {
     display: flex;
     justify-content: space-around;
     font-weight: bold;
-    color: #cb1a00;
+    color: #009900;
     font-size: 1.2rem;
     font-weight: bold;
   }
@@ -462,7 +462,7 @@ onMounted(() => {
       div {
         width: 45%;
         height: 5rem;
-        background-color: #cc1700;
+        background-color: #009900;
         border-radius: 5px;
         display: flex;
         flex-direction: column;
@@ -520,7 +520,7 @@ onMounted(() => {
 
   .touziBtn {
     display: block;
-    background: #cc1700;
+    background: #009900;
     border: 0;
     color: white;
     width: 40%;

@@ -7,13 +7,12 @@
         </MyNav>
         <div>
             <div class="big">
-                <van-swipe indicator-color="#cb1a00" :autoplay="3000">
+                <van-swipe indicator-color="#009900" :autoplay="3000">
                     <van-swipe-item v-for="item in covers">
                         <img :src="item" style="max-height: 200px;border-radius:6px;" />
                     </van-swipe-item>
                 </van-swipe>
                 <div class="inform">
-                    <img :src="ico118" style="width: 0.4rem;height: 1.3rem;">
                     <p class="title">Aboust Us</p>
                 </div>
             </div>
@@ -47,7 +46,6 @@ import MyNav from "../../components/Nav.vue";
 import MyTab from "../../components/Tab.vue";
 import MyListBase from '../../components/ListBase.vue';
 import MyLoading from '../../components/Loading.vue';
-import ico118 from '../../assets/ico/118.png'
 import MySwiper from '../../components/Swiper.vue'
 import lbt1 from '../../assets/index/lbt1.jpg'
 import lbt2 from '../../assets/index/lbt2.jpg'

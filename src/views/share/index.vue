@@ -3,12 +3,11 @@
         <MyNav leftText=''></MyNav>
         <div style="text-align: center;" class="invite_wrap">
             <div class="qrcode">
-                <!-- <van-image :src="imgFlag(tdata.qrcode)" @click="onPreview(tdata.qrcode)"></van-image> -->
                 <vue-qrcode :value="montage.urls"></vue-qrcode>
             </div>
             <div class="idbox">
                 <p style="text-transform: capitalize !important;">{{ t('您的邀请码') }}</p>
-                <span style="color:#e32e43;"><b>{{ tdata.icode }}</b></span>
+                <span style="color:#009900;"><b>{{ tdata.icode }}</b></span>
             </div>
             <p style="text-align:center;text-transform: capitalize !important;font-size:14px;" class="tittxt_1">{{
                 t('亲爱的会员，以下是您的邀请链接')
@@ -25,6 +24,7 @@ import { _alert, lang } from "../../global/common";
 import { defineComponent, ref, onMounted, computed } from "vue";
 import MyNav from "../../components/Nav.vue";
 import { Button, Grid, GridItem, Image, Stepper, Cell, CellGroup } from "vant";
+import VueQrcode from 'vue-qrcode'
 
 export default defineComponent({
     name: "invite",

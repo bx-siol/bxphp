@@ -5,25 +5,24 @@
         <template #default="{ list }">
           <div class="basicProjectsList">
             <div v-for="(item, index) in list" :key="index" class="bottom">
-              <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${yhj2})`, 'background-size': '100% 100%', }" class="basicItem">
+              <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${item.money != 0 ? (item.money > 99 ? yhj3 : yhj1) : yhj2})`, 'background-size': '100% 100%', }"  class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
                     <td style="width: 30%;">
-                      <div style="font-size: 1.5rem;font-weight: bold;text-align: center;margin:0.5rem 0 0 2.5rem;" v-if="item.money != 0">
-                        {{ item.money }}
-                        <span style="font-size: 0.8rem; margin-left: -7px;">RS</span>
+                      <div style="font-size: 1.5rem;font-weight: bold;text-align: center;" v-if="item.money != 0">
+                        {{ item.money }} RS
                       </div>
-                      <div style="font-size: 1.8rem;font-weight: bold;text-align: center;margin:0.5rem 0 0 2.5rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
+                      <div style="font-size: 1.8rem;font-weight: bold;text-align: center;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                     </td>
-                    <td style="width: 90%;text-align: right;height: 7.5rem;display: flex;flex-direction: column;margin-left: 10%;">
-                      <div style="font-size: 1.4rem;font-weight: bold;color: #f7af4b;" v-if="item.money != 0">{{ t("邀请券") }}</div>
-                      <div style="font-size: 1.4rem;font-weight: bold;color: #f7af4b;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-                      <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
-                      <div style="width: 100%;border-bottom: 1px solid white;height: 0.1rem;margin-bottom: 0.2rem;"></div>
-                      <div style="font-size: 0.45rem;text-align: left;">1. Invite friends to buy any equipment to get an extra 50 Rs</div>
-                      <div style="font-size: 0.45rem;text-align: left;">2. You can only use 1 card each time you invite friends</div>
-                      <div style="font-size: 0.45rem;text-align: left;">3. It can be directly exchanged and recharged to the balance</div>
-                      <div class="Exchange" @click="usefun(item)">{{ t('待使用') }}</div>
+                    <td style="width: 100%;text-align: left;height: 6rem;display: flex;flex-direction: column;justify-content: center;margin-left: 10%;">
+                      <div style="font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
+                      <div style="font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
+                      <div style="font-size:12px;margin-top: 0.2rem;">{{ t("有效期至") }} : {{ item.effective_time.substring(0,10) }}</div>
+                    </td>
+                    <td style="width: 20%;">
+                      <div class="Exchange" @click="usefun(item)">
+                        <img :src="used" >
+                      </div>
                     </td>
                   </tr>
                 </table>
@@ -59,8 +58,13 @@ import MyListBase from './ListBase.vue';
 import MyLoading from './Loading.vue';
 import http from "../global/network/http";
 import { _alert, lang } from "../global/common";
-import yhj2 from "../assets/c/yhj2.png";
 import { useI18n } from 'vue-i18n';
+
+import yhj1 from "../assets/c/yhj1.png";
+import yhj2 from "../assets/c/yhj2.png";
+import yhj3 from "../assets/c/yhj3.png";
+import used from "../assets/c/used.png";
+
 const { t } = useI18n();
 
 const router = useRouter()
@@ -132,17 +136,6 @@ const usefun = (item: any) => {
     .detailRight {
       width: 3rem;
       height: 3rem;
-
-      .pay {
-        width: 3rem;
-        height: 3rem;
-        background: #bd312d;
-        color: #fff;
-        border-radius: 0.3125rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
     }
   }
 
@@ -160,7 +153,6 @@ const usefun = (item: any) => {
       border-radius: 0.375rem;
       background: #e0e0e0;
       display: inline-block;
-      color: #bd312d;
       zoom: 0.5;
       margin-top: 0.25rem;
       -moz-transform: scale(0.5);
@@ -185,37 +177,22 @@ const usefun = (item: any) => {
         width: 6.875rem;
         display: inline-block;
       }
-
-      .splitName {
-        font-size: 0.75rem;
-        color: #bd312d;
-      }
     }
 
     .basicProjectsList {
       .basicItem {
         margin-top: 1.25rem;
-        padding: 0.675rem 0.625rem;
         box-sizing: border-box;
-        height: auto;
+        height: 6rem;
         display: flex;
         align-items: center;
         width: 100%;
         background: #fff;
         position: relative;
-        height: 9rem;
 
         .Exchange {
-          font-size: 12px;
-          border: 1px solid #fff;
-          border-radius: 4px;
-          padding: 4px;
-          width: 22%;
-          text-align: center;
-          position: relative;
-          right: -9rem;
-          top: 0.5rem;
-
+          width: 3.5rem;
+          height: 3.5rem;
         }
       }
 
@@ -238,11 +215,6 @@ const usefun = (item: any) => {
         border-top: 1px dashed #bcbbbc;
         width: 6.875rem;
         display: inline-block;
-      }
-
-      .splitName {
-        font-size: 0.75rem;
-        color: #bd312d;
       }
     }
 

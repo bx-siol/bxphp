@@ -963,7 +963,7 @@ img {
 }
 
 .home_list {
-    margin: 0rem 0 1.2rem;
+    padding: 0 1rem 1rem 1rem;
 }
 
 .home_list .van-cell-group {
@@ -971,24 +971,21 @@ img {
     box-sizing: border-box;
     background: #fff;
     display: flex;
-    flex-direction: column;
-    padding: 0.675rem 0.675rem 0;
+    flex-wrap: wrap
 }
 
 .home_list .van-cell {
     background: transparent;
     color: #64523e;
-    --van-cell-active-color: transparent;
     border: 0;
     align-items: center;
     padding: 0;
     font-size: 14px;
+    width: 33%;
 }
 
 .home_list .van-icon__image,
 .home_list .van-cell__left-icon {
-    /* width: 1.2rem;
-    height: 1.2rem; */
     width: 1.625rem;
     height: 1.625rem;
 }
@@ -1011,7 +1008,7 @@ img {
 }
 
 .home_list .van-cell__title span {
-    /* zoom: 0.9; */
+    color: #023a8e;
 }
 
 /**************充值,提现*************/
@@ -1025,7 +1022,6 @@ img {
 
 .recharge_wrap {
     /* padding: 0 4%; */
-    padding: 0 1.25rem;
     font-size: 0.875rem;
 }
 
@@ -1036,9 +1032,7 @@ img {
 .recharge_wrap .fieldbox {
     background: transparent;
     padding: 1.2rem 0.8rem;
-    margin: 1rem 0;
     border-radius: 4px;
-    font-size: 1rem;
     height: 2.25rem;
     border: 1px solid #8e8b8b;
     display: flex;

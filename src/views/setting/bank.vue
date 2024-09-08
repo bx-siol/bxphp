@@ -217,7 +217,7 @@ onMounted(() => {
         position: initial;
         display: flex;
         align-items: center;
-        border: 1px solid #cb1a00;
+        border: 1px solid #009900;
         padding: 0.5rem 1rem;
         border-radius: 30px;
 

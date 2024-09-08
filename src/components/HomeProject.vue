@@ -8,7 +8,7 @@
 
               <div class="basicItemLeft">
                 <img :src="imgFlag(item.icon)" class="imgs">
-                <span style="position: relative;color: #009900;left: 20%;left: 0.5rem;top: -6.5rem;font-weight: bold;">{{ item.name }}</span>
+                <span style="position: relative;color: #009900;left: 20%;left: 0.5rem;top: -6.5rem;font-weight: bold;font-size: 0.9rem;">{{ item.name }}</span>
                 <div class="Countdown">
                   <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
                     <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"></van-count-down>
@@ -132,7 +132,7 @@ const basicProjects = ref<basicProjects>({
       .basicItem {
         width: 100%;
         height: 7rem;
-        box-shadow: 0px 0px 10px 0px #afa9a9;
+        box-shadow: 0px 0px 10px 0px #d1d1d1;
         margin-bottom: 1rem;
         background: url(../assets/img/project/peroject_bg.png);
         background-repeat: no-repeat;
@@ -144,6 +144,8 @@ const basicProjects = ref<basicProjects>({
           width: 45%;
           height: 7rem;
           float: left;
+          background-color: white;
+          border-radius: 10px;
 
           .imgs {
             height: 7rem;

@@ -112,7 +112,7 @@ const onPageSuccess = (res: any) => {
         flex-direction: column;
 
         .sendCodeBtn {
-            background-color: #cc1700;
+            background-color: #009900;
             color: white;
             font-weight: 100;
             border-radius: 8px;
@@ -172,7 +172,7 @@ const onPageSuccess = (res: any) => {
             }
 
             div:first-child {
-                background-color: #cc1700;
+                background-color: #009900;
                 color: white;
                 font-weight: bold;
                 padding: 0;
@@ -340,7 +340,7 @@ const onPageSuccess = (res: any) => {
 
             .listHead {
                 font: bold 14px/20px "Rotobo";
-                color: #cc1700;
+                color: #009900;
             }
 
             .listitem {
@@ -356,7 +356,7 @@ const onPageSuccess = (res: any) => {
 
                 .plus {
                     display: inline-block;
-                    background: #cc1700;
+                    background: #009900;
                     color: #fff;
                     padding: 0 4px;
                     font: normal 10px/16px "微软雅黑";

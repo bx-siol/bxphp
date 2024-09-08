@@ -8,12 +8,10 @@
             <div class="basicProjectsList">
               <div v-for="(item, index) in tableData" :key="index">
                 <div v-if="itemc.name == item.category_name" class="basicItem">
-
-
                   <div class="basicItemLeft">
                     <img :src="imgFlag(item.icon)" class="imgs ">
 
-                    <span style="position: relative;color: #009900;left: 20%;left: 0.5rem;top: -6.5rem;font-weight: bold;">{{item.name }}</span>
+                    <span style="position: relative;color: #009900;left: 20%;left: 0.5rem;top: -6.5rem;font-weight: bold;font-size: 0.9rem;">{{item.name }}</span>
                     <div class="Countdown">
                       <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
                         <van-count-down @finish="onFinish(item)" format="HH:mm:ss"
@@ -150,6 +148,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 .Projects {
+  padding: 0 0.6rem;
+  background-color: #ebf9e8;
+
   :deep(.van-tabs__wrap) {
     .van-tabs__nav--line {
       width: 96% !important;
@@ -171,8 +172,6 @@ onMounted(() => {
 
     .van-tab__text {
       border: none !important;
-      background-color: #e6e6e6 !important;
-      color: #222 !important;
       padding: 0.3rem 0.4rem;
       white-space: nowrap;
       width: 6rem;
@@ -210,7 +209,7 @@ onMounted(() => {
       .basicItem {
         width: 100%;
         height: 7rem;
-        box-shadow: 0px 0px 10px 0px #afa9a9;
+        box-shadow: 0px 0px 10px 0px #d1d1d1;
         margin-bottom: 1rem;
         background: url(../assets/img/project/peroject_bg.png);
         background-repeat: no-repeat;
@@ -222,6 +221,8 @@ onMounted(() => {
           width: 45%;
           height: 7rem;
           float: left;
+          background-color: white;
+          border-radius: 10px;
 
           .imgs {
             height: 7rem;

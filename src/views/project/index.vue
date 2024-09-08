@@ -72,9 +72,9 @@ onMounted(() => {
   overflow-x: hidden;
 
   .projectWrapper {
-    padding: 0 0.6rem;
     box-sizing: border-box;
     padding-bottom: 1.75rem;
+    background-color: #ebf9e8;
 
     .projectTab {
       :deep(.van-tabs__wrap) {
@@ -89,7 +89,7 @@ onMounted(() => {
           padding-top: 0.625rem;
           padding-bottom: 0.625rem;
           z-index: 10;
-          background: #fff;
+          background-color: #ebf9e8;
         }
       }
 

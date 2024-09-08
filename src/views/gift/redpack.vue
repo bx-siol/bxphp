@@ -4,15 +4,13 @@
     <div class="reward">
       <van-form @submit="onSubmit">
         <van-cell-group inset>
-          <van-field style="font-weight: normal; color: #000" v-model="dataForm.rsn" label-width="5rem" :placeholder="t('请输入兑换码')" />
+          <van-field style="font-weight: normal; color: #000;background-color: #ebf9e8;border-radius: 50px;" v-model="dataForm.rsn" label-width="5rem" :placeholder="t('请输入兑换码')" />
         </van-cell-group>
 
         <div class="reward-btn">
           <van-button class="save" round block type="primary" native-type="submit">
             {{ t("收到") }}
           </van-button>
-          <p style="margin-top: 1rem;">Copy the bonus code and send it your friends,</p>
-          <p>and get rewards after success.</p>
         </div>
       </van-form>
     </div>
@@ -94,11 +92,11 @@ label {
 }
 
 .reward {
-  width: 92%;
-  height: 15rem;
+  width: 90%;
+  height:9rem;
   margin: 0 auto;
   position: fixed;
-  bottom: 0%;
+  bottom: 10%;
   left: 50%;
   transform: translateX(-50%);
   font: bold 22px/18px "微软雅黑";
@@ -140,18 +138,9 @@ label {
       height: 2.5rem;
       border: none;
       font-size: 1.2rem;
-      background: #f8c22e;
-      border-radius: 10px;
-      width: 80%;
-    }
-
-    p{
-        width: 90%;
-        font-size: 0.8rem;
-        font-weight: 100;
-        color: #f8c22e;
-        text-align: center;
-        font-weight: bold;
+      background: #009900;
+      border-radius: 50px;
+      width: 90%;
     }
   }
 }

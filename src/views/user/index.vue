@@ -4,67 +4,70 @@
         <div class="home_wrap">
             <div class="home_set">
                 <div class="home_top">
-                    <div class="home_basic_info">                        
+                    <div class="home_basic_info">
                         <div class="headico" @click="onAvatarChose">
-                            <van-image :src="imgFlag(user.headimgurl)" @error="onError"  width="4.125rem" height="4.125rem"></van-image>
-                        </div>                  
+                            <van-image :src="imgFlag(user.headimgurl)" @error="onError" width="4rem" height="4rem"></van-image>
+                        </div>
                         <div class="info" :style="{ color: '#fff' }" @click="onLink({ name: 'Setting_uinfo' })">
                             <p class="username">{{ user.account }}</p>
-                            <p class="username">ID:{{ user.id }}</p>
                         </div>
                     </div>
                 </div>
-                <div class="money">
+                <div class="money">                    
                     <div class="money_body">
                         <div class="flex">
-                            <p>₹{{ wallet.balance }}</p>
-                            <p>{{ t('充值钱包') }}</p>
-                        </div>
-                    </div>
-                    <div class="money_body">
-                        <div class="flex">                            
-                            <p>₹{{ wallet2.balance }}</p>
-                            <p>{{ t('余额钱包') }}</p>
-                        </div>
-                    </div>
-                    <div class="money_body">
-                        <div class="flex">                            
                             <p>₹{{ cutOutNum(t_tprofit) }}</p>
                             <p>{{ t('今日收益') }}</p>
                         </div>
                     </div>
                     <div class="money_body">
-                        <div class="flex">                            
+                        <div class="flex">
                             <p>₹{{ cutOutNum(t_rebate) }}</p>
                             <p>{{ t('团队收入') }}</p>
                         </div>
                     </div>
                     <div class="money_body">
-                        <div class="flex">                            
+                        <div class="flex">
                             <p>₹{{ cutOutNum(t_investment) }}</p>
                             <p>{{ t('产品') }}</p>
                         </div>
                     </div>
                     <div class="money_body">
-                        <div class="flex">                            
+                        <div class="flex">
                             <p>₹{{ cutOutNum(t_reward) }}</p>
                             <p>{{ t('总利润') }}</p>
                         </div>
                     </div>
                 </div>
             </div>
+            <div class="balance">
+                <div class="balanceitem">
+                    <div>
+                        <p style="color: #023a8e;margin-bottom: 0.5rem;font-size: 0.8rem;">{{ t('余额钱包') }}</p>    
+                        <p style="color: red;margin-top: 0.5rem;">₹{{ wallet2.balance }}</p>
+                    </div>
+                    <img :src="walletbalance" style="height: 2rem;width: 2rem;" />
+                </div>
+                <div class="balanceitem">
+                    <div>
+                        <p style="color: #023a8e;margin-bottom: 0.5rem;font-size: 0.8rem;">{{ t('充值钱包') }}</p>
+                        <p style="color: red;margin-top: 0.5rem;">₹{{ wallet.balance }}</p>
+                    </div>
+                    <img :src="recharge" style="height: 2rem;width: 2rem;" />
+                </div>
+            </div>
             <div class="home_list">
                 <van-cell-group>
-                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }" v-if="false"></van-cell>
+                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
                     <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
-                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2" v-if="false"></van-cell>
                     <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox" :to="{ name: 'Setting_bank' }"></van-cell>
-                    <van-cell  :title="t('财务记录')" :icon="financialrecords" :to="{ name: 'Finance_balancelog' }"></van-cell>
-                    <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
-                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
+                    <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" v-if="false"></van-cell>
+                    <van-cell :title="t('财务记录')" :icon="financialrecords" :to="{ name: 'Finance_balancelog' }"></van-cell>
                     <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
+                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
                     <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }"></van-cell>
                     <van-cell :title="t('修改密码')" :icon="pay_pwd" :to="{ name: 'Setting_password' }"></van-cell>
+                    <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
                     <van-cell :title="t('App')" :icon="app" @click="appdload" class="last-child"></van-cell>
                 </van-cell-group>
             </div>
@@ -107,12 +110,13 @@ import myteam from '../../assets/img/user/myteam.png';
 import bonus from '../../assets/img/user/bonus.png';
 import app from '../../assets/img/user/app.png';
 import coupon from "../../assets/img/user/coupon.png";
-import coupon2 from "../../assets/img/user/coupon2.png";
 import Service from "../../assets/img/user/Service.png";
+import walletbalance from "../../assets/img/user/walletbalance.png";
+import recharge from "../../assets/img/user/recharge.png";
 import Life_Fitness from '../../assets/img/home/Life-Fitness.png'
 
+
 import pay_pwd from "../../assets/img/user/pay_pwd.png";
-import { img_telegram, img_whatsapp } from '../../global/assets';
 import http from "../../global/network/http";
 import { _alert, lang, getSrcUrl, goRoute, cutOutNum } from "../../global/common";
 import { Dialog } from "vant";
@@ -147,7 +151,7 @@ const imgFlag = (src: string) => {
     return getSrcUrl(src, 0)
 }
 const onError = () => {
-  user.value.headimgurl = Life_Fitness; 
+    user.value.headimgurl = Life_Fitness;
 };
 
 const onAvatarChose = () => {
@@ -245,10 +249,10 @@ onMounted(() => {
 .van-cell {
     line-height: 12px;
     text-align: center;
+    height: 5rem;
     display: flex;
-    margin: 0.3rem 0;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 0.4rem;
+    flex-direction: column;
+    justify-content: space-around;
 }
 </style>
 <style lang="scss" scoped>
@@ -256,100 +260,119 @@ onMounted(() => {
 
     .home_wrap {
         box-sizing: border-box;
-        padding: 0 1rem;
-        background-image: url(../../assets/img//user/user_bg.png);
-        background-repeat: no-repeat;
-        background-size: 100% 100%;
+        background-color: #ebf9e8;
 
         .home_set {
-            margin-top: 2rem;
-        }
+            padding: 1rem;
+            background-color: #009900;
 
-        .home_top {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            color: #000;
-
-            .home_basic_info {
+            .home_top {
                 display: flex;
-                width: 100%;
-                text-align: left;
                 flex-direction: column;
                 align-items: center;
-                justify-content: space-between;
-                
-            }
+                color: #000;
 
-            .headico {
-                margin-top: 0.25rem;
+                .home_basic_info {
+                    display: flex;
+                    width: 100%;
+                    text-align: left;
+                }
 
-                .van-image {
-                    border-radius: 50%;
+                .headico {
+                    margin-top: 0.25rem;
 
-                    :deep(.van-image__img) {
+                    .van-image {
                         border-radius: 50%;
+
+                        :deep(.van-image__img) {
+                            border-radius: 50%;
+                        }
                     }
+                }
+
+                .info {
+                    display: flex;
+                    flex-direction: column;
+                    line-height: 22px;
+                    text-align: center;
+                    margin-top: 1rem;
+                    margin-left: 1rem;
                 }
             }
 
-            .info {
+            .money {
                 display: flex;
-                flex-direction: column;
-                line-height: 22px;
-                text-align: center;
-                margin-top: 1rem;
+                justify-content: space-around;
+                color: #fff;
+                border-radius: 8px;
+                flex-wrap: wrap;
+
+                .money_body {
+                    height: 3.8rem;
+                    width: 40%;
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: center;
+
+                    .flex {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: space-between;
+
+                        p {
+                            font-weight: bold;
+                        }
+
+                        p:nth-child(1) {
+                            font-weight: bold;
+                        }
+
+                        p:nth-child(2) {
+                            margin-top: 0.2rem;
+                            font-size: 0.75rem;
+                            font-weight: 100;
+                        }
+                    }
+                }
             }
         }
 
-        .money {
+        .balance{
             display: flex;
-            justify-content: space-around;
-            background-color: #fff;
-            border-radius: 8px;
-            margin-top: 0.5rem;
             padding: 1rem;
-            color: black;
-            flex-wrap: wrap;
-            margin-bottom: 1rem;
+            justify-content: space-between;
 
-            .money_body {
-                height: 3.8rem;
-                width: 40%;
+            .balanceitem{
+                height: 4rem;
+                background-color: white;
+                width: 44%;
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
-
-                .flex {
-                    display: flex;
-                    flex-direction: column;
-                    align-items: center;
-                    justify-content: space-between;
-
-                    p {
-                        font-weight: bold;
-                    }
-                    p:nth-child(1) {
-                        font-weight: bold;
-                    }
-                    p:nth-child(2) {
-                        margin-top: 0.2rem;
-                        font-size: 0.75rem;
-                        font-weight: 100;
-                    }
-                }
+                border-radius: 5px;
+                padding: 0.5rem;
             }
         }
+
+        .home_list{
+            :deep(.van-icon__image){
+                width: 2.5rem;
+                height: 2.5rem;
+            }          
+        }        
 
         .myBtns {
             height: 2.5rem;
             text-align: center;
             line-height: 2.5rem;
-            color: white;
+            color: #009900;
             margin-bottom: 2rem;
-            background-color: black;
-            border-radius: 10px;
+            background-color: white;
+            border-radius: 5px;
             font-weight: bold;
+            width: 92%;
+            margin-left: 4%;
         }
     }
 }
