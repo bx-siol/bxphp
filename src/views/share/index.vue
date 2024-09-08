@@ -25,6 +25,7 @@ import { _alert, lang } from "../../global/common";
 import { defineComponent, ref, onMounted, computed } from "vue";
 import MyNav from "../../components/Nav.vue";
 import { Button, Grid, GridItem, Image, Stepper, Cell, CellGroup } from "vant";
+import VueQrcode from 'vue-qrcode'
 
 export default defineComponent({
     name: "invite",
