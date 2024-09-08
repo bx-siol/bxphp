@@ -203,7 +203,7 @@ class ProductController extends BaseController
 		if ($params['days'] < 1) {
 			ReturnToJson(-1, '产品期限不正确');
 		}
-		if ($params['rate'] < 0 || $params['rate'] > 1000) {
+		if ($params['rate'] < 0 || $params['rate'] > 2500) {
 			ReturnToJson(-1, '收益率不正确');
 		}
 		if ($params['invest_min'] < 0) {
