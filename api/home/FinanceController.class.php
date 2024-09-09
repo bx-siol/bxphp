@@ -234,7 +234,12 @@ class FinanceController extends BaseController
 			if (!$pro_order) {
 				ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
 			}			
-		}		
+		}
+		if($sys_name == "Nestle"){
+			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378) ")->count();
+			if($pro_orderCount == 0)
+				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
+		}
 
 		$sys_user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		if($sys_user["status"] != 2)
