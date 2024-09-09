@@ -245,11 +245,8 @@ class FinanceController extends BaseController
 			->order('gid','desc')
 			->find();
 
-			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". TIME_YMD ." ")->sum('money');
-			
-			
-			writeLog('asd'.$fin_cashlogSum .'bbbb' .TIME_YMD,'asdasda' );
-			writeLog('cccc'.json_encode($pro_orderMaIid),'asdasda' );
+			$now_day = date('Ymd');
+			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". $now_day ." ")->sum('money');
 			
 			$Withdrawal = 0;
 			switch ($pro_orderMaIid['gid']) {
