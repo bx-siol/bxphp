@@ -270,7 +270,7 @@ class FinanceController extends BaseController
 					$Withdrawal = 250000;
 					break;
 			}
-			if($fin_cashlogSum - $Withdrawal < 0)
+			if($Withdrawal - $fin_cashlogSum < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
 
