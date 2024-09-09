@@ -246,11 +246,11 @@ class FinanceController extends BaseController
 			->find();
 
 			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". TIME_YMD ." ")->sum('money');
-			if($fin_cashlogSum)
+			if(is_null($fin_cashlogSum))
 				$fin_cashlogSum = 0;
 			
 			$Withdrawal = 0;
-			switch ($pro_orderMaIid) {
+			switch ($pro_orderMaIid['gid']) {
 				case '372':
 					$Withdrawal = 3000;
 					break;
