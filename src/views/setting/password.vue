@@ -1,5 +1,5 @@
 <template>
-    <div class="conBox">
+    <div class="conBox" style="background-color: #ebf9e8;">
         <Nav leftText=''></Nav>
         <div class="streamer">
             <div :class="{ activeTab: currentTab === 'LOGIN' }" @click="handleTab('LOGIN')">LOGIN PASSWORD</div>
@@ -32,7 +32,7 @@
                 </van-field>               
             </van-cell-group>
             <div :style="{ textAlign: 'center', color: '#bd312d', padding: '0 2rem' }" v-if="isPassword2"></div>
-            <div style="padding:0 2rem 1rem;">
+            <div style="padding: 0 4rem;margin-top: 2rem;">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
             </div>
         </van-form>
@@ -270,18 +270,14 @@ onMounted(() => {
 }
 
 .conBox .streamer .nth-child2 {
-    background-color: #fff;
+    background-color: #ebf9e8;
 }
 
-.conBox .myBtn {
-    width: 80%;
-    margin: 2rem auto 0;
-}
 
 /deep/.van-form {
     padding: 1rem;
     margin-bottom: 1rem;
-    background-color: #fff;
+    background-color: #ebf9e8;
 
 }
 

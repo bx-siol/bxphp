@@ -9,7 +9,7 @@
                 <van-field :label="t('银行名称')" is-link readonly v-model="dataForm.bank_name" :placeholder="t('请选择您的银行名称')" @click="popShowBank = true" />
                 <van-field :label="t('IFSC')" show-word-limit maxlength="11" v-model="dataForm.ifsc" :placeholder="t('请填写IFSC代码')" />
             </van-cell-group>
-            <div style="display: flex;justify-content: space-around;margin-top: 2rem;">
+            <div style="display: flex;justify-content: space-around;margin-top: 2rem;padding: 0 4rem;">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
             </div>            
         </van-form>
@@ -193,7 +193,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .conBox {
-    background: #fff;
+    background: #ebf9e8;
     color: #b2b2b2;
     min-height: 100%;
     position: sticky;
@@ -201,7 +201,7 @@ onMounted(() => {
     .van-form {
         padding: 1rem;
         margin-bottom: 1rem;
-        background-color: #fff;
+        background-color: #ebf9e8;
         border-radius: 8px;
     }
 
@@ -234,7 +234,7 @@ onMounted(() => {
         }
 
         .van-cell__value {
-            background-color: #fff;
+            background-color: #ebf9e8;
             display: flex;
             justify-content: space-between;
 
@@ -255,7 +255,6 @@ onMounted(() => {
 
     .myBtn {
         text-align: center;
-        width: 80%;
     }
 
     .fieldcode {

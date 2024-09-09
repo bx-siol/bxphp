@@ -10,7 +10,7 @@
           </div>
         </div>        
 
-        <div class="backg" style="padding: 1rem;">
+        <div class="backg">
           <div class="index_cer">
 
             <div class="myswiper">
@@ -21,12 +21,12 @@
               <MyNoticeBar :notice-list="tdata.notice" :need-pop="false" color="#009900" height="1rem"></MyNoticeBar>
             </div>
 
-            <div style="display: flex;">
+            <div style="display: flex;padding: 0 1rem;">
               <img :src="recharge" style="width: 53.5%;margin-left: -0.8rem;"  @click="onLink({ name: 'Finance_recharge' })" />
               <img :src="withdraw" style="width: 53.5%;"  @click="onLink({ name: 'Finance_withdraw' })" />
             </div>
 
-            <div class="menubox">
+            <div class="menubox" style="padding: 0 1rem;">
               <div style="display: flex;flex-wrap:wrap;justify-content: center;justify-content: space-between; width: 100%">
                 <a class="divs" href="javascript:;" @click="onLink({ name: 'User_team' })">
                   <van-image :src="m1"></van-image>
@@ -51,7 +51,7 @@
               </div>
             </div>
 
-            <div style="margin-top: 1.5rem;">
+            <div style="margin-top: 1.5rem;padding: 0 1rem 1rem;">
               <div class="column_title2">
                 Recommended Project
                 <img :src="m6" style="width: 0.5rem;margin-left: 1rem;" >
@@ -327,9 +327,8 @@
     
     .index_msg{
       height: 2.5rem;
-      background-color: #d9d9d9;
-      border-radius: 5px;
       overflow: hidden;
+      padding: 0 1rem;
 
       :deep(.van-icon__image){
         height: 1.5rem;
@@ -339,6 +338,7 @@
 
       :deep(.van-notice-bar){
         background-color: white !important;
+        border-radius: 5px;
       }
     }
   }

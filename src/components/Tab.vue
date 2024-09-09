@@ -112,7 +112,7 @@ const tabs: Tab[] = [
     //},
 
     {
-        text: t('新闻资讯'),
+        text: t('通知'),
         icon: community,
         iconOn: communityactive,
         path: '/news',

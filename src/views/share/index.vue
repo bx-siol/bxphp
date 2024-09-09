@@ -3,7 +3,7 @@
         <MyNav leftText=''></MyNav>
         <div style="text-align: center;" class="invite_wrap">
             <div class="qrcode">
-                <vue-qrcode :value="montage.urls"></vue-qrcode>
+                <vue-qrcode :value="montage.urls" :color="{  light: '#ebf9e8' }" ></vue-qrcode>
             </div>
             <div class="idbox">
                 <p style="text-transform: capitalize !important;">{{ t('您的邀请码') }}</p>
@@ -93,6 +93,8 @@ onMounted(() => {
 </style>
 <style scoped lang="scss">
 .invite {
+    background-color: #ebf9e8;
+
     .copyLinkBtn {
         display: flex;
         align-items: center;

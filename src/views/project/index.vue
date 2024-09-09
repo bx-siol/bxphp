@@ -67,7 +67,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .project {
-  background: #fff;
+  background: #ebf9e8;
   width: 100%;
   overflow-x: hidden;
 

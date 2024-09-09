@@ -1,89 +1,139 @@
 <template>
-    <div class="paylogBox" style="height: 100%;overflow-y: auto;">
-        <Nav leftText=''></Nav>
-        <div class="share">
-            <div style="width: 100%;display: flex;justify-content: space-around;">
-                <van-image :src="imgFlag(tdata.avatar)" width="4.125rem" height="4.125rem"></van-image>
-            </div>            
-            <van-cell-group>
-                <van-field v-model="montage.urls">
-                    <template #button>
-                        <van-button size="mini" type="warning" class="sendCodeBtn" plain  ref="linkCopyRef" >
-                            <span>Invitation</span>
-                        </van-button>
-                    </template>
-                </van-field>
-            </van-cell-group>
-            <div class="teamtotal">
-                <div style="border-right: 1px solid #d1d1d1;">
-                    <span style="font-size: 0.8rem">Team Size</span>
-                    <span style="color: #009900;font-weight: bold">{{teamusercount1}}</span>
-                </div>
-                <div style="">
-                    <span style="font-size: 0.8rem">Total Recharge</span>
-                    <span style="color: #009900;font-weight: bold">{{TotalRecharge}}</span>
-                </div>
-            </div>
+  <div class="paylogBox" style="height: 100%;overflow-y: auto;">
+    <Nav leftText=''></Nav>
+    <div class="teamdata">
+      <div class="teamdataList">
+        <div class="teamdataitem">
+          <div> {{ tableData.paycount + tableData.unpaycount }} </div>
+          <div> All members </div>
         </div>
-        <div class="team">
-          <div class="team_b" >
-            <div>
-              {{fy.lv1}}
-              <spn style="position: absolute;right: 2rem;" @click="onLink({ name: 'User_teamlevel', params: { type: 'B' } })">{{t('详情')}}</spn>
-            </div>
-            <div>
-              <span>Member</span>
-              <span>{{lv1.people}}</span>
-            </div>
-            <div>
-              <span>Today's new member</span>
-              <span>{{lv1.todaypeople}}</span>
-            </div>
-            <div>
-              <span>Order Total</span>
-              <span>{{lv1.totalorder}} RS</span>
-            </div>
-          </div>
-          <div class="team_c">
-            <div style="background-color: #8d4bbb;">
-              {{fy.lv2}}              
-              <spn style="position: absolute;right: 2rem;" @click="onLink({ name: 'User_teamlevel', params: { type: 'C' } })">{{t('详情')}}</spn>
-            </div>
-            <div>
-              <span>Member</span>
-              <span>{{lv2.people}}</span>
-            </div>
-            <div>
-              <span>Today's new member</span>
-              <span>{{lv2.todaypeople}}</span>
-            </div>
-            <div>
-              <span>Order Total</span>
-              <span>{{lv2.totalorder}} RS</span>
-            </div>
-          </div>
-          <div class="team_d">
-            <div style="background-color: #0c8918;">
-              {{fy.lv3}}
-              <spn style="position: absolute;right: 2rem;" @click="onLink({ name: 'User_teamlevel', params: { type: 'D' } })">{{t('详情')}}</spn>
-            </div>
-            <div>
-              <span>Member</span>
-              <span>{{lv3.people}}</span>
-            </div>
-            <div>
-              <span>Today's new member</span>
-              <span>{{lv3.todaypeople}}</span>
-            </div>
-            <div>
-              <span>Order Total</span>
-              <span>{{lv3.totalorder}} RS</span>
-            </div>
-          </div>
+        <div class="teamdataitem" @click="onLinkc('pay')">
+          <div> {{ tableData.paycount }} </div>
+          <div> {{ LVv }} Valid member </div>
         </div>
-
+        <div class="teamdataitem">
+          <div> {{ teamusercount }} </div>
+          <div> Team Day Invitation </div>
+        </div>
+        <div class="teamdataitem">
+          <div> {{ tableData.today }} </div>
+          <div> Added today </div>
+        </div>
+        <div class="teamdataitem" @click="onLinkc('unpay')">
+          <div> {{ tableData.unpaycount }} </div>
+          <div> {{ LVv }} Invalid member </div>
+        </div>
+        <div class="teamdataitem">
+          <div> {{ teamusercount1 }} </div>
+          <div> Team Size </div>
+        </div>
+      </div>
     </div>
-    <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
+    <div class="share">
+      <div style="color: #009900;font-weight: bold;font-size: 0.9rem;">Invitation Code</div>
+      <van-cell-group>
+        <van-field v-model="montage.icode">
+          <template #button>
+            <van-button size="mini" type="warning" class="sendCodeBtn" plain ref="CodeCopyRef">
+              <span>Copy</span>
+            </van-button>
+          </template>
+        </van-field>
+        <div style="color: #009900;font-weight: bold;font-size: 0.9rem;margin-top: 1rem;">Invitation Link</div>
+        <van-field v-model="montage.urls">
+          <template #button>
+            <van-button size="mini" type="warning" class="sendCodeBtn" plain ref="linkCopyRef">
+              <span>Copy</span>
+            </van-button>
+          </template>
+        </van-field>
+      </van-cell-group>
+    </div>
+
+    <div
+      style="height: 3rem;display: flex;color: #009900;font-weight: bold;justify-content: center;align-items: center;">
+      Team Details
+    </div>
+
+    <div class="paylogBoxWrapper">
+      <van-tabs @click-tab="onClickTab" line-height="0" v-model:active="active" class="levelTab">
+        <van-tab :title="fy.lv1">
+          <MyListBase :url="requesturl1" ref="pageRef" @success="onPageSuccess">
+            <template #default="{ list }">
+              <table style="border-collapse: collapse;">
+                <thead>
+                  <tr class="listHead">
+                    <th>{{ t('用户名') }}</th>
+                    <th>{{ t('推荐人') }}</th>
+                    <th>{{ t('团队规模') }}</th>
+                    <th>{{ t('资产') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="listitem" v-for="(item, index) in list" :key="index">
+                    <td>{{ item.account }}</td>
+                    <td>{{ item.referrer }}</td>
+                    <td>{{ item.teamSize }}</td>
+                    <td>{{ item.assets }}RS</td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </MyListBase>
+        </van-tab>
+        <van-tab :title="fy.lv2">
+          <MyListBase :url="requesturl2" ref="pageRef1" @success="onPageSuccess">
+            <template #default="{ list }">
+              <table style="border-collapse: collapse;">
+                <thead>
+                  <tr class="listHead">
+                    <th>{{ t('用户名') }}</th>
+                    <th>{{ t('推荐人') }}</th>
+                    <th>{{ t('团队规模') }}</th>
+                    <th>{{ t('资产') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="listitem" v-for="(item, index) in list" :key="index">
+                    <td>{{ item.account }}</td>
+                    <td>{{ item.referrer }}</td>
+                    <td>{{ item.teamSize }}</td>
+                    <td>{{ item.assets }}RS</td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </MyListBase>
+        </van-tab>
+        <van-tab :title="fy.lv3">
+          <MyListBase :url="requesturl3" ref="pageRef2" @success="onPageSuccess">
+            <template #default="{ list }">
+              <table style="border-collapse: collapse;">
+                <thead>
+                  <tr class="listHead">
+                    <th>{{ t('用户名') }}</th>
+                    <th>{{ t('推荐人') }}</th>
+                    <th>{{ t('团队规模') }}</th>
+                    <th>{{ t('资产') }}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="listitem" v-for="(item, index) in list" :key="index">
+                    <td>{{ item.account }}</td>
+                    <td>{{ item.referrer }}</td>
+                    <td>{{ item.teamSize }}</td>
+                    <td>{{ item.assets }}RS</td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </MyListBase>
+        </van-tab>
+      </van-tabs>
+    </div>
+
+  </div>
+  <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
 
 <script lang="ts">
@@ -92,18 +142,7 @@ import { defineComponent, onMounted, ref, computed } from "vue";
 import Nav from "../../components/Nav.vue";
 import MyListBase from "../../components/ListBase.vue";
 import MyLoading from "../../components/Loading.vue";
-import {
-  Button,
-  Tab,
-  Tabs,
-  Grid,
-  GridItem,
-  Cell,
-  Field,
-  Icon,
-  Image,
-} from "vant";
-
+import { Button, Tab, Tabs, Grid, GridItem, Cell, Field, Icon, Image } from "vant";
 export default defineComponent({
   components: {
     Nav,
@@ -121,20 +160,19 @@ export default defineComponent({
   },
 });
 </script>
+
 <script lang="ts" setup>
 import http from "../../global/network/http";
 import { getSrcUrl, imgPreview, copy } from "../../global/common";
 import { useI18n } from "vue-i18n";
 const { t } = useI18n();
-
 const onLink = (to: any) => {
   goRoute(to);
 };
 const loadingShow = ref(true);
 const teamusercount = ref(0);
 const teamusercount1 = ref(0);
-const teamcount = ref(0);
-const TotalRecharge = ref(0);
+const CodeCopyRef = ref();
 const linkCopyRef = ref();
 
 const fy = ref({
@@ -145,18 +183,12 @@ const fy = ref({
 
 const lv1 = ref({
   people: 0,
-  todaypeople:0,
-  totalorder:0,
 });
 const lv2 = ref({
   people: 0,
-  todaypeople:0,
-  totalorder:0,
 });
 const lv3 = ref({
   people: 0,
-  todaypeople:0,
-  totalorder:0,
 });
 
 const tdata = ref({
@@ -167,10 +199,6 @@ const tdata = ref({
 });
 
 
-const imgFlag = (src: string) => {
-  return getSrcUrl(src, 1);
-};
-
 const getTeam = () => {
   http({
     url: "c=User&a=GetTeamHierarchyPeopleNum",
@@ -179,32 +207,17 @@ const getTeam = () => {
     for (var it of res.data.list) {
       if (it.level == "1") {
         lv1.value.people += 1;
-        lv1.value.totalorder += it.pro_order_B-0;
       } else if (it.level == "2") {
         lv2.value.people += 1;
-        lv2.value.totalorder += it.pro_order_C-0;
       } else if (it.level == "3") {
         lv3.value.people += 1;
-        lv3.value.totalorder += it.pro_order_D-0;
-      }
-
-      if(it.newmember1){
-        lv1.value.todaypeople += 1;        
-      }
-      if(it.newmember2){
-        lv2.value.todaypeople += 1;        
-      }
-      if(it.newmember3){
-        lv3.value.todaypeople += 1;        
       }
     }
 
     var fylStr = res.data.fy;
-    fy.value.lv1 = "B " + fylStr.split(",")[0].split("=")[1] + "%";
-    fy.value.lv2 = "C " + fylStr.split(",")[1].split("=")[1] + "%";
-    fy.value.lv3 = "D " + fylStr.split(",")[2].split("=")[1] + "%";
-    teamcount.value = lv1.value.people + lv2.value.people + lv3.value.people;
-    TotalRecharge.value = res.data.TotalRecharge
+    fy.value.lv1 = 'B ' + (fylStr.split(',')[0]).split('=')[1] + '%  (' + lv1.value.people + ')';
+    fy.value.lv2 = 'C ' + (fylStr.split(',')[1]).split('=')[1] + '%  (' + lv2.value.people + ')';
+    fy.value.lv3 = 'D ' + (fylStr.split(',')[2]).split('=')[1] + '%  (' + lv3.value.people + ')';
   });
 };
 
@@ -216,7 +229,7 @@ const getusercount = () => {
       _alert({
         type: "error",
         message: res.msg,
-        onClose: () => {},
+        onClose: () => { },
       });
       return;
     }
@@ -235,14 +248,90 @@ const getshare = () => {
         return montage.value.urls.toLocaleLowerCase();
       },
     });
+    copy(CodeCopyRef.value.$el, {
+      text: (target: HTMLElement) => {
+        return montage.value.icode.toLocaleLowerCase();
+      },
+    });
   });
 };
 
 const montage = computed(() => {
   return {
     urls: location.origin + "/#/Register?Icode=" + tdata.value.icode,
+    icode: tdata.value.icode,
   };
 });
+
+
+const requesturl1 = ref('c=User&a=team&lv=1')
+const requesturl2 = ref('c=User&a=team&lv=2')
+const requesturl3 = ref('c=User&a=team&lv=3')
+const pageRef = ref()
+const pageRef1 = ref()
+const pageRef2 = ref()
+const cpageRef = ref()
+const LVv = ref('Lv1');
+const active = ref(0)
+const tableData = ref<any>({paycount:0,unpaycount:0,today:0})
+const atype = ref();
+
+const onPageSuccess = (res: any) => {
+  tableData.value = res.all
+  loadingShow.value = false
+  if (cpageRef.value == undefined) {
+    cpageRef.value = pageRef.value
+  } else if (res.lv == 1) {
+    cpageRef.value = pageRef.value
+  } else if (res.lv == 2) {
+    cpageRef.value = pageRef1.value
+  } else if (res.lv == 3) {
+    cpageRef.value = pageRef2.value
+  }
+}
+
+// gettodayregusercount
+const onClickTab = (title: any) => {
+  switch (title.name) {
+    case 0:
+      cpageRef.value = pageRef.value
+      LVv.value = 'Lv1'
+      requesturl1.value = "c=User&a=team&lv=1"
+      break;
+    case 1:
+      cpageRef.value = pageRef1.value
+      LVv.value = 'Lv2'
+      requesturl2.value = "c=User&a=team&lv=2"
+      break;
+    case 2:
+      cpageRef.value = pageRef2.value
+      LVv.value = 'Lv3'
+      requesturl3.value = "c=User&a=team&lv=3"
+      break;
+  }
+  if (cpageRef.value != undefined) {
+    loadingShow.value = true
+    cpageRef.value.doSearch()
+  }
+};
+
+const onLinkc = (type: string) => {
+  cpageRef.value.delall();
+  loadingShow.value = true
+  if (type == 'pay') {
+    atype.value = "pay"
+    if (tableData.paycount != 0)
+      cpageRef.value.doSearch({ type: atype.value })
+    else
+      loadingShow.value = false
+  } else if (type == 'unpay') {
+    atype.value = "unpay"
+    if (tableData.unpaycount != 0)
+      cpageRef.value.doSearch({ type: atype.value })
+    else
+      loadingShow.value = false
+  }
+}
 
 onMounted(() => {
   getusercount();
@@ -253,27 +342,50 @@ onMounted(() => {
 
 </script>
 
-<style>
-.van-hairline--top:after {
-    border-top-width: 0px !important;
-}
-
-.van-grid-item__content:after {
-    border-width: 0px !important;
-}
-</style>
-
 <style lang="scss" scoped>
 .paylogBox {
-  background: #fff;
+  background-color: #ebf9e8;
   color: #000;
-  padding: 1rem;
   height: auto !important;
+
+  .teamdata {
+    padding: 1rem;
+    background-color: white;
+
+    .teamdataList {
+      display: flex;
+      border: 1px solid #009900;
+      border-radius: 5px;
+      padding: 1rem;
+      flex-wrap: wrap;
+
+      .teamdataitem {
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+        width: 33.33%;
+        height: 3.5rem;
+        color: #009900;
+
+        div:first-child {
+          font-weight: bold;
+        }
+
+        div:last-child {
+          font-size: 0.7rem;
+        }
+      }
+    }
+  }
 
   .share {
     display: flex;
     justify-content: space-around;
     flex-direction: column;
+    padding: 1rem;
+    background-color: white;
+    margin-top: 1rem;
 
     .sendCodeBtn {
       background-color: #009900;
@@ -281,258 +393,77 @@ onMounted(() => {
       font-weight: 100;
       border-radius: 8px;
       padding: 0.2rem 0.5rem;
+      height: 2rem;
     }
 
     :deep(.van-field) {
       font-size: 0.7rem;
       border: 1px solid #d1d1d1;
-      border-radius: 5px;
-      margin-top: 1rem;
-      padding-right: 0.3rem;
+      border-radius: 8px;
+      margin-top: 0.3rem;
+      padding: 0;
+      padding-left: 0.5rem;
+
+
     }
 
-    :deep(.van-field__button){
+    :deep(.van-field__button) {
       padding-left: 0.2rem;
     }
 
-    .teamtotal {
-      height: 3rem;
-      border: 1px solid #f1f1f1;
-      margin-top: 1rem;
-      box-shadow: 0 0 8px 0 #d1d1d1;
-      display: flex;
-      border-radius: 10px;
-
-      div {
-        display: flex;
-        width: 49%;
-        justify-content: space-around;
-        height: 3rem;
-        align-items: center;
-      }
-    }
-  }
-
-  .team{
-
-    .team_b,.team_c,.team_d{
-      box-shadow: 0 0 10px 0 #d1d1d1;
-      border-radius: 10px;
-      overflow: hidden;
-      margin-top: 1rem;
-
-      div{
-        height: 2rem;
-        line-height: 2rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 1rem 0 0.5rem;
-        font-size: 0.8rem;
-        border-bottom: 1px solid #d1d1d1;
-        color: #555555;
-      }
-
-      div:first-child{
-        background-color: #009900;
-        color: white;
-        font-weight: bold;
-        padding: 0; 
-        justify-content: center;
-        border-bottom: 0;
-      }
-
-      div:last-child{
-        border: none;
-      }
-    }
-  }
-
-  .will {
-    margin-top: 1rem;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
-    border-radius: 6px;
-
-    .card {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      align-items: center;
-      font: 16px/20px "Rotobo";
-
-      .item {
-        display: flex;
-        height: 5rem;
-        text-align: center;
-        flex-direction: row-reverse;
-        margin-top: 1rem;
-
-        .p1 {
-          font-weight: bold;
-          color: #fff;
-          margin-left: 0.2rem;
-        }
-
-        .p2 {
-          color: #fff;
-          font-weight: bold;
-        }
-      }
-    }
   }
 
   .paylogBoxWrapper {
-    box-sizing: border-box;
 
     .levelTab {
-      margin-top: 1.45rem;
-      margin-bottom: 3rem;
+      background-color: white;
 
-      :deep(.van-tabs__nav) {
-        background-color: transparent;
-      }
-
-      :deep(.van-tabs__content) {
-        margin-top: 1rem;
-      }
-
-      :deep(.van-tab) {
-        .van-tab__text {
-          color: #ddd;
-          font-weight: bold;
-        }
-      }
-
-      :deep(.van-tab--active) {
-        .van-tab__text {
-          color: #fff;
-          padding: 0.2rem 0.8rem;
-          border: 1px solid #fff;
-          border-radius: 6px;
-        }
-      }
-
-      :deep(.van-grid-item__content--center) {
-        flex-direction: row;
-        padding: 1rem 0.375rem;
-      }
-
-      :deep(.van-grid-item__content:after) {
-        border-width: 0px !important;
-      }
-
-      .levelItem_right {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.75rem;
-        margin-left: 0.1875rem;
-      }
-
-      .levelTabMember {
-        height: 2rem;
-        margin: 1rem 0 0.6rem 5%;
-        font-size: 0.8rem;
-
-        .levelTabValidMember {
-          width: 45%;
-          height: 2rem;
-          line-height: 2rem;
-          float: left;
-          border-radius: 10px;
-          text-align: center;
-          background: #c49b6c;
-          color: #fff;
-          font-weight: bold;
-        }
-
-        .levelTabInactiveMember {
-          width: 45%;
-          height: 2rem;
-          line-height: 2rem;
-          float: right;
-          border-radius: 10px;
-          text-align: center;
-          background: #c49b6c;
-          color: #fff;
-          font-weight: bold;
-        }
-      }
-    }
-  }
-
-  .list-box {
-    .invite {
-      p {
-        margin-top: 1rem;
+      :deep(.van-tabs__wrap) {
+        height: 2.5rem;
         font-weight: bold;
-        color: #64523e;
-      }
 
-      .copy {
-        display: flex;
-        align-items: center;
-
-        :deep(.van-button) {
-          height: 2.4rem;
+        .van-tab {
+          height: 2.5rem;
         }
 
-        :deep(.van-button__text) {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
+        .van-tab--active {
+          background-color: #009900;
+          color: white;
+        }
+      }
 
-          img {
-            width: 1rem;
+      .myListBox {
+        border-top: 1px solid #d1d1d1;
+
+        .listHead {
+          height: 2.5rem;
+          color: #009900;
+
+          th{
+            font-size: 0.9rem;
+            font-weight: 600;
           }
         }
-      }
-
-      :deep(.van-field__control:read-only) {
-        text-transform: none !important;
-      }
-    }
-
-    :deep(.van-tabs__wrap) {
-      top: -4.6rem;
-      position: absolute;
-      width: 100%;
-    }
-
-    .myListBox {
-      display: flex;
-      flex-direction: column;
-
-      .listHead {
-        font: bold 14px/20px "Rotobo";
-      }
-
-      .listitem {
-        font: bold 12px/32px "Rotobo";
 
         td {
           text-align: center;
-        }
-        td:last-child{
-            text-align: right;
+          width: 10%;
+          border-top: 1px solid #d1d1d1;
+          height: 2.5rem;
+          font-size: 0.8rem;
+          color: #837b7b;
+          padding-left: 2%;
         }
 
-        .plus {
-          display: inline-block;
-          background: #a2754c;
-          color: #fff;
-          padding: 0 4px;
-          font: normal 10px/16px "微软雅黑";
-          border-radius: 10px;
+        td:last-child {
+          text-align: right;
+          padding-right: 4%;
         }
+
       }
+
     }
   }
 
-  :deep(.van-field__control::-webkit-input-placeholder) {
-    color: #64523e;
-    font-weight: bold;
-  }
 }
 </style>

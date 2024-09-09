@@ -210,6 +210,7 @@ export default {
     分享: 'invitar',
     任务: 'Task',
     新闻资讯: 'news',
+    通知: 'Notify',
     客户服务: 'customer service',
     公告: 'announcement',
     提交任务: 'Submit a task',
@@ -384,6 +385,7 @@ export default {
     登录失败: 'Login failed',
     投资周期: 'Investment Cycle',
     利润回报: 'Rate Return',
+    每日利润回报: 'Daily Rate Return',
     购买等级: 'Buy Grade',
     领取: 'Receive',
     领养: 'adopt',
@@ -392,4 +394,5 @@ export default {
     收入天数 :'Earnings Days',
     登出 :'Sign out',
     剩余数量:'Remaining Quantity',
+
 }

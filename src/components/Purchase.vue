@@ -271,7 +271,6 @@ const onReceivehttp = () => {
           width: 45%;
           height: 7rem;
           float: left;
-          background-color: white;
           border-radius: 10px;
 
           .imgs {

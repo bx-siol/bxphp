@@ -1,6 +1,10 @@
 <template>
   <div class="project_detail">
-    <Nav leftText=''></Nav>
+    <Nav leftText=''>
+      <template #title>
+        {{ title }}
+      </template>
+    </Nav>
     <div class="project_img">
       <van-swipe indicator-color="#009900" :autoplay="3000">
         <van-swipe-item v-if="info.covers == []">
@@ -11,102 +15,137 @@
         </van-swipe-item>
       </van-swipe>
     </div>
-    <div style="padding: 0 1rem 1rem 1rem;">
+
+    <div class="ProductDetails">
       <div class="title">
-        <div>{{ info.name }}</div>
+        <div style="color: #009900;">Investment Amount</div>
+        <div style="color: #282b8e;">₹{{ info.price }}</div>
       </div>
       <div class="detail">
-        <div class="index_cer_title n_p_name">
-          <span class="bold" style="color: #009900;">₹ {{ cutOutNum(detailData?.price, 2) }}</span>
-          <span> {{ t('价格') }}</span>
-        </div>
-        <div class="totalrevenue" v-if="info.is_xskc == 1 ? true : false">
-          <span class="bold">{{ info.kc }}</span>
-          <span>{{ t('剩余数量') }}</span>
-        </div>
-        <div class="totalrevenue">
-          <span v-if="info.invest_limit > 0" class="bold">{{ info.invest_limit }}</span>
-          <span v-else class="bold">{{ t('无限制') }}</span>
-          <span>{{ t('限制数量') }}</span>
-        </div>
-        <div style="border-top: 1px solid #f5f1f1;margin: 0.7rem 0 0rem 0;"></div>
-        <div class="dailyincome" v-if="false">
+        <div class="dailyincome">
           <span class="bold">{{ info.days }} Day</span>
           <span>{{ t('投资周期') }} </span>
         </div>
-        <div class="dailyincome" v-if="false">
+        <div class="dailyincome">
           <span class="bold">₹{{ detailData?.dailyIncome }}</span>
           <span>{{ t('日收益') }} </span>
         </div>
-        <div class="dailyincome" v-if="false">
-          <span class="bold">₹{{ detailData?.totalRevenue }}</span>
+        <div class="dailyincome">
+          <span class="bold">₹{{ cutOutNum(detailData?.totalRevenue, 2) }}</span>
           <span style="white-space: nowrap;">{{ t('总收益') }} </span>
         </div>
-        <div class="totalrevenue" v-if="false">
+        <div class="index_cer_title">
+          <span class="bold"> {{ (info.rate - 0).toFixed(2) }}%</span>
+          <span> {{ t('每日利润回报') }}</span>
+        </div>
+        <div class="totalrevenue">
           <span class="bold">{{ (info.price * info.rate * info.days / info.price).toFixed(2) }}%</span>
           <span>{{ t('利润回报') }} </span>
         </div>
-
-        <div class="Coupons">
-          <van-collapse v-if="coupons != null && info.cid != 2" v-model="activeNames" class="collapse">
-            <van-collapse-item :title="t('折扣券')" name="1">
-              <div class="Discount">
-                <div v-for="(item, index) in coupons" :key="index" :style="styles[index]">
-                  <label :for="forid(item.id)" style="display: flex;align-items: center;justify-content: flex-start;">
-                    <input type="radio" :value="item.id" v-model="couponId" :id="forid(item.id)" name="isOpen"
-                      @click="changeColor(item, index, info)">
-                    <span>Discount Coupon</span>
-                    <span style="color: #f00;font-weight:bold;width: 50%;text-align: right;">{{ item.valueDesc }}{{
-                      item.unitDesc }} </span>
-                  </label>
-                </div>
-              </div>
-            </van-collapse-item>
-          </van-collapse>
-        </div>
-
         <div class="totalrevenue">
-          <span class="bold">
-            <van-stepper v-model="quantity" :step="1" :min="1" :max="info.invest_limit" button-size="30px"
-              input-width="40px" @change="quantitychange" />
-          </span>
-          <span>{{ t('采购数量') }} </span>
+          <span v-if="info.invest_limit > 0" class="bold">{{ (info.invest_limit) }}</span>
+          <span v-else class="bold">{{ t('无限制') }}</span>
+          <span>{{ t('数量限制') }}</span>
         </div>
-        <div class="Balance">
-          <div>
-            <span>₹{{ wallet1.balance }}</span>
-            <span>{{ t('充值钱包') }}</span>
-          </div>
-          <div>
-            <span>₹{{ wallet2.balance }}</span>
-            <span>{{ t('钱包余额') }}</span>
-          </div>
+      </div>
+
+      <div class="productDet_bot">
+        <van-button v-if="info.status == 2" class="touziBtn" @click="onPresale">{{ t('预售') }}</van-button>
+        <van-button v-else-if="info.status == 10" class="touziBtn" @click="onPresale1">Not for sale</van-button>
+        <van-button v-else-if="info.status == 9" class="touziBtn">{{ t('售罄') }}</van-button>
+        <van-button v-else class="touziBtn" @click="onInvest">{{ t('立即购买') }}</van-button>
+      </div>
+
+    </div>
+
+    <div class="desc">
+      <div class="desc_title">
+        <span>Project description</span>
+      </div>
+      <div class="desc_notice">
+        <div class="noticeList">
+          <div class="tablecon" v-html="info.content"></div>
         </div>
       </div>
     </div>
 
-    <div class="touziBtns">
-      <div v-if="couponId === -1" class="Actual">Actual amount <span style="color: #f00;">₹{{ money }}</span></div>
-      <div v-else class="Actual">Discount amount<span style="color: #f00; margin-left: 0.4rem;">₹{{ money }}</span>
+    <van-popup v-model:show="investShow" position="bottom" closeable round class="goodsBuyPop"
+      :style="{ height: 'auto', background: '#ebf9e8' }">
+      <div class="invest" style="background: #ebf9e8">
+        <div class="invest_wrap">
+          <div class="title2">Order Details</div>
+          <div class="cont">
+            <div class="flex">
+              <div class="imgbox">
+                <img :src="imgFlag(info.icon)" />
+              </div>
+              <van-cell-group>
+                <div style="color: #009900;font-weight: bold;padding:0.4rem 0;">
+                  <p>{{ info.name }}</p>
+                </div>
+                <van-cell style="padding-bottom: 0;margin: 0;background: transparent;">
+                  <span style="color: #282b8e;font-weight: bold;">₹{{ info.price }}</span>
+                  <van-stepper v-model="quantity" disable-input :step="1" :min="1" :max="info.invest_limit"
+                    button-size="20px" input-width="40px" @change="quantitychange" />
+                </van-cell>
+              </van-cell-group>
+            </div>
+            <div class="amount">
+              <div style="display: flex;justify-content: space-between;">
+                <span>{{ t('充值钱包') }}</span>
+                <span style="color: #dedc00;font-weight: bold;">₹ {{ wallet1.balance }}</span>
+              </div>
+              <div style="display: flex;justify-content: space-between;margin-top: 0.5rem;">
+                <span>{{ t('余额钱包') }}</span>
+                <span style="color: #dedc00;font-weight: bold;">₹ {{ wallet2.balance }}</span>
+              </div>
+            </div>
+            <div class="invest_limit">
+              <span>{{ t('采购数量') }}</span>
+              <span style="color: #009900;font-weight: bold;">{{ info.invest_limit }}</span>
+            </div>
+            <van-collapse v-if="coupons != null && info.cid != 2" v-model="activeNames" class="collapse">
+              <van-collapse-item :title="t('券')" name="1">
+                <div class="Discount">
+                  <div v-for="(item, index) in coupons" :key="index" :style="styles[index]">
+                    <label :for="forid(item.id)" style="display: flex;align-items: center;justify-content: flex-start;">
+                      <input type="radio" :value="item.id" v-model="couponId" :id="forid(item.id)" name="isOpen" @click="changeColor(item, index, info)">
+                      <span>Discount Coupon</span>
+                      <span style="color: #009900;font-weight:bold;width: 50%;text-align: right;">{{ item.valueDesc }}{{
+                        item.unitDesc }} </span>
+                    </label>
+                  </div>
+                </div>
+              </van-collapse-item>
+            </van-collapse>
+          </div>
+          <div class="touziBtns">
+            <div v-if="couponId === -1" class="Actual">Actual amount <span
+                style="color: #282b8e;margin-left: 0.4rem;">₹{{
+                money }}</span></div>
+            <div v-else class="Actual">Discount amount<span style="color: #282b8e; margin-left: 0.4rem;">₹{{ money
+                }}</span>
+            </div>
+            <van-button class="touziBtn" @click="onSubmit">buy</van-button>
+          </div>
+        </div>
       </div>
-
-      <van-button v-if="info.status == 2" class="touziBtn" @click="onPresale">{{ t('预售') }}</van-button>
-      <van-button v-else-if="info.status == 10" class="touziBtn" @click="onPresale1">Not for sale</van-button>
-      <van-button v-else-if="info.status == 9" class="touziBtn">{{ t('售罄') }}</van-button>
-      <van-button v-else class="touziBtn" @click="onSubmit">{{ t('立即购买') }}</van-button>
-    </div>
+    </van-popup>
 
   </div>
   <MyLoading :show="loadingShow" title="Submit"></MyLoading>
 </template>
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Swipe, SwipeItem, Button, Grid, GridItem, Image, Tab, Tabs, Cell, CellGroup, Stepper, Icon, Field, Popup, CouponCell, CouponList, Collapse, CollapseItem } from "vant";
+import {
+  Swipe, SwipeItem, Button, Grid, GridItem, Image, Tab, Tabs, Cell,
+  CellGroup, Stepper, Icon, Field, Popup, CouponCell, CouponList, Collapse, CollapseItem
+} from "vant";
 import { getSrcUrl, goRoute } from "../../global/common";
 import Nav from '../../components/Nav.vue';
 import MyLoading from "../../components/Loading.vue";
-import MySwiper from '../../components/Swiper.vue'
 
+import MySwiper from '../../components/Swiper.vue'
 const imgFlag = (src: string) => {
   return getSrcUrl(src, 1);
 }
@@ -141,15 +180,12 @@ import { useRoute, useRouter } from "vue-router";
 import md5 from "md5";
 import { _alert, lang, cutOutNum } from "../../global/common";
 import http from "../../global/network/http";
-import bird from '../../assets/ico/bird.png'
-import { useI18n } from 'vue-i18n';
-import sold_out from '../../assets/img/project/sold_out.png';
+import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
-const { t } = useI18n();
 const route = useRoute()
 const router = useRouter()
-const pid = ref(route.params.pid)
 const detailData = ref<any>({})
+const title = ref('')
 const activeNames = ref(['0'])
 const wallet1 = ref({})
 const wallet2 = ref({})
@@ -173,6 +209,10 @@ const info = ref({
   covers: []
 })
 
+const onInvest = () => {
+  investShow.value = true
+}
+
 const changeColor = (item: any, index: number, info: any) => {
   for (let key in styles) {
     styles[key] = {};
@@ -189,8 +229,9 @@ const changeColor = (item: any, index: number, info: any) => {
 
   } else {
     couponId.value = item.id
-    money.value = info.price - (info.price * (item.valueDesc / 100) * quantity.value)
+    money.value = (info.price * quantity.value) - (info.price * (item.valueDesc / 100) * quantity.value)
   }
+
 };
 
 const onPresale = () => {
@@ -271,6 +312,7 @@ const init = () => {
       return
     }
 
+    title.value = res.data.info.name;
     info.value = res.data.info
     money.value = res.data.info.price
 
@@ -290,7 +332,9 @@ const init = () => {
     wallet1.value = res.data.wallet1
     wallet2.value = res.data.wallet2
     wallet3.value = res.data.wallet3
+
     coupons.value = [];
+
     for (let index = 0; index < res.data.coupon_arr.length; index++) {
       const element = res.data.coupon_arr[index];
       coupons.value.push({
@@ -306,8 +350,8 @@ const init = () => {
         id: element.id
       });
     }
-  })
 
+  })
 }
 const forid = (id: number) => {
   return "forid_" + id;
@@ -320,27 +364,118 @@ onMounted(() => {
 <style lang="scss" scoped>
 .project_detail {
   position: relative;
-  background: #fff;
+  background-color: #ebf9e8;
 
-  .productDet_bot {
-    position: fixed;
-  }
+  .project_img {
+    height: 12.75rem;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: white;
 
-  :deep .van-collapse-item__content {
-    padding: 0 0 0.8rem 0;
-    background: white;
-  }
-
-  .Coupons {
-    display: block !important;
-
-    :deep(.van-hairline--top-bottom) {
-      position: static;
+    :deep(.van-swipe__track) {
+      display: flex;
     }
 
-    :deep(.van-cell) {
-      padding: 0.3rem 0;
-      border: none;
+    img {
+      width: 100%;
+      height: auto;
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+  }
+
+  .ProductDetails {
+    padding: 1rem;
+    background-color: white;
+
+    .title {
+      display: flex;
+      justify-content: space-between;
+      font-weight: bold;
+    }
+
+    .detail {
+      display: flex;
+      font-size: 0.8rem;
+      flex-wrap: wrap;
+      background-color: #009900;
+      margin-top: 0.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 15px 0 #9999;
+
+      .bold {
+        margin-bottom: .2rem;
+        font-size: 14px;
+        font-weight: bold;
+        color: white;
+      }
+
+      &>div {
+        display: flex;
+        width: 33%;
+        flex-direction: column;
+        align-items: center;
+        color: #dedc00;
+        height: 3.5rem;
+        justify-content: center;
+      }
+    }
+  }
+
+  .desc {
+    margin-top: 0.8rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+
+    .desc_title {
+      text-align: center;
+      font-weight: bold;
+      color: #64523e;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      color: #009900;
+
+      img {
+        width: 2rem;
+      }
+    }
+
+    .desc_notice {
+      margin-top: 0.8rem;
+
+      .tablecon {
+        font-size: 14px;
+        color: #666;
+        width: 100%;
+        overflow-x: auto;
+
+        p {
+          word-wrap: break-word;
+        }
+      }
+
+    }
+  }
+
+  :deep(.van-popup__close-icon--top-right) {
+    color: #98cc00 !important;
+  }
+
+  .goodsBuyPop {
+    .title2 {
+      margin-top: 1rem;
+      display: flex;
+      justify-content: center;
+      color: #009900;
+      font-weight: bold;
+      font-size: 1.2rem;
     }
 
     .Discount {
@@ -348,10 +483,10 @@ onMounted(() => {
       flex-direction: column;
       height: 6rem;
       overflow-y: auto;
+      background-color: white;
 
       div:first-child {
         border-radius: 6px 6px 0 0;
-
       }
 
       div:last-child {
@@ -361,176 +496,21 @@ onMounted(() => {
       div {
         flex-direction: column;
         text-align: center;
-        padding: 0.3rem;
-        color: #000;
-        background: white;
+        padding: 0.8rem;
+        color: #919191;
       }
 
       input {
-        accent-color: #ff3737;
+        accent-color: #009900;
         margin-right: 0.6rem;
         zoom: 1.2;
       }
-    }
-  }
 
-  .project_img {
-    width: 12.75rem;
-    height: 12.75rem;
-    position: relative;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.4rem 1rem;
-    display: flex;
-    align-items: center;
-
-    :deep(.van-swipe__track) {
-      display: flex;
-    }
-
-    img {
-      max-width: 100%;
-      max-height: 100%;
-      width: auto;
-      height: auto;
-      position: relative;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  .title {
-    margin-top: 0.375rem;
-    display: flex;
-    justify-content: space-around;
-    font-weight: bold;
-    color: #009900;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-
-  .title2 {
-    margin-top: 0.375rem;
-    display: flex;
-    justify-content: center;
-    color: black;
-    font-weight: bold;
-  }
-
-  .n_p_name {
-    text-align: left;
-    color: black;
-  }
-
-  .detail {
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
-    flex-direction: column;
-    font-size: 0.8rem;
-    position: relative;
-    padding: 0.5rem 0;
-    color: black;
-
-    .bold {
-      margin-bottom: .2rem;
-      color: black;
-      font-size: 14px;
-      font-weight: bold;
-    }
-
-    &>div {
-      display: flex;
-      flex-direction: row-reverse;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.2rem 0 0 0;
-      width: 100%;
-
-      & span:nth-child(1) {
-        color: black;
-      }
-    }
-
-    .bord {
-      border: 1px solid black;
-      height: 2rem;
-    }
-
-    .Balance {
-      div {
-        width: 45%;
-        height: 5rem;
-        background-color: #009900;
-        border-radius: 5px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-        span {
-          color: white
-        }
-
-        span:first-child {
-          font-size: 1rem;
-          font-weight: bold;
-        }
-
-        span:last-child {
-          font-size: 0.7rem;
-        }
+      :deep(.van-collapse-item__content) {
+        padding: 0 0 0.8rem 0;
+        background: #f4f7ff;
       }
     }
   }
-
-  .touziBtns {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    font-size: 14px;
-    width: 100%;
-    position: fixed;
-    bottom: 0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    max-width: 640px;
-  }
-
-  .touziBtns .Actual {
-    color: #002544;
-    margin-left: 1rem;
-  }
-
-  .touziBtns .Actuals {
-    display: flex;
-    align-items: center;
-    margin-left: 1rem;
-
-    img {
-      width: 2rem;
-    }
-  }
-
-  .touziBtns span {
-
-    font-weight: bold;
-  }
-
-  .touziBtn {
-    display: block;
-    background: #009900;
-    border: 0;
-    color: white;
-    width: 40%;
-    padding: 0;
-    height: 2.4rem;
-    font-size: 0.9rem;
-    border-radius: 2.4rem;
-    margin-right: 1rem;
-    font-weight: bold;
-  }
-
 }
 </style>

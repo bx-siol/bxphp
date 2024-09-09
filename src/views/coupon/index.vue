@@ -67,7 +67,7 @@ onMounted(() => {
 </script>
 <style lang="scss" scoped>
 .project {
-  background: #fff;
+  background: #ebf9e8;
   width: 100%;
   overflow-x: hidden;
 
@@ -86,7 +86,7 @@ onMounted(() => {
           transform: translateX(-50%);
           box-sizing: border-box;
           z-index: 10;
-          background: #fff;
+          background: #ebf9e8;
           padding: 1rem 0.625rem 0.625rem;
           max-width: 640px;
 

@@ -31,7 +31,7 @@ onMounted(() => {
 }
 
 #app {
-    background: #fff;
+    background: #ebf9e8;
 }
 
 #app .myBtn {

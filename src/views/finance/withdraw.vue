@@ -27,7 +27,7 @@
 
                 <div class="payinfo">
                     <ul>
-                        <li><span>{{ dataForm.money * tar / 100 }}RS</span>{{ t('税收') }}</li>
+                        <li><span>{{ (dataForm.money * tar / 100).toFixed(2) }}RS</span>{{ t('税收') }}</li>
                         <li><span>{{ tar }}%</span>{{ t('费用比率') }}</li>
                         <li><span>{{ min }} RS</span>{{ t('最小提现金额') }}</li>
                         <li><span>{{ max }} RS</span>{{ t('最大提现金额') }}</li>

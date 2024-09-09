@@ -1,5 +1,5 @@
 <template>
-    <div class="cashlogBox" style="background-color: #fff; min-height: 100%;">
+    <div class="cashlogBox" style="background-color: #ebf9e8; min-height: 100%;">
         <MyNav leftText=""></MyNav>
         <div class="tablebox">
             <div class="tableRight">
@@ -12,7 +12,7 @@
                                         <div><span>Order number</span></div>
                                         {{ t(item.id) }}
                                     </td>
-                                    <div style="display: flex;justify-content: space-between;align-items: center;">
+                                    <div style="display: flex;justify-content: space-between;align-items: center;border-radius: 10px 0 0 10px;overflow: hidden;">
                                         <div style="display: flex;flex-direction: row;width: 100%;">
 
                                             <td v-if="item.type == 1" style="background-color: #00a99d;"></td>
@@ -26,7 +26,7 @@
                                             <td v-else-if="item.type == 33" style="background-color: #c3c3c3;"></td>
                                             <td v-else style="background-color: #376ab3;"></td>
 
-                                            <td class="variation" style="flex-direction: column;width: 64%;">
+                                            <td class="variation" style="flex-direction: column;width: 60%;">
                                                 <div v-if="item.type == 1">
                                                     <span style="color: #00a99d;">{{ t('投资') }}</span>
                                                 </div>
@@ -89,9 +89,9 @@
                                                     {{ item.money > 0 ? '+' + item.money : item.money }} RS
                                                 </div>
                                             </td>
-                                            <td style="display: flex;flex-direction: column;width: 35%;">
+                                            <td style="display: flex;flex-direction: column;width: 39%;padding-right: 0.5rem;">
                                                 <span style="color: black;">Time</span>
-                                                <span style="color: #d1d1d1;">{{ item.create_time }}</span>
+                                                <span style="color: #999999;">{{ item.create_time }}</span>
                                             </td>
                                         </div>
                                     </div>
@@ -170,10 +170,9 @@ onMounted(() => { });
                 display: flex;
                 flex-direction: column;
                 font-size: 12px;
-                margin: 0.5rem 0;
+                margin: 0.7rem 0;
                 background-color: #fff;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 1rem;
+                border-radius: 10px 0 0 10px;
 
                 td {
                     display: flex;
@@ -189,7 +188,7 @@ onMounted(() => { });
 
                 td:first-child{
                     width: 0.3rem;
-                    height: 2.5rem;
+                    height: 3.5rem;
                 }
             }
         }

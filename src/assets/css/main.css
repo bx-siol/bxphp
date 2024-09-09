@@ -283,7 +283,6 @@ img {
 }
 
 .index_top .myswiper {
-    border-radius: 0.5rem;
     overflow: hidden;
 }
 
@@ -814,27 +813,18 @@ img {
 }
 
 .productDet_bot {
-    width: 90%;
-    bottom: 0;
-    height: 3rem;
-    padding-top: 0.3rem;
-    margin: 0 auto;
-    left: 0;
-    right: 0;
+    margin-top: 1rem;
 }
 
 .productDet_bot .touziBtn {
     display: block;
-    width: 94%;
-    margin: 0 auto;
-    border: 0;
+    width: 100%;
     font-size: 0.95rem;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background-color: #009900;
     color: #fff;
-    height: 2.5rem;
-    border-radius: 6px;
+    height: 2rem;
+    border-radius: 30px;
     font-weight: bold;
-    max-width: 640px;
 }
 
 /**************home*************/
@@ -976,7 +966,7 @@ img {
 
 .home_list .van-cell {
     background: transparent;
-    color: #64523e;
+    color: #009900;
     border: 0;
     align-items: center;
     padding: 0;
@@ -1155,7 +1145,7 @@ img {
     margin-bottom: 1rem;
     align-items: center;
     background-color: black;
-    height: 7rem;
+    height: 5rem;
 }
 
 .news_wrap .cont {
@@ -1263,53 +1253,48 @@ img {
 }
 
 .invest_wrap {
-    padding: 0.8rem 4%;
+    background-color: #ebf9e8;
 }
 
 .invest_wrap .amount {
-    margin: 1rem 0;
+    background-color: #009900;
+    padding: 0.5rem 1rem;
+    box-shadow: 0 0 7px 0 #c5c5c5;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    font-size: 0.9rem;
 }
 
-.invest_wrap .amount .van-grid {
+.invest_wrap .invest_limit{
+    height: 2.5rem;
+    background-color: white;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 0 7px 0 #999999;
+    color: #919191;
+    line-height: 2.5rem;
+    padding: 0 1rem;
+    display: flex;
     justify-content: space-between;
 }
 
-.invest_wrap .amount .van-grid-item {
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
-    border-radius: 8px;
-    flex-basis: 48% !important;
-}
-
-.invest_wrap .amount .van-grid-item__content {
-    padding: 0.8rem 0.5rem;
-    background: transparent;
-}
-
-.invest_wrap .amount p {
-    color: #fff;
-    font-size: 0.8rem;
-}
-
-.invest_wrap .amount span {
-    color: #fff;
-    padding-top: 0.4rem;
-    font: bold 16px/28px "Rotobo";
-}
-
 .invest_wrap .cont {
-    padding-top: 1.2rem;
+    padding:0 1rem;
 }
 
 .invest_wrap .cont .flex {
     display: flex;
     align-items: center;
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
+    background-color: white;
+    padding: 0.5rem;
+    margin: 1rem 0;
+    border-radius: 10px;
+    box-shadow: 0 0 7px 0 #c5c5c5;
 }
 
 .invest_wrap .cont .flex .collapse {
     border-bottom: 1px solid #ff020231;
-
+    background-color: white;
 }
 
 .invest_wrap .cont .flex .van-collapse-item__content {
@@ -1358,16 +1343,14 @@ img {
 }
 
 .invest_wrap .cont .flex .imgbox {
-    border: 1px solid #64523e;
     text-align: center;
     border-radius: 6px;
     margin-right: 10px;
 }
 
 .invest_wrap .cont .flex .imgbox img {
-    width: 100px;
-    height: 80px;
-    padding: 0.4rem;
+    width: 7rem;
+    height: 5rem;
     display: inline;
 }
 
@@ -1386,38 +1369,38 @@ img {
     position: static;
 }
 
-.invest_wrap .cont .van-cell-group .van-cell.purchase_quantity .van-stepper__input {
-    color: #000;
-}
-
 .invest_wrap .cont .van-cell-group::after {
     /* border-color: #313131; */
 }
 
+.invest_wrap .cont .van-collapse-item{
+    box-shadow: 0 0 7px 0 #c5c5c5;
+    border-radius: 10px;
+}
+
 .invest_wrap .cont .van-cell {
-    /* background: transparent;
-    padding: 0.6rem 0.2rem; */
-    background: #f4f7ff;
-    border-radius: 6px;
-    margin: 0.2rem 0;
-    padding: 0.2rem;
+    background: white;
+    border-radius: 10px;
+    padding: 0.5rem;
 }
 
 .invest_wrap .cont .van-cell::after {
     left: 0;
     right: 0;
-    /* border-color: #313131; */
 }
 
 .invest_wrap .cont .van-cell__title,
 .invest_wrap .cont .van-cell__value {
     flex: auto;
-    color: #333;
+    color: #919191;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .invest_wrap .cont select {
     background: transparent;
-    color: #333;
+    color: #919191;
     border: 0;
 }
 
@@ -1430,19 +1413,19 @@ img {
 
 .invest_wrap .cont .van-stepper button {
     background-color: #f4f4f4;
-    color: #000;
+    color: #009900;
     padding: 1rem;
 }
 
 .invest_wrap .cont .van-stepper input {
     background-color: #e8e8e8;
-    color: #002544;
+    color: black;
     padding: 1rem;
 }
 
 .invest_wrap .cont .van-stepper .van-stepper__plus {
     background-color: #f4f4f4;
-    color: #6e523e;
+    color: #009900;
 }
 
 .van-stepper__minus--disabled,
@@ -1454,29 +1437,32 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     font-size: 14px;
+    background-color: white;
+    padding: 0 1rem;
+    height: 3.5rem;
 }
 
 .invest_wrap .touziBtns .Actual {
-    color: rgb(104, 104, 104);
+    color: #009900;
+    font-weight: bold;
 }
 
 .invest_wrap .touziBtns span {
-
     font-weight: bold;
 }
 
 .invest_wrap .touziBtn {
     display: block;
-    background: #64523e;
+    background: #009900;
     border: 0;
     color: #fff;
     width: 40%;
     padding: 0;
     height: 2.4rem;
     font-size: 0.9rem;
-    border-radius: 2.4rem;
+    border-radius: 10px;
 }
 
 /**************邀请好友*************/
@@ -1511,7 +1497,7 @@ img {
 }
 
 .invite_wrap .link {
-    border: 1px solid #7d7d7d;
+    border: 1px solid #009900;
     text-align: center;
     width: 80%;
     margin: 0.7rem auto 0;
@@ -1522,7 +1508,7 @@ img {
 .invite_wrap .copyLinkBtn {
     display: block;
     border: 0;
-    background: #64523e;
+    background: #009900;
     color: #fff;
     height: 2.4rem;
     border-radius: 2rem;
@@ -1534,8 +1520,7 @@ img {
 .invite_wrap .qrcode {
     width: 52%;
     margin: 4rem auto 0;
-    background: #fff;
-    padding: 0.3rem;
+    background: #ebf9e8;
 }
 
 .invite_wrap .qrcode .van-image {
@@ -1753,7 +1738,7 @@ img {
 }
 
 .newTaskPopup .submitBtn {
-    background: #64523e;
+    background: #009900;
     color: #fff;
     border: 0;
     width: 61%;

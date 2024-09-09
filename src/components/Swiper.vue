@@ -1,5 +1,5 @@
 <template>
-    <van-swipe :autoplay="autoplay" indicator-color="white" :style="{ height: height }">
+    <van-swipe :autoplay="autoplay" indicator-color="#009900" :style="{ height: height }">
         <van-swipe-item v-for="item in kv" @click="onItemClick(item)">
             <!--            <van-image :src="imgFlag(item.cover)" fit="cover" width="100%" height="100%"/>-->
             <!-- 此处为后端返回的图片url -->

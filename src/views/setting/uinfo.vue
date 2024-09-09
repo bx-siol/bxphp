@@ -24,7 +24,7 @@
                 <van-field :label-width="configForm.labelWidth" :label-align="configForm.labelAlign" :label="t('密码')"
                     v-model="dataForm.password" type="password" :placeholder="t('请输入密码')" />
             </van-cell-group>
-            <div style="padding: 2rem;">
+            <div style="padding: 0 4rem;margin-top: 2rem;">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
             </div>
         </van-form>
@@ -144,3 +144,19 @@ onMounted(() => {
     // }, delayTime)
 })
 </script>
+
+<style lang="scss" scoped>
+.conBox{
+    padding: 1rem;
+
+    :deep(.van-field){
+        border: 1px solid #009900;
+        border-radius: 20px;
+        margin-bottom: 1rem;
+    }
+
+    :deep(.van-hairline--top-bottom){
+        position: unset;
+    }
+}
+</style>

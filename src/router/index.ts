@@ -142,7 +142,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/news',
         name: 'News',
         meta: {
-            title: 'News',
+            title: 'Notify',
              needLogin: false
         },
         component: () => import('../views/news/list.vue')
@@ -160,7 +160,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/news/info/:id',
         name: 'News_info',
         meta: {
-            title: ' News Detail',
+            title: 'Notify Detail',
              needLogin: false
         },
         component: () => import('../views/news/info.vue')

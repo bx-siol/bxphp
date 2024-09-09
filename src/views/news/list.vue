@@ -9,12 +9,9 @@
             <div class="big">
                 <van-swipe indicator-color="#009900" :autoplay="3000">
                     <van-swipe-item v-for="item in covers">
-                        <img :src="item" style="max-height: 200px;border-radius:6px;" />
+                        <img :src="item" style="max-height: 200px;" />
                     </van-swipe-item>
                 </van-swipe>
-                <div class="inform">
-                    <p class="title">Aboust Us</p>
-                </div>
             </div>
 
             <div class="news_wrap">
@@ -22,11 +19,11 @@
                     <template #default="{ list }">
                         <ul>
                             <li v-for="item in list" @click="onLink({ name: 'News_info', params: { id: item.id } })">
-                                <van-image :src="imgFlag(item.cover)" width="13rem" height="7rem" class="imgs"></van-image>
+                                <van-image :src="imgFlag(item.cover)" width="13rem" height="5rem" class="imgs"></van-image>
                                 <div class="infoRight">
-                                    <p class="titles" :style="{ color: 'white', }">{{ item.title }}</p>
+                                    <p class="titles">{{ item.title }}</p>
                                     <p class="desc" v-html="item.ndesc"></p>
-                                    <p class="time" :style="{ color: 'white', }">{{ item.publish_time }}</p>
+                                    <p class="time">{{ item.publish_time }}</p>
                                 </div>
                             </li>
                         </ul>
@@ -94,78 +91,54 @@ const onPageSuccess = (res: any) => {
 }
 </style>
 <style scoped>
-.big {
-    padding: 1rem 1rem 0 1rem;
-}
+.news {
+    background-color: #ebf9e8;
 
-.big .newsimg {
-    width: 100%;
-    height: 12.5rem;
-}
+    .news_wrap {
+        padding-bottom: 4rem;
+        margin-top: 2rem;
 
-.big .newsimg :deep(.van-image__img) {
-    border-radius: 4px;
-}
+        ul {
+            padding: 0 1rem;
 
-.big .inform {
-    display: flex;
-    align-items: center;
-}
+            li{
+                background-color: transparent;
+            }
+        }
 
-.big .inform img {
-    width: 1.8rem;
-    margin-right: 0.2rem;
-}
+        .infoRight {
+            width: 78%;
+            padding-left: 1rem;
+            color: black !important;
 
-.big .title {
-    margin: 0.8rem 0;
-    font-weight: bold;
-    color: #64523e;
-    font-size: 1rem;
-}
+            .titles {
+                font-size: 0.8rem;
+                font-weight: bold;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 1;
+                line-height: 1.4em;
+                max-height: 2.4em;
+                color: #009900;
+            }
 
-.news_wrap {
-    padding-bottom: 4rem;
-}
+            .desc {
+                margin: 0.5rem 0;
+                font-size: 0.725rem;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
+                line-height: 1.2em;
+                max-height: 2.4em;
+            }
 
-.news_wrap ul {
-    padding: 0 1rem;
-}
-
-.news_wrap ul li:nth-child(even) {
-    flex-direction: row-reverse;
-}
-
-.infoRight {
-    width: 78%;
-    padding-left: 1rem;
-    color: white !important;
-}
-
-.infoRight .titles {
-    font-size: 1.05rem;
-    font-weight: bold;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 1;
-    line-height: 1.4em;
-    max-height: 2.4em;
-}
-
-.infoRight .desc {
-    margin: 0.5rem 0;
-    font-size: 0.725rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-    line-height: 1.2em;
-    max-height: 2.4em;
-}
-
-.infoRight .time {
-    font-size: 0.625rem;
+            .time {
+                font-size: 0.625rem;
+            }
+        }
+    }
 }
 </style>

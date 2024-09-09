@@ -41,14 +41,14 @@
                 </div>
             </div>
             <div class="balance">
-                <div class="balanceitem">
+                <div class="balanceitem" @click="onLink({ name: 'Finance_withdraw' })">
                     <div>
                         <p style="color: #023a8e;margin-bottom: 0.5rem;font-size: 0.8rem;">{{ t('余额钱包') }}</p>    
                         <p style="color: red;margin-top: 0.5rem;">₹{{ wallet2.balance }}</p>
                     </div>
                     <img :src="walletbalance" style="height: 2rem;width: 2rem;" />
                 </div>
-                <div class="balanceitem">
+                <div class="balanceitem"  @click="onLink({ name: 'Finance_recharge' })">
                     <div>
                         <p style="color: #023a8e;margin-bottom: 0.5rem;font-size: 0.8rem;">{{ t('充值钱包') }}</p>
                         <p style="color: red;margin-top: 0.5rem;">₹{{ wallet.balance }}</p>

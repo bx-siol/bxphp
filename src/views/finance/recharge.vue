@@ -13,7 +13,7 @@
                     </div>
                 </div>
 
-                <div style="background-color: white;border-radius: 10px;padding: 1rem 1rem 0 1rem;box-shadow: 0 0 10px 0 #d1d1d1;">
+                <div style="background-color: white;border-radius: 10px;padding: 1rem 1rem 0.5rem 1rem;box-shadow: 0 0 10px 0 #d1d1d1;">
                     <div style="display: flex;align-items: center;" class="title">
                         <b>Payment channel</b>
                     </div>
@@ -283,6 +283,7 @@ onMounted(() => {
             text-align: center;
             line-height: 2.5rem;
             color: white;
+            width: 100%;
         }
 
         .title {
