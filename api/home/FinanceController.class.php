@@ -249,6 +249,7 @@ class FinanceController extends BaseController
 			
 			
 			writeLog('asd'.$fin_cashlogSum .'bbbb' .TIME_YMD,'asdasda' );
+			writeLog('cccc'.json_encode($pro_orderMaIid),'asdasda' );
 			
 			$Withdrawal = 0;
 			switch ($pro_orderMaIid['gid']) {
