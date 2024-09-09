@@ -301,8 +301,10 @@ class UserController extends BaseController
 			$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C' : 'D');
 			$item['first_pay_day_flag'] = $item['first_pay_day'] > 0 ? 'yes' : 'no';
 		}
-
-		$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time = " . strtotime("today");
+		
+		$today_start = strtotime(date('Y-m-d 00:00:01'));
+		$today_end = strtotime(date('Y-m-d 23:59:59'));
+		$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time >= ".$today_start  ." and reg_time <= ". $today_end ." ";
 		$today = Db::table('sys_user log')->where($where1)->count();
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);
 
