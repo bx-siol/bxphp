@@ -239,6 +239,39 @@ class FinanceController extends BaseController
 			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378) ")->count();
 			if($pro_orderCount == 0)
 				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
+
+			$pro_orderMaIid = Db::table('pro_order')
+			->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378) ")
+			->order('gid','desc')
+			->find();
+
+			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". TIME_YMD ." ")->sum('money');
+			$Withdrawal = 0;
+			switch ($pro_orderMaIid) {
+				case '372':
+					$Withdrawal = 3000;
+					break;
+				case '373':
+					$Withdrawal = 12000;
+					break;
+				case '374':
+					$Withdrawal = 38000;
+					break;
+				case '375':
+					$Withdrawal = 70000;
+					break;
+				case '376':
+					$Withdrawal = 120000;
+					break;
+				case '377':
+					$Withdrawal = 150000;
+					break;
+				case '378':
+					$Withdrawal = 250000;
+					break;
+			}
+			if($fin_cashlogSum - $Withdrawal < 0)
+				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
 
 		$sys_user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
