@@ -189,7 +189,7 @@ const changeColor = (item: any, index: number, info: any) => {
 
   } else {
     couponId.value = item.id
-    money.value = info.price - (info.price * (item.valueDesc / 100) * quantity.value)
+    money.value = (info.price * quantity.value) - (info.price * (item.valueDesc / 100) * quantity.value)
   }
 };
 
