@@ -274,7 +274,6 @@ class FinanceController extends BaseController
 					$Withdrawal = 250000;
 					break;
 			}
-			writeLog('aaa'.$buynum . "bbbbb". $Withdrawal . 'nnn'.$pro_orderMaIid['gid'],'asdasdasd');
 			if(($Withdrawal * $buynum) - ($fin_cashlogSum + $params['money']) < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
