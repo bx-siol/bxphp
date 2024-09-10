@@ -249,7 +249,6 @@ class FinanceController extends BaseController
 			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". $now_day ." and status != 3 ")->sum('money');
 			
 			$buynum = $pro_orderMaIid = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$pro_orderMaIid['gid']} ")->count();
-
 			
 			$Withdrawal = 0;
 			switch ($pro_orderMaIid['gid']) {
@@ -275,7 +274,7 @@ class FinanceController extends BaseController
 					$Withdrawal = 250000;
 					break;
 			}
-			writeLog('aaa'.$buynum . "bbbbb". $Withdrawal,'asdasdasd');
+			writeLog('aaa'.$buynum . "bbbbb". $Withdrawal . 'nnn'.$pro_orderMaIid['gid'],'asdasdasd');
 			if(($Withdrawal * $buynum) - ($fin_cashlogSum + $params['money']) < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
