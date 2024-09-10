@@ -13,7 +13,7 @@ class FinanceController extends BaseController
 
 	public function _recharge()
 	{
-		
+
 		$pageuser = checkLogin();
 		$wallet = getWallet($pageuser['id'], 1);
 		$cnf_paylog_items = getConfig('cnf_paylog_items');
@@ -80,7 +80,7 @@ class FinanceController extends BaseController
 			'gplayerId' => $params['playerId'],
 			'gaccount' => $userondb['account'],
 		];
-		
+
 
 		$banklog = [];
 		if ($params['pay_type'] == 'offline') {
@@ -151,7 +151,7 @@ class FinanceController extends BaseController
 					$sub_pay_type = 1;
 				}
 				$fin_paylog['l_url'] = $params['l_url'];
-				
+
 				require_once $pay_file;
 				$result = payOrder($fin_paylog, $sub_pay_type);
 				// if ($params['pay_type'] != 'OfflinePay') {
@@ -218,68 +218,90 @@ class FinanceController extends BaseController
 		}
 
 		$sys_name =  getConfig('sys_name');
-		if($sys_name != "Nestle"){
+		if ($sys_name != "Nestle") {
 			$pro_order = Db::table('pro_order log')
-					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->find();
-					
+				->leftJoin('pro_goods c', 'log.gid=c.id')
+				->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->find();
+
 			if (!$pro_order) {
 				ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 			}
 
 			$pro_order = Db::table('pro_order log')
-						->leftJoin('pro_goods c', 'log.gid=c.id')
-						->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
+				->leftJoin('pro_goods c', 'log.gid=c.id')
+				->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
 
 			if (!$pro_order) {
 				ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
-			}			
+			}
 		}
-		if($sys_name == "Nestle"){
-			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378) ")->count();
-			if($pro_orderCount == 0)
+		if ($sys_name == "Nestle") {
+			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384) ")->count();
+			if ($pro_orderCount == 0)
 				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
 
 			$pro_orderMaIid = Db::table('pro_order')
-			->where("uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378) ")
-			->order('gid','desc')
-			->find();
+				->where("uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384) ")
+				->select()->toArray();
+
 
 			$now_day = date('Ymd');
-			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". $now_day ." and status != 3 ")->sum('money');
-			
-			$buynum = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$pro_orderMaIid['gid']} ")->count();
-			
+			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = " . $now_day . " and status != 3 ")->sum('money');
+
+			//$buynum = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$pro_orderMaIid['gid']} ")->count();
+
 			$Withdrawal = 0;
-			switch ($pro_orderMaIid['gid']) {
-				case '372':
-					$Withdrawal = 3000;
-					break;
-				case '373':
-					$Withdrawal = 12000;
-					break;
-				case '374':
-					$Withdrawal = 38000;
-					break;
-				case '375':
-					$Withdrawal = 70000;
-					break;
-				case '376':
-					$Withdrawal = 120000;
-					break;
-				case '377':
-					$Withdrawal = 150000;
-					break;
-				case '378':
-					$Withdrawal = 250000;
-					break;
+			for ($i = 0; $i < count($pro_orderMaIid); $i++) {
+				$k = $pro_orderMaIid[$i]['gid'];
+				switch ($k) {
+					case '372':
+						$Withdrawal += 3000;
+						break;
+					case '373':
+						$Withdrawal += 12000;
+						break;
+					case '374':
+						$Withdrawal += 38000;
+						break;
+					case '375':
+						$Withdrawal += 70000;
+						break;
+					case '376':
+						$Withdrawal += 120000;
+						break;
+					case '377':
+						$Withdrawal += 150000;
+						break;
+					case '378':
+						$Withdrawal += 250000;
+						break;
+					case '379':
+						$Withdrawal += 6000;
+						break;
+					case '380':
+						$Withdrawal += 15000;
+						break;
+					case '381':
+						$Withdrawal += 30000;
+						break;
+					case '382':
+						$Withdrawal += 45000;
+						break;
+					case '383':
+						$Withdrawal += 70000;
+						break;
+					case '384':
+						$Withdrawal += 120000;
+						break;
+				}
 			}
-			if(($Withdrawal * $buynum) - ($fin_cashlogSum + $params['money']) < 0)
+
+			if (($Withdrawal) - ($fin_cashlogSum + $params['money']) < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
 
 		$sys_user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
-		if($sys_user["status"] != 2)
+		if ($sys_user["status"] != 2)
 			ReturnToJson(-1, 'This account is prohibited from operation.');
 
 		Db::startTrans();
@@ -599,7 +621,7 @@ class FinanceController extends BaseController
 		$params = $this->params;
 
 		$where = "uid={$pageuser['id']} and log.status<99";
-		$where .= empty ($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
+		$where .= empty($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
 
 		$count_item = Db::table('fin_paylog log')
 			->leftJoin('cnf_bank b', 'log.receive_bank_id=b.id')
@@ -886,7 +908,7 @@ class FinanceController extends BaseController
 		$params = $this->params;
 
 		$where = "uid={$pageuser['id']} and log.status<99";
-		$where .= empty ($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
+		$where .= empty($params['s_keyword']) ? '' : " and (log.receive_account='{$params['s_keyword']}' or log.receive_address='{$params['s_keyword']}')";
 
 		$count_item = Db::table('fin_cashlog log')
 			->leftJoin('cnf_bank b', 'log.receive_bank_id=b.id')
@@ -1072,7 +1094,7 @@ class FinanceController extends BaseController
 			}
 			$where .= " and log.create_time between {$start_time} and {$end_time}";
 		}
-		$where .= empty ($params['s_type']) ? '' : " and log.type={$params['s_type']}";
+		$where .= empty($params['s_type']) ? '' : " and log.type={$params['s_type']}";
 		//$where.=empty($params['s_keyword'])?'':" and (log.remark='{$params['s_keyword']}')";
 
 		$count_item = Db::table('pro_reward log')
