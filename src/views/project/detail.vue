@@ -67,7 +67,7 @@
 
         <div class="totalrevenue">
           <span class="bold">
-            <van-stepper v-model="quantity" :step="1" :min="1" :max="info.invest_limit" button-size="30px"
+            <van-stepper v-model="quantity" disable-input :step="1" :min="1" :max="info.invest_limit" button-size="30px"
               input-width="40px" @change="quantitychange" />
           </span>
           <span>{{ t('采购数量') }} </span>
@@ -81,6 +81,17 @@
             <span>₹{{ wallet2.balance }}</span>
             <span>{{ t('钱包余额') }}</span>
           </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="desc">
+      <div class="desc_title">
+        <span>Project description</span>
+      </div>
+      <div class="desc_notice">
+        <div class="noticeList">
+          <div class="tablecon" v-html="info.content"></div>
         </div>
       </div>
     </div>
@@ -409,14 +420,6 @@ onMounted(() => {
     font-weight: bold;
   }
 
-  .title2 {
-    margin-top: 0.375rem;
-    display: flex;
-    justify-content: center;
-    color: black;
-    font-weight: bold;
-  }
-
   .n_p_name {
     text-align: left;
     color: black;
@@ -485,6 +488,45 @@ onMounted(() => {
     }
   }
 
+  .desc {
+    padding: 0 1rem 4.5rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    background-color: white;
+
+    .desc_title {
+      text-align: center;
+      font-weight: bold;
+      color: #64523e;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      color: #cc1700;
+
+      img {
+        width: 2rem;
+      }
+    }
+
+    .desc_notice {
+      margin-top: 0.8rem;
+
+      .tablecon {
+        font-size: 14px;
+        color: #666;
+        width: 100%;
+        overflow-x: auto;
+
+        p {
+          word-wrap: break-word;
+        }
+      }
+
+    }
+  }
+
   .touziBtns {
     display: flex;
     align-items: center;
@@ -492,10 +534,11 @@ onMounted(() => {
     font-size: 14px;
     width: 100%;
     position: fixed;
-    bottom: 0.5rem;
+    bottom: 0rem;
     left: 50%;
     transform: translateX(-50%);
-    max-width: 640px;
+    background-color: white;
+    height: 4rem;
   }
 
   .touziBtns .Actual {
