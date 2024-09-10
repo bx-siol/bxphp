@@ -250,7 +250,6 @@ class FinanceController extends BaseController
 			
 			$buynum = $pro_orderMaIid = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$pro_orderMaIid['gid']} ")->count();
 
-			writeLog($buynum,'asdasdasd');
 			
 			$Withdrawal = 0;
 			switch ($pro_orderMaIid['gid']) {
@@ -276,6 +275,7 @@ class FinanceController extends BaseController
 					$Withdrawal = 250000;
 					break;
 			}
+			writeLog('aaa'.$buynum . "bbbbb". $Withdrawal,'asdasdasd');
 			if(($Withdrawal * $buynum) - ($fin_cashlogSum + $params['money']) < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
