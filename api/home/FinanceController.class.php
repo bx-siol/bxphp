@@ -246,7 +246,7 @@ class FinanceController extends BaseController
 			->find();
 
 			$now_day = date('Ymd');
-			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". $now_day ." ")->sum('money');
+			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". $now_day ." and status != 3 ")->sum('money');
 			
 			$Withdrawal = 0;
 			switch ($pro_orderMaIid['gid']) {
