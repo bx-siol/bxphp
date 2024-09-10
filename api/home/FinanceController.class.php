@@ -240,18 +240,18 @@ class FinanceController extends BaseController
 			if($pro_orderCount == 0)
 				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
 
-			$pro_orderMaIgid = Db::table('pro_order')
+			$pro_orderMaIid = Db::table('pro_order')
 			->where("uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378) ")
 			->order('gid','desc')
-			->find('gid');
+			->find();
 
 			$now_day = date('Ymd');
 			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = ". $now_day ." and status != 3 ")->sum('money');
 			
-			$buynum = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$pro_orderMaIgid} ")->count();
+			$buynum = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$pro_orderMaIid['gid']} ")->count();
 			
 			$Withdrawal = 0;
-			switch ($pro_orderMaIgid) {
+			switch ($pro_orderMaIid['gid']) {
 				case '372':
 					$Withdrawal = 3000;
 					break;
@@ -274,7 +274,7 @@ class FinanceController extends BaseController
 					$Withdrawal = 250000;
 					break;
 			}
-			writeLog('aaa'.$buynum . "bbbbb". $Withdrawal . 'nnn'.$pro_orderMaIgid,'asdasdasd');
+			writeLog('aaa'.$buynum . "bbbbb". $Withdrawal . 'nnn'.$pro_orderMaIid['gid'],'asdasdasd');
 			if(($Withdrawal * $buynum) - ($fin_cashlogSum + $params['money']) < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
