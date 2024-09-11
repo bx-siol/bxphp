@@ -233,7 +233,7 @@ class CommonCtl
 			}
 		}
 
-		if($check_puser["icode_status"] == 1)
+		if ($check_puser["icode_status"] == 1)
 			ReturnToJson(-1, 'The invitation code has been disabled.');
 
 		$params['pid'] = intval($check_puser['id']);
@@ -244,7 +244,7 @@ class CommonCtl
 		if ($cnf_register_type == 1) {
 			$checkVcode = checkPhoneCode(['stype' => 1, 'phone' => $params['account'], 'code' => $params['vcode']]);
 			if ($checkVcode['code'] != 1) {
-				exit (json_encode($checkVcode));
+				exit(json_encode($checkVcode));
 			}
 			$user_phone = Db::table('sys_user')->field(['id'])->whereRaw('phone=:phone', ['phone' => $params['account']])->find();
 			if ($user_phone) {
@@ -283,6 +283,7 @@ class CommonCtl
 	private function doRegister($params, $wx_user = [])
 	{
 		$user_data = [
+			'vip' => 0,
 			'gid' => 92,
 			'icode' => genIcode(),
 			'password' => getPassword($params['password']),
@@ -436,7 +437,7 @@ class CommonCtl
 		if ($cnf_register_type == 1) {
 			$checkVcode = checkPhoneCode(['stype' => 3, 'phone' => $params['account'], 'code' => $params['vcode']]);
 			if ($checkVcode['code'] != 1) {
-				exit (json_encode($checkVcode));
+				exit(json_encode($checkVcode));
 			}
 		}
 		// else {
@@ -608,7 +609,7 @@ class CommonCtl
 			'stype' => $stype
 		];
 		$res = getPhoneCode($data);
-		exit (json_encode($res));
+		exit(json_encode($res));
 	}
 
 	//获取邮箱验证码

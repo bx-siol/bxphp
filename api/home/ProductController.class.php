@@ -138,6 +138,11 @@ class ProductController extends BaseController
 		$wallet2 = getWallet($pageuser['id'], 2);
 		$wallet3 = getWallet($pageuser['id'], 3);
 
+		$projectlogo = getConfig('sys_name');
+		if ($projectlogo != 'Nestle') {
+			$vip =	getvip($pageuser['id']);
+		}
+
 		//可用代金券
 		$now_time = time();
 
@@ -176,6 +181,7 @@ class ProductController extends BaseController
 		}
 
 		$return_data = [
+			'vip' => $vip,
 			'info' => $item,
 			'wallet1' => $wallet1,
 			'wallet2' => $wallet2,
@@ -1056,6 +1062,29 @@ class ProductController extends BaseController
 			Db::table('coupon_used')->insertGetId($coupon_used);
 		}
 
+		$vip = 0;
+		// 先正达 VIP折扣
+		$projectlogo = getConfig('sys_name');
+		if ($projectlogo != 'Nestle') {
+
+			$vipordercount = Db::table('pro_order')
+				->where("uid={$pageuser['id']} and gid in (390,391,392,393,394,395) ")
+				->count();
+
+			if ($vipordercount > 0) {
+				$vip = getvip($pageuser['id']);
+				if ($vip > 0) {
+					if ($w2_money > 0)
+						$w2_money = $w2_money * 0.9;
+					if ($w1_money > 0)
+						$w1_money = $w1_money * 0.9;
+				}
+			}
+		}
+
+
+
+
 		if ($w2_money > 0) {
 			updateWalletBalanceAndLog($pageuser['id'], -$w2_money, 2, 1, 'Buy:' . $pro_order['osn']);
 		}
@@ -1068,6 +1097,14 @@ class ProductController extends BaseController
 			'total_invest2' => $user['total_invest2'] + $discount_total
 		];
 		Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
+
+		if ($projectlogo != 'Nestle') {
+			//更新VIP等级
+			if ($item['cvip'] > 0 && $item['cvip'] > $vip) {
+				$data = ['vip' => $item['cvip']];
+				Db::table('sys_user')->where("id={$pageuser['id']}")->update($data);
+			}
+		}
 	}
 
 	//购买后赠送的相关业务

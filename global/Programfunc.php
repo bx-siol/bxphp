@@ -825,6 +825,32 @@ function sysSign($pdata)
 	return md5($str);
 }
 
+
+
+
+function getvip($userid)
+{
+	$vip = 0;
+	$uvip = Db::table('sys_user  ')->where("id= '{$userid}'")->field("vip")->find();
+	$uvip = intval($uvip['vip']);
+	$team = Db::table('sys_user log')->where("pids like '%{$userid}%' and first_pay_day>0")->count();
+	$team_B_num = Db::table('sys_user log')->where("pids like '{$userid},%' and first_pay_day>0")->count();
+	if ($team >= 30 && $team_B_num >= 8)
+		$vip = 1;
+	if ($team >= 80 && $team_B_num >= 15)
+		$vip = 2;
+	if ($team >= 200 && $team_B_num >= 20)
+		$vip = 3;
+	if ($team >= 500 && $team_B_num >= 30)
+		$vip = 4;
+	if ($team >= 1000 && $team_B_num >= 40)
+		$vip = 5;
+	if ($team >= 2000 && $team_B_num >= 60)
+		$vip = 6;
+	return $vip > $uvip  ? $vip : $uvip;
+}
+
+
 //获取系统配置
 function getConfig($skey)
 {

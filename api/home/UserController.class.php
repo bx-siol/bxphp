@@ -39,11 +39,11 @@ class UserController extends BaseController
 			Db::table('wallet_list')->insertGetId($db_item);
 			$wallet3 = $db_item;
 		}
-		
+
 		$investment = Db::table('pro_order log')
-					->leftJoin('pro_goods c', 'log.gid=c.id')
-					->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->sum('log.money');
-		
+			->leftJoin('pro_goods c', 'log.gid=c.id')
+			->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->sum('log.money');
+
 		$recharge = Db::table('fin_paylog')->where("uid={$pageuser['id']} and status=9")->sum('money');
 		$withdraw = Db::table('fin_cashlog')->where("uid={$pageuser['id']} and pay_status=9")->sum('money');
 
@@ -301,10 +301,10 @@ class UserController extends BaseController
 			$item['level'] = $lv == 1 ? 'B' : ($lv == 2 ? 'C' : 'D');
 			$item['first_pay_day_flag'] = $item['first_pay_day'] > 0 ? 'yes' : 'no';
 		}
-		
+
 		$today_start = strtotime(date('Y-m-d 00:00:01'));
 		$today_end = strtotime(date('Y-m-d 23:59:59'));
-		$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time >= ".$today_start  ." and reg_time <= ". $today_end ." ";
+		$where1 = " log.pid='" . $pageuser['id'] . "' and reg_time >= " . $today_start  . " and reg_time <= " . $today_end . " ";
 		$today = Db::table('sys_user log')->where($where1)->count();
 		$total_page = ceil($count_item['cnt'] / $this->pageSize);
 
@@ -340,16 +340,16 @@ class UserController extends BaseController
 		$list = Db::table('sys_user')->where("pids like '%{$pageuser['id']}%' {$where} ")->field('id,pids,reg_time,account')->order("reg_time")->select()->toArray();
 
 		$pro_order =  Db::table('pro_order od')
-					-> leftJoin('sys_user u' ,'od.uid = u.id')
-					->field('od.uid,sum(money) as totalmoney')
-					-> where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
-					-> group('od.uid')
-					->select()->toArray();
+			->leftJoin('sys_user u', 'od.uid = u.id')
+			->field('od.uid,sum(money) as totalmoney')
+			->where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 ")
+			->group('od.uid')
+			->select()->toArray();
 
 		$TotalRecharge = Db::table('fin_paylog pl')
-					-> leftJoin('sys_user u' ,'pl.uid = u.id')
-					-> where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 and pl.status = 9 ")
-					->sum('pl.money');
+			->leftJoin('sys_user u', 'pl.uid = u.id')
+			->where("u.pids like '%{$pageuser['id']}%' and  u.first_pay_day > 0 and pl.status = 9 ")
+			->sum('pl.money');
 
 		$today = date('Ymd', NOW_TIME);
 		$newmember = Db::table('sys_user')
@@ -361,8 +361,7 @@ class UserController extends BaseController
 			$item["level"] = array_search($pageuser['id'], $pidsArr) + 1;
 			$item['reg_time_day'] = date('Ymd', $item['reg_time']);
 
-			if ($item['reg_time_day'] == $today)
-			{
+			if ($item['reg_time_day'] == $today) {
 				if ($item["level"] == 1)
 					$item["newmember1"] = true;
 
@@ -376,8 +375,8 @@ class UserController extends BaseController
 			$item["pro_order_B"] = 0;
 			$item["pro_order_C"] = 0;
 			$item["pro_order_D"] = 0;
-			foreach($pro_order as &$it){
-				if($it['uid'] == $item['id']){
+			foreach ($pro_order as &$it) {
+				if ($it['uid'] == $item['id']) {
 					if ($item["level"] == 1)
 						$item["pro_order_B"] = $it['totalmoney'];
 
@@ -386,10 +385,10 @@ class UserController extends BaseController
 
 					if ($item["level"] == 3)
 						$item["pro_order_D"] = $it['totalmoney'];
-				}					
+				}
 			}
 		}
-		
+
 		$return_data = [
 			'list' => $list,
 			'newmember' => $newmember,
@@ -471,6 +470,8 @@ class UserController extends BaseController
 		$pageuser = checkLogin();
 		$team = Db::table('sys_user log')->where("pids like '%{$pageuser['id']}%' and first_pay_day>0")->count();
 		$team_B_num = Db::table('sys_user log')->where("pids like '{$pageuser['id']},%' and first_pay_day>0")->count();
+		$uvip = Db::table('sys_user  ')->where("id= '{$pageuser['id']}'")->field("vip")->find();
+		$uvip = intval($uvip['vip']);
 		$vip = 0;
 		if ($team >= 30 && $team_B_num >= 8)
 			$vip = 1;
@@ -486,7 +487,7 @@ class UserController extends BaseController
 			$vip = 6;
 
 		$return_data = [
-			'vip' => $vip,
+			'vip' => $vip > $uvip ? $vip : $uvip,
 			'team' => $team,
 			'team_B_num' => $team_B_num,
 		];

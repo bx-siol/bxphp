@@ -168,7 +168,7 @@ class ProductController extends BaseController
 		$params['invest_min'] = floatval($params['invest_min']);
 		$params['invest_limit'] = intval($params['invest_limit']);
 		$params['v_invested'] = floatval($params['v_invested']);
-
+		$params['cvip'] = intval($params['cvip']);
 		$params['gifttopuser'] = intval($params['gifttopuser']);
 		$params['gifttoself'] = intval($params['gifttoself']);
 
@@ -232,6 +232,7 @@ class ProductController extends BaseController
 			$covers[] = $cv;
 		}
 		$db_data = [
+			'cvip' => $params['cvip'],
 			'cid' => $params['cid'],
 			'name' => $params['name'],
 			'days' => $params['days'],
