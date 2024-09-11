@@ -285,15 +285,11 @@ const onSubmit = () => {
         return
       }
       dataForm.password2 = ''
-      _alert({
-        type: 'success',
-        message: res.msg,
-        onClose: () => {
-          init()
-          isRequest = false
-          step.value = 1
-          investShow.value = false
-        }
+
+      _alert(res.msg, function () {        
+        isRequest = false
+        investShow.value = false
+        quantity.value = 1
       })
     })
   }, delayTime)

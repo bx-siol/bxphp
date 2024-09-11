@@ -2,40 +2,35 @@
     <div class="choujiang">
         <MyNav leftText=''></MyNav>
         <div class="cj_center">
-            <div class="title">
-                Number of draws remaining: {{ num }}
-            </div>
             <div class="cj_bg">
-                <LuckyGrid ref="myLucky" width="300px" height="300px" :prizes="prizes" :blocks="blocks" :buttons="buttons" @start="startCallback" @end="endCallback" />
+                <LuckyWheel ref="myLucky" width="380px" height="450px" :prizes="prizes" :blocks="blocks"
+                    :buttons="buttons" @start="startCallback" @end="endCallback" />
             </div>
 
-            <div class="lotteryNum">Activity Rules </div>
+            <div class="cs">{{ num }} DRAWS REMAINING</div>
+            <div class="lotteryNum">ACTIVITY RULES</div>
             <div class="introduce">
-                <p>New members can get 1 chance to win a lottery by joining and activating the product.</p>
-                <p>Invite new members to join and get 1 chance to win a lottery. Get 1 chance to win a lottery for every
-                    product
-                    purchased.</p>
-                <p>How to use [cash coupons]: After receiving the cash coupons, the amount will be directly transferred
-                    to your
-                    account.</p>
-                <p>How to use [discount coupons]: After receiving the [discount coupons], you can use them when
-                    purchasing
-                    products to enjoy discounts.</p>
-                <p>How to use [invitation coupons]: After obtaining the invitation coupons, you can get additional cash
-                    rewards
-                    by inviting new members to join.</p>
-                <p>Note: The number of draws will be reset to 0 at 0:00 every day. If you have a chance to win a
-                    lottery, please
-                    use it immediately.</p>
-                <div style="width: 100%;height: 5rem;"></div>
+                <p>Invite new users to recharge and get 1 lucky draw chance.</p>
+                <p style="padding: 1rem 0;">You can get 1 lucky draw chance when you buy a product.</p>
+                <p style="color: #fdea44;">How to use the voucher: </p>
+                <p>When you get a cash coupon, the amount you get goes directly into your account.</p>
+                <p style="color: #fdea44;margin-top: 1rem;">How to use the coupon: </p>
+                <p>After receiving the coupon, you can purchase the corresponding discounted product and enjoy the
+                    discount.</p>
+                <p style="color: #fdea44;margin-top: 1rem;">How to use invitation coupons: </p>
+                <p>After obtaining the invitation coupons, invite new members to join and purchase equipment to get
+                    extra cash rewards.</p>
+                <div style="width: 100%;height: 2rem;"></div>
             </div>
         </div>
+
+        <van-popup v-model:show="showLotteryPop" style="border-radius: 10px;">
+            <div class="LotteryPop" @click="receiveGift">
+                <img :src="result" />
+                <p style="color: #f84604;">{{ title }}</p>
+            </div>
+        </van-popup>
     </div>
-    <van-popup v-model:show="showLotteryPop" style="border-radius: 10px;">
-        <div class="LotteryPop" @click="receiveGift">
-            <img :src="result" />
-        </div>
-    </van-popup>
 </template>
 <script lang="ts">
 import { defineComponent, ref, onMounted, onBeforeMount } from 'vue'
@@ -67,8 +62,9 @@ const imgFlag = (src: string) => {
 }
 
 const showLotteryPop = ref<boolean>(false)
-const prizes = ref([{ imgs: [] }])
+const prizes = ref([])
 const result = ref('')
+const title = ref('')
 const num = ref(0)
 const myLucky = ref()
 const tdata = ref([])
@@ -76,53 +72,45 @@ const LotteryResults = ref()
 
 const blocks = ref([
     {
-        borderRadius: '15px',
-        padding: '2rem',
+        padding: '58px',
         imgs: [
             {
                 src: cj_bg,   //图片url
-                top: '0',     //图片距顶部距离
-                width: '300px',  //图片宽
-                height: '300px', //图片高
+                top: '-10px',     //图片距顶部距离
+                width: '380px',  //图片宽
+                height: '450px', //图片高
             }
         ],
     }
 ])
 
 const buttons = ref([
+    { radius: '21%', background: '#617df2' },
+    { radius: '21%', background: '#afc8ff' },
     {
-        x: 1, y: 1,
         imgs: [
             {
-                src:  draw,
-                width: '100%',
-                height: '100%',
+                src: draw,
+                top: '-40px',
+                width: '70px',
+                height: '80px',
             }
         ]
     }
 ])
 
 const prizesInitialization = () => {
-    prizes.value = [
-        { x: 0, y: 0, imgs: [{ src: imgFlag(tdata.value[0].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 1, y: 0, imgs: [{ src: imgFlag(tdata.value[1].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 2, y: 0, imgs: [{ src: imgFlag(tdata.value[2].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 2, y: 1, imgs: [{ src: imgFlag(tdata.value[3].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 2, y: 2, imgs: [{ src: imgFlag(tdata.value[4].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 1, y: 2, imgs: [{ src: imgFlag(tdata.value[5].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 0, y: 2, imgs: [{ src: imgFlag(tdata.value[6].cover), width: '90%', height: '85%', top: '8%' }] },
-        { x: 0, y: 1, imgs: [{ src: imgFlag(tdata.value[7].cover), width: '90%', height: '85%', top: '8%' }] },
-    ]
+    tdata.value.forEach((item, index) => {
+        prizes.value.push({
+            background: index % 2 == 0 ? "#fefefe" : "#fee2c4",
+            fonts: [{ text: item.name, fontColor: '#f84604', fontSize: 11, top: "10px" }],
+            imgs: [{ src: imgFlag(item.cover), width: '35px', height: '35px', top: '40px' }]
+        });
+    });
 }
 
 const startCallback = (val: any) => {
-    buttons.value[0].imgs[0].width = "95%";
-    buttons.value[0].imgs[0].height = "95%";
-    setTimeout(() => {
-        buttons.value[0].imgs[0].width = "100%";
-        buttons.value[0].imgs[0].height = "100%";
-    }, 300)
-
+    myLucky.value.play()
     const delayTime = Math.floor(Math.random() * 1000);
     setTimeout(() => {
         http({
@@ -134,7 +122,6 @@ const startCallback = (val: any) => {
                 return
             }
 
-            myLucky.value.play()
             LotteryResults.value = res.data.giftprizelog
             myLucky.value.stop(LotteryResults.value.gift_prize_id - 1);
             num.value = res.data.lottery;
@@ -144,6 +131,7 @@ const startCallback = (val: any) => {
 
 const endCallback = () => {
     result.value = imgFlag(LotteryResults.value.prize_cover);
+    title.value = LotteryResults.value.prize_name
     showLotteryPop.value = true;
 }
 
@@ -183,36 +171,50 @@ onBeforeMount(() => {
         flex-direction: column;
         align-items: center;
 
-        .title {
-            width: 80%;
-            height: 2.5rem;
-            background-color: #fe9522;
-            margin-bottom: 1rem;
-            color: white;
-            line-height: 2.5rem;
-            text-align: center;
-            font-weight: bold;
-            border-radius: 5px;
-            font-size: 0.9rem;
+        .cs {
+            margin-top: 1rem;
+            color: #fdea44;
         }
 
         .lotteryNum {
-            font-size: 1.2rem;
-            font-weight: bold;
-            margin: 1rem 0 0.5rem;
-            color: red;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin: 1rem 0 1rem;
+            color: #9c3b0e;
+            background-color: #fcb856;
+            padding: 0.7rem 2rem;
+            border-radius: 30px;
         }
 
         .introduce {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             padding: 0 0.8rem;
-            color: #fddd50;
+            color: white;
 
             p {
                 margin-bottom: 0.5rem;
             }
         }
 
+    }
+
+    .LotteryPop {
+        width: 11rem;
+        height: 10rem;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        img {
+            width: 6rem;
+            height: 6rem;
+        }
+
+        p {
+            font-size: 1rem;
+        }
     }
 }
 </style>
