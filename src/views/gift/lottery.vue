@@ -72,11 +72,11 @@ const LotteryResults = ref()
 
 const blocks = ref([
     {
-        padding: '58px',
+        padding: '57px',
         imgs: [
             {
                 src: cj_bg,   //图片url
-                top: '-10px',     //图片距顶部距离
+                top: '-15px',     //图片距顶部距离
                 width: '380px',  //图片宽
                 height: '450px', //图片高
             }
