@@ -56,7 +56,7 @@
         justify-content: center;
         justify-content: space-between;
         width: 100%">
-                <a class="divs" href="javascript:;" style="        justify-content: flex-end;"
+                <a class="divs" href="javascript:;"
                   @click="onLink({ name: 'Finance_recharge' })">
                   <div>
                     <div>

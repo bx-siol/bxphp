@@ -1,10 +1,6 @@
 <template>
     <div class="news">
-        <MyNav>
-            <template #left>
-                <div></div>
-            </template>
-        </MyNav>
+        <MyNav leftText=''></MyNav>
         <div>
             <div class="big">
                 <van-swipe indicator-color="white" :autoplay="3000">
@@ -34,7 +30,6 @@
                 </MyListBase>
             </div>
         </div>
-        <MyTab></MyTab>
     </div>
 
     <MyLoading :show="loadingShow"></MyLoading>
