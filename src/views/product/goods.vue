@@ -7,10 +7,12 @@
         <template #search="{ params, tdata, doSearch }">
             <el-select size="small" style="width: 200px;margin-left: 10px;" v-model="params.s_cid" placeholder="所属分类">
                 <el-option key="0" label="所属分类" value="0"></el-option>
-                <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id" :label="item.name" :value="item.id">
+                <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id" :label="item.name"
+                    :value="item.id">
                 </el-option>
             </el-select>
-            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status" placeholder="所有状态">
+            <el-select size="small" style="width: 110px;margin-left: 10px;" v-model="params.s_status"
+                placeholder="所有状态">
                 <el-option key="0" label="所有状态" value="0"></el-option>
                 <el-option v-for="(item, idx) in tdata.status_arr" :key="idx" :label="item" :value="idx">
                 </el-option>
@@ -104,62 +106,73 @@
                             <el-form-item label="所属分类">
                                 <el-select size="small" style="width: 300px;" v-model="dataForm.cid" placeholder="选择分类">
                                     <el-option key="0" label="选择分类" value="0"></el-option>
-                                    <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id" :label="item.name" :value="item.id">
+                                    <el-option v-for="(item, idx) in tdata.category_tree" :key="item.id"
+                                        :label="item.name" :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="购买送自己">
-                                <el-select size="small" style="width: 300px;" v-model="dataForm.gifttoself" placeholder="选择产品">
+                                <el-select size="small" style="width: 300px;" v-model="dataForm.gifttoself"
+                                    placeholder="选择产品">
                                     <el-option key="0" label="选择产品" value="0"></el-option>
-                                    <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id">
+                                    <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name"
+                                        :value="item.id">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="数量">
-                                <el-input size="small" v-model="dataForm.sendnum" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.sendnum" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="产品单价">
-                                <el-input size="small" v-model="dataForm.price" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="购买送推荐人">
-                                <el-select size="small" style="width: 300px;" v-model="dataForm.gifttopuser" placeholder="选择产品">
+                                <el-select size="small" style="width: 300px;" v-model="dataForm.gifttopuser"
+                                    placeholder="选择产品">
                                     <el-option key="0" label="选择产品" value="0"></el-option>
-                                    <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name" :value="item.id"></el-option>
+                                    <el-option v-for="(item, idx) in tdata.giftgoods" :key="item.id" :label="item.name"
+                                        :value="item.id"></el-option>
                                 </el-select>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="数量">
-                                <el-input size="small" v-model="dataForm.sendupnum" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.sendupnum" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="上级赠送积分">
-                                <el-input size="small" v-model="dataForm.Integral" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.Integral" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span> </span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="赠送积分">
-                                <el-input size="small" v-model="dataForm.selfintegral" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.selfintegral" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span> </span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="赠送余额">
-                                <el-input size="small" v-model="dataForm.selfbg" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.selfbg" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span> </span>
                             </el-form-item>
                         </el-col>
@@ -167,13 +180,15 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="产品期限">
-                                <el-input size="small" v-model="dataForm.days" autocomplete="off" placeholder="" style="width: 275px;"></el-input>
+                                <el-input size="small" v-model="dataForm.days" autocomplete="off" placeholder=""
+                                    style="width: 275px;"></el-input>
                                 <span>&nbsp;&nbsp;天</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="16">
                             <el-form-item label="限充值钱包">
-                                <el-input size="small" v-model="dataForm.buyday" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.buyday" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;设置此参数后只能使用充值钱包购买该产品。默认为0</span>
                             </el-form-item>
                         </el-col>
@@ -181,27 +196,31 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="收益率(%)">
-                                <el-input size="small" v-model="dataForm.rate" autocomplete="off" placeholder="" style="width: 260px;"></el-input>
+                                <el-input size="small" v-model="dataForm.rate" autocomplete="off" placeholder=""
+                                    style="width: 260px;"></el-input>
                                 <span>&nbsp;&nbsp;每天</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="16">
                             <el-form-item label="多久后领取">
-                                <el-input size="small" v-model="dataForm.dayout" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.dayout" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;天&nbsp;&nbsp;(设置此参数后只能在达到限定天数后领取收益。默认为0)</span>
                             </el-form-item>
-                        </el-col>                        
+                        </el-col>
                     </el-row>
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="限购数量">
-                                <el-input size="small" v-model="dataForm.invest_limit" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.invest_limit" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;填0或空则不限</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="复购送自己">
-                                <el-input size="small" v-model="dataForm.price0" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price0" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;复购送自己金额</span>
                             </el-form-item>
                         </el-col>
@@ -209,13 +228,15 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="首购送自己">
-                                <el-input size="small" v-model="dataForm.price1" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price1" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;首次购买送自己金额</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="首购送上级">
-                                <el-input size="small" v-model="dataForm.price2" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.price2" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;首次购买送上级金额</span>
                             </el-form-item>
                         </el-col>
@@ -250,19 +271,22 @@
                     <el-row>
                         <el-col :span="8">
                             <el-form-item label="首购送自己">
-                                <el-input size="small" v-model="dataForm.cjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
+                                <el-input size="small" v-model="dataForm.cjcs" autocomplete="off" placeholder=""
+                                    style="width: 230px;"></el-input>
                                 <span>&nbsp;&nbsp;抽奖次数</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="首购送上级">
-                                <el-input size="small" v-model="dataForm.sjcjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
+                                <el-input size="small" v-model="dataForm.sjcjcs" autocomplete="off" placeholder=""
+                                    style="width: 230px;"></el-input>
                                 <span>&nbsp;&nbsp;抽奖次数</span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="复购送自己">
-                                <el-input size="small" v-model="dataForm.fgcjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
+                                <el-input size="small" v-model="dataForm.fgcjcs" autocomplete="off" placeholder=""
+                                    style="width: 230px;"></el-input>
                                 <span>&nbsp;&nbsp;抽奖次数</span>
                             </el-form-item>
                         </el-col>
@@ -270,13 +294,15 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="定时上架">
-                                <el-date-picker size="small" v-model="dataForm.dssj" type="datetime" placeholder="请选择"></el-date-picker>
+                                <el-date-picker size="small" v-model="dataForm.dssj" type="datetime"
+                                    placeholder="请选择"></el-date-picker>
                                 <span>&nbsp;&nbsp;定时上架时间 </span>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="倒计时">
-                                <el-date-picker size="small" v-model="dataForm.djs" type="datetime" placeholder="请选择"></el-date-picker>
+                                <el-date-picker size="small" v-model="dataForm.djs" type="datetime"
+                                    placeholder="请选择"></el-date-picker>
                                 <span>&nbsp;&nbsp;倒计时截止时间 </span>
                             </el-form-item>
                         </el-col>
@@ -284,25 +310,41 @@
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="担保机构">
-                                <el-input size="small" v-model="dataForm.guarantors" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.guarantors" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="12">
                             <el-form-item label="排序">
-                                <el-input size="small" v-model="dataForm.sort" autocomplete="off" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.sort" autocomplete="off"
+                                    style="width: 300px;"></el-input>
                                 <span>&nbsp;&nbsp;从大到小</span>
                             </el-form-item>
                         </el-col>
                     </el-row>
+
+                    <el-row>
+                        <el-col :span="12">
+                            <el-form-item label="VIP">
+                                <el-input size="small" v-model="dataForm.cvip" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
+                                <span>&nbsp;&nbsp; 用户购买后可获得对应的VIP等级</span>
+                            </el-form-item>
+                        </el-col>
+
+                    </el-row>
+
                     <el-row>
                         <el-col :span="6">
                             <el-form-item label="图标">
-                                <MyUpload v-model:file-list="iconList" width="80px" height="80px" style="line-height: initial;"></MyUpload>
+                                <MyUpload v-model:file-list="iconList" width="80px" height="80px"
+                                    style="line-height: initial;"></MyUpload>
                             </el-form-item>
                         </el-col>
                         <el-col :span="18">
                             <el-form-item label="相册">
-                                <MyUpload v-model:file-list="coverList" :limit="5" width="180px" height="100px" style="line-height: initial;"></MyUpload>
+                                <MyUpload v-model:file-list="coverList" :limit="5" width="180px" height="100px"
+                                    style="line-height: initial;"></MyUpload>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -311,18 +353,21 @@
                         <el-col :span="8">
                             <el-form-item label="热门" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.is_hot">
-                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item
+                                        }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="库存">
-                                <el-input size="small" v-model="dataForm.kc" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.kc" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="需邀请人数">
-                                <el-input size="small" v-model="dataForm.yaoqing" autocomplete="off" placeholder="" style="width: 300px;"></el-input>
+                                <el-input size="small" v-model="dataForm.yaoqing" autocomplete="off" placeholder=""
+                                    style="width: 300px;"></el-input>
                             </el-form-item>
                         </el-col>
                     </el-row>
@@ -330,7 +375,8 @@
                         <el-col :span="8">
                             <el-form-item label="显示库存" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.is_xskc">
-                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item
+                                        }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
@@ -344,7 +390,8 @@
                         <el-col :span="8">
                             <el-form-item label="礼物" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.gift">
-                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item
+                                        }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
@@ -353,21 +400,24 @@
                         <el-col :span="8">
                             <el-form-item label="积分产品" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.pointshop">
-                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item
+                                        }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="首页推荐" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.goodsindex">
-                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item
+                                        }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
                         <el-col :span="8">
                             <el-form-item label="是否正常" style="margin-bottom: 0;">
                                 <el-radio-group v-model="dataForm.is_normal">
-                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item }}</el-radio>
+                                    <el-radio :label="idx" v-for="(item, idx) in store.state.config.yes_or_no">{{ item
+                                        }}</el-radio>
                                 </el-radio-group>
                             </el-form-item>
                         </el-col>
@@ -432,6 +482,7 @@ const iconList = ref<any>([])
 const actItem = ref<any>()
 
 const dataForm = reactive<any>({
+    cvip: 0,
     gifttopuser: 0,
     gifttoself: 0,
     djs: 0,
@@ -444,12 +495,12 @@ const dataForm = reactive<any>({
     days: '',
     rate: '',
     scale: '',
-    sendnum:'1',
-    sendupnum:'1',
+    sendnum: '1',
+    sendupnum: '1',
     price: '',
     price1: '',
     price0: '',
-    fgcjcs:'',
+    fgcjcs: '',
     sjcjcs: '',
     cjcs: '',
     price2: '',
@@ -559,9 +610,9 @@ const edit = (idx: number, item: any) => {
     dataForm.kc = item.kc
     dataForm.days = item.days
     dataForm.rate = item.rate
-    dataForm.scale = item.scale    
-    dataForm.sendnum = item.sendnum    
-    dataForm.sendupnum = item.sendupnum    
+    dataForm.scale = item.scale
+    dataForm.sendnum = item.sendnum
+    dataForm.sendupnum = item.sendupnum
     dataForm.price = item.price
     dataForm.price1 = item.price1
     dataForm.price0 = item.price0
@@ -569,7 +620,7 @@ const edit = (idx: number, item: any) => {
     dataForm.dssj = item.dssj
     dataForm.gifttopuser = item.gifttopuser
     dataForm.gifttoself = item.gifttoself
-
+    dataForm.cvip = item.cvip
     dataForm.fgcjcs = item.fgcjcs
     dataForm.sjcjcs = item.sjcjcs
     dataForm.cjcs = item.cjcs
@@ -590,8 +641,8 @@ const edit = (idx: number, item: any) => {
     dataForm.guarantors = item.guarantors
     dataForm.sort = item.sort
     dataForm.yaoqing = item.yaoqing
-    dataForm.status = item.status.toString()    
-    dataForm.gift = item.gift.toString()    
+    dataForm.status = item.status.toString()
+    dataForm.gift = item.gift.toString()
     dataForm.pointshop = item.pointshop.toString()
     dataForm.goodsindex = item.goodsindex.toString()
     dataForm.is_normal = item.is_normal.toString()
