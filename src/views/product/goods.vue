@@ -221,6 +221,33 @@
                         </el-col>
                     </el-row>
                     <el-row>
+                        <el-col :span="5">
+                            <el-form-item label="首购送上一级">
+                                <el-input size="small" v-model="dataForm.Firstgive1" autocomplete="off" placeholder="" style="width: 100px;"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="首购送上二级">
+                                <el-input size="small" v-model="dataForm.Firstgive2" autocomplete="off" placeholder="" style="width: 100px;"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="首购送上三级">
+                                <el-input size="small" v-model="dataForm.Firstgive3" autocomplete="off" placeholder="" style="width: 100px;"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="5">
+                            <el-form-item label="首购送上四级">
+                                <el-input size="small" v-model="dataForm.Firstgive4" autocomplete="off" placeholder="" style="width: 100px;"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="首购送上五级">
+                                <el-input size="small" v-model="dataForm.Firstgive5" autocomplete="off" placeholder="" style="width: 100px;"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                    <el-row>
                         <el-col :span="8">
                             <el-form-item label="首购送自己">
                                 <el-input size="small" v-model="dataForm.cjcs" autocomplete="off" placeholder="" style="width: 230px;"></el-input>
@@ -239,7 +266,7 @@
                                 <span>&nbsp;&nbsp;抽奖次数</span>
                             </el-form-item>
                         </el-col>
-                    </el-row>
+                    </el-row>                    
                     <el-row>
                         <el-col :span="12">
                             <el-form-item label="定时上架">
@@ -426,6 +453,11 @@ const dataForm = reactive<any>({
     sjcjcs: '',
     cjcs: '',
     price2: '',
+    Firstgive1:'0',
+    Firstgive2:'0',
+    Firstgive3:'0',
+    Firstgive4:'0',
+    Firstgive5:'0',
     buyday: '0',
     dayout: '0',
     invest_min: '',
@@ -474,6 +506,11 @@ const add = () => {
     dataForm.cjcs = '0'
     dataForm.price1 = '0'
     dataForm.price2 = '0'
+    dataForm.Firstgive1 = '0'
+    dataForm.Firstgive2 = '0'
+    dataForm.Firstgive3 = '0'
+    dataForm.Firstgive4 = '0'
+    dataForm.Firstgive5 = '0'
     dataForm.buyday = '0'
     dataForm.dayout = '0'
     dataForm.invest_min = ''
@@ -502,7 +539,7 @@ const add = () => {
     dataForm.selfintegral = '0'
     dataForm.selfbg = '0'
     dataForm.djs = '0'
-    dataForm.dssj = '0'
+    dataForm.dssj = '0'    
 }
 
 const edit = (idx: number, item: any) => {
@@ -540,6 +577,11 @@ const edit = (idx: number, item: any) => {
     dataForm.selfintegral = item.selfintegral
     dataForm.selfbg = item.selfbg
     dataForm.price2 = item.price2
+    dataForm.Firstgive1 = item.Firstgive1
+    dataForm.Firstgive2 = item.Firstgive2
+    dataForm.Firstgive3 = item.Firstgive3
+    dataForm.Firstgive4 = item.Firstgive4
+    dataForm.Firstgive5 = item.Firstgive5
     dataForm.buyday = item.buyday == null ? '0' : item.buyday
     dataForm.dayout = item.dayout == null ? '0' : item.dayout
     dataForm.invest_limit = item.invest_limit
