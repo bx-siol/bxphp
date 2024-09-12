@@ -1818,6 +1818,7 @@ class ProductController extends BaseController
 				$upUser = Db::table('sys_user')->where("id={$user['id']}")->find();
 				if($upUser['pid'] != 0){
 					$user = $upUser;
+					writeLog(json_encode($user),'sdfsdfsdf');
 					updateWalletBalanceAndLog($user['id'], $product['Firstgive'.$i], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 				}
 			}
