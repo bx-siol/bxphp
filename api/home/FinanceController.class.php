@@ -236,7 +236,7 @@ class FinanceController extends BaseController
 			}
 		}
 		if ($sys_name == "Nestle") {
-			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384) ")->count();
+			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384,385) ")->count();
 			if ($pro_orderCount == 0)
 				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
 
