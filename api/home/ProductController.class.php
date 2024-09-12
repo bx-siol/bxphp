@@ -1837,6 +1837,7 @@ class ProductController extends BaseController
 			$money = $product['Firstgive5'];
 		}
 
+		writeLog($money,'asdasdasd');
 		if($money > 0)
 			updateWalletBalanceAndLog($user['pid'], $money, 2, 191, 'First purchase gift:' . $pro_order['osn']);
 	}
