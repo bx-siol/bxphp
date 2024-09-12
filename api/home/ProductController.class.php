@@ -1284,7 +1284,7 @@ class ProductController extends BaseController
 			// 送自己产品
 			if ($item['gifttoself']) {
 				$giftitem = Db::table('pro_goods')->where("id={$item['gifttoself']}")->find();
-				Db::table(table: 'pro_order')->insertGetId([
+				Db::table('pro_order')->insertGetId([
 					'uid' => $pageuser['id'],
 					'osn' => getRsn(),
 					'pid' => $pageuser['pid'],
