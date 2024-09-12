@@ -46,9 +46,6 @@
     import Newsimg from '../../assets/img/Newsimg.png'
     import rewards from '../../assets/img/home/home-banner-3-1.png'
     import lbt1 from '../../assets/index/lbt1.jpg'
-    import lbt2 from '../../assets/index/lbt2.jpg'
-    import lbt3 from '../../assets/index/lbt3.jpg'
-    import lbt4 from '../../assets/index/lbt4.jpg'
 
     export default defineComponent({
         name: "news",
@@ -70,7 +67,7 @@
     const imgFlag = (src: string) => {
         return getSrcUrl(src, 1)
     }
-    const covers = ref([lbt1, lbt2, lbt3, lbt4])
+    const covers = ref([lbt1])
 
     const pageRef = ref()
     const pageUrl = ref('c=News&a=list&s_cid=50')
