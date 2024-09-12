@@ -241,9 +241,8 @@ class FinanceController extends BaseController
 				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
 
 			$pro_orderMaIid = Db::table('pro_order')
-				->where("uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384) ")
+				->where("uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384,385) ")
 				->select()->toArray();
-
 
 			$now_day = date('Ymd');
 			$fin_cashlogSum = Db::table('fin_cashlog')->where(" uid={$pageuser['id']} and create_day = " . $now_day . " and status != 3 ")->sum('money');
@@ -292,6 +291,9 @@ class FinanceController extends BaseController
 						break;
 					case '384':
 						$Withdrawal += 120000;
+						break;
+					case '385':
+						$Withdrawal += 50000;
 						break;
 				}
 			}
