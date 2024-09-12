@@ -146,6 +146,8 @@ function walletLog($pdata = [], $create_id = 0)
 		
 		return false;
 	}
+	
+	writeLog('11111','asdasdasd');
 	if ($create_id == 0)
 		$pageuser = checkLogin();
 	else
