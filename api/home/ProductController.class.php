@@ -1819,6 +1819,7 @@ class ProductController extends BaseController
 				if($upUser['pid'] != 0){
 					$user = $upUser;
 					writeLog(json_encode($user),'sdfsdfsdf');
+					writeLog(json_encode($upUser),'sdfsdfsdf');
 					updateWalletBalanceAndLog($user['id'], $product['Firstgive'.$i], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 				}
 			}
