@@ -1816,7 +1816,7 @@ class ProductController extends BaseController
 	{
 		$pro_order = Db::table('pro_order ord')
 		->join('sys_user u','ord.uid = u.id')
-		->where("u.pid={$user['pid']} and ord.gid ={$product['id']} ")
+		->where("u.pid={$user['pid']} and ord.gid ={$product['id']} and ord.p3=1 ")
 		->count();
 
 		$upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=79")->count();
