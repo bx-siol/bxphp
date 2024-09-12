@@ -252,9 +252,7 @@
                 if (i % 2 == 0)
                     color = "#fffffd"
                 lotData.value.prizes.push({
-                    fonts: [{ text: res.data.prize_arr[i].name, top: '5%', fontSize: '12px', fontColor: '#947601' }],
-                    //imgs: [{ src: lotItem1, width: '2rem', top: '40%' }],
-                    imgs: [{ src: getSrcUrl(res.data.prize_arr[i].cover, 1), width: '2rem', top: '40%' }],
+                    imgs: [{ src: getSrcUrl(res.data.prize_arr[i].cover, 1), width: '2.5rem', top: '10%' }],
                     background: color
                 });
                 tdata.value.prize_arr.push(res.data.prize_arr[i].name)
