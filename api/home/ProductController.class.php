@@ -1812,17 +1812,32 @@ class ProductController extends BaseController
 		ReturnToJson(1, 'ok', $list);
 	}
 
-	public function FirstGiveUpFive($user,$product,$pro_order){
-		for ($i = 1; $i <= 5; $i++) {
-			if($product['Firstgive'.$i] > 0){
-				$upUser = Db::table('sys_user')->where("id={$user['pid']}")->find();
-				if($upUser['pid'] != 0){
-					$user = $upUser;
-					writeLog(json_encode($user),'sdfsdfsdf');
-					writeLog(json_encode($upUser),'sdfsdfsdf');
-					updateWalletBalanceAndLog($user['id'], $product['Firstgive'.$i], 2, 10, 'Team First Buy:' . $pro_order['osn']);
-				}
-			}
+	public function FirstGiveUpFive($user,$product,$pro_order)
+	{
+		$pro_order = Db::table('pro_order ord')
+		->join('sys_user u','ord.uid = u.id')
+		->where("u.pid={$user['pid']} and ord.gid ={$product['id']} ")
+		->count();
+
+		$upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=191")->count();
+		$money = 0;
+		if($pro_order == 1 && $product['Firstgive1'] > 0 && $upsend < 1){
+			$money = $product['Firstgive1'];
 		}
+		if($pro_order == 2 && $product['Firstgive2'] > 0 && $upsend < 2){
+			$money = $product['Firstgive2'];
+		}
+		if($pro_order == 3 && $product['Firstgive3'] > 0 && $upsend < 3){
+			$money = $product['Firstgive3'];
+		}
+		if($pro_order == 4 && $product['Firstgive4'] > 0 && $upsend < 4){
+			$money = $product['Firstgive4'];
+		}
+		if($pro_order == 5 && $product['Firstgive5'] > 0 && $upsend < 5){
+			$money = $product['Firstgive5'];
+		}
+
+		if($money > 0)
+			updateWalletBalanceAndLog($user['pid'], $money, 2, 191, 'First purchase gift:' . $pro_order['osn']);
 	}
 }
