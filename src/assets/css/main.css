@@ -91,9 +91,9 @@ img {
     padding-top: 4.5rem;
     position: relative;
     height: 100%;
-    background: #2d6598 url(../../assets/img/login/backcloth.jpg);
+    background: url(../../assets/img/login/backcloth.jpg);
     background-repeat: no-repeat;
-    background-size: 100% 40rem;
+    background-size: 100% 100%;
 }
 
 /* .formbox {

@@ -136,7 +136,7 @@
       </div>
     </div>
 
-    <van-dialog v-model:show="tipShow" style="        border-radius: 16px" :showConfirmButton="false" class-name="home_tip_show"
+    <van-dialog v-model:show="tipShow" style="border-radius: 16px;background-color: transparent;" :showConfirmButton="false" class-name="home_tip_show"
       class="home_tip_shows">
       <div class="dialog_top">
         <img :src="bulletin" style="        width: 20rem;
@@ -156,7 +156,7 @@
         </div>
       </div>
       <div class="dialog_confirm_btn" @click="confirmTip">
-        <span>{{ t('确定') }}</span>
+        <div></div>
       </div>
     </van-dialog>
     <!-- <Service @doService="doService" /> -->
@@ -659,19 +659,16 @@ onMounted(() => {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 1.25rem;
     background-color: #fff;
+    height: 4.5rem;
+    margin-top: -0.2rem;
 
-    span {
-      display: inline-block;
-      height: 2.25rem;
-      width: 14.0625rem;
-      line-height: 2.25rem;
-      text-align: center;
-      font-size: 0.875rem;
-      background: linear-gradient(to right, #db1000 20%, #db1000);
-      color: #fff;
-      border-radius: 1.3125rem;
+    div {
+      height: 4.5rem;
+      width: 14rem;
+      background: url(../../assets/img/home/confirm.png);
+      background-repeat: no-repeat;
+      background-size: 100% 100%;
     }
   }
 }
