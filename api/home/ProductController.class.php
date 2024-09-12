@@ -803,7 +803,7 @@ class ProductController extends BaseController
 				ReturnToJson(-1, "I'm really sorry, the system is currently busy. Please try again later.");
 			}
 			$pro_order = $this->reinvest_date($params, $pageuser, $item, $quantity, $money);
-			writeLog("money" . ",pro_order" . json_encode($pro_order), '_invest');
+			// writeLog("money" . ",pro_order" . json_encode($pro_order), '_invest');
 			// $return_data['err'] = $pro_order['err'];
 			// $return_data['u'] = $pageuser;
 			//判断是否积分商品
@@ -875,7 +875,7 @@ class ProductController extends BaseController
 				ReturnToJson(-1, 'Purchase quantity exceeds the limit');
 			}
 		}
-
+		$kc = 0;
 		if ($item['is_xskc'] == 1) {
 			if ($item['kc'] < $quantity) {
 				ReturnToJson(-1, 'The current inventory is insufficient, please reduce the purchase quantity or contact your manager');
@@ -1142,7 +1142,8 @@ class ProductController extends BaseController
 				$prize = $prizeArr[0];
 			} else if (count($prizeArr) == 1)
 				$prize = $prizeArr[0];
-
+			// $total = 0;
+			// $count = 0;
 			if (empty($prize)) {
 				//查询除概率大于0的奖品
 				foreach ($prize_arr as $item)
@@ -1257,20 +1258,22 @@ class ProductController extends BaseController
 			}
 
 			//首次购买送自己
-			//if ($item['price1'] > 0)			
-			//updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
+			if ($item['price1'] > 0)
+				updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
 
 			//首次购买送上级
-			//if ($item['price2'] > 0)
-			//updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
-
-			//先正达活动
+			if ($item['price2'] > 0)
+				updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
+			else //首购送上五级
+				$this->inviteNewMember($pageuser['pid'], $item['id'], $pageuser['id'], $pro_order['osn']);
+			
+				//先正达活动
 			// $projectlogo = getConfig('sys_name');
 			// if($projectlogo == 'Syngenta')
 			// 	$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
 
 			//首购送上五级
-			$this->FirstGiveUpFive($pageuser,$item,$pro_order);
+			// $this->FirstGiveUpFive($pageuser, $item, $pro_order);
 
 		} else {
 			if ($item['price0'] > 0) //复购送自己
@@ -1347,7 +1350,7 @@ class ProductController extends BaseController
 			$this->auditReward($rewardAmount, $user);
 		else
 			// 更新钱包余额 记录奖励发放日志
-			updateWalletBalanceAndLog($pid, $rewardAmount, 2, 151, "Received level {$level} reward for product {$product['id']}");
+			updateWalletBalanceAndLog($pid, $rewardAmount, 2, 10, "Received level {$level} reward for product {$product['id']}");
 	}
 
 	//审核循环奖励
@@ -1812,32 +1815,127 @@ class ProductController extends BaseController
 		ReturnToJson(1, 'ok', $list);
 	}
 
-	public function FirstGiveUpFive($user,$product,$pro_order)
+	public function FirstGiveUpFive($user, $product, $pro_order)
 	{
-		$pro_order = Db::table('pro_order ord')
-		->join('sys_user u','ord.uid = u.id')
-		->where("u.pid={$user['pid']} and ord.gid ={$product['id']} and ord.p3=1 ")
-		->count();
+		// $pro_order = Db::table('pro_order ord')
+		// ->join('sys_user u','ord.uid = u.id')
+		// ->where("u.pid={$user['pid']} and ord.gid ={$product['id']} and ord.p3=1 ")
+		// ->count();
 
-		$upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=79")->count();
-		$money = 0;
-		if($pro_order == 1 && $product['Firstgive1'] > 0 && $upsend < 1){
-			$money = $product['Firstgive1'];
-		}
-		if($pro_order == 2 && $product['Firstgive2'] > 0 && $upsend < 2){
-			$money = $product['Firstgive2'];
-		}
-		if($pro_order == 3 && $product['Firstgive3'] > 0 && $upsend < 3){
-			$money = $product['Firstgive3'];
-		}
-		if($pro_order == 4 && $product['Firstgive4'] > 0 && $upsend < 4){
-			$money = $product['Firstgive4'];
-		}
-		if($pro_order == 5 && $product['Firstgive5'] > 0 && $upsend < 5){
-			$money = $product['Firstgive5'];
-		}
+		// $upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=79")->count();
+		// $money = 0;
+		// if($pro_order == 1 && $product['Firstgive1'] > 0 && $upsend < 1){
+		// 	$money = $product['Firstgive1'];
+		// }
+		// if($pro_order == 2 && $product['Firstgive2'] > 0 && $upsend < 2){
+		// 	$money = $product['Firstgive2'];
+		// }
+		// if($pro_order == 3 && $product['Firstgive3'] > 0 && $upsend < 3){
+		// 	$money = $product['Firstgive3'];
+		// }
+		// if($pro_order == 4 && $product['Firstgive4'] > 0 && $upsend < 4){
+		// 	$money = $product['Firstgive4'];
+		// }
+		// if($pro_order == 5 && $product['Firstgive5'] > 0 && $upsend < 5){
+		// 	$money = $product['Firstgive5'];
+		// } 
+		// if($money > 0)
+		// 	updateWalletBalanceAndLog($user['pid'], $money, 2, 79, 'First purchase gift:' . $pro_order['osn']);
+	}
 
-		if($money > 0)
-			updateWalletBalanceAndLog($user['pid'], $money, 2, 79, 'First purchase gift:' . $pro_order['osn']);
+
+
+	//送上五级循环奖励-按产品设定的金额发放
+	public function inviteNewMember($user_id, $product_id, $invited_user_id, $product_osn)
+	{
+		// 获取当前日期
+		$invitation_date = date("Y-m-d");
+
+		// 插入邀请记录
+		$invitationData = [
+			'user_id' => $user_id, //上级id
+			'product_id' => $product_id, //对应的产品
+			'invited_user_id' => $invited_user_id, //被邀请人
+			'invitation_date' => $invitation_date, //邀请日期
+			'reward' => 0,
+		];
+		Db::table('Invitations')->insert($invitationData);
+
+		// 更新用户产品进度
+		$this->updateUserProductProgress($user_id, $product_id, $product_osn);
+	}
+
+	public function updateUserProductProgress($user_id, $product_id, $product_osn)
+	{
+		// 检查是否已有记录
+		$progress = Db::table('User_Product_Progress')
+			->where('user_id', $user_id)
+			->where('product_id', $product_id)
+			->find();
+		$reward = 0;
+		if ($progress) {
+			// 有记录，更新进度
+			$current_cycle = $progress['current_cycle'];
+			$current_count = $progress['current_count'];
+
+			if ($current_count >= 5) {
+				// 重新循环
+				$current_cycle += 1;
+				$current_count = 1;
+			} else {
+				$current_count += 1;
+			}
+
+			$reward = $this->getReward($current_count, $product_id);
+			$total_reward = $progress['total_reward'] + $reward;
+
+			$updateData = [
+				'current_cycle' => $current_cycle,
+				'current_count' => $current_count,
+				'total_reward' => $total_reward
+			];
+			Db::table('User_Product_Progress')
+				->where('user_id', $user_id)
+				->where('product_id', $product_id)
+				->update($updateData);
+		} else {
+			// 没有记录，插入新记录
+			$current_cycle = 1;
+			$current_count = 1;
+			$reward = $this->getReward($current_count, $product_id);
+			$total_reward = $reward;
+
+			$insertData = [
+				'user_id' => $user_id,
+				'product_id' => $product_id,
+				'current_cycle' => $current_cycle,
+				'current_count' => $current_count,
+				'total_reward' => $total_reward
+			];
+			Db::table('User_Product_Progress')->insert($insertData);
+		}
+		if ($reward > 0) //更新用户余额
+			updateWalletBalanceAndLog($user_id, $reward, 2, 10, 'First purchase gift:' . $product_osn);
+	}
+
+	public function getReward($count, $product_id)
+	{
+		// 根据产品和邀请次数计算奖励
+		$product = Db::table('pro_goods')->where('id', $product_id)->find();
+
+		switch ($count) {
+			case 1:
+				return $product['Firstgive1'];
+			case 2:
+				return $product['Firstgive2'];
+			case 3:
+				return $product['Firstgive3'];
+			case 4:
+				return $product['Firstgive4'];
+			case 5:
+				return $product['Firstgive5'];
+			default:
+				return 0;
+		}
 	}
 }

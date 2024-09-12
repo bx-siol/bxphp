@@ -290,17 +290,17 @@ class ProductController extends BaseController
 				}
 				$res = $model->whereRaw('id=:id', ['id' => $item_id])->update($db_data);
 				$db_data['id'] = $item_id;
-				$rediskey_goods = RedisKeys::Goods . $params['gsn'];
-				$item = $this->redis->rm($rediskey_goods);
-				$this->redis->rm('pro_goods_' . $params['gsn']);
 			} else {
 				$db_data['create_time'] = NOW_TIME;
 				$db_data['gsn'] = getRsn();
 				$res = $model->insertGetId($db_data);
 				$db_data['id'] = $res;
 			}
+			$rediskey_goods = RedisKeys::Goods . $params['gsn'];
+			$this->redis->rm($rediskey_goods);
+			$this->redis->rm('pro_goods_' . $params['gsn']);
 		} catch (\Exception $e) {
-			ReturnToJson(-1, '系统繁忙请稍后再试');
+			ReturnToJson(-1, '系统繁忙请稍后再试'.$e->getMessage());
 		}
 		actionLog(['opt_name' => '更新产品', 'sql_str' => json_encode($db_data)]);
 		$yes_or_no = getConfig('yes_or_no');
@@ -426,7 +426,7 @@ class ProductController extends BaseController
 		foreach ($list as &$item) {
 			$item['create_time'] = date('Y-m-d H:i:s', $item['create_time']);
 			$item['status_flag'] = $cnf_product_order_status[$item['status']];
-			$item['is_give_flag'] = $item['is_give'] == 0 ?'否': '是' ;
+			$item['is_give_flag'] = $item['is_give'] == 0 ? '否' : '是';
 		}
 		$return_data = [
 			'list' => $list,
@@ -448,7 +448,7 @@ class ProductController extends BaseController
 			$goods_arr = [];
 			if ($params['s_cid']) {
 
-				$goods_where .=  "1=1" ; //"id in (111)";
+				$goods_where .=  "1=1"; //"id in (111)";
 
 				$goods_arr = Db::table('pro_goods')->where($goods_where)->field(['id', 'name', 'price'])->select()->toArray();
 				if (!$goods_arr) {
@@ -706,12 +706,12 @@ class ProductController extends BaseController
 				$user = Db::table('sys_user')->where("id={$item['uid']}")->find();
 				$puser = Db::table('sys_user')->where("id={$user['pid']}")->find();
 				//返佣
-				 if ($puser['stop_commission']) { //暂停佣金
+				if ($puser['stop_commission']) { //暂停佣金
 
-				 } else {
-				 	if ($puser['gid'] < 91) { //代理以及其它管理用户不给佣金
+				} else {
+					if ($puser['gid'] < 91) { //代理以及其它管理用户不给佣金
 
-				 	} else {
+					} else {
 
 						$wallet2 = getWallet($puser['id'], 2);
 						if (!$wallet2) {
@@ -752,8 +752,8 @@ class ProductController extends BaseController
 						// ];
 						// Db::table('pro_reward')->insertGetId($pro_reward2);
 						$this->redis->rmall(RedisKeys::USER_WALLET . $puser['id']);
-				 	}
-				 }
+					}
+				}
 			}
 
 			Db::commit();
