@@ -1815,7 +1815,7 @@ class ProductController extends BaseController
 	public function FirstGiveUpFive($user,$product,$pro_order){
 		for ($i = 1; $i <= 5; $i++) {
 			if($product['Firstgive'.$i] > 0){
-				$upUser = Db::table('sys_user')->where("id={$user['id']}")->find();
+				$upUser = Db::table('sys_user')->where("id={$user['pid']}")->find();
 				if($upUser['pid'] != 0){
 					$user = $upUser;
 					writeLog(json_encode($user),'sdfsdfsdf');
