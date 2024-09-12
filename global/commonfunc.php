@@ -173,7 +173,7 @@ function walletLog($pdata = [], $create_id = 0)
 		$res = Db::table('wallet_log')->insertGetId($db_item);
 		writeLog('2222','asdasdasd');
 	} catch (\Exception $e) {
-		writeLog('33333','asdasdasd');
+		writeLog('33333'.$e->getMessage(),'asdasdasd');
 		return false;
 	}
 	$db_item['id'] = $res;
