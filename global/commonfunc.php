@@ -141,9 +141,9 @@ function walletLog($pdata = [], $create_id = 0)
 	}
 	$type = intval($pdata['type']);
 	$cnf_balance_type = getConfig('cnf_balance_type');
+	writeLog('cnf_balance_type:'.json_encode($cnf_balance_type),'asdasdasd');
 	if (!array_key_exists($type, $cnf_balance_type)) {
 		
-		writeLog('cnf_balance_type:'.json_encode($cnf_balance_type),'asdasdasd');
 		return false;
 	}
 	if ($create_id == 0)
