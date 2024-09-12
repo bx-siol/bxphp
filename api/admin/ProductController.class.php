@@ -272,6 +272,11 @@ class ProductController extends BaseController
 			'sendnum' => $params['sendnum'],
 			'sendupnum' => $params['sendupnum'],
 			'is_normal' => $params['is_normal'],
+			'Firstgive1' => $params['Firstgive1'],
+			'Firstgive2' => $params['Firstgive2'],
+			'Firstgive3' => $params['Firstgive3'],
+			'Firstgive4' => $params['Firstgive4'],
+			'Firstgive5' => $params['Firstgive5'],
 		];
 		try {
 			$model = Db::table('pro_goods');

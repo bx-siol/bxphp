@@ -1269,6 +1269,9 @@ class ProductController extends BaseController
 			// if($projectlogo == 'Syngenta')
 			// 	$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
 
+			//首购送上五级
+			$this->FirstGiveUpFive($pageuser,$item,$pro_order);
+
 		} else {
 			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'] * $quantity, 2, 10, 'Repeat purchase:' . $pro_order['osn']);
@@ -1281,7 +1284,7 @@ class ProductController extends BaseController
 			// 送自己产品
 			if ($item['gifttoself']) {
 				$giftitem = Db::table('pro_goods')->where("id={$item['gifttoself']}")->find();
-				Db::table('pro_order')->insertGetId([
+				Db::table(table: 'pro_order')->insertGetId([
 					'uid' => $pageuser['id'],
 					'osn' => getRsn(),
 					'pid' => $pageuser['pid'],
@@ -1807,5 +1810,17 @@ class ProductController extends BaseController
 		//}
 		$this->redis->close();
 		ReturnToJson(1, 'ok', $list);
+	}
+
+	public function FirstGiveUpFive($user,$product,$pro_order){
+		for ($i = 1; $i <= 5; $i++) {
+			if($product['Firstgive'.$i] > 0){
+				$upUser = Db::table('sys_user')->where("id={$user['id']}")->find();
+				if($upUser['pid'] != 0){
+					$user = $upUser;
+					updateWalletBalanceAndLog($user['id'], $product['Firstgive'.$i], 2, 10, 'Team First Buy:' . $pro_order['osn']);
+				}
+			}
+		}
 	}
 }
