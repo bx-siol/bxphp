@@ -1819,7 +1819,7 @@ class ProductController extends BaseController
 		->where("u.pid={$user['pid']} and ord.gid ={$product['id']} ")
 		->count();
 
-		$upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=191")->count();
+		$upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=79")->count();
 		$money = 0;
 		if($pro_order == 1 && $product['Firstgive1'] > 0 && $upsend < 1){
 			$money = $product['Firstgive1'];
@@ -1837,8 +1837,7 @@ class ProductController extends BaseController
 			$money = $product['Firstgive5'];
 		}
 
-		writeLog($money,'asdasdasd');
 		if($money > 0)
-			updateWalletBalanceAndLog($user['pid'], $money, 2, 191, 'First purchase gift:' . $pro_order['osn']);
+			updateWalletBalanceAndLog($user['pid'], $money, 2, 79, 'First purchase gift:' . $pro_order['osn']);
 	}
 }

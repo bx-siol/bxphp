@@ -141,13 +141,10 @@ function walletLog($pdata = [], $create_id = 0)
 	}
 	$type = intval($pdata['type']);
 	$cnf_balance_type = getConfig('cnf_balance_type');
-	writeLog('cnf_balance_type:'.json_encode($cnf_balance_type),'asdasdasd');
-	if (!array_key_exists($type, $cnf_balance_type)) {
-		
+	if (!array_key_exists($type, $cnf_balance_type)) {		
 		return false;
 	}
 	
-	writeLog('11111','asdasdasd');
 	if ($create_id == 0)
 		$pageuser = checkLogin();
 	else
@@ -171,9 +168,7 @@ function walletLog($pdata = [], $create_id = 0)
 	];
 	try {
 		$res = Db::table('wallet_log')->insertGetId($db_item);
-		writeLog('2222','asdasdasd');
 	} catch (\Exception $e) {
-		writeLog('33333'.$e->getMessage(),'asdasdasd');
 		return false;
 	}
 	$db_item['id'] = $res;
