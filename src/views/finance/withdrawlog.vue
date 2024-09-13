@@ -9,10 +9,10 @@
                         <div class="goods">
                             <ul class="ul_top">
                                 <li>{{ t('订单号') }}: {{ item.osn }}</li>
-                                <li>{{ item.money }} Rs</li>
+                                <li style="color: #fa0f0c ">{{ item.money }} Rs</li>
                             </ul>
                             <ul class="ul_bot">
-                                <li>{{ item.create_time }}</li>
+                                <li style="color:gray">{{ item.create_time }}</li>
                                 <li @click="onGoPayinfo(item)">{{ t(item.status_flag) }}</li>
                             </ul>
                         </div>
@@ -88,35 +88,34 @@ onMounted(() => {
     padding: 1rem 1rem 0;
 }
 
-.goods {
-    margin-bottom: 1rem;
-    border-bottom: 1px solid #ddd;
+    .goods {
+        margin-bottom: 1rem;
+        border-bottom: 1px solid #ddd;
 
-    ul {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        color: #6e523e;
-        line-height: 22px;
-    }
-
-    .ul_bot {
-        margin-bottom: 0.5rem;
-        font-size: 14px;
-
-        li:nth-child(1) {
-            color: #000;
+        ul {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: black;
+            line-height: 22px;
         }
 
-        li:nth-child(2) {
-            background-color: #6e523e;
-            padding: 0.1rem 0.8rem;
-            border-radius: 1rem;
-            color: #fff;
-            // width: 3rem;
-            text-align: center;
+        .ul_bot {
+            margin-bottom: 0.5rem;
+            font-size: 14px;
+
+            li:nth-child(1) {
+                color: #000;
+            }
+
+            li:nth-child(2) {
+                background-color: #fa0f0c;
+                padding: 0.1rem 0.8rem;
+                border-radius: 1rem;
+                color: #fff;
+                // width: 3rem;
+                text-align: center;
+            }
         }
     }
-
-}
 </style>

@@ -1,12 +1,11 @@
 <template>
     <van-tabbar class="myTabBox" v-model="menu.active" @change="onBarChange" route :inactive-color="menu.inactiveColor"
-        :active-color="menu.activeColor" style="background:white;box-shadow: 0px -1px 4px 0 rgb(255 255 255/10%);">
-        <van-tabbar-item v-for="(item, idx) in menu.tabs" :to="!item.url ? item.path : ''" :url="item.url" style="line-height: 0.6;" :dot="item.dot" :badge="item.badge">
+        :active-color="menu.activeColor" style="background:#fff;box-shadow: rgb(154 129 129 / 50%) 0px -2px 10px 0px;">
+        <van-tabbar-item v-for="(item, idx) in menu.tabs" :to="!item.url ? item.path : ''" :url="item.url"
+            style="line-height: 0.6;" :dot="item.dot" :badge="item.badge">
             <span>{{ item.text }}</span>
             <template #icon="{ active }">
-                <van-image :src="(active ? item.iconOn : item.icon)" v-if="idx == 1" class="activeimg" style="width:1.8rem;" />
-                <van-image :src="(active ? item.iconOn : item.icon)" v-else-if="idx == 2" class="activeimg" style="width:3rem;height: 3.55rem;margin-top: -2rem;" />
-                <van-image :src="(active ? item.iconOn : item.icon)" v-else class="activeimg" style="width:1.8rem;" />
+                <van-image :src="(active ? item.iconOn : item.icon)" class="activeimg" />
             </template>
         </van-tabbar-item>
     </van-tabbar>
@@ -101,20 +100,23 @@ const tabs: Tab[] = [
         path: '/'
     },
     {
-        text: t('产品'),
+        text: t('项目'),
         icon: project,
         iconOn: projectactive,
         path: '/project'
     },
-    {
-        text: t('幸运抽奖'),
-        icon: prizes,
-        iconOn: prizesactive,
-        path: '/gift/lottery'
-    },
+    //{
+       
+       
+    //    text: 'Lucky Draw',
+    //    icon: prizes,
+    //    iconOn: prizesactive,
+    //    path: '/gift/lottery/a3d044b074d37a89'
+       
+    //},
 
     {
-        text: t('新闻资讯'),
+        text: 'Notify',
         icon: community,
         iconOn: communityactive,
         path: '/news',
@@ -130,8 +132,8 @@ const tabs: Tab[] = [
 
 const menu = ref<any>({
     active: 0,
-    inactiveColor: '#686868',//未选中颜色
-    activeColor: '#cb1a00',//选中颜色
+    inactiveColor: '#999',//未选中颜色
+    activeColor: 'rgb(235, 23, 0)',//选中颜色
     tabs: tabs
 })
 
@@ -143,40 +145,36 @@ const onClickLogo = () => {
 </script>
 
 <style>
+.van-tabbar-item__icon img {
+    height: 1.4rem;
+}
+
+.myTabBox .van-tabbar-item--active {
+    background: transparent;
+}
+
+.myTabBox .van-tabbar .van-image__img {
+    height: auto;
+}
+
 .van-hairline--top-bottom::after,
 .van-hairline-unset--top-bottom::after {
     border: 0;
 }
 </style>
 <style scoped>
-.myTabBox{    
-    border-top: 1px solid #c3c3c3;
-
-    .van-tabbar-item--active {
-        background: transparent;
-    }
-
-    .van-tabbar .van-image__img {
-        height: auto;
-    }
-
-    .activeimg {
-        width: 1.4rem;
-        height: 1.4rem;
-    }
-
-    .activeimg :deep(.van-image__img) {
-        max-width: 100%;
-        max-height: 100%;
-        width: auto;
-        height: auto;
-        position: relative;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-
+.activeimg {
+    width: 2.4rem;
+    height: 1.4rem;
 }
 
-
-
+.activeimg :deep(.van-image__img) {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+}
 </style>

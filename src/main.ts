@@ -16,6 +16,7 @@ import VueLuckyCanvas from '@lucky-canvas/vue'
 //@ts-ignore
 // import wx from 'weixin-js-sdk';
 import VConsole from 'vconsole';
+//createApp(App).use(VueLuckyCanvas).mount('#app')
 
 function getQueryVariable(variable: string) {
     var query = window.location.search.substring(1);

@@ -14,7 +14,9 @@
         </van-tab>
       </van-tabs>
     </div>
+    <!-- <Service @doService="doService" /> -->
   </div>
+  <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
 </template>
 
 <script lang="ts">
@@ -66,81 +68,88 @@ onMounted(() => {
 
 </script>
 <style lang="scss" scoped>
-.project {
-  background: #fff;
-  width: 100%;
-  overflow-x: hidden;
 
-  .projectWrapper {
-    padding: 0 1rem;
-    box-sizing: border-box;
-    padding-bottom: 1.75rem;
-
-    .projectTab {
-      :deep(.van-tabs__wrap) {
-        .van-tabs__nav--line {
-          position: fixed;
-          width: 100%;
-          height: auto;
-          left: 50%;
-          transform: translateX(-50%);
-          box-sizing: border-box;
-          z-index: 10;
-          background: #fff;
-          padding: 1rem 0.625rem 0.625rem;
-          max-width: 640px;
-
-        }
-      }
-
-      :deep(.van-tabs__line) {
-        display: none;
-        background-color: #fff;
-      }
-
-      :deep(.van-tab) {
-        &.van-tab--active {
-          position: relative;
-          font-weight: bold;
-        }
-
-        .van-tab__text {
-          color: white;
-          background: #d9d9d9;
-          width: 100%;
-          height: 2rem;
-          border-radius: 0.8125rem;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          font-weight: bold;
-        }
-      }
-
-      :deep(.van-tab--active) {
-        .van-tab__text {
-          color: white;
-          width: 100%;
-          height: 2rem;
-          border-radius: 0.8125rem;
-          box-sizing: border-box;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          background: url(/src/assets/img/login/login_btn.png);
-          background-repeat: no-repeat;
-          background-size: 100% 100%;
-          font-weight: bold;
-        }
-
-      }
-
-      :deep(.van-grid-item__content--center) {
-        flex-direction: row;
-        padding: 1rem 0.375rem;
-      }
+    :deep(.van-tabs__wrap) {
+        height: auto;
     }
-  }
-}
+
+    .project {
+        background: #fff;
+        width: 100%;
+        overflow-x: hidden;
+
+        .projectWrapper {
+            padding: 1vh 1rem;
+            box-sizing: border-box;
+            padding-bottom: 1.75rem;
+
+            .projectTab {
+                :deep(.van-tab) {
+                    padding: 0;
+
+                    &.van-tab--active {
+                        position: relative;
+                        background-color: transparent;
+                        // &::after {
+                        //     position: absolute;
+                        //     bottom: -0.3rem;
+                        //     content: ' ';
+                        //     border: 2px solid #00b57e;
+                        //     width: 1rem;
+                        //     border-radius: 6px;
+                        //     // border-top: 0.5rem solid ;
+                        // }
+                    }
+
+                    .van-tab__text {
+                        border: none !important;
+                        color: black !important;
+                        white-space: nowrap;
+                        width: 6rem;
+                        border-radius: 4rem;
+                        text-align: center;
+                        font-weight: bold;
+                    }
+                }
+
+                :deep(.van-tab--grow:first-of-type) {
+                    margin-left: -1rem;
+                }
+
+                :deep(.van-tab--active) {
+                    .van-tab__text {
+                        border: none !important;
+                        background-color: #eb1700 !important;
+                        color: #fff !important;
+                        padding: 0.8rem 0.6rem;
+                        white-space: nowrap;
+                        width: 11rem;
+                        border-radius: 4rem;
+                        text-align: center;
+                    }
+                }
+
+                :deep(.van-tabs__line) {
+                    display: none;
+                    background-color: #fff;
+                }
+
+                :deep(.van-tabs__nav--line) {
+                    padding-top: 0.425rem;
+                }
+
+                :deep(.van-tabs__nav) {
+                    background-color: white;
+                    border-radius: 9rem;
+                    padding: 0rem !important;
+                    border: 1px solid #eb1700;
+                }
+
+                :deep(.van-grid-item__content--center) {
+                    flex-direction: row;
+                    padding: 1rem 0.375rem;
+                }
+            }
+        }
+    }
 </style>

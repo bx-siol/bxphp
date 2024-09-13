@@ -38,23 +38,21 @@ onMounted(() => {
     background-size: 100% 100%;
     border: 0;
     color: #fff;
-    background: url(/src/assets/img/login/login_btn.png);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
+    background: linear-gradient(to right, #db1000 20%, #db1000);
     font-weight: bold;
     border-radius: 4px;
 }
 
 .van-button.sendCodeBtn {
     border: none;
-    color: #cb1a00;
+    color: #c69c6d;
     font-weight: bold;
     vertical-align: middle;
     font-size: 16px;
 }
 
 .sendCodeBtn .van-count-down {
-    color: #cb1a00 !important;
+    color: #c69c6d !important;
 }
 
 .navRightBtn {
@@ -72,8 +70,9 @@ onMounted(() => {
 }
 
 .toastBox {
-    background: #cb1a00 !important;
+    background: #db1000 !important;
     padding: 1rem !important;
+    font-weight: bold;
     /* font-size: 1.135rem !important; */
     word-break: break-word !important;
     /* width: 45% !important; */

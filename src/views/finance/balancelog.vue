@@ -1,6 +1,17 @@
 <template>
     <div class="cashlogBox" style="background-color: #fff; min-height: 100%;">
         <MyNav leftText=""></MyNav>
+        <van-tabs v-model:active="active" @click-tab="onClickTab">
+            <van-tab title="All" ></van-tab>
+            <van-tab title="Recharge"></van-tab>
+            <van-tab title="Withdraw"></van-tab>
+            <van-tab title="Invest"></van-tab>
+            <van-tab title="Profit" ></van-tab>
+            <van-tab title="Lucky Draw"></van-tab>
+            <van-tab title="Cash Coupons"></van-tab>
+            <van-tab title="Bonus"></van-tab>
+            <van-tab title="Commision"></van-tab>
+        </van-tabs>
         <div class="tablebox">
             <div class="tableRight">
                 <MyListBase :key="listkey" :url="listurl" ref="pageRef" @success="onPageSuccess">
@@ -13,187 +24,436 @@
                                         {{ t(item.id) }}
                                     </td>
                                     <div style="display: flex;justify-content: space-between;align-items: center;">
-                                        <div style="display: flex;flex-direction: row;width: 100%;">
+                                    <td v-if="false">
+                                        <img v-if="item.type == 10" :src="bonus" style="width:42px;">
+                                        <img v-else-if="item.type == 1" :src="invest" style="width:42px;">
+                                        <img v-else-if="item.type == 6" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 9" :src="raffle" style="width:42px;">
+                                        <img v-else-if="item.type == 14" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 8" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 21" :src="com" style="width:42px;">
 
-                                            <td v-if="item.type == 1" style="background-color: #00a99d;"></td>
-                                            <td v-else-if="item.type == 6" style="background-color: #f15a24;"></td>
-                                            <td v-else-if="item.type == 8" style="background-color: #cbccfe;"></td>
-                                            <td v-else-if="item.type == 9" style="background-color: #f5665b;"></td>
-                                            <td v-else-if="item.type == 10" style="background-color: #aed0ed;"></td>
-                                            <td v-else-if="item.type == 11" style="background-color: black;"></td>
-                                            <td v-else-if="item.type == 21" style="background-color: #cc1700;"></td>
-                                            <td v-else-if="item.type == 31" style="background-color: #f7931e;"></td>
-                                            <td v-else-if="item.type == 33" style="background-color: #c3c3c3;"></td>
-                                            <td v-else style="background-color: #376ab3;"></td>
-
-                                            <td class="variation" style="flex-direction: column;width: 64%;">
-                                                <div v-if="item.type == 1">
-                                                    <span style="color: #00a99d;">{{ t('投资') }}</span>
-                                                </div>
-                                                <div v-else-if="item.type == 6">
-                                                    <span style="color: #f15a24;">{{ t('投资收益') }}</span>
-                                                </div>
-                                                <div v-else-if="item.type == 8">
-                                                    <span style="color: #cbccfe;">{{ t('佣金') }}</span>
-                                                </div>
-                                                <div v-else-if="item.type == 9">
-                                                    <span style="color: #f5665b;">{{ t('幸运抽奖') }}</span>
-                                                </div>
-                                                <div v-else-if="item.type == 10">
-                                                    <span style="color: #aed0ed;">{{ t('红包') }}</span>
-                                                </div>
-                                                <div v-else-if="item.type == 11">
-                                                    <span style="color: black;">System Recharge</span>
-                                                </div>
-                                                <div v-else-if="item.type == 21">
-                                                    <span style="color: #cc1700;">{{ t('充值') }}</span>
-                                                </div>
-                                                <div v-else-if="item.type == 31">
-                                                    <span style="color: #f7931e;">Withdrawal</span>
-                                                </div>
-                                                <div v-else-if="item.type == 33">
-                                                    <span style="color: #c3c3c3;">Withdrawal refund</span>
-                                                </div>
-                                                <div v-else>
-                                                    <span style="color: #376ab3;">Other</span>
-                                                </div>
-                                                
-                                                <div v-if="item.type == 1" style="color: #00a99d;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 6" style="color: #f15a24;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 8" style="color: #cbccfe;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 9" style="color: #f5665b;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 10" style="color: #aed0ed;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 11" style="color: black;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 21" style="color: #cc1700;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 31" style="color: #f7931e;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else-if="item.type == 33" style="color: #c3c3c3;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                                <div v-else style="color: #376ab3;">
-                                                    {{ item.money > 0 ? '+' + item.money : item.money }} RS
-                                                </div>
-                                            </td>
-                                            <td style="display: flex;flex-direction: column;width: 35%;">
-                                                <span style="color: black;">Time</span>
-                                                <span style="color: #d1d1d1;">{{ item.create_time }}</span>
-                                            </td>
+                                        <img v-else-if="item.type == 11" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 42" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 33" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 31" :src="com" style="width:42px;">
+                                        <img v-else-if="item.type == 1019" :src="com" style="width:42px;">
+                                        <img v-else :src="withc" style="width:42px;">
+                                    </td>
+                                    <div style="display: flex;flex-direction: column;width: 100%;">
+                                    <td class="variation" :style="{'background': bgColor(item.type)}">
+                                        <div v-if="item.type == 10">
+                                            <span>
+                                                {{
+                                                    t('红包')
+                                                }}
+                                            </span>
                                         </div>
-                                    </div>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </template>
+                                        <div v-else-if="item.type == 1">
+                                            <span>
+                                                {{
+                                                    t('投资')
+                                                }}
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 6">
+                                            <span>
+                                                {{
+                                                    t('投资收益')
+                                                }}
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 9">
+                                            <span>
+                                                {{
+                                                    t('幸运抽奖')
+                                                }}
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 14">
+                                            <span>
+                                                {{
+                                                    t('兑换券')
+                                                }}
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 2">
+                                            <span>
+                                                {{
+                                                    t('佣金')
+                                                }}
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 21">
+                                            <span>
+                                                {{
+                                                    t('充值')
+                                                }}
+                                            </span>
+                                        </div>
+
+                                        <div v-else-if="item.type == 42">
+                                            <span>Task</span>
+                                        </div>
+                                        <div v-else-if="item.type == 33">
+                                            <span>
+                                                Withdrawal
+                                                refund
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 31">
+                                            <span>Withdrawal</span>
+                                        </div>
+                                        <div v-else-if="item.type == 11">
+                                            <span>
+                                                System
+                                                Recharge
+                                            </span>
+                                        </div>
+                                        <div v-else-if="item.type == 1019">
+                                            <span>
+                                                Points
+                                            </span>
+                                        </div>
+                                        <div v-else><span>Other</span></div>
+                                        <div style="text-align:right;color:white">
+                                            <span v-if="item.type == 10" style="font-size: 0.9rem;">
+                                                {{
+      item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else-if="item.type == 1"
+                                                  style="font-size: 0.9rem;color: white;font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else-if="item.type == 6"
+                                                  style="font-size: 0.9rem; color: white; font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else-if="item.type == 9"
+                                                  style="font-size: 0.9rem; color: white; font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else-if="item.type == 14"
+                                                  style="font-size: 0.9rem; color: white; font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+
+                                            <span v-else-if="item.type == 2"
+                                                  style="font-size: 0.9rem; color: white; font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else-if="item.type == 21"
+                                                  style="font-size: 0.9rem; color: white; font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else-if="item.type == 1019"
+                                                  style="font-size: 0.9rem; color: white; font-weight: bold;">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                            <span v-else
+                                                  :style="{ 'font-size': '0.9rem', 'font-weight': 'bold', 'color': item.money > 0 ? 'white' : 'white;' }">
+                                                {{
+          item.money > 0 ? '+' + item.money : item.money
+                                                }}RS
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td style="padding: 0vh 3vw; margin-top: 1vh; font-weight: bold; color: gray;">
+
+                                        <span>Order Nunber:{{ item.id }}</span>
+                                        <span>{{ item.create_time }}</span>
+                                        <span>Success</span>
+                                    </td>
+            </div>
+        </div>
+        </tr>
+        </tbody>
+        </table>
+</template>
                 </MyListBase>
             </div>
         </div>
     </div>
-
     <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
-
+  
 <script lang="ts">
-import { defineComponent, onMounted, reactive, ref, computed } from "vue";
-import { Tab, Tabs, Sticky } from "vant";
-import MyNav from "../../components/Nav.vue";
-import MyListBase from "../../components/ListBase.vue";
-import MyLoading from "../../components/Loading.vue";
+    import { defineComponent, onMounted, onBeforeMount, reactive, ref, computed } from "vue";
+    import { Tab, Tabs, Sticky } from "vant";
+    import MyNav from "../../components/Nav.vue";
+    import MyListBase from "../../components/ListBase.vue";
+    import MyLoading from "../../components/Loading.vue";
+    import dropdown from "../../assets/a/dropdown.png";
+    import rech from "../../assets/a/rech.png";
 
-export default defineComponent({
-    components: {
-        MyNav,
-        MyListBase,
-        [Image.name]: Image,
-        [Sticky.name]: Sticky,
-        [Tab.name]: Tab,
-        [Tabs.name]: Tabs,
-    },
-});
+    import pts from "../../assets/a/pts.png";
+    import bonus from "../../assets/a/bonus.png";
+
+    import invest from "../../assets/a/invest.png";
+
+    import raffle from "../../assets/a/raffle.png";
+
+    import withc from "../../assets/a/with.png";
+
+    import com from "../../assets/a/com.png";
+
+    export default defineComponent({
+        components: {
+            MyNav,
+            MyListBase,
+            [Image.name]: Image,
+            [Sticky.name]: Sticky,
+            [Tab.name]: Tab,
+            [Tabs.name]: Tabs,
+        },
+    });
 </script>
 <script lang="ts" setup>
-import { getSrcUrl, lang,cutOutNum } from "../../global/common";
-import { useRoute, useRouter } from "vue-router";
-import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+        import { getSrcUrl, lang } from "../../global/common";
+        import { useRoute, useRouter } from "vue-router";
+        import { useI18n } from 'vue-i18n'; const { t } = useI18n();
+        const activeName = ref("a");
+        let isRequest = false;
+        const router = useRouter();
+        const route = useRoute();
+        const pointflg = ref(true);
+        const active = ref("0");
+        const imgFlag = (src: string) => {
+            return getSrcUrl(src, 1);
+        };
 
-const isActive = (name: string) => {
-    return {
-        background: selected.value === name ? "#fff" : "#f5f6fa",
-        color: selected.value === name ? "#64523e" : "#002544",
-    }
-};
+        const isActive = (name: string) => {
+            return {
+                background: selected.value === name ? "#fff" : "#f5f6fa",
+                color: selected.value === name ? "#64523e" : "#002544",
+                // borderBottom: selected.value === name ? "5px solid #008260" : "0px solid #e22e2f",
+            }
+        };
 
-const listurl = ref("c=Finance&a=balancelog")
-const listkey = ref(0)
-const selected = ref("0");
+        const bgColor = (type: number) => {
+            let color = "#ce1b22";
+            switch (type) {
+                case 21:
+                case 11:
+                    color = "#ce1b22";
+                    break;
+                case 31:
+                case 33:
+                    color = "rgb(241 101 34)";
+                    break;
+                case 10:
+                    color = "rgb(234 19 120)";
+                    break;
+                case 1:
+                case 6:
+                    color = "rgb(4 38 241)";
+                    break;
+                case 2:
+                    color = "rgb(0 152 162)";
+                    break;
+                case 9:
+                    color = "rgb(255 177 35)";
+                    break;
+                default:
+                    break;
+            }
+            return color;
+        };
+        const isDropdownOpen = ref(false);
 
-const loadingShow = ref(true);
-let pageUrl = ref("fin_balancelog");
-const tableData = ref<any>({});
+        const toggleDropdown = () => {
+            isDropdownOpen.value = !isDropdownOpen.value;
+        }
+        const toggle = () => {
+            isDropdownOpen.value = false;
+        }
+        const listurl = ref("c=Finance&a=balancelog")
+        const listkey = ref(0)
+        const selected = ref("0");
 
-const onPageSuccess = (res: any) => {
-    tableData.value = res.data;
-    for(let item of tableData.value.list){
-        item.money = cutOutNum(item.money);
-    }
-    loadingShow.value = false;
-};
+        const onClickTab = ({ title }) => {
+            switch (title) {
+                case "All":
+                    selectlist('0');
+                    break;
+                case "Recharge":
+                    selectlist('Recharge');
+                    break;
+                case "Withdraw":
+                    selectlist('Withdraw');
+                    break;
+                case "Invest":
+                    selectlist('1');
+                    break;
+                case "Profit":
+                    selectlist('6');
+                    break;
+                case "Lucky Draw":
+                    selectlist('9');
+                    break;
+                case "Cash Coupons":
+                    selectlist('14');
+                    break;
+                case "Bonus":
+                    selectlist('10');
+                    break;
+                case "Commision":
+                    selectlist('8');
+                    break;
+                default:
+            }
+        }
+         
+        const selectlist = (name: any) => {
+            if (name == "Recharge")
+                listurl.value = "c=Finance&a=paylog"
+            else if (name == "Withdraw")
+                listurl.value = "c=Finance&a=cashlog"
+            else
+                listurl.value = "c=Finance&a=balancelog&s_type=" + name
 
-onMounted(() => { });
+            listkey.value = listkey.value + 1
+            selected.value = name;
+            isDropdownOpen.value = false;
+        }
+        const loadingShow = ref(true);
+        // const pageRef = ref()
+        let pageUrl = ref("fin_balancelog");
+        const tableData = ref<any>({});
+        const pdata = reactive({});
+
+        const onPageSuccess = (res: any) => {
+            tableData.value = res.data;
+            loadingShow.value = false;
+        };
+
+        const selectedText = computed(() => {
+            switch (selected.value) {
+                case '0': return "All";
+                case 'Recharge': return "Recharge";
+                case 'Withdraw': return "Withdraw";
+                case '1': return "Invest";
+                case '6': return "Profit";
+                case '9': return "Lucky Draw";
+                case '14': return "Cash Coupons";
+                case '10': return "Bonus";
+                case '8': return "Commision";
+                default: return "All";
+            }
+        });
+        onMounted(() => { });
 
 </script>
 <style lang="scss" scoped>
 .cashlogBox {
-    .tablebox {
-        color: #6f6c6c;
-        padding: 0;
-        min-height: 100%;
 
-        table {
-            border: none;
+    .over {
+        text-align: right;
 
-            tr {
+        .dropdown {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+
+            .dropdown-toggle {
+                padding: 0.4rem 0.2rem;
+                margin: 1rem 1rem 0;
+                color: #64523e;
+                border: 1px solid #64523e;
+                border-radius: 30px;
+                // font-weight: bold;
+                text-align: center;
+                width: 100px;
                 display: flex;
-                flex-direction: column;
+                align-items: center;
+                justify-content: space-evenly;
                 font-size: 12px;
-                margin: 0.5rem 0;
-                background-color: #fff;
-                border-bottom: 1px solid #ddd;
-                padding-bottom: 1rem;
 
-                td {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-around;
-                    border: none;
-                    padding: 0.4rem 0rem 0;
-
-                    div{
-                        margin-bottom: 0.1rem;
-                    }
-                }
-
-                td:first-child{
-                    width: 0.3rem;
-                    height: 2.5rem;
+                img {
+                    width: 1rem;
                 }
             }
+
+            .menu {
+                position: absolute;
+                top: 7rem;
+                right: 1rem;
+                text-align: center;
+                border: 1px solid #64523e;
+                background-color: #fff;
+                border-radius: 8px;
+                // font-weight: bold;
+
+                >div {
+                    padding: 0.5rem 0.5rem;
+                    font-size: 12px;
+                }
+
+                div:first-child {
+                    border-radius: 8px 8px 0 0;
+                }
+
+                div:last-child {
+                    border-radius: 0 0 8px 8px;
+                }
+            }
+
         }
 
+    }
+
+}
+
+
+.tablebox {
+    color: #6f6c6c;
+    padding: 0;
+    min-height: 100%;
+}
+
+.tablebox table {
+    border: none;
+
+
+    tr {
+        display: flex;
+        flex-direction: column;
+        font-size: 12px;
+        margin: 1rem 0;
+        background-color: #fff;
+        padding-bottom: 0.5rem;
+
+        td {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            img {
+                width: 50px;
+                margin-right: 0.4rem;
+            }
+        }
+    }
+}
+
+
+
+    .tablebox {
         .tableRight {
             padding: 0 1rem 1rem;
             height: 100%;
@@ -201,23 +461,36 @@ onMounted(() => { });
             font-size: 0.8rem;
 
             .variation {
-                margin-left: 0.5rem;
+                background: #ce1b22;
+                border-radius: 5px;
+                padding-bottom: 1vh;
+                padding-right: 2vw;
 
-                div {
-                    width: 100%;
-                    text-align: left;
-                    font-weight: bold;
+                div:first-of-type {
+                    margin-left: 3vw;
+
+                    span {
+                        color: white;
+                        font-weight: bold;
+                    }
                 }
             }
         }
     }
 
-    .van-tab__text {
-        text-transform: capitalize !important;
+    .tablebox td {
+        border: none;
+        padding: 0.5rem 0rem 0;
+        text-align: center;
+        font-size: 0.7rem;
     }
 
-    table>tbody>tr>td:nth-child(4) {
-        text-align: end;
-    }
+span,
+.van-tab__text {
+    text-transform: capitalize !important;
+}
+
+table>tbody>tr>td:nth-child(4) {
+    text-align: end;
 }
 </style>

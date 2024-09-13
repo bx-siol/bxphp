@@ -3,12 +3,20 @@
     <div class="basicProjects">
       <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #default="{ list }">
+          <!-- levelList为临时数据，将levelList 换成list即可 -->
           <div class="basicProjectsList">
             <div class="basicItem" v-for="(item, index) in tableData.list" :key="index">
-              <div class="detailLeft">
-                
+              <div style="display: flex;width: 100%;align-items: center;flex-direction: column;">
                 <div class="basicItemLeft">
-                  <div class="Countdown">
+                  <img :src="imgFlag(item.icon)" class="imgs">
+                  <img v-if="item.status == 9" :src="sold_out" class="sold_out">
+                </div>
+                <div class="basicItemRight">
+                  <div class="name">
+                    <div style=" font-size: .8rem;">
+                      <div style="display: inline-block; width: 70%;">{{ item.name }} </div>
+                      <div style="display: inline-block; color: #eb1700;text-align:right;"> {{item.price}}RS</div>
+                    </div>
                     <span v-if="item.djs > now" style="position: absolute; right: 6px; top: 8px;font-size: 12px;">
                       <van-count-down @finish="onFinish(item)" format="HH:mm:ss" :time="djs(item.djs)"> </van-count-down>
                     </span>
@@ -17,36 +25,29 @@
                     </span>
                   </div>
                   <div class="detail">
-                    <img :src="logo" style="height: 1.5rem;width: 7rem;margin: 0.5rem 0;" >
-                    <div class="detailLeft_left">
+                    <div class="detailLeft">
                       <div class="unitprice">
-                        <span>{{ item.name }}</span>
-                        <span style="color: #cb1a00;">₹{{ cutOutNum(item.price) }}</span>
-                      </div>
-                      <div class="unitprice">
-                        <span>{{ t('收入天数') }}</span>
-                        <span>{{ item.days }} days</span>
+                          <span>Earnings Days: </span>
+                          <span style="color:gray">{{ item.days }} days</span>
                       </div>
                       <div class="dailyearnings">
-                        <span>{{ t('每日收入') }}</span>
-                        <span>₹{{ cutOutNum(item.price * item.rate / 100) }}</span>
+                        <span>{{ t('每日收入') }}: </span>
+                        <span style="color: gray">₹{{ cutOutNum(item.price * item.rate / 100) }}</span>
                       </div>
                       <div class="totalrevenue">
-                        <span>{{ t('总收入') }}</span>
-                        <span style="color: #cb1a00;">₹{{ (item.days * item.price * item.rate / 100).toFixed(2)  }}</span>
+                        <span>{{ t('总收入') }}: </span>
+                        <span >₹{{ cutOutNum(item.days * (item.price * item.rate / 100)) }}</span>
                       </div>
                     </div>
-                  </div>                 
-                </div>
-
-                <div class="basicItemRight">
-                  <img :src="imgFlag(item.icon)" class="imgs">
-                  <img v-if="item.status == 9" :src="sold_out" class="sold_out">
+                  </div>
                 </div>
               </div>
+              <div class="detailRight">
+                <!-- <div class="addRs">₹{{ cutOutNum(item.price) }}</div> -->
 
-              <div class="detailRight" @click="getProjectDetail(item)">
-                <img :src="pay" style="height: 1.5rem; width: 1.5rem;">
+                <div class="pay" @click="getProjectDetail(item)">
+                  buy
+                </div>
               </div>
             </div>
           </div>
@@ -54,12 +55,13 @@
       </MyListBase>
     </div>
   </div>
+  <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
 </template>
 <script lang="ts">
 import { CountDown } from "vant";
 import sold_out from '../assets/img/project/sold_out.png'
-import pay from '../assets/img/project/pay.png';
-import logo from '../assets/img/home/home_top.png';
+
+import trial from "../assets/img/2.png";
 
 export default defineComponent({
   components: {
@@ -73,11 +75,13 @@ export default defineComponent({
 <script lang="ts" setup>
 import { onMounted, ref, defineComponent } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import Product from '../assets/img/project/product.png';
+import sqimg from '../assets/sq.png';
 import MyListBase from './ListBase.vue';
+// import MyLoading from './Loading.vue';
 import { getSrcUrl, lang, _alert, cutOutNum } from "../global/common";
 import http from "../global/network/http";
-import { useI18n } from 'vue-i18n'; 
-const { t } = useI18n();
+import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 const now = Date.parse(new Date()) / 1000;
 
 const onFinish = (item: any) => {
@@ -129,126 +133,163 @@ const basicProjects = ref<basicProjects>({
   sort: 'Basic',
   list: []
 })
+// 获取project详细信息
+const goProjectDetail = (item: any) => {
+  router.push({ name: 'Project_detail', params: { gsn: item.gsn } })
+}
+
 </script>
 <style lang="scss" scoped>
-.Projects {
-  .basicProjects {
-    .basicProjectsList {
-      margin-top: 1rem;
+    .Projects {
+        .basicProjects {
 
-      .basicItem {
-        height: 7.5rem;
-        box-shadow: 0px 0px 12px 2px rgba(225, 225, 225);
-        margin-bottom: 1rem; 
-
-        .detailLeft{
-          height: 7.5rem;
-          float: left;
-          width: 88%;
-          background: url(../assets/img/project/peroject_bg.png);
-          background-repeat: no-repeat;
-          background-size:100% 100%;
-          display: flex;
-          align-items: center;
-
-          .basicItemLeft {
-            height: 7.5rem;
-            padding-left: 3%;
-            width: 50%;
-            float: left;
-
-            .Countdown {
-              position: absolute;
-              height: 2rem;
-              width: 6rem;
-              left: 9rem;
-              
-              span {
-                background: red url(../assets/djs.png) 3px center no-repeat;
-                background-size: 18px;
-                padding: 2px 3px 2px 25px;
-                border-radius: 10px;
-
-                .van-count-down {
-                  color: #fff;
-                }
-              }
-            }
-
-            .detail {
-              font-size: 1rem;
-              display: flex;
-              align-items: flex-start;
-              flex-direction: column;
-              justify-content: center;
-              margin-top: 0.2rem;
-
-              .detailLeft_left {
-                font-size: 1rem;
+            .basicProjectsSplit {
                 display: flex;
-                flex-direction: column;
+                align-items: center;
                 justify-content: center;
-                align-items: flex-start;
-                color: #fff;
-                width: 100%;
-
-                &>div {
-                  margin-bottom: 0.3125rem;
-                  width: 100%;
-                  display: flex;
-                  justify-content: space-between;
-                  flex-direction: row;
-                  align-items: center;
-
-                  span:first-child {
-                    font-size: 0.75rem;
-                    white-space: nowrap;
-                    font-weight: normal;
-                  }
-
-                  span {
-                    font-size: 0.75rem;
-                    font-weight: bold;
-                  }
-                }
-              }
-            }          
-          }
-
-          .basicItemRight {
-            width: 35%;
-            height: 6.5rem;
-            float: left;            
-            display: flex;
-            align-items: center;
-            justify-content: space-around;
-            margin-left: 11%;
-
-            .sold_out {
-              position: relative;
-              z-index: 1;
-              width: 4rem;
-              height: 4rem;
-              opacity: 0.6;
-              left: -47%;
-              top: 29%;
-              transform: translate(-50%, -50%);
             }
-          }
 
-        }
+            .basicProjectsList {
+                // column-count: 2;
+                // column-gap: 10px;
+                margin-top: 1rem;
+                display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
 
-        .detailRight {
-          width: 10%;
-          height: 7.5rem;
-          float: right;
-          background-color: black;
-          display: flex;
-          align-items: center;
-          justify-content: space-around;
+                .basicItem {
+                    box-sizing: border-box;
+                    height: auto;
+                    display: flex;
+                    flex-direction: column;
+                    background: #fff;
+                    position: relative;
+                    border-radius: 10px;
+                    margin-bottom: 1rem;
+                    padding: 0.425rem 0.625rem 0.625rem;
+                    width: 48%;
+                    border: 1px solid #8080803b;
+
+                    .basicItemLeft {
+                        width: 8rem;
+                        height: 7rem;
+                        // margin: 1rem auto 0.8rem;
+                        position: relative;
+
+                        .imgs {
+                            max-width: 100%;
+                            max-height: 100%;
+                            width: auto;
+                            height: auto;
+                            position: relative;
+                            left: 50%;
+                            transform: translateX(-50%);
+                        }
+
+                        .sold_out {
+                            position: absolute;
+                            z-index: 1;
+                            width: 4rem;
+                            height: 4rem;
+                            opacity: 0.6;
+                            left: 50%;
+                            top: 50%;
+                            transform: translate(-50%, -50%);
+                        }
+                    }
+
+                    .basicItemRight {
+                        display: flex;
+                        flex-direction: column;
+
+                        .name {
+                            font-weight: bold;
+                            display: flex;
+                            align-items: flex-start;
+                            flex-direction: column;
+                            margin: 0.6rem 0;
+                            font-size: 14px;
+                            white-space: nowrap;
+
+                            span {
+                                background: #eb1700 url(../assets/djs.png) 3px center no-repeat;
+                                background-size: 18px;
+                                padding: 2px 3px 2px 25px;
+                                border-radius: 10px;
+
+                                .van-count-down {
+                                    color: #fff;
+                                }
+                            }
+                        }
+
+                        .detail {
+                            font-size: 1rem;
+                            display: flex;
+                            align-items: flex-start;
+                            flex-direction: column;
+                            justify-content: center;
+                            margin-top: 0.2rem;
+
+                            .detailLeft {
+                                font-size: 1rem;
+                                display: flex;
+                                flex-direction: column;
+                                justify-content: center;
+                                align-items: flex-start;
+                                color: #3d3d3d !important;
+                                width: 100%;
+
+                                & > div {
+                                    margin-bottom: 0.3125rem;
+                                    width: 100%;
+                                    display: flex;
+                                    justify-content: flex-start;
+                                    flex-direction: row;
+                                    align-items: center;
+
+                                    span:first-child {
+                                        color: #222;
+                                        font-size: 0.75rem;
+                                        white-space: nowrap;
+                                        font-weight: normal;
+                                    }
+
+                                    span {
+                                        font-size: 0.75rem;
+                                        color: #eb1700;
+                                        font-weight: bold;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
+                .detailRight {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    padding: 0.4rem;
+                    background: rgb(235, 23, 0);
+                    border-radius: 6px;
+                    font-size: 14px;
+
+                    .addRs {
+                        color: #ff9900;
+                        font-weight: bold;
+                    }
+
+                    .pay {
+                        color: #fff;
+                        font-weight: bold;
+
+                        img {
+                            width: 2rem;
+                        }
+                    }
+                }
+            }
         }
-      }     
     }
-  }
-}
 </style>

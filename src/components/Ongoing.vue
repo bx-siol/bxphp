@@ -87,6 +87,9 @@
 
       <van-dialog :closeOnClickOverlay="true" v-model:show="tipShow" style="border-radius: 0" :showConfirmButton="false"
         class-name="home_tip_show">
+        <div class="dialog_top">
+          <img :src="rgimg">
+        </div>
         <div class="dialog_content">
           <div style="color: #fff;   margin-top: -200px;" class="notice_list">
             <div style="padding: 0 1rem;padding-bottom: 1rem;max-height: 24rem;overflow-y: auto;">
@@ -100,7 +103,10 @@
           </div>
         </div>
         <div class="dialog_confirm_btn" @click="onReceivehttp">
+          <img style="width: 65%;margin: 0 auto;" :src="rgimgb" />
           <div style="margin-top: -26px;height: 45px;color: #fff;">{{ qdtxt }}</div>
+          <img style="width: 15px;margin-top: -48px;margin-left: 75px;" :src="rgimgd" />
+          <img style="width: 15px;margin-top: -26px;margin-left: 220px;" :src="rgimgd" />
         </div>
       </van-dialog>
       <!-- <div :v-show="rg">
@@ -143,6 +149,9 @@ export default defineComponent({
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import Product from '../assets/img/project/product.png';
+import rgimg from '../assets/rg.gif';
+import rgimgb from '../assets/rgb.png';
+import rgimgd from '../assets/rgd.png';
 import MyTab from "./Tab.vue";
 import http from "../global/network/http";
 import { getSrcUrl, goRoute, imgPreview } from "../global/common";

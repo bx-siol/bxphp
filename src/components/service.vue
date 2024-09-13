@@ -17,7 +17,7 @@
             height="2.5rem" />
 
           <div style="float: right;text-align: right;">
-            <div>{{ item.name }}</div>
+            <div>{{ item.name }}123123</div>
             <div style="font-size: 0.9rem;color: #666666;">{{ item.account }}</div>
           </div>
         </div>
@@ -72,89 +72,89 @@
 </template>
  
 <script lang="ts">
-import { Image, ActionSheet, Dialog } from "vant";
-import { defineComponent, ref, onMounted } from 'vue'
-import { _alert, lang } from "../global/common";
-import app98 from "../assets/img/team/app98.png";
-export default defineComponent(
-  {
-    name: "index",
-    components: {
-      [ActionSheet.name]: ActionSheet,
-      [Image.name]: Image,
-      [Dialog.Component.name]: Dialog.Component,
-    }
-  })
+    import { Image, ActionSheet, Dialog } from "vant";
+    import { defineComponent, ref, onMounted } from 'vue'
+    import { _alert, lang } from "../global/common";
+    import app98 from "../assets/img/team/app98.png";
+    export default defineComponent(
+        {
+            name: "index",
+            components: {
+                [ActionSheet.name]: ActionSheet,
+                [Image.name]: Image,
+                [Dialog.Component.name]: Dialog.Component,
+            }
+        })
 </script>
 
 <script lang="ts" setup>
-import service from '../assets/img/team/service.png';
-import http from "../global/network/http";
+    import service from '../assets/img/team/service.png';
+    import http from "../global/network/http";
 
-import img_whatsapp from '../assets/img/whatsapp.png';
-import img_telegram from '../assets/img/telegram.png';
-import { useI18n } from 'vue-i18n';
-const { t } = useI18n();
-const did = ref(0)
-const tipShow2 = ref(false)
-const emit = defineEmits(['doService'])
-const tipShow = ref(false)
-const doService = () => {
-  serviceShow.value = true;
-}
-const app = () => {
-  window.location.href = '/app'
-}
+    import img_whatsapp from '../assets/img/whatsapp.png';
+    import img_telegram from '../assets/img/telegram.png';
+    import { useI18n } from 'vue-i18n';
+    const { t } = useI18n();
+    const did = ref(0)
+    const tipShow2 = ref(false)
+    const emit = defineEmits(['doService'])
+    const tipShow = ref(false)
+    const doService = () => {
+        serviceShow.value = true;
+    }
+    const app = () => {
+        window.location.href = '/app'
+    }
 
-const urcl = ref('')
-const actions = ref([])
-const serviceShow = ref(false)
-const onServiceSelect = (ev: any) => {
+    const urcl = ref('')
+    const actions = ref([])
+    const serviceShow = ref(false)
+    const onServiceSelect = (ev: any) => {
 
-  let url = ''
-  if (ev.type == 1) {
-    url = 'https://t.me/' + ev.account
-  } else if (ev.type == 2) {
-    //url = 'https://api.whatsapp.com/send/?phone=' + ev.account
-    url = 'https://wa.me/' + ev.account
-  } else {
-    return
-  }
-  serviceShow.value = false;
-
-  //tipShow2.value = true;
-  window.open(url, 'blank')
-  //window.location.href = url 
-  //urcl.value = url 
-}
-const t120 = () => {
-  did.value++
-}
-
-onMounted(() => {
-  const delayTime = Math.floor(Math.random() * 1000);
-  // setTimeout(() => {
-    http({
-      url: 'a=GetService'
-    }).then((res: any) => {
-      if (res.code != 1) {
-        return
-      }
-      if (res.data.service_arr && res.data.service_arr.length > 0) {
-        for (let i in res.data.service_arr) {
-          let item = res.data.service_arr[i]
-          actions.value.push({
-            name: item.name,
-            subname: item.type_flag + ': ' + item.account,
-            account: item.account,
-            type: item.type
-          })
+        let url = ''
+        if (ev.type == 1) {
+            url = 'https://t.me/' + ev.account
+        } else if (ev.type == 2) {
+            //url = 'https://api.whatsapp.com/send/?phone=' + ev.account
+            url = 'https://wa.me/' + ev.account
+        } else {
+            return
         }
-      }
-    })
-  // }, delayTime)
+        serviceShow.value = false;
 
-})
+        //tipShow2.value = true;
+        window.open(url, 'blank')
+        //window.location.href = url 
+        //urcl.value = url 
+    }
+    const t120 = () => {
+        did.value++
+    }
+
+    onMounted(() => {
+        const delayTime = Math.floor(Math.random() * 1000);
+        // setTimeout(() => {
+        http({
+            url: 'a=GetService'
+        }).then((res: any) => {
+            if (res.code != 1) {
+                return
+            }
+            if (res.data.service_arr && res.data.service_arr.length > 0) {
+                for (let i in res.data.service_arr) {
+                    let item = res.data.service_arr[i]
+                    actions.value.push({
+                        name: item.name,
+                        subname: item.type_flag + ': ' + item.account,
+                        account: item.account,
+                        type: item.type
+                    })
+                }
+            }
+        })
+        // }, delayTime)
+
+    })
 
 </script>
  

@@ -26,7 +26,7 @@
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <!-- <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 5 friends to Register -->
+                                    <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 5 friends to Register
                                 </p>
                                 <div class="liskbox">
                                     <div style="width: 12.5rem; overflow: hidden;">
@@ -40,7 +40,7 @@
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <!-- <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 10 friends to Register -->
+                                    <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 10 friends to Register
                                 </p>
                                 <div class="liskbox">
                                     <div style="width: 12.5rem; overflow: hidden;">
@@ -54,7 +54,7 @@
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <!-- <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 15 friends to Register -->
+                                    <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 15 friends to Register
                                 </p>
                                 <div class="liskbox">
                                     <div style="width: 12.5rem; overflow: hidden;">
@@ -69,7 +69,7 @@
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <!-- <img :src="taskicon1" style="width:2rem;height:2rem;"> Invite 20 friends to Register -->
+                                    <img :src="taskicon1" style="width:2rem;height:2rem;"> Invite 20 friends to Register
                                 </p>
                                 <div class="liskbox">
                                     <div style="width: 12.5rem; overflow: hidden;">
@@ -83,7 +83,7 @@
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <!-- <img :src="taskicon1" style="width:2rem;height:2rem;"> Invite 50 friends to Register -->
+                                    <img :src="taskicon1" style="width:2rem;height:2rem;"> Invite 50 friends to Register
                                 </p>
                                 <div class="liskbox">
                                     <div style="width: 12.5rem; overflow: hidden;">
@@ -127,7 +127,7 @@
 </script>
   
 <script lang="ts" setup>
-    //import taskicon1 from '../../assets/img/signin/taskicon1.png'
+    import taskicon1 from '../../assets/img/signin/taskicon1.png'
     import { useI18n } from 'vue-i18n'; const { t } = useI18n();
     const router = useRouter()
     const loadtitle = ref("Loading...")
