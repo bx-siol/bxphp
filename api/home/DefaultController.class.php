@@ -295,6 +295,9 @@ class DefaultController extends BaseController
 		$tip = Db::table('news_article')->where("id={$tipId} and status=2")->field(['title', 'content'])->find();
 		$newscount = Db::table('news_article')->where("cid=50 and status=2")->field(['id'])->select()->toArray();
 
+		$now_day = date('Ymd');
+		$userCount = DB::table('sys_user')->where(" first_pay_day = {$now_day} ")->count();
+
 		$return_data = [
 			'newscount' => count($newscount),
 			'newsids' => $newscount,
@@ -307,6 +310,7 @@ class DefaultController extends BaseController
 			// 'news' => $news,
 			'tip' => $tip,
 			'gift' => $pageuser['gift'],
+			'InviteesNum' => $userCount,
 			//'service_arr' => $service_arr
 		];
 		ReturnToJson(1, 'ok', $return_data);
