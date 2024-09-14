@@ -1948,7 +1948,8 @@ class ProductController extends BaseController
 		$pro_order = DB::table('pro_order a')
 					->join('pro_goods b',"a.gid = b.id")
 					->where(" a.uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
-					->select('a.*');		
+					->field('a.id')
+					->find();
 		
 		writeLog(json_encode($pro_order),'adasdasd');
 		$data = ['sign' => $params['sign']];
