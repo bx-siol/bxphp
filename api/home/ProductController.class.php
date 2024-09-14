@@ -139,7 +139,7 @@ class ProductController extends BaseController
 		$wallet3 = getWallet($pageuser['id'], 3);
 
 		$projectlogo = getConfig('sys_name');
-		if ($projectlogo != 'Nestle') {
+		if ($projectlogo == 'Syngenta') {
 			$vip =	getvip($pageuser['id']);
 		}
 
@@ -1065,7 +1065,7 @@ class ProductController extends BaseController
 		$vip = 0;
 		// 先正达 VIP折扣
 		$projectlogo = getConfig('sys_name');
-		if ($projectlogo != 'Nestle') {
+		if ($projectlogo == 'Syngenta') {
 
 			$vipordercount = Db::table('pro_order')
 				->where("uid={$pageuser['id']} and gid in (332,333,334,335,336,337) ")
@@ -1098,7 +1098,7 @@ class ProductController extends BaseController
 		];
 		Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 
-		if ($projectlogo != 'Nestle') {
+		if ($projectlogo == 'Syngenta') {
 			//更新VIP等级
 			if ($item['cvip'] > 0 && $item['cvip'] > $vip) {
 				$data = ['vip' => $item['cvip']];
