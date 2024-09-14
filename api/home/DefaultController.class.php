@@ -342,5 +342,6 @@ class DefaultController extends BaseController
 		
 		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type,'Recharge reward for the inviter on the day.' .$params['type']);
 		
+		ReturnToJson(1, 'Success');
 	}
 }
