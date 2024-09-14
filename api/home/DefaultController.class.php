@@ -340,7 +340,7 @@ class DefaultController extends BaseController
 		if($walllog == 1)
 			ReturnToJson(-1, 'The reward has been received today.');
 		
-		updateWalletBalanceAndLog($pageuser['id'], $money, 2, type: $type,'Recharge reward for the inviter on the day.' .$params['type']);
+		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type,'Recharge reward for the inviter on the day.' .$params['type']);
 		
 	}
 }
