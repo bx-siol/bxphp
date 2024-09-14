@@ -1257,8 +1257,6 @@ class ProductController extends BaseController
 				$this->redis->rmall(RedisKeys::USER_ORDER . $puser['id']);
 			}
 
-			writeLog('1111','aaaaqa');
-
 			//首次购买送自己
 			if ($item['price1'] > 0)
 				updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
@@ -1276,8 +1274,6 @@ class ProductController extends BaseController
 
 			//首购送上五级
 			// $this->FirstGiveUpFive($pageuser, $item, $pro_order);
-
-			writeLog('2222','aaaaqa');
 		} else {
 			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'] * $quantity, 2, 10, 'Repeat purchase:' . $pro_order['osn']);
@@ -1851,6 +1847,8 @@ class ProductController extends BaseController
 	//送上五级循环奖励-按产品设定的金额发放
 	public function inviteNewMember($user_id, $product_id, $invited_user_id, $product_osn)
 	{
+
+		writeLog('1111','aaaaqa');
 		// 获取当前日期
 		$invitation_date = date("Y-m-d");
 
@@ -1866,10 +1864,14 @@ class ProductController extends BaseController
 
 		// 更新用户产品进度
 		$this->updateUserProductProgress($user_id, $product_id, $product_osn);
+		
+
+		writeLog('66666','aaaaqa');
 	}
 
 	public function updateUserProductProgress($user_id, $product_id, $product_osn)
 	{
+		writeLog('222','aaaaqa');
 		// 检查是否已有记录
 		$progress = Db::table('User_Product_Progress')
 			->where('user_id', $user_id)
@@ -1877,6 +1879,7 @@ class ProductController extends BaseController
 			->find();
 		$reward = 0;
 		if ($progress) {
+			writeLog('333','aaaaqa');
 			// 有记录，更新进度
 			$current_cycle = $progress['current_cycle'];
 			$current_count = $progress['current_count'];
@@ -1902,6 +1905,7 @@ class ProductController extends BaseController
 				->where('product_id', $product_id)
 				->update($updateData);
 		} else {
+			writeLog('4444','aaaaqa');
 			// 没有记录，插入新记录
 			$current_cycle = 1;
 			$current_count = 1;
@@ -1919,6 +1923,8 @@ class ProductController extends BaseController
 		}
 		if ($reward > 0) //更新用户余额
 			updateWalletBalanceAndLog($user_id, $reward, 2, 10, 'First purchase gift:' . $product_osn);
+			
+			writeLog('5555','aaaaqa');
 	}
 
 	public function getReward($count, $product_id)
