@@ -1068,7 +1068,7 @@ class ProductController extends BaseController
 		if ($projectlogo != 'Nestle') {
 
 			$vipordercount = Db::table('pro_order')
-				->where("uid={$pageuser['id']} and gid in (390,391,392,393,394,395) ")
+				->where("uid={$pageuser['id']} and gid in (332,333,334,335,336,337) ")
 				->count();
 
 			if ($vipordercount > 0) {
