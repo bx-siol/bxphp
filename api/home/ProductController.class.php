@@ -1938,4 +1938,21 @@ class ProductController extends BaseController
 				return 0;
 		}
 	}
+
+	//先正达购买指定产品签名
+	public function SigningCcontract()
+	{		
+		$pageuser = checkLogin();		
+		$params = $this->params;
+
+		$pro_order = DB::table('pro_order a')
+					->join('pro_goods b',"a.gid = b.id")
+					->where(" uid={$pageuser['id']} and b.gsn = {$params['gsn']} ")
+					->find();		
+					
+		$data = ['sign' => $params['sign']];
+		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
+		
+		ReturnToJson(1, 'Success');
+	}
 }
