@@ -1257,6 +1257,8 @@ class ProductController extends BaseController
 				$this->redis->rmall(RedisKeys::USER_ORDER . $puser['id']);
 			}
 
+			writeLog('1111','aaaaqa');
+
 			//首次购买送自己
 			if ($item['price1'] > 0)
 				updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
@@ -1275,6 +1277,7 @@ class ProductController extends BaseController
 			//首购送上五级
 			// $this->FirstGiveUpFive($pageuser, $item, $pro_order);
 
+			writeLog('2222','aaaaqa');
 		} else {
 			if ($item['price0'] > 0) //复购送自己
 				updateWalletBalanceAndLog($pageuser['id'], $item['price0'] * $quantity, 2, 10, 'Repeat purchase:' . $pro_order['osn']);
