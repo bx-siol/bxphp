@@ -315,4 +315,32 @@ class DefaultController extends BaseController
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
+
+	//BP获取本周充值奖励
+	public function _GetRewards()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$money = 0;
+		if($params['type'] == 1){
+			$type = 101;
+			$money = 50;
+		}
+		else if($params['type'] == 2){
+			$type = 102;
+			$money = 100;
+		}
+		else if($params['type'] == 3){
+			$type = 103;
+			$money = 300;
+		}
+
+		$now_day = date('Ymd');
+		$walllog = Db::table('wallet_log')->where (" create_day={$now_day} and type = {$type} ")->count();
+		if($walllog == 1)
+			ReturnToJson(-1, 'The reward has been received today.');
+		
+		updateWalletBalanceAndLog($pageuser['id'], $money, 2, type: $type,'Recharge reward for the inviter on the day.' .$params['type']);
+		
+	}
 }
