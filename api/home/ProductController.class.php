@@ -1940,7 +1940,7 @@ class ProductController extends BaseController
 	}
 
 	//先正达购买指定产品签名
-	public function SigningCcontract()
+	public function _SigningCcontract()
 	{		
 		$pageuser = checkLogin();		
 		$params = $this->params;
