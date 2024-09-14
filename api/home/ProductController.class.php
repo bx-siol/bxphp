@@ -1847,8 +1847,6 @@ class ProductController extends BaseController
 	//送上五级循环奖励-按产品设定的金额发放
 	public function inviteNewMember($user_id, $product_id, $invited_user_id, $product_osn)
 	{
-
-		writeLog('1111','aaaaqa');
 		// 获取当前日期
 		$invitation_date = date("Y-m-d");
 
@@ -1864,14 +1862,10 @@ class ProductController extends BaseController
 
 		// 更新用户产品进度
 		$this->updateUserProductProgress($user_id, $product_id, $product_osn);
-		
-
-		writeLog('66666','aaaaqa');
 	}
 
 	public function updateUserProductProgress($user_id, $product_id, $product_osn)
 	{
-		writeLog('222','aaaaqa');
 		// 检查是否已有记录
 		$progress = Db::table('User_Product_Progress')
 			->where('user_id', $user_id)
@@ -1879,7 +1873,6 @@ class ProductController extends BaseController
 			->find();
 		$reward = 0;
 		if ($progress) {
-			writeLog('333','aaaaqa');
 			// 有记录，更新进度
 			$current_cycle = $progress['current_cycle'];
 			$current_count = $progress['current_count'];
@@ -1905,7 +1898,6 @@ class ProductController extends BaseController
 				->where('product_id', $product_id)
 				->update($updateData);
 		} else {
-			writeLog('4444','aaaaqa');
 			// 没有记录，插入新记录
 			$current_cycle = 1;
 			$current_count = 1;
@@ -1923,8 +1915,6 @@ class ProductController extends BaseController
 		}
 		if ($reward > 0) //更新用户余额
 			updateWalletBalanceAndLog($user_id, $reward, 2, 10, 'First purchase gift:' . $product_osn);
-			
-			writeLog('5555','aaaaqa');
 	}
 
 	public function getReward($count, $product_id)
@@ -1957,7 +1947,7 @@ class ProductController extends BaseController
 		$pro_order = DB::table('pro_order a')
 					->join('pro_goods b',"a.gid = b.id")
 					->where(" a.uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
-					//->field('a.id')
+					->field('a.id')
 					->find();
 		
 		writeLog(json_encode($pro_order),'adasdasd');
