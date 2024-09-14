@@ -1953,7 +1953,5 @@ class ProductController extends BaseController
 		writeLog(json_encode($pro_order),'adasdasd');
 		$data = ['sign' => $params['sign']];
 		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
-		
-		ReturnToJson(1, 'Success');
 	}
 }
