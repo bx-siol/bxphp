@@ -1,6 +1,10 @@
 <template>
   <div class="project_detail">
-    <Nav leftText=''></Nav>
+    <Nav leftText=''>
+      <template #left>
+        <div></div>
+      </template>
+    </Nav>
     <div style="background: ">
       <div :class="['project_img', { backdrop: info.pointshop == 1 }]">
         <van-swipe indicator-color="white" :autoplay="3000">
@@ -43,7 +47,7 @@
 
           <div class="totalrevenue" v-if="info.pointshop != 1">
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-        100, 1) }}%</span>
+              100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
 
@@ -362,16 +366,18 @@ const onSubmit = () => {
         return
       }
       dataForm.password2 = ''
-      _alert({
-        type: 'success',
-        message: res.msg,
-        onClose: () => {
-          init()
-          isRequest = false
-          step.value = 1
-          investShow.value = false
+
+      _alert(res.msg, function () {
+        isRequest = false
+        step.value = 1
+        investShow.value = false
+
+        if (info.value.cid == 1043) {
+          router.push({ name: 'Signing_Contract', params: { gsn: info.value.gsn } });
         }
+
       })
+
     })
   }, delayTime)
 }
