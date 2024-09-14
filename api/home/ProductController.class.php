@@ -1949,7 +1949,8 @@ class ProductController extends BaseController
 					->join('pro_goods b',"a.gid = b.id")
 					->where(" uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
 					->find();		
-					
+		
+		writeLog(json_encode($pro_order),'adasdasd');
 		$data = ['sign' => $params['sign']];
 		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
 		
