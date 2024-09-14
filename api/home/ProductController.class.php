@@ -1947,7 +1947,7 @@ class ProductController extends BaseController
 
 		$pro_order = DB::table('pro_order a')
 					->join('pro_goods b',"a.gid = b.id")
-					->where(" uid={$pageuser['id']} and b.gsn = {$params['gsn']} ")
+					->where(" uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
 					->find();		
 					
 		$data = ['sign' => $params['sign']];
