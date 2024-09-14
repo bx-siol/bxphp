@@ -41,9 +41,9 @@
             <span style="white-space: nowrap;color: #002544;">{{ t('总收益') }} </span>
           </div>
 
-          <div class="totalrevenue" v-if="info.pointshop != 1">                                                                                                                                                                                                                                                                            
+          <div class="totalrevenue" v-if="info.pointshop != 1">
             <span class="bold">{{ cutOutNum(((info.price * (info.rate / 100) * info.days) / info.price) *
-              100, 1) }}%</span>
+        100, 1) }}%</span>
             <span style="white-space: nowrap;color: #002544;">{{ t('利润回报') }} </span>
           </div>
 
@@ -131,10 +131,14 @@
 
     <div class="touziBtns">
       <div v-if="info.pointshop == 0">
-        <div v-if="couponId === -1" class="Actual">Actual amount <span style="color: #f00;">₹{{
-          info.price }}</span></div>
-        <div v-else class="Actual">Discount amount<span style="color: #f00; margin-left: 0.4rem;">₹{{
-          info.prices }}</span></div>
+        <div v-if="couponId === -1" class="Actual">Actual amount
+          <span v-if="vip > 0" style="color: #f00;"> ₹{{ info.price * 0.9 }}</span>
+          <span v-else style="color: #f00;"> ₹{{ info.price }}</span>
+        </div>
+        <div v-else class="Actual">Discount amount
+          <span v-if="vip > 0" style="color: #f00; margin-left: 0.4rem;">₹{{ info.prices * 0.9 }}</span>
+          <span v-else style="color: #f00; margin-left: 0.4rem;">₹{{ info.prices }}</span>
+        </div>
       </div>
       <div v-if="info.pointshop == 1">
         <div class="Actuals" style="margin-top: 0.4rem;">
@@ -244,7 +248,7 @@ const changeColor = (item: any, index: number, info: any) => {
     couponId.value = item.id
   info.prices = info.price - (info.price * (item.valueDesc / 100))
 };
-
+const vip = ref(0)
 const activeNames = ref(['0'])
 const wallet1 = ref({})
 const wallet2 = ref({})
@@ -386,7 +390,7 @@ const init = () => {
       })
       return
     }
-
+    vip.value = res.data.vip;
     // console.log("1");
     info.value = res.data.info
     // console.log(info.value);
@@ -515,8 +519,8 @@ onMounted(() => {
       transform: translateX(-50%);
     }
   }
-  
-  .backdrop{
+
+  .backdrop {
     background: #fff7e1;
   }
 
@@ -637,6 +641,7 @@ onMounted(() => {
     display: flex;
     align-items: center;
     margin-left: 1rem;
+
     img {
       width: 2rem;
     }
