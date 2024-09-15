@@ -32,20 +32,31 @@ class ServiceController extends BaseController
 
 	public function _GetService_Online()
 	{
-		$pageuser = checkLogin();
-		$params = $this->params;
 		$where = " 1=1 ";
-		if ($params["type"] != 0)
-			$where .= " and type={$params['type']} ";
-		$data = Db::table('ext_service')->where(" {$where} and (uid={$pageuser['pidg1']} or uid={$pageuser['pidg2']} ) ")
-			->field(['account', 'name', 'type', 'qrcode', 'remark'])->select()->toArray();
+		try {
+			$pageuser = checkLogin();
+			$params = $this->params;
+			$where = " 1=1 ";
+			if ($params["type"] != 0)
+				$where .= " and type={$params['type']} ";
 
-		if ($data == null || !$data) {
-			$data = Db::table('ext_service')->where(" {$where} and uid=1 ")
+			$where .= " and (";
+			if ($pageuser['pidg1'])
+				$where .= " uid={$pageuser['pidg1']} ";
+			if ($pageuser['pidg2'])
+				$where .= " or uid={$pageuser['pidg2']}";
+			$where .= " ) ";
+			$data = Db::table('ext_service')->where($where)
 				->field(['account', 'name', 'type', 'qrcode', 'remark'])->select()->toArray();
 
+			if ($data == null || !$data) {
+				$data = Db::table('ext_service')->where("uid=1 and type={$params['type']}")
+					->field(['account', 'name', 'type', 'qrcode', 'remark'])->select()->toArray();
+			}
+			$list = ['list' => $data];
+			ReturnToJson(1, 'ok', $list);
+		} catch (Exception $e) {
+			ReturnToJson(0, $e->getMessage(), ['e' => $where]);
 		}
-		$list = ['list' => $data];
-		ReturnToJson(1, 'ok', $list);
 	}
 }
