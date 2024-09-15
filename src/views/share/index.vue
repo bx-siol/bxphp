@@ -1,6 +1,6 @@
 <template>
     <div class="invite">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div style="text-align: center;" class="invite_wrap">
             <div class="qrcode">
                 <!-- <van-image :src="imgFlag(tdata.qrcode)" @click="onPreview(tdata.qrcode)"></van-image> -->
@@ -25,6 +25,7 @@ import { _alert, lang } from "../../global/common";
 import { defineComponent, ref, onMounted, computed } from "vue";
 import MyNav from "../../components/Nav.vue";
 import { Button, Grid, GridItem, Image, Stepper, Cell, CellGroup } from "vant";
+import VueQrcode from 'vue-qrcode'
 
 export default defineComponent({
     name: "invite",

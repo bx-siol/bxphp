@@ -281,11 +281,13 @@ const onReceivehttp = () => {
           background: url(../assets/img/project/peroject_bg.png);
           background-repeat: no-repeat;
           background-size: 100% 100%;
+          display: flex;
+          align-items: center;
 
           .basicItemLeft {
             height: 7.5rem;
             padding-left: 3%;
-            width: 44%;
+            width: 50%;
             float: left;
 
             .detail {
@@ -354,12 +356,12 @@ const onReceivehttp = () => {
 
           .basicItemRight {
             width: 35%;
-            height: 7.5rem;
+            height: 6.5rem;
             float: left;
             display: flex;
             align-items: center;
             justify-content: space-around;
-            margin-left: 15%;
+            margin-left: 11%;
 
             .sold_out {
               position: relative;

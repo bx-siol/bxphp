@@ -106,7 +106,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/project/:pid',
         name: 'Project_detail',
         meta: {
-            title: 'Product',
+            title: 'Purchase Details',
              needLogin: false
         },
         component: () => import('../views/project/detail.vue')
@@ -160,7 +160,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/news/info/:id',
         name: 'News_info',
         meta: {
-            title: 'Detail',
+            title: ' News Detail',
              needLogin: false
         },
         component: () => import('../views/news/info.vue')
@@ -221,7 +221,16 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/user/team.vue')
     },
     {
-        path: '/user/team/:id',
+        path: '/user/teamlevel/:type',
+        name: 'User_teamlevel',
+        meta: {
+            title: 'team',
+             needLogin: false
+        },
+        component: () => import('../views/user/teamlevel.vue')
+    },
+    {
+        path: '/user/teamlist/:type/:id',
         name: 'User_teamlist',
         meta: {
             title: 'team',
@@ -403,7 +412,7 @@ const routes: Array<RouteRecordRaw> = [
         path: '/gift/lottery',
         name: 'Gift_lottery',
         meta: {
-            title: 'Lottery',
+            title: 'Lucky draw',
              needLogin: false
         },
         component: () => import('../views/gift/lottery.vue')

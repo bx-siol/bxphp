@@ -19,8 +19,18 @@
                         </van-button>
                     </template>
                 </van-field>
-                <van-field v-model="dataForm.password_flag" type="password" :left-icon="lock2" :placeholder="t('请填写新密码')"></van-field>
-                <van-field v-model="dataForm.password_check" type="password" :left-icon="lock2" :placeholder="t('确认新密码')"></van-field>
+                <van-field v-model="dataForm.password_flag" :type="showPassword1 ? 'text' : 'password'" :left-icon="lock2" :placeholder="t('请填写新密码')">
+                    <template #right-icon>
+                        <van-icon v-if="showPassword1" name="eye-o" color="#d6d6d6" @click="showPassword1 = false"></van-icon>
+                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword1 = true"></van-icon>
+                    </template>
+                </van-field>
+                <van-field v-model="dataForm.password_check" :type="showPassword2 ? 'text' : 'password'" :left-icon="lock2" :placeholder="t('确认新密码')">
+                    <template #right-icon>
+                        <van-icon v-if="showPassword2" name="eye-o" color="#d6d6d6" @click="showPassword2 = false"></van-icon>
+                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword2 = true"></van-icon>
+                    </template>
+                </van-field>
                 <van-field v-show="false" v-model="dataForm.imgcode" :placeholder="t('图形验证码')" @keyup.enter="onRetrieve" 
                     style="padding-top: 0;padding-bottom: 0;padding-right: 0;">
                     <template #left-icon>
@@ -44,7 +54,7 @@
 </template>
 
 <script lang="ts">
-import { Button, CellGroup, Field, Image, CountDown } from "vant";
+import { Button, CellGroup, Field, Image, CountDown,Icon } from "vant";
 
 export default defineComponent({
     name: "forgetPass",
@@ -54,6 +64,7 @@ export default defineComponent({
         [Button.name]: Button,
         [Image.name]: Image,
         [CountDown.name]: CountDown,
+        [Icon.name]: Icon,
     }
 })
 </script>
@@ -77,6 +88,8 @@ import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 let isRequest = false
 const store = useStore()
 const router = useRouter()
+const showPassword1 = ref(false)
+const showPassword2 = ref(false)
 
 const onLink = (to: any) => {
     goRoute(to)

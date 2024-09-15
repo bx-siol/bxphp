@@ -14,9 +14,7 @@
         </van-tab>
       </van-tabs>
     </div>
-    <!-- <Service @doService="doService" /> -->
   </div>
-  <!-- <MyLoading :show="loadingShow" title="Loading..."></MyLoading> -->
 </template>
 
 <script lang="ts">
@@ -103,42 +101,37 @@ onMounted(() => {
       :deep(.van-tab) {
         &.van-tab--active {
           position: relative;
-
-          // &::after {
-          //   position: absolute;
-          //   bottom: -1rem;
-          //   content: ' ';
-          //   border: 0.5rem solid transparent;
-          //   border-top: 0.5rem solid #bd312d;
-          // }
+          font-weight: bold;
         }
 
         .van-tab__text {
-          color: #64523e;
-          border: 1px solid #64523e;
-          background: #fff;
+          color: white;
+          background: #d9d9d9;
           width: 100%;
-          height: 1.75rem;
+          height: 2rem;
           border-radius: 0.8125rem;
           box-sizing: border-box;
           display: flex;
           justify-content: center;
           align-items: center;
+          font-weight: bold;
         }
       }
 
       :deep(.van-tab--active) {
         .van-tab__text {
-          color: #fff;
-          background: #64523e;
-          border: 1px solid #64523e;
+          color: white;
           width: 100%;
-          height: 1.75rem;
+          height: 2rem;
           border-radius: 0.8125rem;
           box-sizing: border-box;
           display: flex;
           justify-content: center;
           align-items: center;
+          background: url(/src/assets/img/login/login_btn.png);
+          background-repeat: no-repeat;
+          background-size: 100% 100%;
+          font-weight: bold;
         }
 
       }

@@ -1,6 +1,6 @@
 <template>
     <div class="newsDet">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div class="newsDet_wrap">
             <template v-if="info.id > 40">
                 <div class="title">{{ info.title }}</div>

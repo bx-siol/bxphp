@@ -1,58 +1,42 @@
 <template>
   <div class="Projects">
     <div class="basicProjects">
-
       <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
         <template #default="{ list }">
-
           <div class="basicProjectsList">
             <div v-for="(item, index) in list" :key="index" class="bottom">
-              <div
-                :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }"
-                class="basicItem">
+              <div :style="{ 'width': '100%', 'box-shadow': 'none', 'background': `url(${hs})`, 'background-size': '100% 100%', }" class="basicItem">
                 <table style="width:100%;color: #f5f7fd;">
                   <tr>
-                    <td style="padding-left: 0.5rem;width: 80%;line-height: 22px;">
-                      <div style="font-size:14px;font-weight: bold;" v-if="item.money != 0">{{ t("邀请券") }}</div>
-                      <div style="font-size:14px;font-weight: bold;" v-if="item.money == 0">{{ t("折扣券") }}</div>
-
-                      <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
+                    <td style="width: 30%;">
+                      <div style="font-size: 1.5rem;font-weight: bold;text-align: center;margin:0.5rem 0 0 2.5rem;" v-if="item.money != 0">
+                        {{ item.money }}
+                        <span style="font-size: 0.8rem; margin-left: -7px;">RS</span>
+                      </div>
+                      <div style="font-size: 1.8rem;font-weight: bold;text-align: center;margin:0.5rem 0 0 2.5rem;" v-if="item.money == 0">{{ 100 - item.discount }}%</div>
                     </td>
-                    <td>
-                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money != 0">{{ item.money }} RS</div>
-                      <div style="font-size:16px;font-weight: bold;text-align: center;margin-bottom: 0.675rem;"
-                        v-if="item.money == 0">{{ 100 - item.discount }}%</div>
-                      <p class="Expired"> {{ t("已过期") }}</p>
+                    <td style="width: 90%;text-align: right;height: 7.5rem;display: flex;flex-direction: column;margin-left: 10%;">
+                      <div style="font-size: 1.4rem;font-weight: bold;color: #b5b5b5;" v-if="item.money != 0">{{ t("邀请券") }}</div>
+                      <div style="font-size: 1.4rem;font-weight: bold;color: #b5b5b5;" v-if="item.money == 0">{{ t("折扣券") }}</div>
+                      <div style="font-size:12px;">{{ t("有效期至") }}:{{ item.effective_time }}</div>
+                      <div style="width: 100%;border-bottom: 1px solid white;height: 0.1rem;margin-bottom: 0.2rem;"></div>
+                      <div style="font-size: 0.45rem;text-align: left;">1. Invite friends to buy any equipment to get an extra 50 Rs</div>
+                      <div style="font-size: 0.45rem;text-align: left;">2. You can only use 1 card each time you invite friends</div>
+                      <div style="font-size: 0.45rem;text-align: left;">3. It can be directly exchanged and recharged to the balance</div>
+                      <div class="Expired">{{ t('已过期') }}</div>
                     </td>
                   </tr>
                 </table>
               </div>
-              <div class="remark" v-if="false" style="font-size: 12px; margin-top: -2.1rem;">
-                <van-collapse :border="false" v-model="activeNames">
-                  <van-collapse-item :border="false" :title="t('使用说明')" :name="item.id">
-                    <!-- {{ item.remark }} -->
-                   <p> 1. Invite friends to buy any equipment to get an extra 50 Rs</p>
-                    <p>2. You can only use 1 card each time you invite friends</p>
-                   <p> 3. It can be directly exchanged and recharged to the balance</p>
-                  </van-collapse-item>
-                </van-collapse>
-              </div>
             </div>
-
-
-
-
           </div>
         </template>
       </MyListBase>
     </div>
-
-
-    <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
+
 <script lang="ts">
 import { defineComponent } from '@vue/composition-api'
 import { Col, Row, Icon, Collapse, CollapseItem } from "vant"
@@ -71,10 +55,8 @@ export default defineComponent({
 <script lang="ts" setup>
 import { onMounted, ref } from "vue";
 import { useRoute, useRouter } from "vue-router";
-import Product from '../assets/img/project/product.png';
 import MyListBase from './ListBase.vue';
 import MyLoading from './Loading.vue';
-import MyTab from "./Tab.vue";
 import http from "../global/network/http";
 import { getSrcUrl, goRoute, imgPreview } from "../global/common";
 import { _alert, lang } from "../global/common";
@@ -92,7 +74,7 @@ const loadingShow = ref(true)
 const pageRef = ref()
 const route = useRoute()
 
-let pageUrl = ref('c=Coupon&a=list&type=' + route.params.type + '&status=3')
+let pageUrl = ref('c=Coupon&a=list&status=3') //&type=' + route.params.type + '
 const tableData = ref<any>({})
 
 const onPageSuccess = (res: any) => {
@@ -111,7 +93,7 @@ const getProjectDetail = (item: any) => {
 
 
 </script>
-<style lang="scss"  scoped >
+<style lang="scss" scoped>
 .Projects {
   .detail {
     font-size: 1rem;
@@ -222,11 +204,15 @@ const getProjectDetail = (item: any) => {
           border: 1px solid #fff;
           border-radius: 4px;
           padding: 4px;
-          // margin-bottom: -1rem;
+          width: 22%;
           text-align: center;
+          position: relative;
+          right: -9rem;
+          top: 0.5rem;
         }
       }
-      .bottom:last-child{
+
+      .bottom:last-child {
         margin-bottom: 1rem;
       }
     }
@@ -293,47 +279,5 @@ const getProjectDetail = (item: any) => {
       }
     }
   }
-}
-</style>
-
-<style  scoped>
-.remark /deep/ .van-cell--clickable:active {
-  background: #0000;
-}
-
-.remark /deep/.van-cell__title,
-.remark /deep/.van-cell__value {
-  color: rgb(245, 247, 253);
-  text-align: left;
-}
-
-.remark /deep/.van-collapse-item__content {
-  padding: 0px 5px !important;
-
-  background: #0000;
-  color: #2d2d2d;
-}
-
-.remark /deep/.van-collapse-item__wrapper {
-  background: #e0e0e0;
-  padding-top: 0.5rem;
-  margin-top: 0.3rem;
-  border-radius: 2rem;
-  padding-right: 6rem;
-  padding-left: 1rem;
-  padding-bottom: 0.5rem;
-}
-
-.remark /deep/.van-cell__right-icon {
-  display: block !important;
-  margin-right: 7rem;
-  color: #ffffff;
-}
-
-.remark /deep/.van-cell {
-  background: rgba(0, 0, 0, 0) !important;
-  padding: 0px !important;
-  padding-top: 5px !important;
-  padding-left: 1.2rem !important;
 }
 </style>

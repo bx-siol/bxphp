@@ -27,7 +27,12 @@
 
                 <van-field v-model="dataForm.nickname" :left-icon="nickname" :placeholder="t('请填写昵称')"></van-field>
                 
-                <van-field v-model="dataForm.password_flag" type="password" :left-icon="key" :placeholder="t('请填写登录密码')"></van-field>
+                <van-field v-model="dataForm.password_flag" :type="showPassword ? 'text' : 'password'" :left-icon="key" :placeholder="t('请填写登录密码')">
+                    <template #right-icon>
+                        <van-icon v-if="showPassword" name="eye-o" color="#d6d6d6" @click="showPassword = false"></van-icon>
+                        <van-icon v-else name="closed-eye" color="#d6d6d6" @click="showPassword = true"></van-icon>
+                    </template>
+                </van-field>
 
                 <van-field v-model="dataForm.icode"
                     :disabled="(route.query.Icode ? route.query.Icode : (route.query.icode ? route.query.icode : '')) > 0"
@@ -55,7 +60,7 @@
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import { Button, CellGroup, Col, Field, Row, Image, CountDown, NavBar } from "vant";
+import { Button, CellGroup, Col, Field, Row, Image, CountDown, NavBar,Icon } from "vant";
 
 export default defineComponent({
     components: {
@@ -66,13 +71,14 @@ export default defineComponent({
         [Col.name]: Col,
         [Image.name]: Image,
         [CountDown.name]: CountDown,
-        [NavBar.name]: NavBar
+        [NavBar.name]: NavBar,
+        [Icon.name]: Icon,
     }
 })
 
 </script>
 <script lang="ts" setup>
-import { ico_1, ico_2, ico_3, ico_4, ico_5, ico_6, ico_103, img_yzm } from '../../global/assets';
+import { ico_4} from '../../global/assets';
 import ornament from '../../assets/img/login/ornament.png';
 import phone from '../../assets/img/login/lock1.png';
 import key from '../../assets/img/login/lock2.png';
@@ -92,6 +98,7 @@ let isRequest = false
 const store = useStore()
 const router = useRouter()
 const route = useRoute()
+const showPassword = ref(false)
 
 const onClickLeft = () => {
     history.back()

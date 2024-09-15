@@ -38,21 +38,23 @@ onMounted(() => {
     background-size: 100% 100%;
     border: 0;
     color: #fff;
-    background: linear-gradient(to right, #c49b6c 20%, #a77d52);
+    background: url(/src/assets/img/login/login_btn.png);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
     font-weight: bold;
     border-radius: 4px;
 }
 
 .van-button.sendCodeBtn {
     border: none;
-    color: #c69c6d;
+    color: #cb1a00;
     font-weight: bold;
     vertical-align: middle;
     font-size: 16px;
 }
 
 .sendCodeBtn .van-count-down {
-    color: #c69c6d !important;
+    color: #cb1a00 !important;
 }
 
 .navRightBtn {
@@ -100,7 +102,7 @@ onMounted(() => {
 }
 
 .conBox .van-field__label {
-    color: #64523e ;
+    color: #64523e;
     text-align: left;
 }
 
