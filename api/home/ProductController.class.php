@@ -137,9 +137,9 @@ class ProductController extends BaseController
 		$wallet1 = getWallet($pageuser['id'], 1);
 		$wallet2 = getWallet($pageuser['id'], 2);
 		$wallet3 = getWallet($pageuser['id'], 3);
-
+		$vip = 0;
 		$projectlogo = getConfig('sys_name');
-		if ($projectlogo == 'Syngenta') {
+		if ($projectlogo == 'Syngenta' && $item['cid'] != 1043) {
 			$vip =	getvip($pageuser['id']);
 		}
 
@@ -1066,11 +1066,10 @@ class ProductController extends BaseController
 		// 先正达 VIP折扣
 		$projectlogo = getConfig('sys_name');
 		if ($projectlogo == 'Syngenta') {
-
-			if(item['cid'] != '1043'){
+			if ($item['cid'] != '1043') {
 				$vipordercount = Db::table('pro_order')
-				->where("uid={$pageuser['id']} and gid in (332,333,334,335,336,337) ")
-				->count();
+					->where("uid={$pageuser['id']} and gid in (332,333,334,335,336,337) ")
+					->count();
 
 				if ($vipordercount > 0) {
 					$vip = getvip($pageuser['id']);
@@ -1097,7 +1096,7 @@ class ProductController extends BaseController
 		];
 		Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
 
-		if ($projectlogo == 'Syngenta'){
+		if ($projectlogo == 'Syngenta') {
 			//更新VIP等级
 			if ($item['cvip'] > 0 && $item['cvip'] > $vip) {
 				$data = ['vip' => $item['cvip']];
@@ -1265,8 +1264,8 @@ class ProductController extends BaseController
 				updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 			else //首购送上五级
 				$this->inviteNewMember($pageuser['pid'], $item['id'], $pageuser['id'], $pro_order['osn']);
-			
-				//先正达活动
+
+			//先正达活动
 			// $projectlogo = getConfig('sys_name');
 			// if($projectlogo == 'Syngenta')
 			// 	$this->eventgift($item, $quantity, $pageuser, $check_num, $pro_order);
@@ -1939,17 +1938,17 @@ class ProductController extends BaseController
 
 	//先正达购买指定产品签名
 	public function _SigningCcontract()
-	{		
-		$pageuser = checkLogin();		
+	{
+		$pageuser = checkLogin();
 		$params = $this->params;
 
 		$pro_order = DB::table('pro_order a')
-					->join('pro_goods b',"a.gid = b.id")
-					->where(" a.uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
-					->field('a.id')
-					->find();
-		
-		writeLog(json_encode($pro_order),'adasdasd');
+			->join('pro_goods b', "a.gid = b.id")
+			->where(" a.uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
+			->field('a.id')
+			->find();
+
+		writeLog(json_encode($pro_order), 'adasdasd');
 		$data = ['sign' => $params['sign']];
 		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
 	}
