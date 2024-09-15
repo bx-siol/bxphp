@@ -6,6 +6,7 @@
         <div class="headbox">
           <!-- <van-image :src="nestie" style="width: 1.8rem; height: 1.8rem;" class="logs"></van-image> -->
           <van-image :src="illustration" style=" width: 6rem; height: 1.8rem; left: 37%;"></van-image>
+          <van-image :src="manage" style=" height: 1.8rem;margin-left: 9rem;" @click="onLink({ name: 'Service' })"></van-image>
           <div class="u-flex u-center">
             <MyLanguage :showIcon="true" top="unset" :switchLanStyle="switchLanStyle"></MyLanguage>
           </div>
@@ -240,6 +241,7 @@ import MyListBase from '../../components/ListBase.vue';
 import MyLoading from '../../components/Loading.vue';
 import HomeProjects from '../../components/HomeProject.vue';
 import HomePurchased from '../../components/HomePurchased.vue';
+import manage from '../../assets/img/home/manage.png'
 
 export default defineComponent({
   name: "index",
