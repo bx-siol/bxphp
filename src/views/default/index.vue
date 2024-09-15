@@ -5,6 +5,7 @@
       <div class="index_top">
         <div class="headbox">
           <van-image :src="hornhome_top" style="height: 2rem;" ></van-image>
+          <van-image :src="manage" style="height: 1.5rem;margin-left: 4rem;" @click="onLink({ name: 'Service' })" ></van-image>
           <div class="u-flex u-center">
             <MyLanguage :showIcon="true" top="unset" :switchLanStyle="switchLanStyle"></MyLanguage>
           </div>
@@ -87,7 +88,8 @@
   import m2 from '../../assets/img/home/home-icon-1-2.png'
   import m3 from '../../assets/img/home/home-icon-1-3.png'
   import m4 from '../../assets/img/home/home-icon-1-4.png'
-  import videosrc from '../../assets/video/video.mp4'
+  import videosrc from '../../assets/video/video.mp4'  
+  import manage from '../../assets/img/home/manage.png'
 
   export default defineComponent({
     name: "index",
