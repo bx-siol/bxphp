@@ -1067,23 +1067,22 @@ class ProductController extends BaseController
 		$projectlogo = getConfig('sys_name');
 		if ($projectlogo == 'Syngenta') {
 
-			$vipordercount = Db::table('pro_order')
+			if(item['cid'] != '1043'){
+				$vipordercount = Db::table('pro_order')
 				->where("uid={$pageuser['id']} and gid in (332,333,334,335,336,337) ")
 				->count();
 
-			if ($vipordercount > 0) {
-				$vip = getvip($pageuser['id']);
-				if ($vip > 0) {
-					if ($w2_money > 0)
-						$w2_money = $w2_money * 0.9;
-					if ($w1_money > 0)
-						$w1_money = $w1_money * 0.9;
+				if ($vipordercount > 0) {
+					$vip = getvip($pageuser['id']);
+					if ($vip > 0) {
+						if ($w2_money > 0)
+							$w2_money = $w2_money * 0.9;
+						if ($w1_money > 0)
+							$w1_money = $w1_money * 0.9;
+					}
 				}
 			}
 		}
-
-
-
 
 		if ($w2_money > 0) {
 			updateWalletBalanceAndLog($pageuser['id'], -$w2_money, 2, 1, 'Buy:' . $pro_order['osn']);
