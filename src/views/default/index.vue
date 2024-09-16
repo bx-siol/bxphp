@@ -105,7 +105,7 @@
                 </a>
               </div>
             </div>
-
+            <van-image :src="task" style="margin-bottom: 0.8rem;" @click="onLink({ name: 'task' })" ></van-image>
             <!-- <div class="videobox">
               <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc"
                 style="width: 100%;border-radius: 8px;"></video>
@@ -242,6 +242,7 @@ import MyLoading from '../../components/Loading.vue';
 import HomeProjects from '../../components/HomeProject.vue';
 import HomePurchased from '../../components/HomePurchased.vue';
 import manage from '../../assets/img/home/manage.png'
+import task from '../../assets/img/home/task.png'
 
 export default defineComponent({
   name: "index",

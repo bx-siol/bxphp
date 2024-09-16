@@ -1,98 +1,122 @@
 <template>
     <div class="mission" style="background-color: #f6f6f6;min-height: 100%;">
-        <MyNav leftText="">
-        </MyNav>
+        <MyNav leftText=""></MyNav>
         <div class="tasktent" style="height:61rem;">
             <div class="back">
                 <div class="invition">
-                    <div class="invititop"></div>
-                    <div style="height: 2rem; margin-top: 0.5rem; text-align: center; line-height: 2rem; color: #63513d; display: flex; justify-content: space-evenly; align-items: center; ">
-                        <div style="float: left" class="subscript"></div>
-                        <div style="float: left;font-weight:bold;">FIRST INVITATION</div>
-                        <div style="float: left" class="subscript"></div>
-                    </div>
-                    <div class="lisks">
-                        <div style="font-size:0.75rem;">
-                            Invite friend to complete their first investment and receive a <span style="font-weight: bold; color: #6b5946;">50RS</span> bonus
-                        </div>
-                        <span class="Receive" @click="clickReciveValidInvitation(1)">Receive</span>
-                    </div>
-                    <div style="height: 2rem; text-align: center; line-height: 2rem; color: #63513d; display: flex; justify-content: space-evenly; align-items: center; ">
-                        <div style="float: left" class="subscript"></div>
-                        <div style="float: left; font-weight: bold; ">INVITE TASKS</div>
-                        <div style="float: left" class="subscript"></div>
+                    <div style="height: 2rem; text-align: center; line-height: 2rem; color: white; display: flex; justify-content: space-evenly; align-items: center;background-color: #cc1700; border-radius: 30px;">
+                        <div style="font-weight: bold; ">INVITE TASKS</div>
                     </div>
                     <div class="tasklisk">
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 5 friends to Register
+                                    <img :src="taskicon1" style="width:1rem;height:1rem;">Invite 5 friends to Register
                                 </p>
                                 <div class="liskbox">
-                                    <div style="width: 12.5rem; overflow: hidden;">
-                                        <p> <span style="margin-left: 1rem;"> 0/5 </span><span style="margin-right:1.5rem;">300 RS</span> </p>
-                                        <p><span>Cumulative</span> invitation coupon</p>
+                                    <div style="width: 12.5rem; overflow: hidden;display: flex;width: 17rem;">
+                                        <img :src="taskicon2" style="width:3rem;height:3rem;">
+                                        <div>
+                                            <p> 
+                                                <span style="margin-left: 1rem;color: #cc1700;"> {{ InviteesNum >= 5 ?'5' : (InviteesNum < 5 ? InviteesNum : '0') }}/5 </span>
+                                                <span style="margin-right:1.5rem;color: #cc1700;">300 RS</span> 
+                                            </p>
+                                            <div style="height: 0.3rem;background-color: #d1d1d1;width: 12rem;border-radius: 5px;"></div>
+                                            <div :style="ProgressBar(5)" class="ProgressBar"></div>
+                                            <p><span>Quantity</span> invitation Bonus</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <span class="Receive" @click="clickReciveValidInvitation(1)">Receive</span>
+                            <span :style="InviteesNum >= 5 ? 'background-color: #cc1700;':''" class="Receive"  @click=" InviteesNum >= 5 ? clickReciveValidInvitation(1) : '' ">Receive</span>
                         </div>
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 10 friends to Register
+                                    <img :src="taskicon1" style="width:1rem;height:1rem;">Invite 10 friends to Register
                                 </p>
                                 <div class="liskbox">
-                                    <div style="width: 12.5rem; overflow: hidden;">
-                                        <p> <span style="margin-left: 1rem;"> 0/10 </span><span style="margin-right:1.5rem;">800 RS</span> </p>
-                                        <p><span>Cumulative</span> invitation coupon</p>
+                                    <div style="width: 12.5rem; overflow: hidden;display: flex;width: 17rem;">
+                                        <img :src="taskicon2" style="width:3rem;height:3rem;">
+                                        <div>
+                                            <p> 
+                                                <span style="margin-left: 1rem;color: #cc1700;"> {{ InviteesNum >= 10 ?'10' : (InviteesNum < 10 ? InviteesNum : '0') }}/10 </span>
+                                                <span style="margin-right:1.5rem;color: #cc1700;">800 RS</span> 
+                                            </p>
+                                            <div style="height: 0.3rem;background-color: #d1d1d1;width: 12rem;border-radius: 5px;"></div>
+                                            <div :style="ProgressBar(10)" class="ProgressBar"></div>
+                                            <p><span>Quantity</span> invitation Bonus</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <span class="Receive" @click="clickReciveValidInvitation(2)">Receive</span>
+                            <span :style="InviteesNum >= 10 ? 'background-color: #cc1700;':''" class="Receive" @click=" InviteesNum >= 10 ? clickReciveValidInvitation(2) : '' ">Receive</span>
                         </div>
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <img :src="taskicon1" style="width:2rem;height:2rem;">Invite 15 friends to Register
+                                    <img :src="taskicon1" style="width:1rem;height:1rem;">Invite 15 friends to Register
                                 </p>
                                 <div class="liskbox">
-                                    <div style="width: 12.5rem; overflow: hidden;">
-                                        <p> <span style="margin-left: 1rem;"> 0/15 </span><span style="margin-right:1.5rem;">1500 RS</span> </p>
-                                        <p><span>Cumulative</span> invitation coupon</p>
+                                    <div style="width: 12.5rem; overflow: hidden;display: flex;width: 17rem;">
+                                        <img :src="taskicon2" style="width:3rem;height:3rem;">
+                                        <div>
+                                            <p> 
+                                                <span style="margin-left: 1rem;color: #cc1700;"> {{ InviteesNum >= 15 ?'15' : (InviteesNum < 15 ? InviteesNum : '0') }}/15 </span>
+                                                <span style="margin-right:1.5rem;color: #cc1700;">1500 RS</span> 
+                                            </p>
+                                            <div style="height: 0.3rem;background-color: #d1d1d1;width: 12rem;border-radius: 5px;"></div>
+                                            <div :style="ProgressBar(15)" class="ProgressBar"></div>
+                                            <p><span>Quantity</span> invitation Bonus</p>
+                                        </div>
                                     </div>
-
                                 </div>
                             </div>
-                            <span class="Receive" @click="clickReciveValidInvitation(3)">Receive</span>
+                            <span :style="InviteesNum >= 15 ? 'background-color: #cc1700;':''" class="Receive" @click=" InviteesNum >= 15 ? clickReciveValidInvitation(3) : '' ">Receive</span>
                         </div>
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <img :src="taskicon1" style="width:2rem;height:2rem;"> Invite 20 friends to Register
+                                    <img :src="taskicon1" style="width:1rem;height:1rem;"> Invite 20 friends to Register
                                 </p>
                                 <div class="liskbox">
-                                    <div style="width: 12.5rem; overflow: hidden;">
-                                        <p> <span style="margin-left: 1rem;"> 0/20 </span><span style="margin-right:1.5rem;">3000 RS</span> </p>
-                                        <p><span>Cumulative</span> invitation coupon</p>
+                                    <div style="width: 12.5rem; overflow: hidden;display: flex;width: 17rem;">
+                                        <img :src="taskicon2" style="width:3rem;height:3rem;">
+                                        <div>
+                                            <p> 
+                                                <span style="margin-left: 1rem;color: #cc1700;"> {{ InviteesNum >= 20 ?'20' : (InviteesNum < 20 ? InviteesNum : '0') }}/20 </span>
+                                                <span style="margin-right:1.5rem;color: #cc1700;">2500 RS</span> 
+                                            </p>
+                                            <div style="height: 0.3rem;background-color: #d1d1d1;width: 12rem;border-radius: 5px;"></div>
+                                            <div :style="ProgressBar(20)" class="ProgressBar"></div>
+                                            <p><span>Quantity</span> invitation Bonus</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <span class="Receive" @click="clickReciveValidInvitation(4)">Receive</span>
+                            <span :style="InviteesNum >= 20 ? 'background-color: #cc1700;':''" class="Receive" @click=" InviteesNum >= 20 ? clickReciveValidInvitation(4) : '' ">Receive</span>
                         </div>
                         <div class="lisks">
                             <div>
                                 <p class="p1">
-                                    <img :src="taskicon1" style="width:2rem;height:2rem;"> Invite 50 friends to Register
+                                    <img :src="taskicon1" style="width:1rem;height:1rem;"> Invite 50 friends to Register
                                 </p>
                                 <div class="liskbox">
-                                    <div style="width: 12.5rem; overflow: hidden;">
-                                        <p> <span style="margin-left: 1rem;"> 0/50 </span><span style="margin-right:1.5rem;">8000 RS</span> </p>
-                                        <p><span>Cumulative</span>discount coupon</p>
+                                    <div style="width: 12.5rem; overflow: hidden;display: flex;width: 17rem;">
+                                        <img :src="taskicon2" style="width:3rem;height:3rem;">
+                                        <div>
+                                            <p>
+                                                 <span style="margin-left: 1rem;color: #cc1700;"> {{ InviteesNum >= 50 ?'50' : (InviteesNum < 50 ? InviteesNum : '0') }}/50 </span>
+                                                 <span style="margin-right:1.5rem;color: #cc1700;">8000 RS</span> 
+                                                </p>
+                                            <div style="height: 0.3rem;background-color: #d1d1d1;width: 12rem;border-radius: 5px;"></div>
+                                            <div :style="ProgressBar(50)" class="ProgressBar"></div>
+                                            <p><span>Quantity</span> invitation Bonus</p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                            <span class="Receive" @click="clickReciveValidInvitation(5)">Receive</span>
+                            <span :style="InviteesNum >= 50 ? 'background-color: #cc1700;':''" class="Receive" @click=" InviteesNum >= 50 ? clickReciveValidInvitation(5) : '' ">Receive</span>
                         </div>
                     </div>
                 </div>
@@ -128,27 +152,28 @@
   
 <script lang="ts" setup>
     import taskicon1 from '../../assets/img/signin/taskicon1.png'
+    import taskicon2 from '../../assets/img/signin/taskicon2.png'
     import { useI18n } from 'vue-i18n'; const { t } = useI18n();
     const router = useRouter()
     const loadtitle = ref("Loading...")
     const loadingShow = ref(false);
+    const InviteesNum = ref(0)
 
 
     const pageData = ref(null)
     let isRequest = false
     // 获取页面初始化数据
     const initPageData = () => {
-        const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
-            http({
-                url: "ext_inviteTask/pageData",
-                data: {},
-                method: "GET"
-            }).then((res: any) => {
-                pageData.value = res.data
-            })
-        }, delayTime)
+        http({
+            url: "c=Ext&a=pageData",
+            data: {},
+        }).then((res: any) => {
+            InviteesNum.value = res.data.newmember
+        })
+    }
 
+    const ProgressBar = (num:number)=>{
+        return 'width:'+ (InviteesNum.value >=num ? num : InviteesNum.value) /num*100 +'%';
     }
 
     //有效邀请奖
@@ -159,24 +184,18 @@
             isRequest = true
         }
         loadingShow.value = true;
-        const delayTime = Math.floor(Math.random() * 1000);
-        setTimeout(() => {
-            http({
-                url: "ext_inviteTask/reciveValidInvitation?level=" + level,
-                method: "GET"
-            }).then((res: any) => {
-                loadingShow.value = false;
-                if (res.code != 200 && res.code != 204) {
-                    _alert(res.message)
-                    isRequest = false
-                    return;
-                }
-                initPageData()
-                _alert("Successfully", function () {
-                    isRequest = false
-                });
-            })
-        }, delayTime)
+        http({
+            url: "c=Ext&a=reciveValidInvitation",
+            data: {type:level},
+        }).then((res: any) => {
+            loadingShow.value = false;
+            isRequest = false
+            if (res.code != 200 && res.code != 204) {
+                _alert(res.msg)
+                return;
+            }
+            _alert(res.msg);
+        })
     }
 
 
@@ -187,17 +206,6 @@
 <style lang="scss" scoped>
     .myNavBar {
         height: 45px !important;
-
-        :deep(.van-nav-bar) {
-            background-color: #64523e;
-        }
-
-        :deep(.van-nav-bar__title) {
-            .alter {
-                color: #fff !important;
-                font-weight: bold;
-            }
-        }
     }
 
     .tasktent {
@@ -284,35 +292,6 @@
         }
 
         .invition {
-            .invititop {
-                background: url("../../assets/img/signin/task_top.png") no-repeat left center/100% 100%;
-                height: 7rem;
-                width: 100%;
-
-                span {
-                    display: block;
-                    width: 30px;
-                    height: 4px;
-                    border-radius: 4px;
-                    background: linear-gradient(to right, #fff, #4eb848);
-                }
-                // span:first-child {}
-                span:last-child {
-                    background: linear-gradient(to left, #fff, #4eb848);
-                }
-
-                p {
-                    color: #333;
-                    font-weight: bold;
-                    font-size: 16px;
-                }
-            }
-
-            .subscript {
-                background: url("../../assets/img/signin/taskicon2.png") no-repeat left center/100% 100%;
-                width: 1.5rem;
-                height: 1.5rem;
-            }
 
             .lisks:last-child {
                 border: none;
@@ -323,10 +302,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-around;
-                margin: 1rem auto;
-                border: 1px solid #ddd;
-                border-radius: 10px;
-                box-shadow: 0px 0px 6px #c6c2c2;
+                border-bottom: 1px solid #ddd;
 
                 .p1 {
                     display: flex;
@@ -378,10 +354,18 @@
                         background-color: rgb(255, 135, 38);
                         border-radius: 10px;
                     }
+
+                    .ProgressBar{
+                        height: 0.3rem;
+                        background-color: #cc1700;
+                        position: relative;
+                        top: -6px;
+                        border-radius: 5px;
+                    }
                 }
 
                 .Receive {
-                    background: linear-gradient(to right,#c59b6c, #bc9264, #aa8056);
+                    background: black;
                     padding: 0.2rem 0.4rem;
                     border-radius: 5px;
                     color: #fff;
