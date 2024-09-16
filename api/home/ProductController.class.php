@@ -1948,7 +1948,7 @@ class ProductController extends BaseController
 			->field('a.id')
 			->find();
 
-		writeLog(json_encode($pro_order), 'adasdasd');
+		writeLog(json_encode($pro_order) .'jkhgjhgjh'.$params['sign'], 'adasdasd');
 		$data = ['sign' => $params['sign']];
 		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
 	}
