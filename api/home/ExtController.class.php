@@ -233,4 +233,15 @@ class ExtController extends BaseController
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
+
+	public function _pageData()
+	{		
+		$pageuser = checkLogin();
+		$newmember = Db::table('sys_user')->where(" pids like '%{$pageuser['id']}%' and first_pay_day > 0 ")->count();
+
+		$return_data = [
+			'newmember' => $newmember,
+		];
+		ReturnToJson(1, 'ok', $return_data);
+	}
 }
