@@ -138,6 +138,7 @@ const onSubmit = () => {
         http({
             url: 'c=Setting&a=bank_update',
             data: {
+                code: dataForm.scode,
                 bank_name: dataForm.bank_name,
                 bank_id: dataForm.bank_id,
                 account: dataForm.account,
