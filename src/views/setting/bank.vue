@@ -11,17 +11,6 @@
                     :placeholder="t('请选择您的银行名称')" @click="popShowBank = true" />
                 <van-field :label="t('IFSC')" show-word-limit maxlength="11" v-model="dataForm.ifsc"
                     :placeholder="t('请填写IFSC代码')" />
-
-                <van-field :rules="[{ pattern: /^[0-9]+$/, message: 'Only numbers can be entered', trigger: 'onBlur' }]"
-                    label="OTP" v-model="dataForm.scode" :placeholder="t('请输入OTP')" class="fieldcode">
-                    <template #button>
-                        <van-button size="mini" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
-                            <van-count-down v-if="isTimer" :time="60000" :auto-start="true" format="sss"
-                                @finish="onTimerFinish" />
-                            <span v-else style="color: #cc1700;">{{ t('发送') }}</span>
-                        </van-button>
-                    </template>
-                </van-field>
             </van-cell-group>
             <div style="display: flex;justify-content: space-around;margin-top: 2rem;">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
@@ -69,7 +58,6 @@ import { http } from "../../global/network/http";
 import md5 from 'md5';
 import { useRouter } from "vue-router";
 import { useI18n } from 'vue-i18n';
-const sendLoading = ref(false)
 const { t } = useI18n();
 let isRequest = false
 const router = useRouter()
@@ -90,45 +78,13 @@ const dataForm = reactive({
     ifsc: '',
     password2: '',
     phone: '',
-    scode: ''
 })
-const onTimerFinish = () => {
-    isTimer.value = false
-}
 const popShowBank = ref(false)
 const bankArr = ref([])
 const banks = ref([])
 const bankIdx = ref(0)
 const cbank = ref(0)
 const isTimer = ref(false)
-const onSendCode = () => {
-    if (isTimer.value) {
-        return
-    }
-    if (!dataForm.phone) {
-        _alert(t('请输入手机号'))
-        return
-    }
-    sendLoading.value = true
-    var delayTime = Math.floor(Math.random() * 1000);
-    setTimeout((() => {
-        let pdata = { stype: 9, phone: dataForm.phone, email: dataForm.account }
-        let url = 'a=getPhoneCode'
-        http({
-            url: url,
-            data: pdata
-        }).then((res: any) => {
-            setTimeout(() => {
-                sendLoading.value = false
-            }, 1000)
-            if (res.code != 1) {
-                _alert(res.msg)
-                return
-            }
-            isTimer.value = true
-        })
-    }), delayTime)
-}
 const onBankConfirm = (name: any, idx: number) => {
     popShowBank.value = true
     dataForm.bank_name = name
