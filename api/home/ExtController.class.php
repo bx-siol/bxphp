@@ -244,4 +244,41 @@ class ExtController extends BaseController
 		];
 		ReturnToJson(1, 'ok', $return_data);
 	}
+
+	//无人机累计邀请注册任务
+	public function _reciveValidInvitation()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+		$money = 0;
+		if($params['type'] == 1){
+			$type = 61;
+			$money = 300;
+		}
+		else if($params['type'] == 2){
+			$type = 62;
+			$money = 800;
+		}
+		else if($params['type'] == 3){
+			$type = 63;
+			$money = 1500;
+		}
+		else if($params['type'] == 4){
+			$type = 64;
+			$money = 2500;
+		}
+		else if($params['type'] == 5){
+			$type = 65;
+			$money = 8000;
+		}
+
+		$walllog = Db::table('wallet_log')->where (" type = {$type} ")->count();
+		if($walllog == 1)
+			ReturnToJson(-1, 'Please do not receive it repeatedly.');
+		
+		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type,'Cumulative invitation registration：' .$params['type']);
+		
+		ReturnToJson(1, 'Success');
+
+	}
 }
