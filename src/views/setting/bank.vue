@@ -12,7 +12,7 @@
                 <van-field :label="t('IFSC')" show-word-limit maxlength="11" v-model="dataForm.ifsc"
                     :placeholder="t('请填写IFSC代码')" />
 
-                <van-field :rules="[{ pattern: /^[0-9]+$/, message: 'Only numbers can be entered', trigger: 'onBlur' }]"
+                <!-- <van-field :rules="[{ pattern: /^[0-9]+$/, message: 'Only numbers can be entered', trigger: 'onBlur' }]"
                     label="OTP" v-model="dataForm.scode" :placeholder="t('请输入OTP')" class="fieldcode">
                     <template #button>
                         <van-button size="mini" class="sendCodeBtn" :loading="sendLoading" @click="onSendCode" plain>
@@ -21,7 +21,7 @@
                             <span v-else style="color: #cc1700;">{{ t('发送') }}</span>
                         </van-button>
                     </template>
-                </van-field>
+                </van-field> -->
             </van-cell-group>
             <div style="display: flex;justify-content: space-around;margin-top: 2rem;">
                 <van-button class="myBtn" round block type="primary" native-type="submit">{{ t('提交') }}</van-button>
@@ -183,7 +183,7 @@ const onSubmit = () => {
         http({
             url: 'c=Setting&a=bank_update',
             data: {
-                code: dataForm.scode,
+                //code: dataForm.scode,
                 bank_name: dataForm.bank_name,
                 bank_id: dataForm.bank_id,
                 account: dataForm.account,
