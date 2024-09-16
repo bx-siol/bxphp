@@ -348,7 +348,7 @@ class SettingController extends BaseController
 		$params['bank_id'] = intval($params['bank_id']);
 
 		$project = getConfig("sys_name");
-		if($project != "Syngenta")
+		if($project != "Syngenta" && $project != "lifefitness")
 			if (!$params['code'])
 				ReturnToJson(-1, 'Please enter OTP');
 
@@ -360,7 +360,7 @@ class SettingController extends BaseController
 			ReturnToJson(-1, 'Please enter bank account number.');
 		if (!$params['ifsc'])
 			ReturnToJson(-1, 'Please enter ifsc');
-		if($project != "Syngenta")
+		if($project != "Syngenta" && $project != "lifefitness")
 		{
 			$checkVcode = checkPhoneCode(['stype' => 9, 'phone' => $pageuser['account'], 'code' => $params['code']]);
 			if ($checkVcode['code'] != 1)
