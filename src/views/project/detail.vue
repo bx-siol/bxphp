@@ -1,10 +1,6 @@
 <template>
   <div class="project_detail">
-    <Nav leftText=''>
-      <template #left>
-        <div></div>
-      </template>
-    </Nav>
+    <Nav leftText=''></Nav>
     <div style="background: ">
       <div :class="['project_img', { backdrop: info.pointshop == 1 }]">
         <van-swipe indicator-color="white" :autoplay="3000">
