@@ -1,11 +1,7 @@
 <template>
     <div class="paylogBox" style="        height: 100%;
         overflow-y: auto;">
-        <Nav leftText=''>
-            <template #left>
-                <div></div>
-            </template>
-        </Nav>
+        <Nav leftText=''></Nav>
         <div class="will">
             <div class="card">
                 <div>
@@ -170,7 +166,6 @@
             </div>
         </div>
     </div>
-    <MyTab></MyTab>
     <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>
 

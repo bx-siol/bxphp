@@ -986,7 +986,7 @@ img {
     background: #fff;
     display: flex;
     flex-direction: column;
-    padding: 0.675rem 0.675rem 0;
+    padding: 0 0.675rem;
 }
 
 .home_list .van-cell {
@@ -1506,19 +1506,26 @@ img {
 .invite {
     position: relative;
     min-height: 100%;
-    background: #fff;
-    color: #3d3d3b;
+    background: #ed2d38;
+    color: white;
 }
 
 .invite_wrap {
     font-size: 0.75rem;
     padding: 0 4%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background:url(/src/assets/img/share/bg.png);
+    background-repeat: no-repeat;
+    background-size: 100% 90%;
 }
 
 .invite_wrap .idbox {
     text-align: center;
     font-size: 14px;
-    padding: 2rem 0 2rem;
+    padding: 1rem 0;
+    width: 80%;
 }
 
 .invite_wrap .idbox span {
@@ -1534,31 +1541,42 @@ img {
 }
 
 .invite_wrap .link {
-    border: 1px solid #7d7d7d;
     text-align: center;
     width: 80%;
     margin: 0.7rem auto 0;
     padding: 0.5rem 0;
     border-radius: 0.2rem;
+    height: 4rem;
+    background-color: #9c0202;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
 }
 
 .invite_wrap .copyLinkBtn {
     display: block;
     border: 0;
-    background: #64523e;
-    color: #fff;
-    height: 2.4rem;
+    background: linear-gradient(#ffffdc, #ffd600) !important;
+    color: #eb1701;
+    height: 3rem;
     border-radius: 2rem;
     padding: 0;
-    width: 50%;
-    margin: 1rem auto 0;
+    width: 80%;
+    margin-top: 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    border: 5px solid #ffa000;
+    box-shadow: 0 0 2px 0 black;
+    border-top: 2.5px solid #ffa000;
 }
 
 .invite_wrap .qrcode {
     width: 52%;
-    margin: 4rem auto 0;
+    margin: 2rem auto 0;
     background: #fff;
     padding: 0.3rem;
+    border: 3px solid #ffdf00;
 }
 
 .invite_wrap .qrcode .van-image {

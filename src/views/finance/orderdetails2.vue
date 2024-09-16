@@ -1,6 +1,6 @@
 <template>
     <div class="conBox" style="height: auto;background-color: #fff;">
-        <Nav></Nav>
+        <Nav leftText=''></Nav>
         <!--------------- 提现订单详细信息 ---------------->
         <div class="goods">
             <ul class="ul_top">

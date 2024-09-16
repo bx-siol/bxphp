@@ -1,19 +1,19 @@
 <template>
     <div class="invite">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div style="text-align: center;" class="invite_wrap">
+            <img :src="title" style="margin-top: 1rem;width: 90%;" >
             <div class="qrcode">
                 <!-- <van-image :src="imgFlag(tdata.qrcode)" @click="onPreview(tdata.qrcode)"></van-image> -->                
                 <vue-qrcode :value="montage.urls"></vue-qrcode>
             </div>
             <div class="idbox">
-                <p style="text-transform: capitalize !important;">{{ t('您的邀请码') }}</p>
-                <span style="color:#e32e43;"><b>{{ tdata.icode }}</b></span>
+                <p style="display: flex;justify-content: space-evenly;align-items: center;">
+                    <span>{{ t('您的邀请码') }}</span>
+                    <span style="color:#ffed32;font-weight: bold;font-size: 1.2rem;">{{ tdata.icode }}</span>
+                </p>                
             </div>
-            <p style="text-align:center;text-transform: capitalize !important;font-size:14px;" class="tittxt_1">{{
-                t('亲爱的会员，以下是您的邀请链接')
-            }}</p>
-            <div style="text-transform: lowercase !important;" class="link">{{ montage.urls }}</div>
+            <div class="link">{{ montage.urls }}</div>
             <van-button class="copyLinkBtn" style="background: rgb(235 23 0) " ref="linkCopyRef">{{ t('复制邀请链接') }}</van-button>
         </div>
     </div>
@@ -26,6 +26,7 @@ import { defineComponent, ref, onMounted, computed } from "vue";
 import MyNav from "../../components/Nav.vue";
 import { Button, Grid, GridItem, Image, Stepper, Cell, CellGroup } from "vant";
 import VueQrcode from 'vue-qrcode'
+import title from '../../assets/img/share/title.png';
 
 export default defineComponent({
     name: "invite",

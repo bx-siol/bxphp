@@ -1,6 +1,6 @@
 <template>
     <div class="conBox">
-        <Nav></Nav>
+        <Nav leftText=''></Nav>
         <div class="streamer">
             <div :class="{ activeTab: currentTab === 'LOGIN' }" @click="handleTab('LOGIN')">LOGIN PASSWORD</div>
             <div :class="{ activeTab: currentTab === 'PAYMENT' }" @click="handleTab('PAYMENT')">PAYMENT PASSWORD</div>

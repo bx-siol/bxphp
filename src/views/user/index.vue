@@ -66,77 +66,29 @@
                     </van-grid-item>
                 </van-grid>
             </div>
-            <div>
-                <div class="menuItem" style=" background: red;" @click="onLink({ name: 'Purchase' })">
-                    <van-image style=" width: 7vw; margin: auto;" :src="myproduct"></van-image>
-                    <div>{{t('我的产品')}}</div>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'coupon', params: { type: 1 } })">
-                    <van-image :src="menu1"></van-image>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'Setting_bank' })">
-                    <van-image :src="menu2"></van-image>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'Finance_balancelog' })">
-                    <van-image :src="menu3"></van-image>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'Share' })">
-                    <van-image :src="menu6"></van-image>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'User_team' })">
-                    <van-image :src="menu5"></van-image>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'Gift_redpack' })">
-                    <van-image :src="menu4"></van-image>
-                </div>
-                <div class="menuItem" @click="onLink({ name: 'Service' })">
-                    <van-image :src="menu7"></van-image>
-                </div>
-                <div class="menuItem" @click="appdload">
-                    <van-image :src="menu8"></van-image>
-                </div>
-                <div style=" background: red;" class="menuItem" @click="onLink({ name: 'Setting_password' })">
-                    <van-image style=" width: 7vw; margin: auto;" :src="pay_pwd"></van-image>
-                    <div>{{t('修改密码')}}</div>
-                </div>
-            </div>
-            <div class="home_list" style="padding: 1vh 4vw;" v-if="false">
+            <div class="home_list" style="padding: 0 4vw;">
                 <van-cell-group>
-                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }"></van-cell>
-                    <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon"></van-cell>
+                    <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }" is-link></van-cell>
+                    <van-cell :title="t('我的产品')" :icon="myproduct" :to="{ name: 'Purchase' }" is-link></van-cell>
+                    <van-cell :title="t('券')" :to="{ name: 'coupon', params: { type: 1 } }" :icon="coupon" is-link></van-cell>
+                    <van-cell :title="t('财务记录')" :icon="financialrecords" :to="{ name: 'Finance_balancelog' }" is-link></van-cell>
+                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }" is-link></van-cell>
+                    <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }" is-link></van-cell>
+                    <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox" :to="{ name: 'Setting_bank' }" is-link></van-cell>
+                    <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }" is-link></van-cell>
+                    <van-cell :title="t('App')" :icon="app" @click="appdload" class="last-child" is-link></van-cell>
+                    <van-cell :title="t('修改密码')" :icon="pay_pwd" :to="{ name: 'Setting_password' }" is-link></van-cell>
                     <van-cell :title="t('邀请券')" :to="{ name: 'coupon', params: { type: 2 } }" :icon="coupon2" v-if="false"></van-cell>
-                    <van-cell :title="t('银行账户')" :icon="bankaccount" class="bankIcoBox" :to="{ name: 'Setting_bank' }"></van-cell>
-                    <van-cell :title="t('财务记录')" :icon="financialrecords" :to="{ name: 'Finance_balancelog' }"></van-cell>
                     <van-cell :title="t('任务中心')" :icon="missioncenter" :to="{ name: 'task' }" v-if="false"></van-cell>
-                    <van-cell :title="t('邀请链接')" :icon="invitationlink" :to="{ name: 'Share' }"></van-cell>
-                    <van-cell :title="t('我的团队')" :icon="myteam" :to="{ name: 'User_team' }"></van-cell>
-                    <van-cell :title="t('红包')" :icon="bonus" :to="{ name: 'Gift_redpack' }"></van-cell>
-                    <van-cell :title="t('联系经理')" :icon="Service" :to="{ name: 'Service' }"></van-cell>
-                    <van-cell :title="t('修改密码')" :icon="pay_pwd" :to="{ name: 'Setting_password' }"></van-cell>
-                    <van-cell :title="t('App')" :icon="app" @click="appdload" class="last-child" v-if="false"></van-cell>
                     <van-cell :title="t('修改登录密码')" :icon="login_pwd" :to="{ name: 'Setting_password' }" v-if="false"></van-cell>
                     <van-cell :title="t('设置')" :icon="Setting" :to="{ name: 'Setting' }" v-if="false"></van-cell>
                 </van-cell-group>
             </div>
-            <van-button class="myBtns" block type="primary" @click="onLogout">SIGN OUT</van-button>
+            <van-button  class="myBtns" block type="primary" @click="onLogout">SIGN OUT</van-button>
         </div>
     </div>
 
     <MyAvatar ref="avatarRef" @success="onAvatarSuccess"></MyAvatar>
-
-    <van-action-sheet v-model:show="serviceShow" :cancel-text="t('关闭')" :description="t('客户服务')" close-on-click-action>
-        <template #default>
-            <div v-for="item in actions" @click="onServiceSelect(item)"
-                style="overflow: hidden;padding: 1rem 5%;border-bottom: 1px solid #efefef;">
-                <van-image :src="item.type == 1 ? img_telegram : img_whatsapp" style="float: left;" width="2.5rem"
-                    height="2.5rem" />
-                <div style="float: right;text-align: right;">
-                    <div>{{ item.name }}</div>
-                    <div style="font-size: 0.9rem;color: #666666;">{{ item.account }}</div>
-                </div>
-            </div>
-        </template>
-    </van-action-sheet>
 </template>
 
 <script lang="ts">
@@ -259,24 +211,7 @@
     const t_rebate = ref(0.00)
     const t_tprofit = ref(0.00)
 
-    const serviceShow = ref(false)
     const actions = ref([]) //{ name: '选项三', subname: '描述信息' }
-
-    const onService = () => {
-        serviceShow.value = true
-    }
-
-    const onServiceSelect = (ev: any) => {
-        let url = ''
-        if (ev.type == 1) {
-            url = 'https://t.me/' + ev.account
-        } else if (ev.type == 2) {
-            url = 'https://wa.me/' + ev.account
-        } else {
-            return
-        }
-        window.location.href = url
-    }
     const appshow = ref(true)
 
     const onLogout = () => {
@@ -331,7 +266,6 @@
 </script>
 
 <style scoped>
-/*.home_list .bankIcoBox .van-icon__image{width: 1.5rem;height: 1.5rem;}*/
 .home_money .van-grid-item__content {
     /* padding: 0.5rem 0.5rem; */
 }
@@ -356,15 +290,22 @@
 }
 </style>
 <style lang="scss" scoped>
-    .home_list .van-cell-group {
-        background: transparent;
-        border-bottom: 1px solid #d2d2d291
-    }
     .home {
         background: #fff;
 
         .home_wrap {
             box-sizing: border-box;
+
+            .home_list{
+                :deep(.van-cell){
+                    border: none;
+                }
+
+                :deep(.van-cell__right-icon){
+                    position: absolute;
+                    right: 0;
+                }
+            }
 
             .depositBG {
                 background-image: url("../../assets/img/user/depositBG.png");
@@ -378,23 +319,6 @@
                 margin-top: 2vh;
             }
 
-            .menuItem {
-                display: inline-block;
-                width: 31%;
-                text-align: center;
-                border-radius: 5px;
-                color: white;
-                /*background: #eb1700;*/
-                margin-left: 2vw;
-
-                .van-image {
-                    width: 100%;
-                }
-            }
-
-            .home_set {
-            }
-
             .home_top {
                 box-sizing: border-box;
                 display: flex;
@@ -403,9 +327,6 @@
                 color: #000;
                 height: 16vh;
                 background: #eb1700;
-
-                .home_basic_info {
-                }
 
                 .headico {
                     margin-top: 0.25rem;
@@ -551,8 +472,9 @@
                 font-weight: bold;
                 border-radius: 3rem;
                 margin-bottom: 1.2rem;
-                width: 100%;
+                width: 90%;
                 height: 2.25rem;
+                margin-left: 5%;
             }
 
             .last-child {

@@ -1,6 +1,6 @@
 <template>
     <div class="conBox">
-        <Nav></Nav>
+        <Nav  leftText=''></Nav>
         <van-form @submit="onSubmit" :label-width="configForm.labelWidth" :label-align="configForm.labelAlign">
             <van-cell-group>
                 <van-field :formatter="formatter" :label="t('真实姓名')" v-model="dataForm.realname"

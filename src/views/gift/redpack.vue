@@ -1,6 +1,6 @@
 <template>
     <div style="min-height: 480px;" class="giftbag">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div class="reward">
             <van-image style="margin-bottom: 32vh; width: 66%; " :src="giftTitle"></van-image>
             <van-form @submit="onSubmit">

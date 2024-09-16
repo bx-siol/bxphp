@@ -46,9 +46,6 @@
         </template>
       </MyListBase>
     </div>
-
-
-    <MyTab></MyTab>
   </div>
   <MyLoading :show="loadingShow" title="Loading..."></MyLoading>
 </template>

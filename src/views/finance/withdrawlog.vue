@@ -1,6 +1,6 @@
 <template>
     <div class="cashlogBox">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div class="tablebox">
             <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
                 <template #default="{ list }">
