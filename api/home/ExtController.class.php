@@ -237,7 +237,7 @@ class ExtController extends BaseController
 	public function _pageData()
 	{		
 		$pageuser = checkLogin();
-		$newmember = Db::table('sys_user')->where(" pids like '%{$pageuser['id']}%' and first_pay_day > 0 ")->count();
+		$newmember = Db::table('sys_user')->where(" pid={$pageuser['id']} and first_pay_day > 0 ")->count();
 
 		$return_data = [
 			'newmember' => $newmember,
