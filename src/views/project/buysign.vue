@@ -33,7 +33,7 @@ import { useI18n } from 'vue-i18n'; const { t } = useI18n();
 
 const route = useRoute()
 const router = useRouter()
-const gsn = ref(route.params.gsn)
+const osn = ref(route.params.osn)
 const sign = ref('')
 
 let isRequest = false
@@ -51,7 +51,7 @@ const onSubmit = () => {
         url: 'c=Product&a=SigningCcontract',
         data: {
             sign: sign.value,
-            gsn:gsn.value
+            osn:osn.value
         }
     }).then((res: any) => {
         loadingShow.value = false;

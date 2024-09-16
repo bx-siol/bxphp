@@ -369,7 +369,7 @@ const onSubmit = () => {
         investShow.value = false
 
         if (info.value.cid == 1043) {
-          router.push({ name: 'Signing_Contract', params: { gsn: info.value.gsn } });
+          router.push({ name: 'Signing_Contract', params: { osn: res.data.osn } });
         }
 
       })

@@ -427,7 +427,7 @@ const routes: Array<RouteRecordRaw> = [
         component: () => import('../views/signin/activity.vue')
     },
     {
-        path: '/buysign/:gsn',
+        path: '/buysign/:osn',
         name: 'Signing_Contract',
         meta: {
             title: 'Signing Contract',
