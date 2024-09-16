@@ -1942,10 +1942,8 @@ class ProductController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 
-		$pro_order = DB::table('pro_order a')
-			->join('pro_goods b', "a.gid = b.id")
-			->where(" a.uid={$pageuser['id']} and b.gsn = '{$params['gsn']}' ")
-			->field('a.id')
+		$pro_order = DB::table('pro_order')
+			->where(" uid={$pageuser['id']} and osn = '{$params['osn']}' ")
 			->find();
 
 		$data = ['sign' => $params['sign']];
