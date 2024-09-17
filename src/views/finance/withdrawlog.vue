@@ -8,7 +8,7 @@
                         <div class="goods">
                             <ul class="ul_top">
                                 <li>{{ t('订单号') }}: {{ item.osn }}</li>
-                                <li>{{ item.money }} Rs</li>
+                                <li>{{ item.money }} RS</li>
                             </ul>
                             <ul class="ul_bot">
                                 <li style="color: #d1d1d1;">{{ item.create_time }}</li>
