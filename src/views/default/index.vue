@@ -74,7 +74,7 @@
                   </div>
                   <div
                     style="margin: 0.2rem 0; display: flex;justify-content: space-around;color: #808080;font-size: 0.9rem;">
-                    <div>Invitation Quantity</div>
+                    <div>Week Invitation</div>
                     <div>Bonus Amount</div>
                   </div>
                   <div class="savebtn" :style="InviteesNum >= 3 ? 'background-color: #009900;':''" @click=" InviteesNum >=3 ? GetRewards(1) : ''" >Receive bonus</div>
@@ -92,7 +92,7 @@
                   </div>
                   <div
                     style="margin: 0.2rem 0; display: flex;justify-content: space-around;color: #808080;font-size: 0.9rem;">
-                    <div>Invitation Quantity</div>
+                    <div>Week Invitation</div>
                     <div>Bonus Amount</div>
                   </div>
                   <div class="savebtn" :style="InviteesNum >= 5 ? 'background-color: #009900;':''" @click=" InviteesNum >= 5 ? GetRewards(2) : ''"  >Receive bonus</div>
@@ -110,7 +110,7 @@
                   </div>
                   <div
                     style="margin: 0.2rem 0; display: flex;justify-content: space-around;color: #808080;font-size: 0.9rem;">
-                    <div>Invitation Quantity</div>
+                    <div>Week Invitation</div>
                     <div>Bonus Amount</div>
                   </div>
                   <div class="savebtn" :style="InviteesNum >= 10 ? 'background-color: #009900;':''" @click=" InviteesNum >= 10 ? GetRewards(3) : ''"> Receive bonus</div>
