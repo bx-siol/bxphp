@@ -295,8 +295,10 @@ class DefaultController extends BaseController
 		$tip = Db::table('news_article')->where("id={$tipId} and status=2")->field(['title', 'content'])->find();
 		$newscount = Db::table('news_article')->where("cid=50 and status=2")->field(['id'])->select()->toArray();
 
-		$now_day = date('Ymd');
-		$userCount = DB::table('sys_user')->where(" first_pay_day = {$now_day} ")->count();
+		$start_date = date('Ymd', mktime(0, 0, 0, date('m'), date('d') - date('w') + 1, date('Y')));
+		$end_date = date('Ymd', mktime(23, 59, 59, date('m'), date('d') - date('w') + 7, date('Y')));
+
+		$userCount = DB::table('sys_user')->where(" first_pay_day >= {$start_date} and first_pay_day <= {$end_date} ")->count();
 
 		$return_data = [
 			'newscount' => count($newscount),
@@ -324,15 +326,15 @@ class DefaultController extends BaseController
 		$money = 0;
 		if($params['type'] == 1){
 			$type = 101;
-			$money = 50;
+			$money = 200;
 		}
 		else if($params['type'] == 2){
 			$type = 102;
-			$money = 100;
+			$money = 200;
 		}
 		else if($params['type'] == 3){
 			$type = 103;
-			$money = 300;
+			$money = 400;
 		}
 
 		$now_day = date('Ymd');
