@@ -1,10 +1,9 @@
 <template>
     <div class="cashlogBox">
-        <MyNav></MyNav>
+        <MyNav leftText=''></MyNav>
         <div class="tablebox">
             <MyListBase :url="pageUrl" ref="pageRef" @success="onPageSuccess">
                 <template #default="{ list }">
-
                     <div v-for="item in list">
                         <div class="goods">
                             <ul class="ul_top">
@@ -12,12 +11,11 @@
                                 <li>{{ item.money }} Rs</li>
                             </ul>
                             <ul class="ul_bot">
-                                <li>{{ item.create_time }}</li>
+                                <li style="color: #d1d1d1;">{{ item.create_time }}</li>
                                 <li @click="onGoPayinfo(item)">{{ t(item.status_flag) }}</li>
                             </ul>
                         </div>
                     </div>
-
                 </template>
             </MyListBase>
         </div>
@@ -91,12 +89,13 @@ onMounted(() => {
 .goods {
     margin-bottom: 1rem;
     border-bottom: 1px solid #ddd;
+    font-size: 0.8rem;
 
     ul {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        color: #6e523e;
+        color: black;
         line-height: 22px;
     }
 
@@ -109,7 +108,7 @@ onMounted(() => {
         }
 
         li:nth-child(2) {
-            background-color: #6e523e;
+            background-color: #cc1700;
             padding: 0.1rem 0.8rem;
             border-radius: 1rem;
             color: #fff;

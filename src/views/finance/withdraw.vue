@@ -1,9 +1,9 @@
 <template>
     <div class="recharge">
         <MyNav leftText=''>
-            <!-- <template #right>
-                <span @click="onLink({ name: 'Finance_withdrawlog' })">Record</span>
-            </template> -->
+            <template #right>
+                <span @click="onLink({ name: 'Finance_withdrawlog' })" style="color: #ca0e00;">Record</span>
+            </template>
         </MyNav>
         <div class="recharge_wrap">
             <div style="height: 2rem;background-color: #ca0e00;border-radius: 20px;display: flex;color: white;align-items: center;justify-content: space-between;padding: 0 1rem;font-weight: bold;margin-top: 1rem;">

@@ -1,6 +1,6 @@
 <template>
     <div class="conBox" style="height: auto;background-color: #fff;">
-        <Nav></Nav>
+        <Nav leftText=''></Nav>
         <!--------------- 提现订单详细信息 ---------------->
         <div class="goods">
             <ul class="ul_top">
@@ -10,16 +10,16 @@
                 </li>
                 <li>
                     <p>Quantity:</p>
-                    <p>{{ route.params.money }} Rs</p>
+                    <p>{{ route.params.money }} RS</p>
                 </li>
                 <li>
                     <p>Handling Fees({{ ((route.params.money - route.params.par1) / route.params.money * 100).toFixed(2) }}%):
                     </p>
-                    <p>{{ (route.params.money - route.params.par1).toFixed(2) }} Rs</p>
+                    <p>{{ (route.params.money - route.params.par1).toFixed(2) }} RS</p>
                 </li>
                 <li>
                     <p>Actual Account: </p>
-                    <p>{{ route.params.par1 }} Rs</p>
+                    <p>{{ route.params.par1 }} RS</p>
                 </li>
                 <li>
                     <p>Time:</p>
@@ -51,8 +51,8 @@
                     </div>
                 </li>
                 <li>
-                    <p>State:</p>
-                    <p>{{ t(route.params.par7) }}</p>
+                    <p style="color: #cc1700;">State:</p>
+                    <p style="color: #cc1700;">{{ t(route.params.par7) }}</p>
                 </li>
             </ul>
 
@@ -150,7 +150,7 @@ nextTick(() => {
 .conBox ul li :deep(.van-button) {
     padding: 0;
     border: none;
-    background: url(../../assets/img/home/copy.png) center 5px;
+    background: url(../../assets/img/home/copy.png) 10px 5px;
     background-repeat: no-repeat;
     background-size: 60% 60%;
     height: 2rem;
