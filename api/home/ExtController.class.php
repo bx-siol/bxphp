@@ -274,7 +274,7 @@ class ExtController extends BaseController
 
 		$walllog = Db::table('wallet_log')->where (" type = {$type} ")->count();
 		if($walllog == 1)
-			ReturnToJson(-1, 'Please do not receive it repeatedly.');
+			ReturnToJson(-1, 'Finish');
 		
 		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type,'Cumulative invitation registration：' .$params['type']);
 		
