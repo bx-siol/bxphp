@@ -12,9 +12,11 @@
 
         <div class="backg">
           <div class="index_cer">
-
-            <div class="myswiper">
+            <div class="myswiper" v-if=false>
               <MySwiper :kv="tdata.kv" height="12.5rem"></MySwiper>
+            </div>
+            <div class="videobox">
+              <video controlslist="nodownload noplaybackrate" disablePictureInPicture controls :src="videosrc" style="width: 100%;"></video>
             </div>
 
             <div class="index_msg" style="margin-top: 1rem;">
@@ -64,10 +66,10 @@
                     style="margin: 0.2rem 0;display: flex;justify-content: space-around;color: #808080;font-size: 0.9rem">
                     <div style="display: flex;">
                       <img :src="people" style="height: 1rem;width: 1rem;margin-right: 0.5rem;">
-                      <b>{{ InviteesNum >0 ?'1' : '0'  }}/1</b>
+                      <b>{{ InviteesNum >= 3 ?'3' : (InviteesNum < 3 ? InviteesNum : '0')  }}/3</b>
                     </div>
                     <div style="display: flex;">
-                      <img :src="rs" style="height: 1rem;width: 1rem;margin-right: 0.5rem;"><b>50 RS</b>
+                      <img :src="rs" style="height: 1rem;width: 1rem;margin-right: 0.5rem;"><b>200 RS</b>
                     </div>
                   </div>
                   <div
@@ -75,17 +77,17 @@
                     <div>Invitation Quantity</div>
                     <div>Bonus Amount</div>
                   </div>
-                  <div class="savebtn" :style="InviteesNum >= 1 ? 'background-color: #009900;':''" @click=" InviteesNum > 0 ? GetRewards(1) : ''" >Receive bonus</div>
+                  <div class="savebtn" :style="InviteesNum >= 3 ? 'background-color: #009900;':''" @click=" InviteesNum >=3 ? GetRewards(1) : ''" >Receive bonus</div>
                 </div>
                 <div class="item">
                   <div
                     style="margin: 0.2rem 0;display: flex;justify-content: space-around;color: #808080;font-size: 0.9rem">
                     <div style="display: flex;">
                       <img :src="people" style="height: 1rem;width: 1rem;margin-right: 0.5rem;">
-                      <b>{{ InviteesNum > 1 ?'2' : (InviteesNum < 2 ? InviteesNum : '0')  }}/2</b>
+                      <b>{{ InviteesNum >= 5 ?'5' : (InviteesNum < 5 ? InviteesNum : '0')  }}/5</b>
                     </div>
                     <div style="display: flex;">
-                      <img :src="rs" style="height: 1rem;width: 1rem;margin-right: 0.5rem;"><b>100 RS</b>
+                      <img :src="rs" style="height: 1rem;width: 1rem;margin-right: 0.5rem;"><b>200 RS</b>
                     </div>
                   </div>
                   <div
@@ -93,17 +95,17 @@
                     <div>Invitation Quantity</div>
                     <div>Bonus Amount</div>
                   </div>
-                  <div class="savebtn" :style="InviteesNum >= 2 ? 'background-color: #009900;':''" @click=" InviteesNum >= 2 ? GetRewards(2) : ''"  >Receive bonus</div>
+                  <div class="savebtn" :style="InviteesNum >= 5 ? 'background-color: #009900;':''" @click=" InviteesNum >= 5 ? GetRewards(2) : ''"  >Receive bonus</div>
                 </div>
                 <div class="item">
                   <div
                     style="margin: 0.2rem 0;display: flex;justify-content: space-around;color: #808080;font-size: 0.9rem">
                     <div style="display: flex;">
                       <img :src="people" style="height: 1rem;width: 1rem;margin-right: 0.5rem;">
-                      <b>{{ InviteesNum > 4 ?'5' : (InviteesNum < 5 ? InviteesNum : '0')  }}/5</b>
+                      <b>{{ InviteesNum >= 10 ?'10' : (InviteesNum < 10 ? InviteesNum : '0')  }}/10</b>
                     </div>
                     <div style="display: flex;">
-                      <img :src="rs" style="height: 1rem;width: 1rem;margin-right: 0.5rem;"><b>300 RS</b>
+                      <img :src="rs" style="height: 1rem;width: 1rem;margin-right: 0.5rem;"><b>400 RS</b>
                     </div>
                   </div>
                   <div
@@ -111,7 +113,7 @@
                     <div>Invitation Quantity</div>
                     <div>Bonus Amount</div>
                   </div>
-                  <div class="savebtn" :style="InviteesNum >= 5 ? 'background-color: #009900;':''" @click=" InviteesNum >= 5 ? GetRewards(3) : ''"> Receive bonus</div>
+                  <div class="savebtn" :style="InviteesNum >= 10 ? 'background-color: #009900;':''" @click=" InviteesNum >= 10 ? GetRewards(3) : ''"> Receive bonus</div>
                 </div>
               </div>
             </div>

@@ -47,7 +47,6 @@ import MySwiper from '../../components/Swiper.vue'
 import lbt1 from '../../assets/index/lbt1.jpg'
 import lbt2 from '../../assets/index/lbt2.jpg'
 import lbt3 from '../../assets/index/lbt3.jpg'
-import lbt4 from '../../assets/index/lbt4.jpg'
 
 export default defineComponent({
     name: "news",
@@ -69,7 +68,7 @@ const onLink = (to: any) => {
 const imgFlag = (src: string) => {
     return getSrcUrl(src, 1)
 }
-const covers = ref([lbt1, lbt2, lbt3, lbt4])
+const covers = ref([lbt1, lbt2, lbt3])
 
 const pageRef = ref()
 const pageUrl = ref('c=News&a=list&s_cid=50')
