@@ -218,30 +218,31 @@ class FinanceController extends BaseController
 		}
 
 		$sys_name =  getConfig('sys_name');
-		if ($sys_name != "Nestle") {
-			$pro_order = Db::table('pro_order log')
-				->leftJoin('pro_goods c', 'log.gid=c.id')
-				->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->find();
+		// if ($sys_name != "Nestle") {
+		// 购买产品后才可以 提现
+		$pro_order = Db::table('pro_order log')
+			->leftJoin('pro_goods c', 'log.gid=c.id')
+			->where("log.uid={$pageuser['id']} and (log.is_give=0 or c.is_normal = 1) ")->find();
 
-			if (!$pro_order) {
-				ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
-			}
-
-			$pro_order = Db::table('pro_order log')
-				->leftJoin('pro_goods c', 'log.gid=c.id')
-				->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
-
-			if (!$pro_order) {
-				ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
-			}
+		if (!$pro_order) {
+			ReturnToJson(-1, 'Withdrawal requires at least one product to be purchased.');
 		}
-		if ($sys_name == "Nestle") {
-			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384,385) ")->count();
+
+		$pro_order = Db::table('pro_order log')
+			->leftJoin('pro_goods c', 'log.gid=c.id')
+			->where("log.uid={$pageuser['id']} and log.days != log.total_days and ( log.is_give=0 or c.is_normal = 1 ) ")->find();
+
+		if (!$pro_order) {
+			ReturnToJson(-1, 'The product has expired and you cannot apply for withdrawal. If you purchase the product again, you can apply for withdrawal.');
+		}
+		// }
+		if ($sys_name == "Syngenta") { //Syngenta  Nestle
+			$pro_orderCount = Db::table('pro_order')->where(" uid={$pageuser['id']} and gid in (350,351,352,353) ")->count();
 			if ($pro_orderCount == 0)
 				ReturnToJson(-1, 'Your account has cheating behavior and cannot be withdrawn.');
 
 			$pro_orderMaIid = Db::table('pro_order')
-				->where("uid={$pageuser['id']} and gid in (372,373,374,375,376,377,378,379,380,381,382,383,384,385) ")
+				->where("uid={$pageuser['id']} and gid in (350,351,352,353) ") //372,373,374,375,376,377,378,379,380,381,382,383,384,385
 				->select()->toArray();
 
 			$now_day = date('Ymd');
@@ -253,54 +254,71 @@ class FinanceController extends BaseController
 			for ($i = 0; $i < count($pro_orderMaIid); $i++) {
 				$k = $pro_orderMaIid[$i]['gid'];
 				switch ($k) {
-					case '372':
-						$Withdrawal += 3000;
+					case '350':
+						$Withdrawal += 5800;
 						break;
-					case '373':
-						$Withdrawal += 12000;
+					case '351':
+						$Withdrawal += 19000;
 						break;
-					case '374':
-						$Withdrawal += 38000;
-						break;
-					case '375':
-						$Withdrawal += 70000;
-						break;
-					case '376':
-						$Withdrawal += 120000;
-						break;
-					case '377':
-						$Withdrawal += 150000;
-						break;
-					case '378':
-						$Withdrawal += 250000;
-						break;
-					case '379':
-						$Withdrawal += 6000;
-						break;
-					case '380':
-						$Withdrawal += 15000;
-						break;
-					case '381':
+					case '352':
 						$Withdrawal += 30000;
 						break;
-					case '382':
-						$Withdrawal += 45000;
-						break;
-					case '383':
-						$Withdrawal += 70000;
-						break;
-					case '384':
-						$Withdrawal += 120000;
-						break;
-					case '385':
+					case '353':
 						$Withdrawal += 50000;
 						break;
 				}
 			}
+			// 		case '372':
+			// 			$Withdrawal += 3000;
+			// 			break;
+			// 		case '373':
+			// 			$Withdrawal += 12000;
+			// 			break;
+			// 		case '374':
+			// 			$Withdrawal += 38000;
+			// 			break;
+			// 		case '375':
+			// 			$Withdrawal += 70000;
+			// 			break;
+			// 		case '376':
+			// 			$Withdrawal += 120000;
+			// 			break;
+			// 		case '377':
+			// 			$Withdrawal += 150000;
+			// 			break;
+			// 		case '378':
+			// 			$Withdrawal += 250000;
+			// 			break;
+			// 		case '379':
+			// 			$Withdrawal += 6000;
+			// 			break;
+			// 		case '380':
+			// 			$Withdrawal += 15000;
+			// 			break;
+			// 		case '381':
+			// 			$Withdrawal += 30000;
+			// 			break;
+			// 		case '382':
+			// 			$Withdrawal += 45000;
+			// 			break;
+			// 		case '383':
+			// 			$Withdrawal += 70000;
+			// 			break;
+			// 		case '384':
+			// 			$Withdrawal += 120000;
+			// 			break;
+			// 		case '385':
+			// 			$Withdrawal += 50000;
+			// 			break;
+			// 	}
+			// }
 
 			if (($Withdrawal) - ($fin_cashlogSum + $params['money']) < 0)
 				ReturnToJson(-1, 'Exceeded today is withdrawal amount.');
 		}
+
+
+
 
 		$sys_user = Db::table('sys_user')->where("id={$pageuser['id']}")->find();
 		if ($sys_user["status"] != 2)
