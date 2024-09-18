@@ -94,7 +94,8 @@ const loadingShow = ref(true)
 const pageRef = ref()
 const route = useRoute()
 
-let pageUrl = ref('c=Coupon&a=list&type=' + route.params.type + '&status=3')
+//&type=' + route.params.type + '
+let pageUrl = ref('c=Coupon&a=list&status=3')
 const tableData = ref<any>({})
 
 const onPageSuccess = (res: any) => {

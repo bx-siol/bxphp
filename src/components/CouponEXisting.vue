@@ -97,7 +97,8 @@
     const pageRef = ref()
     const route = useRoute()
 
-    let pageUrl = ref('c=Coupon&a=list&type=' + route.params.type + '&status=1')
+    //&type=' + route.params.type + '
+    let pageUrl = ref('c=Coupon&a=list&status=1')
     const tableData = ref<any>({})
 
     const onPageSuccess = (res: any) => {
