@@ -215,568 +215,6 @@ class ProductController extends BaseController
 		unset($item['id']);
 	}
 
-	//弃用
-	private function invest_new12()
-	{
-		$pageuser = checkLogin();
-		$params = $this->params;
-		$money = floatval($params['money']);
-		$quantity = intval($params['quantity']);
-		if ($quantity < 1 || $quantity > 1000) {
-			ReturnToJson(-1, 'Incorrect purchase quantity');
-		}
-		$return_data = [];
-		Db::startTrans();
-		try {
-			$pageuser = Db::table('sys_user')->where("id='{$pageuser['id']}'")->find();
-			$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
-			if (!$item) {
-				ReturnToJson(-1, 'No corresponding product exists.');
-			} else {
-				if ($item['djs'] != 0 && $item['djs'] < time()) {
-					ReturnToJson(-1, 'The final purchase deadline for the current product has expired');
-				}
-				if ($item['status'] != 3) {
-					if ($item['status'] == 9) {
-						//ReturnToJson(-1,'There is no investment limit for this finished product.');
-						ReturnToJson(-1, 'The product has been sold out');
-					} elseif ($item['status'] == 2) {
-						ReturnToJson(-1, 'Unable to activate during pre-sale');
-					} else {
-						ReturnToJson(-1, 'This product has been offline.');
-					}
-				}
-				$money = $quantity * $item['price'];
-				//老用户专属购买  以下产品需要已经购买了其他产品才能购买
-				if (in_array($item['id'], ['78', '79', '80', '81', '82', '83'])) {
-					$user_numold = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0 ")->sum('num');
-					if ($user_numold <= 0) {
-						ReturnToJson(-1, 'Purchase failed, please contact the person in charge');
-					}
-				}
-				//要求用户邀请新人才可以购买
-				if ($item['yaoqing'] > 0) {
-					// $xjcount = Db::table('fin_paylog log')
-					// 	->leftJoin('sys_user su', 'log.uid=su.id')
-					// 	->where(' su.pid=' . $pageuser['id'] . ' and log.status=9 and log.is_first =1')->count();
-
-					$xjcount = Db::table('sys_user')->where(' first_pay_day>0 and pid=' . $pageuser['id'])->count();
-					if ($xjcount < $item['yaoqing']) {
-						ReturnToJson(-1, 'This product needs more than ' . $item['yaoqing'] . ' people in your team to purchase valid products');
-					}
-				}
-
-				if ($item['invest_limit'] > 0) {
-					$user_num = Db::table('pro_order')->where("uid={$pageuser['id']} and gid={$item['id']}  ")->sum('num');
-					$user_num1 = Db::table('pro_order')->where("uid={$pageuser['id']} ")->sum('num');
-					$p3 = 0;
-					if ($user_num1 == 0)
-						$p3 = 1;
-					if ($user_num + $quantity > $item['invest_limit']) {
-						ReturnToJson(-1, 'Purchase quantity exceeds the limit');
-					}
-				}
-			}
-
-			if ($item['is_xskc'] == 1) {
-				if ($item['kc'] < $quantity) {
-					Db::rollback();
-					ReturnToJson(-1, 'The current inventory is insufficient, please reduce the purchase quantity or contact your manager');
-				}
-				$kc = $item['kc'] - $quantity;
-				$kc = $kc > 0 ? $kc : 0;
-			}
-
-			$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->lock(true)->find();
-			$db_item = ['invested' => $item['invested'] + $money, 'kc' => $kc];
-			//更新产品记录
-			Db::table('pro_goods')->where("id={$item['id']}")->update($db_item);
-			//是否分佣的标识
-			$isgive = in_array($item['osn'], ['36049c0f092160d9']) ? 1 : 0;
-			if (in_array($item['cid'], [1019, 1031])) {
-				$isgive = 1;
-			}
-			$pro_order = [
-				'uid' => $pageuser['id'],
-				'osn' => getRsn(),
-				'pid' => $pageuser['pid'],
-				'cid' => $item['cid'],
-				'gid' => $item['id'],
-				'days' => $item['days'],
-				'rate' => $item['rate'],
-				'price' => $item['price'],
-				'price1' => $item['price1'],
-				'price2' => $item['price2'],
-				'p1' => 0,
-				'p2' => 0,
-				'p3' => $p3,
-				'money' => $money,
-				'num' => $quantity,
-				'create_day' => date('Ymd', NOW_TIME),
-				'create_time' => NOW_TIME,
-				'create_ip' => CLIENT_IP,
-				'is_give' => $isgive,
-				'is_exchange' => 0,
-			];
-
-			//判断是否积分商品
-			if ($item['isgift'] == 1) {
-				$wallet3 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=3')->lock(true)->find(); //积分
-				$pro_order['discount'] = 1;
-				$pro_order['w1_money'] = 0;
-				$pro_order['w2_money'] = 0;
-				$w3_money = $quantity * $item['price'];
-				if ($wallet3['balance'] < $w3_money) {
-					Db::rollback();
-					ReturnToJson(-1, 'Your points are insufficient');
-				}
-				$wallet_data3 = [
-					'balance' => $wallet3['balance'] - $w3_money
-				];
-				//更新积分余额
-				Db::table('wallet_list')->where("id={$wallet3["id"]}")->update($wallet_data3);
-				//写入流水记录
-				$result3 = walletLog([
-					'wid' => $wallet3['id'],
-					'uid' => $wallet3['uid'],
-					'type' => 1019,
-					'money' => -$w3_money,
-					'ori_balance' => $wallet3['balance'],
-					'new_balance' => $wallet_data3['balance'],
-					'fkey' => '',
-					'remark' => 'Buy:' . $pro_order['osn']
-				]);
-				if (!$result3) {
-					throw new \Exception('Failed to write journal records.');
-				}
-				$res = Db::table('pro_order')->insertGetId($pro_order);
-			} else {
-				//使用券
-				$coupons_money = 0;
-				$coupons_discount = 1; //默认不打折
-				$coupon = [];
-				if ($params['coupon'] != '-1' && $params['coupon']) {
-					$coupon = Db::table('coupon_log')->where("id={$params['coupon']}")->lock(true)->find();
-					if (!$coupon || $coupon['status'] > 2) {
-						ReturnToJson(-1, 'This discount coupon is not available');
-					}
-					if ($coupon['uid'] != $pageuser['id']) {
-						ReturnToJson(-1, 'This discount coupon is not available');
-					}
-					if ($coupon['num'] <= $coupon['used']) {
-						ReturnToJson(-1, 'This discount coupon is not available');
-					}
-					$gids = json_decode($coupon['gids'], true);
-					if ($gids && !in_array($item['id'], $gids)) {
-						ReturnToJson(-1, 'This product cannot be used for this coupon');
-					}
-					if ($coupon['effective_time'] && $coupon['effective_time'] <= NOW_TIME) {
-						ReturnToJson(-1, 'This coupon has expired');
-					}
-
-					if ($coupon['cid'] == 16) {
-						if (!in_array($item['id'], [76, 77, 78, 79, 80, 81])) {
-							ReturnToJson(-1, 'This product cannot use the coupon');
-						}
-					}
-
-					if ($coupon['discount'] > 0) {
-						$coupons_discount = $coupon['discount'] / 100;
-					} else {
-						$coupons_money = $coupon['money'];
-					}
-				}
-
-				//先检测余额钱包
-				$money = $quantity * $item['price'];
-				$discount_total = $money * $coupons_discount - $coupons_money;
-				if ($discount_total < 0) {
-					$discount_total = 0;
-				}
-				$w1_money = 0;
-				$w2_money = 0;
-				$wallet1 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=1')->lock(true)->find(); //积分 //充值钱包
-				$wallet2 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=2')->lock(true)->find(); //积分 //余额钱包
-				if (!$wallet1 || !$wallet2) {
-					throw new \Exception('Wallet acquisition exception.');
-				}
-				//检测当前用户是否是首次购买
-				$check_num = Db::table('pro_order')->where("uid={$pageuser['id']} and is_give=0")->count('id');
-
-				//只允许使用充值钱包
-				if (intval($item['buyday']) >= 1) {
-					$w1_money = $discount_total;
-					$w2_money = 0;
-					if (floatval($wallet1['balance']) < $discount_total) {
-						Db::rollback();
-						ReturnToJson(-1, 'Your balance is insufficient.');
-					}
-				} else {
-					//首次购买，保留余额钱包
-					if ($check_num <= 0) {
-						if ($wallet1['balance'] > 0) { //充值钱包有余额
-							if ($wallet1['balance'] >= $discount_total) {
-								$w1_money = $discount_total;
-							} else {
-								Db::rollback();
-								ReturnToJson(-1, 'Your balance is insufficient.');
-							}
-						} else {
-							Db::rollback();
-							ReturnToJson(-1, 'Your balance is insufficient.');
-						}
-					} else {
-						if ($wallet2['balance'] > 0) { //余额钱包有余额
-							if ($wallet2['balance'] >= $discount_total) {
-								$w2_money = $discount_total;
-								// $discount = 1;
-							} else {
-								//余额钱包不足
-								$w1_money = ($discount_total - $wallet2['balance']);
-								$w2_money = $wallet2['balance'];
-							}
-						} else {
-							$w1_money = $discount_total; //全部使用充值钱包
-						}
-					}
-				}
-
-				$pro_order['discount'] = $coupons_discount;
-				$pro_order['w1_money'] = $w1_money;
-				$pro_order['w2_money'] = $w2_money;
-				$res = Db::table('pro_order')->insertGetId($pro_order);
-
-				if ($wallet1['balance'] < $w1_money) {
-					Db::rollback();
-					ReturnToJson(-1, 'Your balance is insufficient.');
-				}
-				if ($wallet2['balance'] < $w2_money) {
-					Db::rollback();
-					ReturnToJson(-1, 'Your balance is insufficient.');
-				}
-
-
-				//更新券使用
-				if ($coupon) {
-					$coupon_log = [
-						'used' => $coupon['used'] + 1
-					];
-					if ($coupon_log['used'] >= $coupon['num']) {
-						$coupon_log['status'] = 9;
-					} else {
-						$coupon_log['status'] = 2;
-					}
-					Db::table('coupon_log')->where("id={$coupon['id']}")->update($coupon_log);
-					$coupon_used = [
-						'cid' => $coupon['cid'],
-						'clid' => $coupon['id'],
-						'uid' => $pro_order['uid'],
-						'gid' => $pro_order['gid'],
-						'oid' => $pro_order['id'],
-						'num' => 1,
-						'discount' => $coupon['discount'],
-						'money' => $coupon['money'],
-						'create_day' => date('Ymd', NOW_TIME),
-						'create_time' => NOW_TIME
-					];
-					Db::table('coupon_used')->insertGetId($coupon_used);
-				}
-
-
-				if ($w2_money > 0) {
-					$wallet_data2 = [
-						'balance' => $wallet2['balance'] - $w2_money
-					];
-					//更新钱包余额
-					Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
-					//写入流水记录
-					$result2 = walletLog([
-						'wid' => $wallet2['id'],
-						'uid' => $wallet2['uid'],
-						'type' => 1,
-						'money' => -$w2_money,
-						'ori_balance' => $wallet2['balance'],
-						'new_balance' => $wallet_data2['balance'],
-						'fkey' => $res,
-						'remark' => 'Buy:' . $pro_order['osn']
-					]);
-					if (!$result2) {
-						throw new \Exception('Failed to write journal records.');
-					}
-				}
-				if ($w1_money > 0) {
-					$wallet_data1 = [
-						'balance' => $wallet1['balance'] - $w1_money
-					];
-					//更新钱包余额
-					Db::table('wallet_list')->where("id={$wallet1['id']}")->update($wallet_data1);
-					//写入流水记录
-					$result1 = walletLog([
-						'wid' => $wallet1['id'],
-						'uid' => $wallet1['uid'],
-						'type' => 1,
-						'money' => -$w1_money,
-						'ori_balance' => $wallet1['balance'],
-						'new_balance' => $wallet_data1['balance'],
-						'fkey' => $res,
-						'remark' => 'Buy:' . $pro_order['osn']
-					]);
-					if (!$result1) {
-						throw new \Exception('Failed to write journal records.');
-					}
-				}
-
-				$sjcq = 0;
-				$user = Db::table('sys_user')->where("id={$pageuser['id']}")->lock(true)->find();
-				$sys_user = [
-					'total_invest' => $user['total_invest'] + $w1_money + $w2_money,
-					'total_invest2' => $user['total_invest2'] + $discount_total
-				];
-				Db::table('sys_user')->where("id={$user['id']}")->update($sys_user);
-
-				$lottery = Db::table('gift_lottery')->where("id=1")->find();
-				if ($item['price'] >= $lottery['lottery_min']) {
-					$tttttt = $quantity * intval($item['cjcs']);
-					Db::table('sys_user')->where("id={$pageuser['id']}")->inc('lottery', $tttttt)->update();
-					//检测当前用户是否是首次购买 送上级抽奖次数
-					if ($check_num <= 0) {
-						$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->lock(true)->findOrEmpty();
-						$sjcq = Db::table('sys_user')->where("id=" . $puser['id'])->update(['lottery' => $puser['lottery'] + intval($item['sjcjcs'])]);
-
-						if ($item['Integral'] > 0 && $puser != null) {
-
-							//更新上级的积分钱包
-							$wallet3 = getWallet($puser['id'], 3);
-							if ($wallet3 == []) {
-								$db_item = [
-									'uid' => $puser['id'],
-									'waddr' => getRsn(),
-									'cid' => 3,
-									'balance' => 0,
-									'create_time' => time(),
-
-								];
-								Db::table('wallet_list')->insertGetId($db_item);
-								$wallet3 = $db_item;
-							}
-
-							$wallet3 = Db::table('wallet_list')->where('uid=' . $puser['id'] . ' and cid=3')->lock(true)->find(); //积分  
-							$wallet_data3 = [
-								'balance' => $wallet3['balance'] + $item['Integral']
-							];
-							//更新钱包余额
-							Db::table('wallet_list')->where("id={$wallet3['id']}")->update($wallet_data3);
-							//写入流水记录
-							$result3 = walletLog([
-								'wid' => $wallet3['id'],
-								'uid' => $wallet3['uid'],
-								'type' => 1019,
-								'money' => $item['Integral'],
-								'ori_balance' => $wallet3['balance'],
-								'new_balance' => $wallet_data3['balance'],
-								'fkey' => $res,
-								'remark' => 'Buy:' . $pro_order['osn']
-							]);
-							if (!$result3) {
-								throw new \Exception('Failed to write journal records.');
-							}
-						}
-					}
-				}
-
-				//检测当前用户是否是首次购买 
-				if ($check_num <= 0) {
-					$pro_ordertopuser = [];
-					//送推荐人
-					if ($item['gifttopuser']) {
-						$gifttopuser = Db::table('pro_goods')->where("id={$item['gifttopuser']}")->find();
-						$puser = Db::table('sys_user')->where("id={$pageuser['pid']}")->find();
-						$pro_ordertopuser = [
-							'uid' => $puser['id'],
-							'osn' => getRsn(),
-							'pid' => $puser['pid'],
-							'cid' => $gifttopuser['cid'],
-							'gid' => $gifttopuser['id'],
-							'days' => $gifttopuser['days'],
-							'rate' => $gifttopuser['rate'],
-							'price' => $gifttopuser['price'],
-							'price1' => $gifttopuser['price1'],
-							'price2' => $gifttopuser['price2'],
-							'p1' => 1,
-							'p2' => 1,
-							'p3' => 1,
-							'money' => $gifttopuser['price'],
-							'num' => 1,
-							'create_day' => date('Ymd', NOW_TIME),
-							'create_time' => NOW_TIME,
-							'create_ip' => CLIENT_IP,
-							'is_give' => 1,
-							'is_exchange' => 0,
-						];
-					}
-					if ($pro_ordertopuser != [])
-						Db::table('pro_order')->insertGetId($pro_ordertopuser);
-					//首次购买送自己
-					if ($item['price1'] > 0) {
-						$wallet2 = Db::table('wallet_list')->where("uid={$pageuser['id']} and cid=2")->lock(true)->find();
-						$wallet_data2 = [
-							'balance' => $wallet2['balance'] + $item['price1']
-						];
-						//更新钱包余额
-						Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
-						//写入流水记录
-						$result1 = walletLog([
-							'wid' => $wallet2['id'],
-							'uid' => $wallet2['uid'],
-							'type' => 10,
-							'money' => $item['price1'],
-							'ori_balance' => $wallet2['balance'],
-							'new_balance' => $wallet_data2['balance'],
-							'fkey' => $res,
-							'remark' => 'one Buy:' . $pro_order['osn']
-						]);
-					}
-					//首次购买送上级
-					if ($item['price2'] > 0) {
-						$wallet2 = Db::table('wallet_list')->where("uid={$pageuser['pid']} and cid=2")->lock(true)->find();
-						$wallet_data2 = [
-							'balance' => $wallet2['balance'] + $item['price2']
-						];
-						//更新钱包余额
-						Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
-						//写入流水记录
-						$result1 = walletLog([
-							'wid' => $wallet2['id'],
-							'uid' => $wallet2['uid'],
-							'type' => 10,
-							'money' => $item['price2'],
-							'ori_balance' => $wallet2['balance'],
-							'new_balance' => $wallet_data2['balance'],
-							'fkey' => $res,
-							'remark' => 'Team Buy:' . $pro_order['osn']
-						]);
-					}
-				} else {
-					//复购送自己
-					if ($item['price0'] > 0) {
-						$wallet2 = Db::table('wallet_list')->where("uid={$pageuser['id']} and cid=2")->lock(true)->find();
-						$wallet_data2 = [
-							'balance' => $wallet2['balance'] + $item['price0']
-						];
-						//更新钱包余额
-						Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
-						//写入流水记录
-						$result1 = walletLog([
-							'wid' => $wallet2['id'],
-							'uid' => $wallet2['uid'],
-							'type' => 10,
-							'money' => $item['price0'],
-							'ori_balance' => $wallet2['balance'],
-							'new_balance' => $wallet_data2['balance'],
-							'fkey' => $res,
-							'remark' => 'Repeat purchase:' . $pro_order['osn']
-						]);
-					}
-				}
-
-				$pro_ordertoself = [];
-				//送自己
-				if ($item['gifttoself']) {
-					$gifttoself = Db::table('pro_goods')->where("id={$item['gifttoself']}")->find();
-					$pro_ordertoself = [
-						'uid' => $pageuser['id'],
-						'osn' => getRsn(),
-						'pid' => $pageuser['pid'],
-						'cid' => $gifttoself['cid'],
-						'gid' => $gifttoself['id'],
-						'days' => $gifttoself['days'],
-						'rate' => $gifttoself['rate'],
-						'price' => $gifttoself['price'],
-						'price1' => $gifttoself['price1'],
-						'price2' => $gifttoself['price2'],
-						'p1' => 1,
-						'p2' => 1,
-						'p3' => 1,
-						'money' => $gifttoself['price'],
-						'num' => 1,
-						'create_day' => date('Ymd', NOW_TIME),
-						'create_time' => NOW_TIME,
-						'create_ip' => CLIENT_IP,
-						'is_give' => 1,
-						'is_exchange' => 0,
-					];
-				}
-				if ($pro_ordertoself != [])
-					Db::table('pro_order')->insertGetId($pro_ordertoself);
-				if ($item['selfintegral'] > 0) {
-					//更新上级的积分钱包
-					$wallet3 = getWallet($pageuser['id'], 3);
-					if ($wallet3 == []) {
-						$db_item = [
-							'uid' => $pageuser['id'],
-							'waddr' => getRsn(),
-							'cid' => 3,
-							'balance' => 0,
-							'create_time' => time(),
-						];
-						Db::table('wallet_list')->insertGetId($db_item);
-						$wallet3 = $db_item;
-					}
-					$wallet3 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=3')->lock(true)->find(); //积分  
-					$wallet_data3 = [
-						'balance' => $wallet3['balance'] + $item['selfintegral']
-					];
-					//更新钱包余额
-					Db::table('wallet_list')->where("id={$wallet3['id']}")->update($wallet_data3);
-					//写入流水记录
-					$result3 = walletLog([
-						'wid' => $wallet3['id'],
-						'uid' => $wallet3['uid'],
-						'type' => 1019,
-						'money' => $item['selfintegral'],
-						'ori_balance' => $wallet3['balance'],
-						'new_balance' => $wallet_data3['balance'],
-						'fkey' => $res,
-						'remark' => 'Buy:' . $pro_order['osn']
-					]);
-					if (!$result3) {
-						throw new \Exception('Failed to write journal records.');
-					}
-				}
-				if ($item['selfbg'] > 0) {
-					$wallet2 = Db::table('wallet_list')->where('uid=' . $pageuser['id'] . ' and cid=2')->lock(true)->find();
-					$wallet_data2 = [
-						'balance' => $wallet2['balance'] + $item['selfbg']
-					];
-					//更新钱包余额
-					Db::table('wallet_list')->where("id={$wallet2['id']}")->update($wallet_data2);
-					//写入流水记录
-					$result2 = walletLog([
-						'wid' => $wallet2['id'],
-						'uid' => $wallet2['uid'],
-						'type' => 11,
-						'money' => $item['selfbg'],
-						'ori_balance' => $wallet2['balance'],
-						'new_balance' => $wallet_data2['balance'],
-						'fkey' => $res,
-						'remark' => 'Buy:' . $pro_order['osn']
-					]);
-					if (!$result2) {
-						throw new \Exception('Failed to write journal records.');
-					}
-				}
-			}
-			Db::commit();
-			$return_data['osn'] = $pro_order['osn'];
-			$return_data['osn1'] = $sjcq;
-		} catch (\Exception $e) {
-			Db::rollback();
-			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e)]);
-		}
-		ReturnToJson(1, 'Successful purchase', $return_data);
-	}
-
-
 	/*******************购买产品相关***********************/
 	//购买产品
 	public function _invest()
@@ -1140,8 +578,8 @@ class ProductController extends BaseController
 				$prize = $prizeArr[0];
 			} else if (count($prizeArr) == 1)
 				$prize = $prizeArr[0];
-			// $total = 0;
-			// $count = 0;
+			$total = 0;
+			$count = 0;
 			if (empty($prize)) {
 				//查询除概率大于0的奖品
 				foreach ($prize_arr as $item)
@@ -1178,6 +616,7 @@ class ProductController extends BaseController
 			]);
 		}
 
+		$inviteNewMember = 0; //首购送上五级
 		//检测当前用户是否是首次购买 
 		if ($check_num <= 0) {
 			$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->find(); //送上级抽奖次数
@@ -1262,9 +701,11 @@ class ProductController extends BaseController
 			//首次购买送上级
 			if ($item['price2'] > 0)
 				updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
-			else //首购送上五级
+			else //产品单独设置的首购送上五级
 			{
-				$this->inviteNewMember($pageuser['pid'], $pageuser['id'], $pro_order['osn'], $item);
+				$inviteNewMember =	$this->inviteNewMember($pageuser['pid'], $pageuser['id'], $pro_order['osn'], $item);
+				$pro_order['price2'] = $inviteNewMember;
+				Db::table('pro_order')->where("osn='" . $pro_order['osn'] . "'")->update($pro_order);
 			}
 
 			//先正达活动
@@ -1317,11 +758,13 @@ class ProductController extends BaseController
 
 		if ($item['selfbg'] > 0)  //送自己余额 不管什么情况都送
 			updateWalletBalanceAndLog($pageuser['id'], $item['selfbg'], 2, 10, 'Buy:' . $pro_order['osn']);
-		$this->afterPurchase($pageuser, $item);
+
+		//系统设置的首购送上五级循环奖励
+		$this->afterPurchase($pageuser, $item, $inviteNewMember);
 	}
 
 	//循环奖励
-	public function afterPurchase($user, $product)
+	public function afterPurchase($user, $item, $inviteNewMember)
 	{
 		// 确定今天日期，用于每天重置奖励
 		$today = date("Y-m-d");
@@ -1330,31 +773,33 @@ class ProductController extends BaseController
 			return;
 		$pid = $user['pid'];
 		// 当天推荐人数，使用Redis记录，可以快速读写，同时方便每天重置
-		$refCountKey = "refloopCount:{$pid}:{$product['id']}:{$today}";
+		$refCountKey = "refloopCount:{$pid}:{$item['id']}:{$today}";
 		$refCount = $this->redis->get($refCountKey);
 		if (!$refCount)
 			$refCount = 0;
 		// 确定奖励等级
 		$level = ($refCount % 5) + 1;
 		$rewardField = "loop{$level}";
-		$rewardAmount = $product[$rewardField];
+		$rewardAmount = $item[$rewardField];
 		if ($rewardAmount <= 0)
 			return; // 奖励值为0或未设置，不进行操作 
 		// 更新推荐人数
 		$this->redis->set($refCountKey, ++$refCount, getEndOfDay());
 		// 检查是否需要审核
 		$globalLoopConfig = getConfig('cnf_global_loop');
-		if ($globalLoopConfig > 0)
+		if ($globalLoopConfig > 0) {
 			// 进入审核流程
-			$this->auditReward($rewardAmount, $user);
-		else
+			$this->auditReward($rewardAmount, $user, $inviteNewMember);
+		} else
 			// 更新钱包余额 记录奖励发放日志
-			updateWalletBalanceAndLog($pid, $rewardAmount, 2, 10, "Received level {$level} reward for product {$product['id']}");
+			updateWalletBalanceAndLog($pid, $rewardAmount, 2, 10, "Received level {$level} reward for product {$item['id']}");
 	}
 
 	//审核循环奖励
-	public function auditReward($rewardAmount, $user)
+	public function auditReward($rewardAmount, $user, $inviteNewMember)
 	{
+		$this->redis->set('t1', $rewardAmount);
+		$this->redis->set('t2', $inviteNewMember);
 		Db::table('pro_audit')->insertGetId([
 			'user_id' => $user['id'], //发起人
 			'touser_id' => $user['pid'], //受益人
@@ -1362,7 +807,8 @@ class ProductController extends BaseController
 			'time' => time(),
 			'remark' => "",
 			'type' => 1,
-			'amount' => $rewardAmount,
+			'touser_pid' => $user['pidg1'],
+			'amount' => $inviteNewMember == 0 ? $rewardAmount : $inviteNewMember,
 			'pidg1' => $user['pidg1'],
 			'pidg2' => $user['pidg2'],
 		]);
@@ -1493,6 +939,168 @@ class ProductController extends BaseController
 			Db::table('pro_order')->insertGetId($good);
 		}
 	}
+
+	public function FirstGiveUpFive($user, $product, $pro_order)
+	{
+		// $pro_order = Db::table('pro_order ord')
+		// ->join('sys_user u','ord.uid = u.id')
+		// ->where("u.pid={$user['pid']} and ord.gid ={$product['id']} and ord.p3=1 ")
+		// ->count();
+
+		// $upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=79")->count();
+		// $money = 0;
+		// if($pro_order == 1 && $product['Firstgive1'] > 0 && $upsend < 1){
+		// 	$money = $product['Firstgive1'];
+		// }
+		// if($pro_order == 2 && $product['Firstgive2'] > 0 && $upsend < 2){
+		// 	$money = $product['Firstgive2'];
+		// }
+		// if($pro_order == 3 && $product['Firstgive3'] > 0 && $upsend < 3){
+		// 	$money = $product['Firstgive3'];
+		// }
+		// if($pro_order == 4 && $product['Firstgive4'] > 0 && $upsend < 4){
+		// 	$money = $product['Firstgive4'];
+		// }
+		// if($pro_order == 5 && $product['Firstgive5'] > 0 && $upsend < 5){
+		// 	$money = $product['Firstgive5'];
+		// } 
+		// if($money > 0)
+		// 	updateWalletBalanceAndLog($user['pid'], $money, 2, 79, 'First purchase gift:' . $pro_order['osn']);
+	}
+
+
+
+	//送上N级循环奖励-按产品设定的金额发放
+	public function inviteNewMember($user_id, $invited_user_id, $osn, $item)
+	{
+		// 获取当前日期
+		$invitation_date = date("Y-m-d");
+
+		// 插入邀请记录
+		$invitationData = [
+			'user_id' => $user_id, //上级id
+			'product_id' => $item['id'], //对应的产品
+			'invited_user_id' => $invited_user_id, //被邀请人
+			'invitation_date' => $invitation_date, //邀请日期
+			'reward' => 0,
+		];
+		Db::table('Invitations')->insert($invitationData);
+		// 更新用户产品进度
+		return $this->updateUserProductProgress($user_id, $osn, $item);
+	}
+
+	public function updateUserProductProgress($user_id,  $product_osn, $item)
+	{
+
+		// 检查是否已有记录
+		$progress = Db::table('User_Product_Progress')
+			->where('user_id', $user_id)
+			->where('product_id', $item['id'])
+			->find();
+		$reward = 0;
+		if ($progress) {
+			// 有记录，更新进度
+			$current_cycle = $progress['current_cycle'];
+			$current_count = $progress['current_count'];
+			$pn = 0;
+
+			if ($item['Firstgive5'] > 0) {
+				$pn = 5;
+			} else if ($item['Firstgive4'] > 0) {
+				$pn = 4;
+			} else if ($item['Firstgive3'] > 0) {
+				$pn = 3;
+			} else if ($item['Firstgive2'] > 0) {
+				$pn = 2;
+			} else if ($item['Firstgive1'] > 0) {
+				$pn = 1;
+			}
+			$this->redis->set('t5', $item['Firstgive1']);
+			$this->redis->set('t3', $pn);
+			$this->redis->set('t4', $current_count);
+			if ($current_count >= $pn) {
+				// 重新循环
+				$current_cycle += 1;
+				$current_count = 1;
+			} else {
+				$current_count += 1;
+			}
+
+			$reward = $this->getReward($current_count, $item);
+			$total_reward = $progress['total_reward'] + $reward;
+
+			$updateData = [
+				'current_cycle' => $current_cycle,
+				'current_count' => $current_count,
+				'total_reward' => $total_reward
+			];
+			Db::table('User_Product_Progress')
+				->where('user_id', $user_id)
+				->where('product_id', $item['id'])
+				->update($updateData);
+		} else {
+			// 没有记录，插入新记录
+			$current_cycle = 1;
+			$current_count = 1;
+			$reward = $this->getReward($current_count, $item);
+			$total_reward = $reward;
+			$this->redis->set('t5', $item['Firstgive1']);
+			$this->redis->set('t4', $current_count);
+			$insertData = [
+				'user_id' => $user_id,
+				'product_id' => $item['id'],
+				'current_cycle' => $current_cycle,
+				'current_count' => $current_count,
+				'total_reward' => $total_reward
+			];
+			Db::table('User_Product_Progress')->insert($insertData);
+		}
+
+		if ($reward > 0) //更新用户余额
+		{
+			$globalLoopConfig = getConfig('cnf_global_loop');
+			if ($globalLoopConfig > 0) { // 进入审核流程
+				return $reward;
+			} else {
+				updateWalletBalanceAndLog($user_id, $reward, 2, 10, 'First purchase gift:' . $product_osn);
+			}
+		}
+		return 0;
+	}
+
+	public function getReward($count, $item)
+	{
+		switch ($count) {
+			case 1:
+				return $item['Firstgive1'];
+			case 2:
+				return $item['Firstgive2'];
+			case 3:
+				return $item['Firstgive3'];
+			case 4:
+				return $item['Firstgive4'];
+			case 5:
+				return $item['Firstgive5'];
+			default:
+				return 0;
+		}
+	}
+
+	//先正达购买指定产品签名
+	public function _SigningCcontract()
+	{
+		$pageuser = checkLogin();
+		$params = $this->params;
+
+		$pro_order = DB::table('pro_order')
+			->where(" uid={$pageuser['id']} and osn = '{$params['osn']}' ")
+			->find();
+
+		$data = ['sign' => $params['sign']];
+		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
+		ReturnToJson(1, 'Success');
+	}
+
 	/*******************购买产品相关***********************/
 
 
@@ -1506,7 +1114,7 @@ class ProductController extends BaseController
 		if ($params['page'] < 1) {
 			$params['page'] = 1;
 		}
-
+		$key = '';
 		$where = "log.uid={$pageuser['id']} and log.status<99";
 		if ($params['status']) {
 			$key .= "{$params['status']}";
@@ -1812,153 +1420,5 @@ class ProductController extends BaseController
 		//}
 		$this->redis->close();
 		ReturnToJson(1, 'ok', $list);
-	}
-
-	public function FirstGiveUpFive($user, $product, $pro_order)
-	{
-		// $pro_order = Db::table('pro_order ord')
-		// ->join('sys_user u','ord.uid = u.id')
-		// ->where("u.pid={$user['pid']} and ord.gid ={$product['id']} and ord.p3=1 ")
-		// ->count();
-
-		// $upsend = Db::table('wallet_log')->where("uid={$user['pid']} and type=79")->count();
-		// $money = 0;
-		// if($pro_order == 1 && $product['Firstgive1'] > 0 && $upsend < 1){
-		// 	$money = $product['Firstgive1'];
-		// }
-		// if($pro_order == 2 && $product['Firstgive2'] > 0 && $upsend < 2){
-		// 	$money = $product['Firstgive2'];
-		// }
-		// if($pro_order == 3 && $product['Firstgive3'] > 0 && $upsend < 3){
-		// 	$money = $product['Firstgive3'];
-		// }
-		// if($pro_order == 4 && $product['Firstgive4'] > 0 && $upsend < 4){
-		// 	$money = $product['Firstgive4'];
-		// }
-		// if($pro_order == 5 && $product['Firstgive5'] > 0 && $upsend < 5){
-		// 	$money = $product['Firstgive5'];
-		// } 
-		// if($money > 0)
-		// 	updateWalletBalanceAndLog($user['pid'], $money, 2, 79, 'First purchase gift:' . $pro_order['osn']);
-	}
-
-
-
-	//送上N级循环奖励-按产品设定的金额发放
-	public function inviteNewMember($user_id,   $invited_user_id,  $osn, $item)
-	{
-		// 获取当前日期
-		$invitation_date = date("Y-m-d");
-
-		// 插入邀请记录
-		$invitationData = [
-			'user_id' => $user_id, //上级id
-			'product_id' => $item['id'], //对应的产品
-			'invited_user_id' => $invited_user_id, //被邀请人
-			'invitation_date' => $invitation_date, //邀请日期
-			'reward' => 0,
-		];
-		Db::table('Invitations')->insert($invitationData);
-		// 更新用户产品进度
-		$this->updateUserProductProgress($user_id, $item['id'], $osn, $item);
-	}
-
-	public function updateUserProductProgress($user_id,  $product_osn, $item)
-	{
-		// 检查是否已有记录
-		$progress = Db::table('User_Product_Progress')
-			->where('user_id', $user_id)
-			->where('product_id', $item['id'])
-			->find();
-		$reward = 0;
-		if ($progress) {
-			// 有记录，更新进度
-			$current_cycle = $progress['current_cycle'];
-			$current_count = $progress['current_count'];
-			$pn = 0;
-			if ($item['Firstgive5'] > 0) {
-				$pn = 5;
-			} else if ($item['Firstgive4'] > 0) {
-				$pn = 4;
-			} else if ($item['Firstgive3'] > 0) {
-				$pn = 3;
-			} else if ($item['Firstgive2'] > 0) {
-				$pn = 2;
-			} else if ($item['Firstgive1'] > 0) {
-				$pn = 1;
-			}
-
-
-			if ($current_count >= $pn) {
-				// 重新循环
-				$current_cycle += 1;
-				$current_count = 1;
-			} else {
-				$current_count += 1;
-			}
-
-			$reward = $this->getReward($current_count, $item['id']);
-			$total_reward = $progress['total_reward'] + $reward;
-
-			$updateData = [
-				'current_cycle' => $current_cycle,
-				'current_count' => $current_count,
-				'total_reward' => $total_reward
-			];
-			Db::table('User_Product_Progress')
-				->where('user_id', $user_id)
-				->where('product_id', $item['id'])
-				->update($updateData);
-		} else {
-			// 没有记录，插入新记录
-			$current_cycle = 1;
-			$current_count = 1;
-			$reward = $this->getReward($current_count, $item['id']);
-			$total_reward = $reward;
-
-			$insertData = [
-				'user_id' => $user_id,
-				'product_id' => $item['id'],
-				'current_cycle' => $current_cycle,
-				'current_count' => $current_count,
-				'total_reward' => $total_reward
-			];
-			Db::table('User_Product_Progress')->insert($insertData);
-		}
-		if ($reward > 0) //更新用户余额
-			updateWalletBalanceAndLog($user_id, $reward, 2, 10, 'First purchase gift:' . $product_osn);
-	}
-
-	public function getReward($count, $item)
-	{
-		switch ($count) {
-			case 1:
-				return $item['Firstgive1'];
-			case 2:
-				return $item['Firstgive2'];
-			case 3:
-				return $item['Firstgive3'];
-			case 4:
-				return $item['Firstgive4'];
-			case 5:
-				return $item['Firstgive5'];
-			default:
-				return 0;
-		}
-	}
-
-	//先正达购买指定产品签名
-	public function _SigningCcontract()
-	{
-		$pageuser = checkLogin();
-		$params = $this->params;
-
-		$pro_order = DB::table('pro_order')
-			->where(" uid={$pageuser['id']} and osn = '{$params['osn']}' ")
-			->find();
-
-		$data = ['sign' => $params['sign']];
-		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
-		ReturnToJson(1, 'Success');
 	}
 }
