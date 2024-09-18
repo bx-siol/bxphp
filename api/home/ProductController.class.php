@@ -797,7 +797,7 @@ class ProductController extends BaseController
 					ReturnToJson(-1, 'No corresponding product exists.');
 				$this->redis->set('pro_goods_' . $params['gsn'], $item, 60 * 60);
 			}
-			$item = $this->redis->get('pro_goods_' . $params['gsn']);
+			//$item = $this->redis->get('pro_goods_' . $params['gsn']);
 			$money = $quantity * $item['price'];
 			if ($money <= 0) {
 				ReturnToJson(-1, "I'm really sorry, the system is currently busy. Please try again later.");
@@ -1263,7 +1263,9 @@ class ProductController extends BaseController
 			if ($item['price2'] > 0)
 				updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 			else //首购送上五级
-				$this->inviteNewMember($pageuser['pid'], $item['id'], $pageuser['id'], $pro_order['osn']);
+			{
+				$this->inviteNewMember($pageuser['pid'], $pageuser['id'], $pro_order['osn'], $item);
+			}
 
 			//先正达活动
 			// $projectlogo = getConfig('sys_name');
@@ -1842,8 +1844,8 @@ class ProductController extends BaseController
 
 
 
-	//送上五级循环奖励-按产品设定的金额发放
-	public function inviteNewMember($user_id, $product_id, $invited_user_id, $product_osn)
+	//送上N级循环奖励-按产品设定的金额发放
+	public function inviteNewMember($user_id,   $invited_user_id,  $osn, $item)
 	{
 		// 获取当前日期
 		$invitation_date = date("Y-m-d");
@@ -1851,31 +1853,43 @@ class ProductController extends BaseController
 		// 插入邀请记录
 		$invitationData = [
 			'user_id' => $user_id, //上级id
-			'product_id' => $product_id, //对应的产品
+			'product_id' => $item['id'], //对应的产品
 			'invited_user_id' => $invited_user_id, //被邀请人
 			'invitation_date' => $invitation_date, //邀请日期
 			'reward' => 0,
 		];
 		Db::table('Invitations')->insert($invitationData);
-
 		// 更新用户产品进度
-		$this->updateUserProductProgress($user_id, $product_id, $product_osn);
+		$this->updateUserProductProgress($user_id, $item['id'], $osn, $item);
 	}
 
-	public function updateUserProductProgress($user_id, $product_id, $product_osn)
+	public function updateUserProductProgress($user_id,  $product_osn, $item)
 	{
 		// 检查是否已有记录
 		$progress = Db::table('User_Product_Progress')
 			->where('user_id', $user_id)
-			->where('product_id', $product_id)
+			->where('product_id', $item['id'])
 			->find();
 		$reward = 0;
 		if ($progress) {
 			// 有记录，更新进度
 			$current_cycle = $progress['current_cycle'];
 			$current_count = $progress['current_count'];
+			$pn = 0;
+			if ($item['Firstgive5'] > 0) {
+				$pn = 5;
+			} else if ($item['Firstgive4'] > 0) {
+				$pn = 4;
+			} else if ($item['Firstgive3'] > 0) {
+				$pn = 3;
+			} else if ($item['Firstgive2'] > 0) {
+				$pn = 2;
+			} else if ($item['Firstgive1'] > 0) {
+				$pn = 1;
+			}
 
-			if ($current_count >= 5) {
+
+			if ($current_count >= $pn) {
 				// 重新循环
 				$current_cycle += 1;
 				$current_count = 1;
@@ -1883,7 +1897,7 @@ class ProductController extends BaseController
 				$current_count += 1;
 			}
 
-			$reward = $this->getReward($current_count, $product_id);
+			$reward = $this->getReward($current_count, $item['id']);
 			$total_reward = $progress['total_reward'] + $reward;
 
 			$updateData = [
@@ -1893,18 +1907,18 @@ class ProductController extends BaseController
 			];
 			Db::table('User_Product_Progress')
 				->where('user_id', $user_id)
-				->where('product_id', $product_id)
+				->where('product_id', $item['id'])
 				->update($updateData);
 		} else {
 			// 没有记录，插入新记录
 			$current_cycle = 1;
 			$current_count = 1;
-			$reward = $this->getReward($current_count, $product_id);
+			$reward = $this->getReward($current_count, $item['id']);
 			$total_reward = $reward;
 
 			$insertData = [
 				'user_id' => $user_id,
-				'product_id' => $product_id,
+				'product_id' => $item['id'],
 				'current_cycle' => $current_cycle,
 				'current_count' => $current_count,
 				'total_reward' => $total_reward
@@ -1915,22 +1929,19 @@ class ProductController extends BaseController
 			updateWalletBalanceAndLog($user_id, $reward, 2, 10, 'First purchase gift:' . $product_osn);
 	}
 
-	public function getReward($count, $product_id)
+	public function getReward($count, $item)
 	{
-		// 根据产品和邀请次数计算奖励
-		$product = Db::table('pro_goods')->where('id', $product_id)->find();
-
 		switch ($count) {
 			case 1:
-				return $product['Firstgive1'];
+				return $item['Firstgive1'];
 			case 2:
-				return $product['Firstgive2'];
+				return $item['Firstgive2'];
 			case 3:
-				return $product['Firstgive3'];
+				return $item['Firstgive3'];
 			case 4:
-				return $product['Firstgive4'];
+				return $item['Firstgive4'];
 			case 5:
-				return $product['Firstgive5'];
+				return $item['Firstgive5'];
 			default:
 				return 0;
 		}
@@ -1947,7 +1958,7 @@ class ProductController extends BaseController
 			->find();
 
 		$data = ['sign' => $params['sign']];
-		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);		
+		Db::table('pro_order')->where("id={$pro_order['id']}")->update($data);
 		ReturnToJson(1, 'Success');
 	}
 }
