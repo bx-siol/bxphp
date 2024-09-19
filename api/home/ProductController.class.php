@@ -695,8 +695,8 @@ class ProductController extends BaseController
 			}
 
 			//首次购买送自己
-			if ($item['price1'] > 0)
-				updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
+			// if ($item['price1'] > 0)
+			// 	updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
 
 			//首次购买送上级
 			if ($item['price2'] > 0)
@@ -705,6 +705,7 @@ class ProductController extends BaseController
 			{
 				$inviteNewMember =	$this->inviteNewMember($pageuser['pid'], $pageuser['id'], $pro_order['osn'], $item);
 				$pro_order['price2'] = $inviteNewMember;
+				$pro_order['price1'] = $item['price1'];
 				Db::table('pro_order')->where("osn='" . $pro_order['osn'] . "'")->update($pro_order);
 			}
 
@@ -1327,11 +1328,11 @@ class ProductController extends BaseController
 			Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 			if ($item['is_give'] == '0') {
 				//返佣
-				writeLog('开始进行返佣：' . $item['uid'], '收益记录');
+				// writeLog('开始进行返佣：' . $item['uid'], '收益记录');
 				$up_users = getUpUser($item['uid'], true);
-				writeLog(json_encode($up_users), '收益记录');
+				// writeLog(json_encode($up_users), '收益记录');
 				foreach ($up_users as $uv) {
-					writeLog("{$uv['id']}_{$uv['gid']}_{$uv['stop_commission']}", '收益记录');
+					// writeLog("{$uv['id']}_{$uv['gid']}_{$uv['stop_commission']}", '收益记录');
 					if ($uv['stop_commission'])   //暂停佣金
 						continue;
 					if ($uv['gid'] < 91)   //代理以及其它管理用户不给佣金
@@ -1340,14 +1341,14 @@ class ProductController extends BaseController
 					if (!$rate || $rate < 0)
 						continue;
 
-					writeLog("{$uv['id']}_{$rate}", '收益记录');
+					// writeLog("{$uv['id']}_{$rate}", '收益记录');
 					//检测该用户是否有购买同等金额以上的设备
 					$uv_order = Db::table('pro_order')->where("uid={$uv['id']} and status=1 and is_give=0")->order(['price' => 'desc'])->find();
-					writeLog("{$uv['id']}_{$uv_order['price']}_{$item['price']}", '收益记录');
+					// writeLog("{$uv['id']}_{$uv_order['price']}_{$item['price']}", '收益记录');
 					if (!$uv_order || $uv_order['price'] < $item['price'])
 						continue;
 
-					writeLog("{$uv['id']}开始获得佣金", '收益记录');
+					// writeLog("{$uv['id']}开始获得佣金", '收益记录');
 					$rebate = $reward * ($rate / 100);
 					$wallet2 = getWallet($uv['id'], 2);
 					if (!$wallet2)
@@ -1388,7 +1389,7 @@ class ProductController extends BaseController
 						'pdig2' => $uv['pidg2'],
 					];
 					$res = Db::table('pro_reward')->insertGetId($pro_reward2);
-					writeLog("{$uv['id']}_{$res}_done", '收益记录');
+					// writeLog("{$uv['id']}_{$res}_done", '收益记录');
 				}
 			}
 			$return_data['USER_WALLET'] = $this->redis->rmall(RedisKeys::USER_WALLET . $pageuser['id']);

@@ -295,10 +295,17 @@ class DefaultController extends BaseController
 		$tip = Db::table('news_article')->where("id={$tipId} and status=2")->field(['title', 'content'])->find();
 		$newscount = Db::table('news_article')->where("cid=50 and status=2")->field(['id'])->select()->toArray();
 
-		$start_date = date('Ymd', mktime(0, 0, 0, date('m'), date('d') - date('w') + 1, date('Y')));
-		$end_date = date('Ymd', mktime(23, 59, 59, date('m'), date('d') - date('w') + 7, date('Y')));
+		// 获取当前周的开始日期（周一）
+		$start_date = (new DateTime('monday this week'))->format('Ymd');
+		// 获取当前周的结束日期（周日）
+		$end_date = (new DateTime('sunday this week'))->format('Ymd');
 
-		$userCount = DB::table('sys_user')->where(" first_pay_day >= {$start_date} and first_pay_day <= {$end_date} ")->count();
+		// $start_date = date('Ymd', mktime(0, 0, 0, date('m'), date('d') - date('w') + 1, date('Y')));
+		// $end_date = date('Ymd', mktime(23, 59, 59, date('m'), date('d') - date('w') + 7, date('Y')));
+
+
+
+		$userCount = DB::table('sys_user')->where(" pid={$pageuser['id']} and first_pay_day >= {$start_date} and first_pay_day <= {$end_date} ")->count();
 
 		$return_data = [
 			'newscount' => count($newscount),
@@ -321,29 +328,35 @@ class DefaultController extends BaseController
 	//BP获取本周充值奖励
 	public function _GetRewards()
 	{
-		$pageuser = checkLogin();
-		$params = $this->params;
-		$money = 0;
-		if($params['type'] == 1){
-			$type = 101;
-			$money = 200;
-		}
-		else if($params['type'] == 2){
-			$type = 102;
-			$money = 200;
-		}
-		else if($params['type'] == 3){
-			$type = 103;
-			$money = 400;
-		}
+		try {
+			$pageuser = checkLogin();
+			$params = $this->params;
+			$money = 0;
+			if ($params['type'] == 1) {
+				$type = 101;
+				$money = 200;
+			} else if ($params['type'] == 2) {
+				$type = 102;
+				$money = 200;
+			} else if ($params['type'] == 3) {
+				$type = 103;
+				$money = 400;
+			}
+			// 获取当前周的开始日期（周一）
+			$start_date = (new DateTime('monday this week'))->format('Ymd');
+			// 获取当前周的结束日期（周日）
+			$end_date = (new DateTime('sunday this week'))->format('Ymd');
 
-		$now_day = date('Ymd');
-		$walllog = Db::table('wallet_log')->where (" create_day={$now_day} and type = {$type} ")->count();
-		if($walllog == 1)
-			ReturnToJson(-1, 'The reward has been received today.');
-		
-		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type,'Recharge reward for the inviter on the day.' .$params['type']);
-		
-		ReturnToJson(1, 'Success');
+			//$now_day = date('Ymd');
+			$walllog = Db::table('wallet_log')->where(" uid={$pageuser['id']} and  create_day >= {$start_date} and create_day <= {$end_date} and type = {$type} ")->count();
+			if ($walllog > 0)
+				ReturnToJson(-1, 'The reward has been received today.');
+
+			updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type, 'Recharge reward for the inviter on the day.' . $params['type']);
+
+			ReturnToJson(1, 'Success');
+		} catch (Exception $e) {
+			ReturnToJson(-1, 'Error occurred.', ['error' => $e->getMessage()]);
+		}
 	}
 }
