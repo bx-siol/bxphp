@@ -19,7 +19,8 @@
                     <template #default="{ list }">
                         <ul>
                             <li v-for="item in list" @click="onLink({ name: 'News_info', params: { id: item.id } })">
-                                <van-image :src="imgFlag(item.cover)" width="13rem" height="5rem" class="imgs"></van-image>
+                                <van-image :src="imgFlag(item.cover)" width="10rem" height="6.2rem"
+                                    class="imgs"></van-image>
                                 <div class="infoRight">
                                     <p class="titles">{{ item.title }}</p>
                                     <p class="desc" v-html="item.ndesc"></p>
@@ -100,7 +101,7 @@ const onPageSuccess = (res: any) => {
         ul {
             padding: 0 1rem;
 
-            li{
+            li {
                 background-color: transparent;
             }
         }

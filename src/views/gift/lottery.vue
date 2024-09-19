@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <van-popup v-model:show="showLotteryPop" style="border-radius: 10px;">
+        <van-popup @close="endcCallback" v-model:show="showLotteryPop" style="  border-radius: 10px;">
             <div class="LotteryPop" @click="receiveGift">
                 <img :src="result" />
                 <p style="color: #f84604;">{{ title }}</p>
@@ -128,7 +128,9 @@ const startCallback = (val: any) => {
         })
     }, delayTime)
 }
-
+const endcCallback = () => {
+    location.reload()
+}
 const endCallback = () => {
     result.value = imgFlag(LotteryResults.value.prize_cover);
     title.value = LotteryResults.value.prize_name
@@ -137,6 +139,7 @@ const endCallback = () => {
 
 const receiveGift = () => {
     showLotteryPop.value = false
+    location.reload()
 }
 
 onBeforeMount(() => {
