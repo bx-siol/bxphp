@@ -207,7 +207,14 @@ class ExtController extends BaseController
 			->find();
 
 		$list = Db::view(['ext_tasklog' => 'log'], [
-			'id', 'tsn', 'status', 'award', 'voucher', 'create_time', 'remark', 'check_remark'
+			'id',
+			'tsn',
+			'status',
+			'award',
+			'voucher',
+			'create_time',
+			'remark',
+			'check_remark'
 		])
 			->view(['ext_task' => 't'], ['name' => 'task_name'], 'log.tid=t.id', 'LEFT')
 			->where($where)
@@ -235,7 +242,7 @@ class ExtController extends BaseController
 	}
 
 	public function _pageData()
-	{		
+	{
 		$pageuser = checkLogin();
 		$newmember = Db::table('sys_user')->where(" pid={$pageuser['id']} and first_pay_day > 0 ")->count();
 
@@ -251,34 +258,29 @@ class ExtController extends BaseController
 		$pageuser = checkLogin();
 		$params = $this->params;
 		$money = 0;
-		if($params['type'] == 1){
+		if ($params['type'] == 1) {
 			$type = 61;
 			$money = 300;
-		}
-		else if($params['type'] == 2){
+		} else if ($params['type'] == 2) {
 			$type = 62;
 			$money = 800;
-		}
-		else if($params['type'] == 3){
+		} else if ($params['type'] == 3) {
 			$type = 63;
 			$money = 1500;
-		}
-		else if($params['type'] == 4){
+		} else if ($params['type'] == 4) {
 			$type = 64;
 			$money = 2500;
-		}
-		else if($params['type'] == 5){
+		} else if ($params['type'] == 5) {
 			$type = 65;
 			$money = 8000;
 		}
 
-		$walllog = Db::table('wallet_log')->where (" type = {$type} ")->count();
-		if($walllog == 1)
+		$walllog = Db::table('wallet_log')->where(" uid={$pageuser['id']} and type = {$type} ")->count();
+		if ($walllog > 0)
 			ReturnToJson(-1, 'Finish');
-		
-		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type,'Cumulative invitation registration：' .$params['type']);
-		
-		ReturnToJson(1, 'Success');
 
+		updateWalletBalanceAndLog($pageuser['id'], $money, 2, $type, 'Cumulative invitation registration：' . $params['type']);
+
+		ReturnToJson(1, 'Success');
 	}
 }
