@@ -7,7 +7,7 @@ import styleImport from 'vite-plugin-style-import'
 // https://vitejs.dev/config/
 export default defineConfig({
 
-    base: '/',
+    base: '/h5/',
     build: {
         emptyOutDir: true,
         chunkSizeWarningLimit: 1024,
@@ -33,7 +33,7 @@ export default defineConfig({
         port: 3000,
         proxy: {
             '/api/': {
-                target: 'http://47.76.203.255:801/',//'http://8.210.239.216/',//
+                target: 'http://23.141.172.183/',//'http://8.210.239.216/',//
                 changeOrigin: true,
                 //rewrite: (path) => path.replace(/^\/api/, '')
             }
