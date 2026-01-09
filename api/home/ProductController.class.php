@@ -266,6 +266,7 @@ class ProductController extends BaseController
 			$return_data['osn'] = $pro_order['osn'];
 		} catch (Exception $e) {
 			Db::rollback();
+			//throw $e;
 			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e->getMessage())]);
 		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
@@ -620,8 +621,10 @@ class ProductController extends BaseController
 		//检测当前用户是否是首次购买 
 		if ($check_num <= 0) {
 			$puser = Db::table('sys_user')->where('id=' . $pageuser['pid'])->find(); //送上级抽奖次数
-			Db::table('sys_user')->where("id=" . $puser['id'])->update(['lottery' => $puser['lottery'] + intval($item['sjcjcs'])]);
-
+			if ($puser != null) {
+				$lotterydb = $puser['lottery'] + intval($item['sjcjcs']);
+				Db::table('sys_user')->where("id=" . $puser['id'])->update(['lottery' => $lotterydb]);
+			}
 			//赠送上级最低奖项
 			$sjprizeArr = array();
 			foreach ($prize_arr as $k) {
@@ -667,7 +670,7 @@ class ProductController extends BaseController
 				updateWalletBalanceAndLog($puser['id'], $item['Integral'], 3, 1019, 'Team Buy:' . $pro_order['osn']);
 
 			//送推荐人产品
-			if ($item['gifttopuser']) {
+			if ($item['gifttopuser'] && $puser != null) {
 				$gifttopuser = Db::table('pro_goods')->where("id={$item['gifttopuser']}")->find();
 				Db::table('pro_order')->insertGetId([
 					'uid' => $puser['id'],
@@ -699,14 +702,16 @@ class ProductController extends BaseController
 			// 	updateWalletBalanceAndLog($pageuser['id'], $item['price1'], 2, 10, 'First Buy:' . $pro_order['osn']);
 
 			//首次购买送上级
-			if ($item['price2'] > 0)
+			if ($item['price2'] > 0 && $puser != null)
 				updateWalletBalanceAndLog($puser['id'], $item['price1'], 2, 10, 'Team First Buy:' . $pro_order['osn']);
 			else //产品单独设置的首购送上五级
 			{
-				$inviteNewMember =	$this->inviteNewMember($pageuser['pid'], $pageuser['id'], $pro_order['osn'], $item);
-				$pro_order['price2'] = $inviteNewMember;
-				$pro_order['price1'] = $item['price1'];
-				Db::table('pro_order')->where("osn='" . $pro_order['osn'] . "'")->update($pro_order);
+				if ($puser != null) {
+					$inviteNewMember =	$this->inviteNewMember($pageuser['pid'], $pageuser['id'], $pro_order['osn'], $item);
+					$pro_order['price2'] = $inviteNewMember;
+					$pro_order['price1'] = $item['price1'];
+					Db::table('pro_order')->where("osn='" . $pro_order['osn'] . "'")->update($pro_order);
+				}
 			}
 
 			//先正达活动

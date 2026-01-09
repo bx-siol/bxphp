@@ -29,6 +29,7 @@ if (strtolower(php_sapi_name()) == 'cli') {
 }
 
 require_once ROOT_PATH . 'vendor/autoload.php';
+
 use think\facade\Db;
 
 //按项目规范参数
@@ -36,7 +37,7 @@ if (file_exists(ROOT_PATH . 'nestlexm')) {
 	require_once GLOBAL_PATH . 'db_n.php';
 } else if (file_exists(ROOT_PATH . 'syngentaxm')) {
 	require_once GLOBAL_PATH . 'db_s.php';
-} else {//测试服 
+} else { //测试服 
 	require_once GLOBAL_PATH . 'db.php';
 }
 
@@ -120,8 +121,8 @@ if (!PHP_CLI) {
 	function handleError($errno, $errstr, $errfile, $errline, $errcontext)
 	{
 		$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
-		$logContent .= "[Type: $errno] $errstr in $errfile on line $errline\n";
-		$logContent .= json_encode($errcontext, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+		$logContent .= "[" . NOW_DATE . "] " . "[Type: $errno] $errstr in $errfile on line $errline\n";
+		$logContent .= "错误上下文:\n" . json_encode($errcontext, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
 		if (PHP_CLI)
 			writeLog($logContent, 'clisyslog/Error/');
 		else
@@ -135,8 +136,10 @@ if (!PHP_CLI) {
 	function handleException($exception)
 	{
 		$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
-		$logContent .= "[" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
-		$logContent .= json_encode($exception, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+		$logContent .= "[" . NOW_DATE . "] " . "[" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
+		// 记录堆栈跟踪信息
+		$logContent .= "堆栈跟踪:\n" . $exception->getTraceAsString() . "\n";
+		 
 		if (PHP_CLI)
 			writeLog($logContent, 'clisyslog/Exception/');
 		else
@@ -149,17 +152,19 @@ if (!PHP_CLI) {
 	function handleShutdown()
 	{
 		$last_error = error_get_last();
-		$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
-		// $logContent .= "[" . $exception->getCode() . "] " . $exception->getMessage() . " in " . $exception->getFile() . " on line " . $exception->getLine() . "\n";
-		$logContent .= json_encode($last_error, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
-		if (PHP_CLI)
-			writeLog($logContent, 'clisyslog/Shutdown/');
-		else
-			writeLog($logContent, 'syslog/Shutdown/');
-		// if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING])) {
-		// 	// 这里可以添加代码显示用户友好的错误页面或其他错误处理
-		// 	//ReturnToJson(-1, 'fail:Shutdown');
-		// }
+		if ($last_error && in_array($last_error['type'], [E_ERROR, E_PARSE, E_CORE_ERROR, E_CORE_WARNING, E_COMPILE_ERROR, E_COMPILE_WARNING])) {
+			$logContent = "[" . MODULE_NAME . "][" . CONTROLLER_NAME . "][" . ACTION_NAME . "]" . "\n";
+			$logContent .= "[" . NOW_DATE . "] " . "[Type: " . $last_error['type'] . "] " . $last_error['message'] . " in " . $last_error['file'] . " on line " . $last_error['line'] . "\n";
+			// 记录完整错误信息
+			$logContent .= "完整错误信息:\n" . json_encode($last_error, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . "\n";
+		 
+			if (PHP_CLI)
+				writeLog($logContent, 'clisyslog/Shutdown/');
+			else
+				writeLog($logContent, 'syslog/Shutdown/');
+			// 这里可以添加代码显示用户友好的错误页面或其他错误处理
+			//ReturnToJson(-1, 'fail:Shutdown');
+		}
 	}
 
 	// 注册自定义的错误处理函数、异常处理函数和致命错误处理函数
@@ -169,6 +174,3 @@ if (!PHP_CLI) {
 
 	call_user_func([$ctl_obj, $action]);
 }
-
-
-

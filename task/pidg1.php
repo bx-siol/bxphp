@@ -24,13 +24,10 @@ while (true) {
                 Db::table('sys_user')->where('id=' . $user['id'])->update(['pidg2' => -2, 'pidg1' => -2]);
                 $pidg2 = -2;
             }
-
-
             Db::commit();
             output('id:' . $user['id'] . ' : ' . $pidg1 . '|' . $pidg2);
         } catch (\Exception $e) {
             Db::rollback();
         }
     }
-
 }

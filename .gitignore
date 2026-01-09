@@ -48,3 +48,6 @@ new/uploads/qrcode/*
 
 new/vue/Nestle/h5/*
 new/vue/Syngenta/h5/*
+.htaccess
+nginx.htaccess
+doc/
