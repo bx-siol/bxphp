@@ -54,7 +54,7 @@ class ProductController extends BaseController
 		if ($params['page'] < 1) {
 			$params['page'] = 1;
 		}
-		$rediskey = RedisKeys::Goods . "list_{$params['page']}_";
+		$rediskey = RedisKeys::GOODS_LIST . "{$params['page']}_";
 		$params['cid'] = intval($params['cid']);
 		$where = " log.status>1 and log.status<99 ";
 
@@ -97,10 +97,10 @@ class ProductController extends BaseController
 			}
 			$this->redis->set($rediskey, $list);
 		}
-		$category_arr = $this->redis->get(RedisKeys::Goods . "category");
+		$category_arr = $this->redis->get(RedisKeys::GOODS . "category");
 		if (!$category_arr) {
 			$category_arr = Db::table('pro_category')->where("pid=0 and status=2")->order(['sort' => 'desc', 'id' => 'asc'])->select()->toArray();
-			$this->redis->set(RedisKeys::Goods . "category", $category_arr);
+			$this->redis->set(RedisKeys::GOODS . "category", $category_arr);
 		}
 		$total_page = ceil($count_item['cnt'] / $cpageSize);
 		$return_data = [
@@ -121,7 +121,7 @@ class ProductController extends BaseController
 		$params = $this->params;
 		if (!$params['gsn'])
 			ReturnToJson(-1, 'Missing parameters.');
-		$rediskey_goods = RedisKeys::Goods . $params['gsn'];
+		$rediskey_goods = RedisKeys::GOODS . $params['gsn'];
 		$item = $this->redis->get($rediskey_goods);
 		if (!$item) {
 			$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
@@ -221,19 +221,26 @@ class ProductController extends BaseController
 	{
 		$pageuser = checkLogin();
 		$params = $this->params;
-		//$money = floatval($params['money']);
 		$quantity = intval($params['quantity']);
 		if ($quantity < 1 || $quantity > 1000)
 			ReturnToJson(-1, 'Incorrect purchase quantity');
 		$return_data = [];
+		
+		// 添加分布式锁，防止重复下单
+		$lockKey = RedisKeys::LOCK_ORDER_CREATE . $pageuser['id'] . '_' . $params['gsn'];
+		$lockId = $this->redis->lock($lockKey, 10, 3, 100);
+		if (!$lockId) {
+			ReturnToJson(-1, 'System is busy, please try again later.');
+		}
+		
 		Db::startTrans();
 		try {
-			$item = $this->redis->get('pro_goods_' . $params['gsn']);
+			$item = $this->redis->get(RedisKeys::GOODS . $params['gsn']);
 			if (!$item) {
 				$item = Db::table('pro_goods')->where("gsn='{$params['gsn']}'")->find();
 				if (!$item)
 					ReturnToJson(-1, 'No corresponding product exists.');
-				$this->redis->set('pro_goods_' . $params['gsn'], $item, 60 * 60);
+				$this->redis->set(RedisKeys::GOODS . $params['gsn'], $item, 60 * 60);
 			}
 			//$item = $this->redis->get('pro_goods_' . $params['gsn']);
 			$money = $quantity * $item['price'];
@@ -268,6 +275,9 @@ class ProductController extends BaseController
 			Db::rollback();
 			//throw $e;
 			ReturnToJson(-1, 'The system is busy, please try again later.', ['e' => json_encode($e->getMessage())]);
+		} finally {
+			// 释放分布式锁
+			$this->redis->unlock($lockKey, $lockId);
 		}
 		ReturnToJson(1, 'Successful purchase', $return_data);
 	}

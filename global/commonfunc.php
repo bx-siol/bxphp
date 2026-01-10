@@ -1,4 +1,5 @@
 <?php
+
 use think\facade\Db;
 use Zxing\QrReader;
 
@@ -141,10 +142,10 @@ function walletLog($pdata = [], $create_id = 0)
 	}
 	$type = intval($pdata['type']);
 	$cnf_balance_type = getConfig('cnf_balance_type');
-	if (!array_key_exists($type, $cnf_balance_type)) {		
+	if (!array_key_exists($type, $cnf_balance_type)) {
 		return false;
 	}
-	
+
 	if ($create_id == 0)
 		$pageuser = checkLogin();
 	else
@@ -222,29 +223,47 @@ function getBanklog($uid, $types = 0)
 }
 function updateWalletBalanceAndLog($id, $money, $cid, $type, $remark)
 {
-	$wallet = Db::table('wallet_list')->where('uid=' . $id . ' and cid=' . $cid)->lock(true)->find();
-	if ($wallet == []) {
-		$wid = Db::table('wallet_list')->insertGetId(['uid' => $id, 'waddr' => getRsn(), 'cid' => $cid, 'balance' => 0, 'create_time' => time(),]);
-		$wallet = Db::table('wallet_list')->where('id=' . $wid)->lock(true)->find();
-	}
-	$oriBalance = $wallet['balance'];
-	$newBalance = $wallet['balance'] + $money;
-	$wallet_data = ['balance' => $newBalance];
-	$result = Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
 	$redis = new MyRedis();
-	$redis->rm(RedisKeys::USER_WALLET . $id . "_{$cid}");
-	walletLog([
-		'wid' => $wallet['id'],
-		'uid' => $id,
-		'type' => $type,
-		'money' => $money,
-		'ori_balance' => $oriBalance,
-		'new_balance' => $newBalance,
-		'fkey' => '',
-		'remark' => $remark
-	]);
-	if (!$result) {
-		throw new \Exception('Failed to write journal records.');
+	$lockKey = RedisKeys::LOCK_USER_BALANCE . $id . "_{$cid}";
+	$lockId = $redis->lock($lockKey, 5, 3, 50);
+
+	if (!$lockId) {
+		throw new \Exception('Failed to acquire lock for wallet update.');
+	}
+
+	try {
+		$wallet = Db::table('wallet_list')->where('uid=' . $id . ' and cid=' . $cid)->lock(true)->find();
+		if ($wallet == []) {
+			$wid = Db::table('wallet_list')->insertGetId(['uid' => $id, 'waddr' => getRsn(), 'cid' => $cid, 'balance' => 0, 'create_time' => time(),]);
+			$wallet = Db::table('wallet_list')->where('id=' . $wid)->lock(true)->find();
+		}
+		$oriBalance = $wallet['balance'];
+		$newBalance = $wallet['balance'] + $money;
+		$wallet_data = ['balance' => $newBalance];
+		$result = Db::table('wallet_list')->where("id={$wallet['id']}")->update($wallet_data);
+
+		// 更新缓存
+		$redis->rm(RedisKeys::USER_WALLET . $id . "_{$cid}");
+
+		// 记录日志
+		walletLog([
+			'wid' => $wallet['id'],
+			'uid' => $id,
+			'type' => $type,
+			'money' => $money,
+			'ori_balance' => $oriBalance,
+			'new_balance' => $newBalance,
+			'fkey' => '',
+			'remark' => $remark
+		]);
+
+		if (!$result) {
+			throw new \Exception('Failed to write journal records.');
+		}
+	} finally {
+		// 释放锁
+		$redis->unlock($lockKey, $lockId);
+		$redis->close();
 	}
 }
 

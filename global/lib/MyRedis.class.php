@@ -294,4 +294,74 @@ class MyRedis
     {
         return $this->options['prefix'] . $name;
     }
+
+    /**
+     * 获取分布式锁
+     * @param string $lockKey 锁的key
+     * @param int $expire 锁的过期时间（秒）
+     * @param int $retryTimes 重试次数
+     * @param int $retryInterval 重试间隔（毫秒）
+     * @return bool|string 成功返回锁标识，失败返回false
+     */
+    public function lock($lockKey, $expire = 10, $retryTimes = 3, $retryInterval = 100)
+    {
+        $lockKey = $this->getCacheKey($lockKey);
+        $lockId = uniqid();
+        $retry = 0;
+        
+        do {
+            // 使用setnx命令尝试获取锁
+            if ($this->handler->setnx($lockKey, $lockId)) {
+                // 设置锁的过期时间
+                $this->handler->expire($lockKey, $expire);
+                return $lockId;
+            }
+            
+            // 如果没有获取到锁，并且还有重试次数，则等待后重试
+            if ($retry < $retryTimes) {
+                usleep($retryInterval * 1000); // 转换为微秒
+                $retry++;
+            } else {
+                break;
+            }
+        } while (true);
+        
+        return false;
+    }
+
+    /**
+     * 释放分布式锁
+     * @param string $lockKey 锁的key
+     * @param string $lockId 锁标识
+     * @return bool 是否成功释放
+     */
+    public function unlock($lockKey, $lockId)
+    {
+        if (!$lockKey || !$lockId) {
+            return false;
+        }
+        
+        $lockKey = $this->getCacheKey($lockKey);
+        
+        // 使用Lua脚本确保释放锁的原子性
+        $script = 'if redis.call("get", KEYS[1]) == ARGV[1] then return redis.call("del", KEYS[1]) else return 0 end';
+        $script = str_replace('ARGV[1]', '"' . $lockId . '"', $script);
+        
+        return $this->handler->eval($script, [$lockKey], 1) == 1;
+    }
+
+    /**
+     * 强制释放分布式锁
+     * @param string $lockKey 锁的key
+     * @return bool 是否成功释放
+     */
+    public function forceUnlock($lockKey)
+    {
+        if (!$lockKey) {
+            return false;
+        }
+        
+        $lockKey = $this->getCacheKey($lockKey);
+        return $this->handler->del($lockKey) > 0;
+    }
 }
